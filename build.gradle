@@ -12,11 +12,24 @@ buildscript {
     }
 }
 
+plugins {
+  id 'net.saliman.cobertura' version '2.3.1'
+}
+
 allprojects {
     repositories {
         jcenter()
     }
 }
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+    coverageIgnoreTrivial = true
+    coverageIgnores = ['org.slf4j.Logger.*']
+    coverageReportDir = new File("$buildDir/reports/cobertura")
+}
+
+test.finalizedBy(project.tasks.cobertura)
 
 task clean(type: Delete) {
     delete rootProject.buildDir
