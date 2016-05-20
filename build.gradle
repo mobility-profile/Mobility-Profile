@@ -29,8 +29,6 @@ cobertura {
     coverageReportDir = new File("$buildDir/reports/cobertura")
 }
 
-test.finalizedBy(project.tasks.cobertura)
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
