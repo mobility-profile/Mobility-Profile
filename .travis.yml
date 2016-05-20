@@ -36,4 +36,4 @@ after_script:
   - ./gradlew connectedCheck
 
 after_success:
-  - ./gradlew cobertura:cobertura coveralls:report
+  - ./gradlew check cobertura coveralls
