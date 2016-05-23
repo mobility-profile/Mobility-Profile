@@ -34,4 +34,4 @@ after_script:
   - adb shell input keyevent 82 &
   # now run the tests
   - ./gradlew connectedCheck
-  - ./gradlew check cobertura coveralls
+  - ./gradlew cobertura coveralls
