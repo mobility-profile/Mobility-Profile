@@ -3,6 +3,8 @@ package fi.ohtu.mobilityprofile;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.util.HashSet;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

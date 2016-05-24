@@ -13,7 +13,6 @@ buildscript {
 }
 
 plugins {
-    id 'net.saliman.cobertura' version '2.3.1'
     id 'com.github.kt3k.coveralls' version '2.6.3'
 }
 
@@ -23,14 +22,17 @@ allprojects {
     }
 }
 
-cobertura {
-    coverageFormats = ['html', 'xml']
-    coverageIgnoreTrivial = true
-    coverageIgnores = ['org.slf4j.Logger.*']
-}
-
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+coveralls {
+    jacocoReportPath = "${buildDir}/reports/coverage/debug/report.xml"
+}
+
+tasks.coveralls {
+    dependsOn 'connectedAndroidTest'
+    onlyIf { System.env.'CI' }
 }
 
 apply plugin: 'checkstyle'

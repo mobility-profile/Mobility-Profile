@@ -36,4 +36,4 @@ after_script:
   - ./gradlew connectedCheck
 
 after_success:
-  - ./gradlew cobertura coveralls
+  - ./gradlew connectedAndroidTest coveralls
