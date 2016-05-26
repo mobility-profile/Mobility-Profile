@@ -34,3 +34,14 @@ task clean(type: Delete) {
 }
 
 apply plugin: 'checkstyle'
+
+check.dependsOn 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+    configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+    source 'app/src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}

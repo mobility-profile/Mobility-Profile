@@ -14,7 +14,6 @@ buildscript {
 
 plugins {
   id 'net.saliman.cobertura' version '2.3.1'
-apply plugin: 'checkstyle'
 }
 
 allprojects {
@@ -34,4 +33,15 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+apply plugin: 'checkstyle'
 
+check.dependsOn 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+    configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}
