@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/allow"
+        android:layout_width="339dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_weight="0.04"
+        android:text="@string/allow_access"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+    <Switch
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_GPS"
+        android:id="@+id/switchGPS"
+        android:layout_weight="0.04"
+        android:layout_gravity="center_horizontal"
+        style="@style/TextAppearance.AppCompat.Widget.Switch"
+        android:textSize="20sp" />
+
+    <Switch
+        style="@style/TextAppearance.AppCompat.Widget.Switch"
+        android:layout_width="227dp"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_cal"
+        android:id="@+id/switchCal"
+        android:layout_weight="0.04"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp" />
+
+
+    <TextView
+        android:id="@+id/testing"
+        android:layout_width="339dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_weight="0.04"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>
