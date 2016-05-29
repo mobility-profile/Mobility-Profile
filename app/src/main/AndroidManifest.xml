@@ -18,13 +18,15 @@
             </intent-filter>
         </activity>
 
-        <context
+        <service
             android:name=".RemoteService"
             android:exported="true"
             android:process=":remote">
+            <!-- TODO: Require permission to use our app. -->
+
             <intent-filter>
                 <action android:name="fi.ohtu.mobilityprofile.RemoteService"/>
             </intent-filter>
-        </context>
+        </service>
     </application>
 </manifest>
