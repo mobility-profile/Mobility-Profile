@@ -12,6 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,13 +21,13 @@
             </intent-filter>
         </activity>
 
-        <service
+        <context
             android:name=".RemoteService"
             android:exported="true"
             android:process=":remote">
             <intent-filter>
                 <action android:name="fi.ohtu.mobilityprofile.RemoteService"/>
             </intent-filter>
-        </service>
+        </context>
     </application>
 </manifest>
