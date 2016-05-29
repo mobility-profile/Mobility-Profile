@@ -34,7 +34,9 @@ public class RequestHandler extends Handler {
     @Override
     public void handleMessage(Message msg) {
         // For testing
-        Toast.makeText(context.getApplicationContext(), "Remote Service invoked (" + msg.what + ")", Toast.LENGTH_SHORT).show();
+        if (context != null) {
+            Toast.makeText(context.getApplicationContext(), "Remote Service invoked (" + msg.what + ")", Toast.LENGTH_SHORT).show();
+        }
 
         Message message;
         switch (msg.what) {
@@ -49,7 +51,9 @@ public class RequestHandler extends Handler {
             // Make the RPC invocation
             msg.replyTo.send(message);
         } catch (RemoteException rme) {
-            Toast.makeText(context, "Invocation failed!", Toast.LENGTH_SHORT).show();
+            if (context != null) {
+                Toast.makeText(context, "Invocation failed!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
