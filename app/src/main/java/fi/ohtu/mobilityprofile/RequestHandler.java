@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
 import android.os.RemoteException;
 import android.widget.Toast;
 
@@ -13,7 +12,10 @@ import android.widget.Toast;
  */
 public class RequestHandler extends Handler {
     public static final int REQUEST_MOST_LIKELY_DESTINATION = 101;
+
     public static final int RESPOND_MOST_LIKELY_DESTINATION = 201;
+
+    public static final int ERROR_CODE_NOT_FOUND = 401;
 
     private Context context;
     private JourneyPlanner journeyPlanner;
@@ -34,26 +36,35 @@ public class RequestHandler extends Handler {
         // For testing
         Toast.makeText(context.getApplicationContext(), "Remote Service invoked (" + msg.what + ")", Toast.LENGTH_SHORT).show();
 
+        Message message;
         switch (msg.what) {
             case REQUEST_MOST_LIKELY_DESTINATION:
-                processDestinationRequest(msg.replyTo);
+                message = processDestinationRequest();
                 break;
+            default:
+                message = processErrorMessage();
         }
 
-
-    }
-
-    private void processDestinationRequest(Messenger messenger) {
-        // Setup the reply message
-        Bundle bundle = new Bundle();
-        bundle.putString("101", journeyPlanner.getMostLikelyDestination("FOR TESTING"));
-        Message message = Message.obtain(null, RESPOND_MOST_LIKELY_DESTINATION);
-        message.setData(bundle);
         try {
             // Make the RPC invocation
-            messenger.send(message);
+            msg.replyTo.send(message);
         } catch (RemoteException rme) {
             Toast.makeText(context, "Invocation failed!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private Message processDestinationRequest() {
+        // Setup the reply message
+        Bundle bundle = new Bundle();
+        bundle.putString("201", journeyPlanner.getMostLikelyDestination("FOR TESTING"));
+        Message message = Message.obtain(null, RESPOND_MOST_LIKELY_DESTINATION);
+        message.setData(bundle);
+
+        return message;
+    }
+
+    private Message processErrorMessage() {
+        Message message = Message.obtain(null, ERROR_CODE_NOT_FOUND);
+        return message;
     }
 }
