@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.ui;
 
 import android.Manifest;
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import fi.ohtu.mobilityprofile.R;
 
 public class PrivacyFragment extends Fragment {
     private static final String title = "PRIVACY";
