@@ -1,23 +1,33 @@
 package fi.ohtu.mobilityprofile;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.suitebuilder.annotation.SmallTest;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
+@RunWith(AndroidJUnit4.class)
+@SmallTest
 public class RequestHandlerTest {
     RequestHandler requestHandler;
-    JourneyPlanner journeyPlanner;
+
+    public RequestHandlerTest() {
+    }
+
+    @BeforeClass
+    public static void setUpClass() {
+        Looper.prepare();
+    }
 
     @Before
     public void setUp() {
-        journeyPlanner = mock(JourneyPlanner.class);
-        requestHandler = new RequestHandler(null, journeyPlanner);
+        requestHandler = new RequestHandler(null, new JourneyPlanner());
     }
 
     @Test
@@ -30,8 +40,6 @@ public class RequestHandlerTest {
             }
         });
         requestHandler.handleMessage(message);
-
-        verify(journeyPlanner).getMostLikelyDestination(anyString());
     }
 
     @Test
