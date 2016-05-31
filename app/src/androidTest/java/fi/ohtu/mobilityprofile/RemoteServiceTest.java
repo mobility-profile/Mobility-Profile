@@ -19,7 +19,9 @@ public class RemoteServiceTest {
 
     @BeforeClass
     public static void setUpClass() {
-        Looper.prepare();
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
     }
 
     @Test

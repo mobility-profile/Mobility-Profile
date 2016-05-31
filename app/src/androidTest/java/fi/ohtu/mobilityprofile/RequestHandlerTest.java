@@ -20,6 +20,13 @@ public class RequestHandlerTest {
     public RequestHandlerTest() {
     }
 
+    @BeforeClass
+    public static void setUpClass() {
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+    }
+
     @Before
     public void setUp() {
         requestHandler = new RequestHandler(null, new JourneyPlanner());
