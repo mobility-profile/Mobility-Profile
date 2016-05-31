@@ -15,14 +15,9 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 @SmallTest
 public class RequestHandlerTest {
-    RequestHandler requestHandler;
+    private RequestHandler requestHandler;
 
     public RequestHandlerTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-        Looper.prepare();
     }
 
     @Before
