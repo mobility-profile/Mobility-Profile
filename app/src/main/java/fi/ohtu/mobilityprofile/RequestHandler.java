@@ -7,16 +7,12 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.widget.Toast;
 
+import static fi.ohtu.mobilityprofile.RequestCode.*;
+
 /**
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
-    public static final int REQUEST_MOST_LIKELY_DESTINATION = 101;
-
-    public static final int RESPOND_MOST_LIKELY_DESTINATION = 201;
-
-    public static final int ERROR_CODE_NOT_FOUND = 401;
-
     private Context context;
     private JourneyPlanner journeyPlanner;
 
@@ -68,7 +64,7 @@ public class RequestHandler extends Handler {
     }
 
     private Message processErrorMessage() {
-        Message message = Message.obtain(null, ERROR_CODE_NOT_FOUND);
+        Message message = Message.obtain(null, ERROR_UNKNOWN_CODE);
         return message;
     }
 }
