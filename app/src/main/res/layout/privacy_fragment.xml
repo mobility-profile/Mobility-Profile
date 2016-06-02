@@ -7,10 +7,9 @@
 
     <TextView
         android:id="@+id/allow"
-        android:layout_width="339dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_weight="0.04"
         android:text="@string/allow_access"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
