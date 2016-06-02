@@ -17,7 +17,7 @@ buildscript {
 plugins {
   id 'net.saliman.cobertura' version '2.3.1'
 }
-apply plugin: 'net.saliman.cobertura'
+apply plugin: 'cobertura'
 
 cobertura {
     coverageExcludes = ['.*fi.ohtu.mobilityprofile.ui.*']
