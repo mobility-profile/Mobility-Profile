@@ -13,6 +13,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 
+import com.google.api.client.util.NullValue;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.client.util.DateTime;
 
@@ -51,8 +52,6 @@ public class CalendarActivity extends Activity
         implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
-    private Button mCallApiButton;
-    ProgressDialog mProgress;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -83,33 +82,14 @@ public class CalendarActivity extends Activity
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
-        mCallApiButton = new Button(this);
-        mCallApiButton.setText(BUTTON_TEXT);
-
-        mCallApiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallApiButton.setEnabled(false);
-                mOutputText.setText("");
-                getResultsFromApi();
-                mCallApiButton.setEnabled(true);
-            }
-        });
-
-        activityLayout.addView(mCallApiButton);
-
         mOutputText = new TextView(this);
         mOutputText.setLayoutParams(tlp);
         mOutputText.setPadding(16, 16, 16, 16);
         mOutputText.setVerticalScrollBarEnabled(true);
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
-        /**        mOutputText.setText(
-                "Click the \'" + BUTTON_TEXT +"\' button to test the API.");
-        */
+
         activityLayout.addView(mOutputText);
 
-        mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Calendar API ...");
 
         setContentView(activityLayout);
 
@@ -381,36 +361,32 @@ public class CalendarActivity extends Activity
                     start = event.getStart().getDate();
                 }
 
-                eventStrings.add(
-                        String.format("%s (%s)", event.getLocation(), start));
+                eventStrings.add(String.format("%s (%s)", event.getLocation(), start));
             }
+
+            sendDataToMainActivity(eventStrings);
+
             return eventStrings;
         }
 
+        // Returns data retrieved from the calendar to MainActivity
+        private void sendDataToMainActivity(List<String> eventStrings) {
+            Intent returnIntent = new Intent();
+            returnIntent.putStringArrayListExtra("events", (ArrayList) eventStrings);
+            setResult(Activity.RESULT_OK,returnIntent);
+            finish();
+        }
 
         @Override
         protected void onPreExecute() {
-            mOutputText.setText("");
-            mProgress.show();
         }
 
         @Override
         protected void onPostExecute(List<String> output) {
-            mProgress.hide();
-            /**
-            if (output == null || output.size() == 0) {
-                mOutputText.setText("No results returned.");
-            } else {
-                output.add(0, "Data retrieved using the Google Calendar API:");
-                mOutputText.setText(TextUtils.join("\n", output));
-            }
-             */
-            mOutputText.setText(TextUtils.join("\n", output));
         }
 
         @Override
         protected void onCancelled() {
-            mProgress.hide();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
                     showGooglePlayServicesAvailabilityErrorDialog(
