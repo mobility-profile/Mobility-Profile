@@ -3,7 +3,10 @@
     <string name="allow_access">Allow mobilityprofile access to:</string>
     <string name="switch_GPS">GPS</string>
     <string name="switch_cal">Read Calendar</string>
-    <string name="info">Mobilityprofile is an app which magically offers your next destination to your favourite journey planner ;)</string>
-    <string name="permissions_info">Mobilityprofile needs permissions to read your calendar and access your location.
-        It will use calendar events to get your next probable destination.</string>
+    <string name="info">is an app which magically offers your next destination to your favourite journey planner ;)</string>
+    <string name="permissions_info">
+        Mobilityprofile needs permissions to read your calendar and access your location.\n\n
+        Calendar is used to get your next probable destination from your events.\n\n
+        With location data Mobilityprofile will learn to predict destinations.
+    </string>
 </resources>
