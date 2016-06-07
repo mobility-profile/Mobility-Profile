@@ -14,17 +14,17 @@ import static fi.ohtu.mobilityprofile.RequestCode.*;
  */
 public class RequestHandler extends Handler {
     private Context context;
-    private JourneyPlanner journeyPlanner;
+    private MobilityProfile mobilityProfile;
 
     /**
      * Creates the RequestHandler.
      *
      * @param context Context used for toast messages
-     * @param journeyPlanner Journey planner that provides the logic for our app
+     * @param mobilityProfile Journey planner that provides the logic for our app
      */
-    public RequestHandler(Context context, JourneyPlanner journeyPlanner) {
+    public RequestHandler(Context context, MobilityProfile mobilityProfile) {
         this.context = context;
-        this.journeyPlanner = journeyPlanner;
+        this.mobilityProfile = mobilityProfile;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class RequestHandler extends Handler {
     private Message processDestinationRequest() {
         // Setup the reply message
         Bundle bundle = new Bundle();
-        bundle.putString("201", journeyPlanner.getMostLikelyDestination("FOR TESTING"));
+        bundle.putString("201", mobilityProfile.getMostLikelyDestination("FOR TESTING"));
         Message message = Message.obtain(null, RESPOND_MOST_LIKELY_DESTINATION);
         message.setData(bundle);
 

@@ -3,7 +3,7 @@ package fi.ohtu.mobilityprofile;
 /**
  * This class is used for calculating the most likely trips the user is going to make.
  */
-public class JourneyPlanner {
+public class MobilityProfile {
     /**
      * Returns the most probable destination, when the user is in startLocation.
      *

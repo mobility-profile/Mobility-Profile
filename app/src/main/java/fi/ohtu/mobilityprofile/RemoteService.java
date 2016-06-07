@@ -15,7 +15,7 @@ public class RemoteService extends Service {
     public IBinder onBind(Intent intent) {
         synchronized (RemoteService.class) {
             if (messenger == null) {
-                messenger = new Messenger(new RequestHandler(this, new JourneyPlanner()));
+                messenger = new Messenger(new RequestHandler(this, new MobilityProfile()));
             }
         }
 

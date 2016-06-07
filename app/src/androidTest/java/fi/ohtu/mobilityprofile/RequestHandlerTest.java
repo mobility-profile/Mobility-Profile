@@ -30,7 +30,7 @@ public class RequestHandlerTest {
 
     @Before
     public void setUp() {
-        requestHandler = new RequestHandler(null, new JourneyPlanner());
+        requestHandler = new RequestHandler(null, new MobilityProfile());
     }
 
     @Test
