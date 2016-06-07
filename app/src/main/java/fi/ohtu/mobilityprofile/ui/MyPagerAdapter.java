@@ -1,6 +1,5 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.ui;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

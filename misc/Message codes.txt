@@ -1,0 +1,11 @@
+101 - Request the most likely destination
+
+
+201 - Respond the most likely destination
+
+
+301 - Accept route
+302 - Discard route
+
+
+401 - Unknown code

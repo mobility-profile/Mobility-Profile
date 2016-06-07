@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,18 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ProfileFragment extends Fragment {
+import fi.ohtu.mobilityprofile.R;
 
-    private static final String title = "PROFILE";
-    private static final int page = 1;
+public class InfoFragment extends Fragment {
+    private static final String title = "INFO";
+    private static final int page = 2;
 
-    public static ProfileFragment newInstance() {
-        ProfileFragment profileFragment = new ProfileFragment();
+    public static InfoFragment newInstance() {
+        InfoFragment infoFragment = new InfoFragment();
         Bundle args = new Bundle();
         args.putInt("page", page);
         args.putString("title", title);
-        profileFragment.setArguments(args);
-        return profileFragment;
+        infoFragment.setArguments(args);
+        return infoFragment;
     }
 
     @Override
@@ -30,6 +31,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.profile_fragment, container, false);
+        return inflater.inflate(R.layout.info_fragment, container, false);
     }
 }
+

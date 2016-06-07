@@ -2,6 +2,10 @@ sudo: false
 
 language: android
 
+branches:
+  only:
+    - master
+
 env:
   global:
     # switch glibc to a memory conserving mode
@@ -34,4 +38,4 @@ after_script:
   - adb shell input keyevent 82 &
   # now run the tests
   - ./gradlew connectedCheck
-  - ./gradlew connectedAndroidTest coveralls
+  - ./gradlew coveralls

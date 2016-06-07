@@ -1,6 +1,5 @@
 package fi.ohtu.mobilityprofile;
 
-import android.os.Bundle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -38,35 +37,28 @@ import java.util.List;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class CalendarActivity extends Activity
-        implements EasyPermissions.PermissionCallbacks {
+public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
+    private Activity activity;
     GoogleAccountCredential mCredential;
 
-    static final int REQUEST_ACCOUNT_PICKER = 1000;
-    static final int REQUEST_AUTHORIZATION = 1001;
-    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+    static final int REQUEST_ACCOUNT_PICKER = 100;
+    static final int REQUEST_AUTHORIZATION = 101;
+    static final int REQUEST_GOOGLE_PLAY_SERVICES = 102;
+    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 103;
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
 
-    /**
-     * Create the main activity.
-     * @param savedInstanceState previously saved instance data.
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public CalendarConnection(Activity activity) {
+        this.activity = activity;
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
-                getApplicationContext(), Arrays.asList(SCOPES))
+                activity.getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
 
         getResultsFromApi();
     }
-
-
 
     /**
      * Attempt to call the API, after verifying that all the preconditions are
@@ -98,22 +90,22 @@ public class CalendarActivity extends Activity
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
         if (EasyPermissions.hasPermissions(
-                this, Manifest.permission.GET_ACCOUNTS)) {
-            String accountName = getPreferences(Context.MODE_PRIVATE)
+                activity, Manifest.permission.GET_ACCOUNTS)) {
+            String accountName = activity.getPreferences(Context.MODE_PRIVATE)
                     .getString(PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
                 mCredential.setSelectedAccountName(accountName);
                 getResultsFromApi();
             } else {
                 // Start a dialog from which the user can choose an account
-                startActivityForResult(
+                activity.startActivityForResult(
                         mCredential.newChooseAccountIntent(),
                         REQUEST_ACCOUNT_PICKER);
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
-                    this,
+                    activity,
                     "This app needs to access your Google account (via Contacts).",
                     REQUEST_PERMISSION_GET_ACCOUNTS,
                     Manifest.permission.GET_ACCOUNTS);
@@ -130,24 +122,22 @@ public class CalendarActivity extends Activity
      * @param data Intent (containing result data) returned by incoming
      *     activity result.
      */
-    @Override
     protected void onActivityResult(
             int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
-                if (resultCode == RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
                    getResultsFromApi();
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
-                if (resultCode == RESULT_OK && data != null &&
+                if (resultCode == Activity.RESULT_OK && data != null &&
                         data.getExtras() != null) {
                     String accountName =
                             data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
                         SharedPreferences settings =
-                                getPreferences(Context.MODE_PRIVATE);
+                                activity.getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
@@ -157,7 +147,7 @@ public class CalendarActivity extends Activity
                 }
                 break;
             case REQUEST_AUTHORIZATION:
-                if (resultCode == RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
                     getResultsFromApi();
                 }
                 break;
@@ -176,7 +166,6 @@ public class CalendarActivity extends Activity
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(
                 requestCode, permissions, grantResults, this);
     }
@@ -213,7 +202,7 @@ public class CalendarActivity extends Activity
      */
     private boolean isDeviceOnline() {
         ConnectivityManager connMgr =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
@@ -227,7 +216,7 @@ public class CalendarActivity extends Activity
         GoogleApiAvailability apiAvailability =
                 GoogleApiAvailability.getInstance();
         final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
+                apiAvailability.isGooglePlayServicesAvailable(activity);
         return connectionStatusCode == ConnectionResult.SUCCESS;
     }
 
@@ -239,7 +228,7 @@ public class CalendarActivity extends Activity
         GoogleApiAvailability apiAvailability =
                 GoogleApiAvailability.getInstance();
         final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
+                apiAvailability.isGooglePlayServicesAvailable(activity);
         if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
             showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
         }
@@ -256,7 +245,7 @@ public class CalendarActivity extends Activity
             final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
-                CalendarActivity.this,
+                activity,
                 connectionStatusCode,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
@@ -303,6 +292,7 @@ public class CalendarActivity extends Activity
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
             List<String> eventStrings = new ArrayList<>();
+
             Events events = mService.events().list("primary")
                     .setMaxResults(10)
                     .setTimeMin(now)
@@ -331,8 +321,7 @@ public class CalendarActivity extends Activity
         private void sendDataToMainActivity(List<String> eventStrings) {
             Intent returnIntent = new Intent();
             returnIntent.putStringArrayListExtra("events", (ArrayList) eventStrings);
-            setResult(Activity.RESULT_OK,returnIntent);
-            finish();
+            ((MainActivity) activity).onResult(1, returnIntent);
         }
 
         @Override
@@ -351,9 +340,9 @@ public class CalendarActivity extends Activity
                             ((GooglePlayServicesAvailabilityIOException) mLastError)
                                     .getConnectionStatusCode());
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
-                    startActivityForResult(
+                    activity.startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            CalendarActivity.REQUEST_AUTHORIZATION);
+                            CalendarConnection.REQUEST_AUTHORIZATION);
                 }
             }
         }
