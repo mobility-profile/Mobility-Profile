@@ -39,6 +39,9 @@ public class RequestHandler extends Handler {
             case REQUEST_MOST_LIKELY_DESTINATION:
                 message = processDestinationRequest();
                 break;
+            case SEND_USED_DESTINATION:
+                // TODO: Save used route to the database.
+                return;
             default:
                 message = processErrorMessage();
         }
