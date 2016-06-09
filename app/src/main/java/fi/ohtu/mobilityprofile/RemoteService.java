@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Messenger;
 
+import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+
 /**
  * Used to enable cross-app communication.
  */

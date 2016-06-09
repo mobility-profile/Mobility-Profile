@@ -1,9 +1,12 @@
 package fi.ohtu.mobilityprofile;
 
+import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+
 /**
  * This class is used for calculating the most likely trips the user is going to make.
  */
 public class MobilityProfile {
+
     /**
      * Returns the most probable destination, when the user is in startLocation.
      *
