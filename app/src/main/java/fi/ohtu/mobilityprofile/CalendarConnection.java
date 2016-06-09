@@ -122,8 +122,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
      * @param data Intent (containing result data) returned by incoming
      *     activity result.
      */
-    protected void onActivityResult(
-            int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode == Activity.RESULT_OK) {

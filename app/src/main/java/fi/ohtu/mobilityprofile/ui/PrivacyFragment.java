@@ -10,8 +10,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import fi.ohtu.mobilityprofile.R;
@@ -26,8 +26,8 @@ public class PrivacyFragment extends Fragment {
     private int permissionGPS;
     private int permissionCal;
 
-    private Switch GPSSwitch;
-    private Switch CalendarSwitch;
+    private CheckBox GPSCheckBox;
+    private CheckBox CalendarCheckBox;
 
     private Context context;
 
@@ -48,6 +48,10 @@ public class PrivacyFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
+        checkPermissions();
+    }
+
+    private void checkPermissions(){
         permissionGPS = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
         permissionCal = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR);
     }
@@ -65,46 +69,56 @@ public class PrivacyFragment extends Fragment {
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
 
-        GPSSwitch = (Switch) view.findViewById(R.id.switchGPS);
-        CalendarSwitch = (Switch) view.findViewById(R.id.switchCal);
+        GPSCheckBox = (CheckBox) view.findViewById(R.id.checkbox_GPS);
+        CalendarCheckBox = (CheckBox) view.findViewById(R.id.checkbox_calendar);
 
         setChecked();
-        setListenerForGPSSwitch();
-        setListenerForCalendarSwitch();
+        setListenerForCheckBoxGPS();
+        setListenerForCheckBoxCalendar();
     }
 
 
     /**
-     * Sets OnCheckedChangeListener for GPSSwitch.
+     * Sets OnCheckedChangeListener for GPSCheckBox.
      */
-    private void setListenerForGPSSwitch() {
-        GPSSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setListenerForCheckBoxGPS() {
+        GPSCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             /**
-             * If switch is changed to ON -mode, will ask permission to access fine location
+             * If checkbox is changed to CHECKED -mode, will ask permission to access fine location
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                checkPermissions();
+                if(isChecked && permissionGPS != PackageManager.PERMISSION_GRANTED){
                     getPermissionToAccessFineLocation();
+                } else if (isChecked) {
+                    Toast.makeText(context, "Location tracking is used again", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Location tracking will not be used", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
     /**
-     * Sets OnCheckedChangeListener for CalendarSwitch.
+     * Sets OnCheckedChangeListener for CalendarCheckBox.
      */
-    private void setListenerForCalendarSwitch() {
-        CalendarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setListenerForCheckBoxCalendar() {
+        CalendarCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             /**
-             * If switch is changed to ON -mode, will ask permission to read calendar
+             * If checkbox is changed to CHECKED -mode, will ask permission to read calendar
              */
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                checkPermissions();
+                if(isChecked && permissionCal != PackageManager.PERMISSION_GRANTED){
                     getPermissionToReadCalendar();
+                } else if (isChecked) {
+                    Toast.makeText(context, "Calendar is used again", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Calendar will not be used", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -147,54 +161,45 @@ public class PrivacyFragment extends Fragment {
     }
 
     /**
-     * Depending on grantResults creates a Toast and updates the setting of GPSSwitch
+     * Depending on grantResults creates a Toast and updates the setting of GPSCheckBox
      * @param grantResults
      */
     private void actGPSResult(@NonNull int[] grantResults) {
         if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            GPSSwitch.setEnabled(false);
-            GPSSwitch.setText("GPS - granted");
             Toast.makeText(context, "GPS permission granted", Toast.LENGTH_SHORT).show();
         } else {
-            GPSSwitch.setChecked(false);
-            Toast.makeText(context, "GPS permission denied", Toast.LENGTH_SHORT).show();
+            GPSCheckBox.setChecked(false);
         }
     }
 
     /**
-     * Depending on grantResults creates a Toast and updates the setting of CalendarSwitch
+     * Depending on grantResults creates a Toast and updates the setting of CalendarCheckBox
      * @param grantResults
      */
     private void actCalendarResult(@NonNull int[] grantResults) {
         if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            CalendarSwitch.setEnabled(false);
-            CalendarSwitch.setText("Read Calendar - granted");
             Toast.makeText(context, "Read Calendar permission granted", Toast.LENGTH_SHORT).show();
         } else {
-            CalendarSwitch.setChecked(false);
-            Toast.makeText(context, "Read Calendar permission denied", Toast.LENGTH_SHORT).show();
+            CalendarCheckBox.setChecked(false);
         }
     }
 
     /**
-     * Sets switches checked if the permission is already granted
+     * Sets checkboxes checked if the permission is already granted
      * or not checked if permission is denied.
      */
     private void setChecked() {
+        checkPermissions();
         if (permissionGPS != PackageManager.PERMISSION_GRANTED) {
-            GPSSwitch.setChecked(false);
+            GPSCheckBox.setChecked(false);
         } else {
-            GPSSwitch.setChecked(true);
-            GPSSwitch.setText("GPS - granted");
-            GPSSwitch.setEnabled(false);
+            GPSCheckBox.setChecked(true);
         }
 
         if (permissionCal != PackageManager.PERMISSION_GRANTED) {
-            CalendarSwitch.setChecked(false);
+            CalendarCheckBox.setChecked(false);
         } else {
-            CalendarSwitch.setChecked(true);
-            CalendarSwitch.setText("Read Calendar - granted");
-            CalendarSwitch.setEnabled(false);
+            CalendarCheckBox.setChecked(true);
         }
     }
 }
