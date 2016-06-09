@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mobilityprofile</string>
+    <string name="app_name">Mobility Profile</string>
     <string name="allow_access">Allow mobilityprofile access to:</string>
     <string name="switch_GPS">GPS</string>
     <string name="switch_cal">Read Calendar</string>
