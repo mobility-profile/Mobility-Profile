@@ -10,7 +10,7 @@ Kalenterimerkintöjen sijainnit useimmiten eivät ole oikeita osoitteita, joten 
 
 ### Tietokantataulut:
 
-CalendarTag
+**CalendarTag**
 * key:String
 * value:String
 * counter:int 
