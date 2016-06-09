@@ -43,7 +43,7 @@ public class RequestHandler extends Handler {
                 // TODO: Save used route to the database.
                 return;
             default:
-                message = processErrorMessage();
+                message = processErrorMessage(msg.what);
         }
 
         try {
@@ -57,17 +57,20 @@ public class RequestHandler extends Handler {
     }
 
     private Message processDestinationRequest() {
-        // Setup the reply message
-        Bundle bundle = new Bundle();
-        bundle.putString("201", mobilityProfile.getMostLikelyDestination("FOR TESTING"));
-        Message message = Message.obtain(null, RESPOND_MOST_LIKELY_DESTINATION);
-        message.setData(bundle);
-
-        return message;
+        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination("FOR TESTING"));
     }
 
-    private Message processErrorMessage() {
-        Message message = Message.obtain(null, ERROR_UNKNOWN_CODE);
+    private Message processErrorMessage(int code) {
+        return createMessage(ERROR_UNKNOWN_CODE, code+"");
+    }
+
+    private Message createMessage(int code, String info)  {
+        // Setup the reply message
+        Bundle bundle = new Bundle();
+        bundle.putString(code+"", info);
+        Message message = Message.obtain(null, code);
+        message.setData(bundle);
+
         return message;
     }
 }
