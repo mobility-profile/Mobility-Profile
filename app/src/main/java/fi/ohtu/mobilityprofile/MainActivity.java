@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     FragmentPagerAdapter adapterViewPager;
 
     private CalendarConnection calendarConnection;
+    private MobilityProfile mobilityProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         setContentView(R.layout.activity_main);
 
         calendarConnection = new CalendarConnection(this);
+        mobilityProfile = new MobilityProfile();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -41,9 +43,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         if (code == 1) {
             Intent resultIntent = data;
             ArrayList<String> events = resultIntent.getStringArrayListExtra("events");
-            for (String event : events) {
-                System.out.println(event);
-            }
+            mobilityProfile.setCalendarEvents(events);
         }
     }
 
