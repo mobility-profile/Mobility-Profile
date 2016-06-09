@@ -290,7 +290,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
         private List<String> getDataFromApi() throws IOException {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
-            List<String> eventStrings = new ArrayList<>();
+            ArrayList<String> eventStrings = new ArrayList<>();
 
             Events events = mService.events().list("primary")
                     .setMaxResults(10)
@@ -303,23 +303,20 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
             for (Event event : items) {
                 DateTime start = event.getStart().getDateTime();
                 if (start == null) {
-                    // All-day events don't have start times, so just use
-                    // the start date.
+                    // All-day events don't have start times, so just use the start date.
                     start = event.getStart().getDate();
                 }
-
-                eventStrings.add(String.format("%s (%s)", event.getLocation(), start));
+                eventStrings.add(event.getLocation() + "%" + start);
             }
 
             sendDataToMainActivity(eventStrings);
-
             return eventStrings;
         }
 
         // Returns data retrieved from the calendar to MainActivity
-        private void sendDataToMainActivity(List<String> eventStrings) {
+        private void sendDataToMainActivity(ArrayList<String> events) {
             Intent returnIntent = new Intent();
-            returnIntent.putStringArrayListExtra("events", (ArrayList) eventStrings);
+            returnIntent.putStringArrayListExtra("events", events);
             ((MainActivity) activity).onResult(1, returnIntent);
         }
 
