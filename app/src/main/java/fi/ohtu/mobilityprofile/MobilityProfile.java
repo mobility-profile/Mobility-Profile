@@ -1,12 +1,11 @@
 package fi.ohtu.mobilityprofile;
 
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-=======
+
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
->>>>>>> af21f06b623dba774802f98852c692520c52a693
 
 /**
  * This class is used for calculating the most likely trips the user is going to make.
