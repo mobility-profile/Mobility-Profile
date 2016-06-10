@@ -23,19 +23,29 @@ public class MobilityProfile {
     public String getMostLikelyDestination(String startLocation) {
         // TODO: Add some logic.
 
-        String nextLocation = "Kumpula";
-
-        if (calendarEvents.size() > 0) {
-           nextLocation = extractLocation(calendarEvents.get(0));
-        }
+        String nextLocation = getLocationFromCalendar();
 
         return nextLocation;
     }
 
-    public void setCalendarEvents(List<String> events) {
-        this.calendarEvents = events;
+
+    /**
+     * Returns the first location queried from the calendar
+     * @return Location queried from the calendar or default location
+     */
+    public String getLocationFromCalendar() {
+        String nextLocation = "Kumpula";
+        if (calendarEvents.size() > 0) {
+            nextLocation = extractLocation(calendarEvents.get(0));
+        }
+        return nextLocation;
     }
 
+    /**
+     * Extracts location from the event string
+     * @param event Event queried from the calendar
+     * @return location of the event
+     */
     private String extractLocation(String event) {
         String location = event.split("%")[0];
         return location;

@@ -21,15 +21,15 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     FragmentPagerAdapter adapterViewPager;
 
     private CalendarConnection calendarConnection;
-    private MobilityProfile mobilityProfile;
+    private ArrayList<String> calendarEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        calendarEvents = new ArrayList<>();
         calendarConnection = new CalendarConnection(this);
-        mobilityProfile = new MobilityProfile();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -38,13 +38,20 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    // Vastaanottaa kalenteritiedot CalendarActivitystä
+    /**
+     * Receives event data from the calendar
+     * @param code
+     * @param data
+     */
     public void onResult(int code, Intent data) {
         if (code == 1) {
             Intent resultIntent = data;
-            ArrayList<String> events = resultIntent.getStringArrayListExtra("events");
-            mobilityProfile.setCalendarEvents(events);
+            this.calendarEvents = resultIntent.getStringArrayListExtra("events");
         }
+    }
+
+    public List<String> getEventData() {
+        return this.calendarEvents;
     }
 
     /**
