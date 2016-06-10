@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         if (code == 1) {
             Intent resultIntent = data;
             this.calendarEvents = resultIntent.getStringArrayListExtra("events");
+            /* for (String e : calendarEvents) {
+                 System.out.println(e);
+             }*/
         }
     }
 

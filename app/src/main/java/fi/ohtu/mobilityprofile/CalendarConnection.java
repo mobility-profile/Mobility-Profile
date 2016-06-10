@@ -48,6 +48,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
+    private static final int HOUR = 3600 * 1000;
 
     public CalendarConnection(Activity activity) {
         this.activity = activity;
@@ -288,17 +289,40 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            // List the next 10 events from the primary calendar.
+
+            ArrayList<String> eventStrings = listEventStrings();
+
+            sendDataToMainActivity(eventStrings);
+            return eventStrings;
+        }
+
+        /**
+         * Lists the next 10 events within 3 hours
+         * @return list of events
+         * @throws IOException
+         */
+        private List<Event> listEvents() throws IOException {
             DateTime now = new DateTime(System.currentTimeMillis());
-            ArrayList<String> eventStrings = new ArrayList<>();
+            DateTime laterToday = new DateTime(now.getValue() + 3 * HOUR);
 
             Events events = mService.events().list("primary")
                     .setMaxResults(10)
                     .setTimeMin(now)
+                    .setTimeMax(laterToday)
                     .setOrderBy("startTime")
                     .setSingleEvents(true)
                     .execute();
-            List<Event> items = events.getItems();
+            return events.getItems();
+        }
+
+        /**
+         * Converts events to Strings
+         * @return list of events as strings
+         * @throws IOException
+         */
+        private ArrayList<String> listEventStrings() throws IOException {
+            List<Event> items = listEvents();
+            ArrayList<String> eventStrings = new ArrayList<>();
 
             for (Event event : items) {
                 DateTime start = event.getStart().getDateTime();
@@ -306,10 +330,9 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
                     // All-day events don't have start times, so just use the start date.
                     start = event.getStart().getDate();
                 }
+
                 eventStrings.add(event.getLocation() + "%" + start);
             }
-
-            sendDataToMainActivity(eventStrings);
             return eventStrings;
         }
 

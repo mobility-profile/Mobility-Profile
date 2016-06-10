@@ -2,8 +2,8 @@ package fi.ohtu.mobilityprofile;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -45,7 +45,9 @@ public class MobilityProfile {
      */
     public void getLocationFromCalendar() {
         if (calendarEvents.size() > 0) {
-            nextLocation = extractLocation(calendarEvents.get(0));
+
+            getNextValidLocation();
+
             latestGivenDestination = nextLocation;
             calendarDestination = true;
 
@@ -57,14 +59,30 @@ public class MobilityProfile {
     }
 
     /**
+     *
+     */
+    private void getNextValidLocation() {
+        for (int i = 0; i < calendarEvents.size(); i++) {
+
+            nextLocation = extractLocationFromEventString(calendarEvents.get(i));
+
+            if (!nextLocation.equals("null")) {
+                break;
+            }
+        }
+    }
+
+    /**
      * Extracts location from the event string
      * @param event Event queried from the calendar
      * @return location of the event
      */
-    private String extractLocation(String event) {
+    private String extractLocationFromEventString(String event) {
         String location = event.split("%")[0];
         return location;
     }
+
+
 
     public String getLatestGivenDestination() {
         return latestGivenDestination;
