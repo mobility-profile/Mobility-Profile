@@ -1,7 +1,6 @@
 package fi.ohtu.mobilityprofile.data;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class CalendarTagDao {
     /**

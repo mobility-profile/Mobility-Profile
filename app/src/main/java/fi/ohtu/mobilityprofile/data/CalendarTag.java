@@ -15,4 +15,12 @@ public class CalendarTag extends SugarRecord {
         this.value = value;
         this.counter = 1;
     }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }
