@@ -43,7 +43,9 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     }
     compile 'com.google.code.findbugs:jsr305:2.0.1'
-    compile 'com.github.satyan:sugar:1.4'
+    compile ('com.github.satyan:sugar:1.4') {
+        exclude group: 'com.google.guava'
+    }
 
     testCompile 'org.mockito:mockito-core:1.+'
     compile 'com.android.support:design:23.0.1'

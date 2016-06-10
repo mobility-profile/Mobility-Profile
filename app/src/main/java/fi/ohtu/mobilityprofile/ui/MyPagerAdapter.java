@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile.ui;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.MotionEvent;
 
 public class MyPagerAdapter extends FragmentPagerAdapter {
     private static final int NUM_ITEMS = 3;
@@ -44,5 +45,4 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return "";
         }
     }
-
 }

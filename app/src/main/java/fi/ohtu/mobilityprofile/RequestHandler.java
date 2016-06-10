@@ -7,6 +7,9 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.widget.Toast;
 
+import fi.ohtu.mobilityprofile.data.CalendarTag;
+import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+
 import static fi.ohtu.mobilityprofile.RequestCode.*;
 
 /**
@@ -40,6 +43,7 @@ public class RequestHandler extends Handler {
                 message = processDestinationRequest();
                 break;
             case SEND_USED_DESTINATION:
+                processUsedRoute(msg);
                 // TODO: Save used route to the database.
                 return;
             default:
@@ -58,6 +62,16 @@ public class RequestHandler extends Handler {
 
     private Message processDestinationRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination("FOR TESTING"));
+    }
+
+    private void processUsedRoute(Message message) {
+        if (mobilityProfile.isCalendarDestination()) {
+            Bundle bundle = message.getData();
+            String destination = bundle.getString(SEND_USED_DESTINATION+"");
+
+            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestGivenDestination(), destination);
+            CalendarTagDao.insertCalendarTag(calendarTag);
+        }
     }
 
     private Message processErrorMessage(int code) {

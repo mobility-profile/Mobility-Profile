@@ -2,6 +2,9 @@ package fi.ohtu.mobilityprofile.data;
 
 import java.util.List;
 
+/**
+ * DAO used for saving and reading CalendarTags to/from the database.
+ */
 public class CalendarTagDao {
     /**
      * Returns a calendar tag that has the given key. If there are multiple tags with the same key,

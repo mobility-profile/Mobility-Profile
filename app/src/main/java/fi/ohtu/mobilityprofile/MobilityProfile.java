@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 
 /**
@@ -13,6 +14,10 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 public class MobilityProfile {
 
     private List<String> calendarEvents = new ArrayList<>();
+
+    private String latestGivenDestination;
+    private boolean calendarDestination;
+    private String nextLocation;
 
     /**
      * Returns the most probable destination, when the user is in startLocation.
@@ -23,7 +28,12 @@ public class MobilityProfile {
     public String getMostLikelyDestination(String startLocation) {
         // TODO: Add some logic.
 
-        String nextLocation = getLocationFromCalendar();
+        nextLocation = "Kumpula";
+        latestGivenDestination = nextLocation;
+
+        calendarDestination = false;
+
+        getLocationFromCalendar();
 
         return nextLocation;
     }
@@ -33,12 +43,17 @@ public class MobilityProfile {
      * Returns the first location queried from the calendar
      * @return Location queried from the calendar or default location
      */
-    public String getLocationFromCalendar() {
-        String nextLocation = "Kumpula";
+    public void getLocationFromCalendar() {
         if (calendarEvents.size() > 0) {
             nextLocation = extractLocation(calendarEvents.get(0));
+            latestGivenDestination = nextLocation;
+            calendarDestination = true;
+
+            CalendarTag calendarTag = CalendarTagDao.findTheMostUsedTag(nextLocation);
+            if (calendarTag != null) {
+                nextLocation = calendarTag.getValue();
+            }
         }
-        return nextLocation;
     }
 
     /**
@@ -49,5 +64,13 @@ public class MobilityProfile {
     private String extractLocation(String event) {
         String location = event.split("%")[0];
         return location;
+    }
+
+    public String getLatestGivenDestination() {
+        return latestGivenDestination;
+    }
+
+    public boolean isCalendarDestination() {
+        return calendarDestination;
     }
 }
