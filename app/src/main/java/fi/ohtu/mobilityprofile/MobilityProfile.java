@@ -43,7 +43,7 @@ public class MobilityProfile {
      * Returns the first location queried from the calendar
      * @return Location queried from the calendar or default location
      */
-    public void getLocationFromCalendar() {
+    private void getLocationFromCalendar() {
         if (calendarEvents.size() > 0) {
 
             getNextValidLocation();
@@ -59,14 +59,13 @@ public class MobilityProfile {
     }
 
     /**
-     *
+     * Get the first event from the list that has a valid location
      */
     private void getNextValidLocation() {
         for (int i = 0; i < calendarEvents.size(); i++) {
-
-            nextLocation = extractLocationFromEventString(calendarEvents.get(i));
-
-            if (!nextLocation.equals("null")) {
+            String location = extractLocationFromEventString(calendarEvents.get(i));
+            if (!location.equals("null")) {
+                nextLocation = location;
                 break;
             }
         }
@@ -82,7 +81,9 @@ public class MobilityProfile {
         return location;
     }
 
-
+    public void setCalendarEventList(ArrayList<String> events) {
+        this.calendarEvents = events;
+    }
 
     public String getLatestGivenDestination() {
         return latestGivenDestination;

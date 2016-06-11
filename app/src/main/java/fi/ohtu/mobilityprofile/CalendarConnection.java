@@ -297,6 +297,26 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
         }
 
         /**
+         * Converts events to Strings
+         * @return list of events as strings
+         * @throws IOException
+         */
+        private ArrayList<String> listEventStrings() throws IOException {
+            List<Event> items = listEvents();
+            ArrayList<String> eventStrings = new ArrayList<>();
+
+            for (Event event : items) {
+                DateTime start = event.getStart().getDateTime();
+                if (start == null) {
+                    // All-day events don't have start times, so just use the start date.
+                    start = event.getStart().getDate();
+                }
+                eventStrings.add(event.getLocation() + "%" + start);
+            }
+            return eventStrings;
+        }
+
+        /**
          * Lists the next 10 events within 3 hours
          * @return list of events
          * @throws IOException
@@ -315,26 +335,6 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
             return events.getItems();
         }
 
-        /**
-         * Converts events to Strings
-         * @return list of events as strings
-         * @throws IOException
-         */
-        private ArrayList<String> listEventStrings() throws IOException {
-            List<Event> items = listEvents();
-            ArrayList<String> eventStrings = new ArrayList<>();
-
-            for (Event event : items) {
-                DateTime start = event.getStart().getDateTime();
-                if (start == null) {
-                    // All-day events don't have start times, so just use the start date.
-                    start = event.getStart().getDate();
-                }
-
-                eventStrings.add(event.getLocation() + "%" + start);
-            }
-            return eventStrings;
-        }
 
         // Returns data retrieved from the calendar to MainActivity
         private void sendDataToMainActivity(ArrayList<String> events) {
