@@ -1,11 +1,5 @@
 package fi.ohtu.mobilityprofile;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
-
-import com.orm.SugarContext;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +20,7 @@ public class CalendarTagDaoTest {
     @Before
     public void setUp() {
         calendarTagDao = new CalendarTagDao();
-        Robolectric.setupActivity(MainActivityTest.class);
+        Robolectric.setupActivity(MainActivityStub.class);
     }
 
     @Test
