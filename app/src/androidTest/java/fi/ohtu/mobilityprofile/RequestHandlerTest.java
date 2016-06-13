@@ -10,6 +10,8 @@ import android.test.suitebuilder.annotation.SmallTest;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
+import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+
 import static org.junit.Assert.*;
 import static fi.ohtu.mobilityprofile.RequestCode.*;
 
@@ -30,7 +32,7 @@ public class RequestHandlerTest {
 
     @Before
     public void setUp() {
-        requestHandler = new RequestHandler(null, new MobilityProfile());
+        requestHandler = new RequestHandler(null, new MobilityProfile(new CalendarTagDao()));
     }
 
     /*

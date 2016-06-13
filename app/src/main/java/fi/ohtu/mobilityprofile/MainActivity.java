@@ -9,6 +9,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import com.orm.SugarContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         viewPager.setAdapter(adapterViewPager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        SugarContext.init(this);
     }
 
     /**

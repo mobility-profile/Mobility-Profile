@@ -14,7 +14,7 @@ public class CalendarTagDao {
      * @param key Key of the calendar tag
      * @return Calendar tag with the highest counter
      */
-    public static CalendarTag findTheMostUsedTag(String key) {
+    public CalendarTag findTheMostUsedTag(String key) {
         List<CalendarTag> calendarTags = CalendarTag.findWithQuery(CalendarTag.class,
                 "SELECT * FROM CalendarTag " +
                         "WHERE key = ? " +

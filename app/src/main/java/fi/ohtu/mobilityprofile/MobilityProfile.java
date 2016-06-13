@@ -13,11 +13,17 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
  */
 public class MobilityProfile {
 
+    private CalendarTagDao calendarTagDao;
+
     private List<String> calendarEvents = new ArrayList<>();
 
     private String latestGivenDestination;
     private boolean calendarDestination;
     private String nextLocation;
+
+    public MobilityProfile(CalendarTagDao calendarTagDao) {
+        this.calendarTagDao = calendarTagDao;
+    }
 
     /**
      * Returns the most probable destination, when the user is in startLocation.
@@ -51,7 +57,7 @@ public class MobilityProfile {
             latestGivenDestination = nextLocation;
             calendarDestination = true;
 
-            CalendarTag calendarTag = CalendarTagDao.findTheMostUsedTag(nextLocation);
+            CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(nextLocation);
             if (calendarTag != null) {
                 nextLocation = calendarTag.getValue();
             }
