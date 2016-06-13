@@ -14,7 +14,7 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 
 import static org.junit.Assert.*;
 import static fi.ohtu.mobilityprofile.RequestCode.*;
-
+/*
 @RunWith(AndroidJUnit4.class)
 @SmallTest
 public class RequestHandlerTest {
@@ -32,10 +32,10 @@ public class RequestHandlerTest {
 
     @Before
     public void setUp() {
-        requestHandler = new RequestHandler(null, new MobilityProfile(new CalendarTagDao()));
+        CalendarTagDao calendarTagDao = new CalendarTagDao();
+        requestHandler = new RequestHandler(null, new MobilityProfile(calendarTagDao), calendarTagDao);
     }
 
-    /*
     @Test
     public void testMostLikelyDestination() {
         Message message = Message.obtain(null, REQUEST_MOST_LIKELY_DESTINATION);
@@ -59,5 +59,5 @@ public class RequestHandlerTest {
         });
         requestHandler.handleMessage(message);
     }
-    */
 }
+*/

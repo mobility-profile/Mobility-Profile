@@ -18,6 +18,7 @@ import static fi.ohtu.mobilityprofile.RequestCode.*;
 public class RequestHandler extends Handler {
     private Context context;
     private MobilityProfile mobilityProfile;
+    CalendarTagDao calendarTagDao;
 
     /**
      * Creates the RequestHandler.
@@ -25,9 +26,10 @@ public class RequestHandler extends Handler {
      * @param context Context used for toast messages
      * @param mobilityProfile Journey planner that provides the logic for our app
      */
-    public RequestHandler(Context context, MobilityProfile mobilityProfile) {
+    public RequestHandler(Context context, MobilityProfile mobilityProfile, CalendarTagDao calendarTagDao) {
         this.context = context;
         this.mobilityProfile = mobilityProfile;
+        this.calendarTagDao = calendarTagDao;
     }
 
     @Override
@@ -70,7 +72,7 @@ public class RequestHandler extends Handler {
             String destination = bundle.getString(SEND_USED_DESTINATION+"");
 
             CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestGivenDestination(), destination);
-            CalendarTagDao.insertCalendarTag(calendarTag);
+            calendarTagDao.insertCalendarTag(calendarTag);
         }
     }
 

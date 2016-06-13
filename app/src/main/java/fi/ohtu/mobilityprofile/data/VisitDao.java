@@ -11,7 +11,7 @@ public class VisitDao {
      *
      * @return Latest visit
      */
-    public static Visit getLatestVisit() {
+    public Visit getLatestVisit() {
         List<Visit> visits = Visit.findWithQuery(Visit.class,
                 "SELECT * FROM Visit " +
                         "ORDER BY timestamp DESC " +
