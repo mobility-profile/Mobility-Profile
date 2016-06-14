@@ -8,7 +8,6 @@ import android.os.Messenger;
 import com.orm.SugarContext;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
 /**

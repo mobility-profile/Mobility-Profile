@@ -27,22 +27,22 @@ public class VisitDaoTest {
 
     @Test
     public void testInsertAndFindLatest() {
-        visitDao.insertVisit(new Visit(1234, "Kumpula"));
+        visitDao.insertVisit(new Visit(1234, "Kumpula", 1));
 
         assertEquals("Kumpula", visitDao.getLatestVisit().getLocation());
 
-        visitDao.insertVisit(new Visit(1300, "Herttoniemi"));
+        visitDao.insertVisit(new Visit(1300, "Herttoniemi", 1));
 
         assertEquals("Herttoniemi", visitDao.getLatestVisit().getLocation());
 
-        visitDao.insertVisit(new Visit(1100, "Lammassaari"));
+        visitDao.insertVisit(new Visit(1100, "Lammassaari", 1));
 
         assertEquals("Herttoniemi", visitDao.getLatestVisit().getLocation());
     }
 
     @Test
     public void testInsertAndFindByLocation() {
-        visitDao.insertVisit(new Visit(2345, "Helsinki"));
+        visitDao.insertVisit(new Visit(2345, "Helsinki", 1));
 
         List<Visit> visits = visitDao.getVisitsByLocation("Helsinki");
 
@@ -52,12 +52,12 @@ public class VisitDaoTest {
 
     @Test
     public void testMultipleInsertAndFindByLocation() {
-        visitDao.insertVisit(new Visit(123, "Kumpula"));
-        visitDao.insertVisit(new Visit(234, "Kumpula"));
-        visitDao.insertVisit(new Visit(345, "Kalasatama"));
-        visitDao.insertVisit(new Visit(456, "Tikkurila"));
-        visitDao.insertVisit(new Visit(987, "Kumpula"));
-        visitDao.insertVisit(new Visit(567, "Kumpulan kampus"));
+        visitDao.insertVisit(new Visit(123, "Kumpula", 1));
+        visitDao.insertVisit(new Visit(234, "Kumpula", 1));
+        visitDao.insertVisit(new Visit(345, "Kalasatama", 1));
+        visitDao.insertVisit(new Visit(456, "Tikkurila", 1));
+        visitDao.insertVisit(new Visit(987, "Kumpula", 1));
+        visitDao.insertVisit(new Visit(567, "Kumpulan kampus", 1));
 
         List<Visit> visits = visitDao.getVisitsByLocation("Kumpula");
 
@@ -77,7 +77,7 @@ public class VisitDaoTest {
         assertTrue(visitDao.getLatestVisit() == null);
         assertTrue(visitDao.getVisitsByLocation("Kumpula").isEmpty());
 
-        visitDao.insertVisit(new Visit(234, "Kumpula"));
+        visitDao.insertVisit(new Visit(234, "Kumpula", 1));
 
         assertTrue(visitDao.getVisitsByLocation("Herttoniemi").isEmpty());
     }

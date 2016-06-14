@@ -80,7 +80,7 @@ public class RequestHandler extends Handler {
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
             Date date = new Date();
-            Visit visit = new Visit(date.getTime(), destination);
+            Visit visit = new Visit(date.getTime(), destination, Visit.USER_SEARCH);
             visitDao.insertVisit(visit);
         }
     }

@@ -44,7 +44,7 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     }
     compile 'com.google.code.findbugs:jsr305:2.0.1'
-    compile ('com.github.satyan:sugar:1.4') {
+    compile ('com.github.satyan:sugar:1.5') {
         exclude group: 'com.google.guava'
     }
 
