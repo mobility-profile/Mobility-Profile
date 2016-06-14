@@ -15,10 +15,20 @@ public class VisitDao {
      * @return Latest visit
      */
     public Visit getLatestVisit() {
-        List<Visit> visits = Select.from(Visit.class)
+        return getLatestVisit(Select.from(Visit.class)
                 .orderBy("timestamp DESC")
-                .limit("1")
-                .list();
+                .limit("1"));
+    }
+
+    public Visit getLatestVisit(int visitType) {
+        return getLatestVisit(Select.from(Visit.class)
+                .where(Condition.prop("visit_type").eq(visitType))
+                .orderBy("timestamp DESC")
+                .limit("1"));
+    }
+
+    private Visit getLatestVisit(Select<Visit> query) {
+        List<Visit> visits = query.list();
 
         assert visits.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
 
@@ -38,6 +48,16 @@ public class VisitDao {
     public List<Visit> getVisitsByLocation(String location) {
         List<Visit> visits = Select.from(Visit.class)
                 .where(Condition.prop("location").eq(location))
+                .orderBy("timestamp DESC")
+                .list();
+
+        return visits;
+    }
+
+    public List<Visit> getVisitsByLocation(String location, int visitType) {
+        List<Visit> visits = Select.from(Visit.class)
+                .where(Condition.prop("location").eq(location))
+                .and(Condition.prop("visit_type").eq(visitType))
                 .orderBy("timestamp DESC")
                 .list();
 
