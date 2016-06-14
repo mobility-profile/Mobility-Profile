@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SugarContext.init(this);
+
         calendarEvents = new ArrayList<>();
         calendarConnection = new CalendarConnection(this);
 
@@ -38,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         viewPager.setAdapter(adapterViewPager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        SugarContext.init(this);
     }
 
     /**
