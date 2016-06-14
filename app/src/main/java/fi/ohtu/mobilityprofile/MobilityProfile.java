@@ -1,12 +1,12 @@
 package fi.ohtu.mobilityprofile;
 
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.Visit;
+import fi.ohtu.mobilityprofile.data.VisitDao;
 
 /**
  * This class is used for calculating the most likely trips the user is going to make.
@@ -14,6 +14,7 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 public class MobilityProfile {
 
     private CalendarTagDao calendarTagDao;
+    private VisitDao visitDao;
 
     private List<String> calendarEvents = new ArrayList<>();
 
@@ -21,8 +22,9 @@ public class MobilityProfile {
     private boolean calendarDestination;
     private String nextLocation;
 
-    public MobilityProfile(CalendarTagDao calendarTagDao) {
+    public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao) {
         this.calendarTagDao = calendarTagDao;
+        this.visitDao = visitDao;
     }
 
     /**
@@ -32,16 +34,30 @@ public class MobilityProfile {
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
-        // TODO: Add some logic.
 
-        nextLocation = "Kumpula";
+        getLocationFromDatabase(startLocation);
         latestGivenDestination = nextLocation;
 
         calendarDestination = false;
-
         getLocationFromCalendar();
 
         return nextLocation;
+    }
+
+    /**
+     * Finds all the visits where location is the startLocation
+     * and then decides the most likely next destination of them
+     */
+    private void getLocationFromDatabase(String startLocation) {
+        List<Visit> visits = visitDao.getVisitsByLocation(startLocation);
+        if (visits.isEmpty()) {
+            // TODO: Something sensible
+            nextLocation = "home";
+        } else {
+            // TODO: Add some logic.
+            nextLocation = visits.get(0).getLocation();
+
+        }
     }
 
 
