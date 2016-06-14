@@ -1,5 +1,6 @@
 package fi.ohtu.mobilityprofile.data;
 
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.List;
@@ -35,11 +36,10 @@ public class VisitDao {
      * @return List of visits
      */
     public List<Visit> getVisitsByLocation(String location) {
-        List<Visit> visits = CalendarTag.findWithQuery(Visit.class,
-                "SELECT * FROM Visit " +
-                        "WHERE location = ? " +
-                        "ORDER BY timestamp DESC",
-                location);
+        List<Visit> visits = Select.from(Visit.class)
+                .where(Condition.prop("location").eq(location))
+                .orderBy("timestamp DESC")
+                .list();
 
         return visits;
     }
