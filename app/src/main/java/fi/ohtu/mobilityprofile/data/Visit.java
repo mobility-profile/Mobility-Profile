@@ -5,7 +5,6 @@ import com.orm.SugarRecord;
 public class Visit extends SugarRecord {
     long timestamp;
     String location;
-    Visit nextVisit;
 
     public Visit() {
     }
@@ -21,13 +20,5 @@ public class Visit extends SugarRecord {
 
     public String getLocation() {
         return location;
-    }
-
-    public Visit getNextVisit() {
-        return nextVisit;
-    }
-
-    public void setNextVisit(Visit nextVisit) {
-        this.nextVisit = nextVisit;
     }
 }

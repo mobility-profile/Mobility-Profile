@@ -47,7 +47,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 103;
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
+    private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY};
     private static final int HOUR = 3600 * 1000;
 
     public CalendarConnection(Activity activity) {
@@ -69,7 +69,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
      * appropriate.
      */
     private void getResultsFromApi() {
-        if (! isGooglePlayServicesAvailable()) {
+        if (!isGooglePlayServicesAvailable()) {
             acquireGooglePlayServices();
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
@@ -117,17 +117,18 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
      * Called when an activity launched here (specifically, AccountPicker
      * and authorization) exits, giving you the requestCode you started it with,
      * the resultCode it returned, and any additional data from it.
+     *
      * @param requestCode code indicating which activity result is incoming.
-     * @param resultCode code indicating the result of the incoming
-     *     activity result.
-     * @param data Intent (containing result data) returned by incoming
-     *     activity result.
+     * @param resultCode  code indicating the result of the incoming
+     *                    activity result.
+     * @param data        Intent (containing result data) returned by incoming
+     *                    activity result.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode) {
+        switch (requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode == Activity.RESULT_OK) {
-                   getResultsFromApi();
+                    getResultsFromApi();
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
@@ -156,11 +157,12 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
 
     /**
      * Respond to requests for permissions at runtime for API 23 and above.
-     * @param requestCode The request code passed in
-     *     requestPermissions(android.app.Activity, String, int, String[])
-     * @param permissions The requested permissions. Never null.
+     *
+     * @param requestCode  The request code passed in
+     *                     requestPermissions(android.app.Activity, String, int, String[])
+     * @param permissions  The requested permissions. Never null.
      * @param grantResults The grant results for the corresponding permissions
-     *     which is either PERMISSION_GRANTED or PERMISSION_DENIED. Never null.
+     *                     which is either PERMISSION_GRANTED or PERMISSION_DENIED. Never null.
      */
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -174,9 +176,10 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
     /**
      * Callback for when a permission is granted using the EasyPermissions
      * library.
+     *
      * @param requestCode The request code associated with the requested
-     *         permission
-     * @param list The requested permission list. Never null.
+     *                    permission
+     * @param list        The requested permission list. Never null.
      */
 
     @Override
@@ -187,9 +190,10 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
     /**
      * Callback for when a permission is denied using the EasyPermissions
      * library.
+     *
      * @param requestCode The request code associated with the requested
-     *         permission
-     * @param list The requested permission list. Never null.
+     *                    permission
+     * @param list        The requested permission list. Never null.
      */
     @Override
     public void onPermissionsDenied(int requestCode, List<String> list) {
@@ -198,6 +202,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
 
     /**
      * Checks whether the device currently has a network connection.
+     *
      * @return true if the device has a network connection, false otherwise.
      */
     private boolean isDeviceOnline() {
@@ -209,8 +214,9 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
 
     /**
      * Check that Google Play services APK is installed and up to date.
+     *
      * @return true if Google Play Services is available and up to
-     *     date on this device; false otherwise.
+     * date on this device; false otherwise.
      */
     private boolean isGooglePlayServicesAvailable() {
         GoogleApiAvailability apiAvailability =
@@ -238,8 +244,9 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
     /**
      * Display an error dialog showing that Google Play Services is missing
      * or out of date.
+     *
      * @param connectionStatusCode code describing the presence (or lack of)
-     *     Google Play Services on this device.
+     *                             Google Play Services on this device.
      */
     void showGooglePlayServicesAvailabilityErrorDialog(
             final int connectionStatusCode) {
@@ -270,6 +277,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
 
         /**
          * Background task to call Google Calendar API.
+         *
          * @param params no parameters needed for this task.
          */
         @Override
@@ -285,6 +293,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
 
         /**
          * Fetch a list of the next 10 events from the primary calendar.
+         *
          * @return List of Strings describing returned events.
          * @throws IOException
          */
@@ -298,6 +307,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
 
         /**
          * Converts events to Strings
+         *
          * @return list of events as strings
          * @throws IOException
          */
@@ -318,6 +328,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
 
         /**
          * Lists the next 10 events within 3 hours
+         *
          * @return list of events
          * @throws IOException
          */

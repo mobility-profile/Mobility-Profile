@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.data;
 
+import com.orm.query.Select;
+
 import java.util.List;
 
 /**
@@ -12,10 +14,10 @@ public class VisitDao {
      * @return Latest visit
      */
     public Visit getLatestVisit() {
-        List<Visit> visits = Visit.findWithQuery(Visit.class,
-                "SELECT * FROM Visit " +
-                        "ORDER BY timestamp DESC " +
-                        "LIMIT 1");
+        List<Visit> visits = Select.from(Visit.class)
+                .orderBy("timestamp DESC")
+                .limit("1")
+                .list();
 
         assert visits.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
 
@@ -43,19 +45,11 @@ public class VisitDao {
     }
 
     /**
-     * Inserts a visit to the database. If there is at least one visit in the database already,
-     * the latest visit's nextVisit will be set to point to the given visit.
+     * Saves a visit to the database.
      *
      * @param visit Visit to be saved
      */
     public void insertVisit(Visit visit) {
-        Visit latestVisit = getLatestVisit();
-
-        if (latestVisit != null) {
-            latestVisit.nextVisit = visit;
-            latestVisit.save();
-        }
-
         visit.save();
     }
 }
