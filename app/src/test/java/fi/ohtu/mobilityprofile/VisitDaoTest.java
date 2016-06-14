@@ -81,4 +81,24 @@ public class VisitDaoTest {
 
         assertTrue(visitDao.getVisitsByLocation("Herttoniemi").isEmpty());
     }
+
+    @Test
+    public void testVisitTypes() {
+        visitDao.insertVisit(new Visit(123, "Kumpula", Visit.USER_SEARCH));
+        visitDao.insertVisit(new Visit(123, "Kumpula", Visit.GPS_TRACKED));
+
+        assertEquals(2, visitDao.getVisitsByLocation("Kumpula").size());
+        assertEquals(1, visitDao.getVisitsByLocation("Kumpula", Visit.USER_SEARCH).size());
+        assertEquals(1, visitDao.getVisitsByLocation("Kumpula", Visit.GPS_TRACKED).size());
+    }
+
+    @Test
+    public void testVisitTypes2() {
+        visitDao.insertVisit(new Visit(123, "Kumpula", Visit.GPS_TRACKED));
+        visitDao.insertVisit(new Visit(234, "Herttoniemi", Visit.USER_SEARCH));
+
+        assertEquals("Kumpula", visitDao.getLatestVisit(Visit.GPS_TRACKED).getLocation());
+        assertEquals("Herttoniemi", visitDao.getLatestVisit(Visit.USER_SEARCH).getLocation());
+        assertEquals("Herttoniemi", visitDao.getLatestVisit().getLocation());
+    }
 }
