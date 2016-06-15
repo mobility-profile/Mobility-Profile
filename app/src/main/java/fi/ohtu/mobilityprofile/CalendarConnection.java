@@ -21,9 +21,9 @@ public class CalendarConnection {
             CalendarContract.Events.ALL_DAY
     };
 
-    private final long HOUR = 3600 * 1000;
     private Context activity;
     private List<String> locations;
+    private static final int HOUR = 3600 * 1000;
 
     /**
      * Constructor of the class CalendarConnection.
@@ -41,7 +41,6 @@ public class CalendarConnection {
      * @throws SecurityException
      */
     private void query() throws SecurityException {
-
         Cursor cursor = null;
         ContentResolver cr = activity.getContentResolver();
         Uri eventUri = buildUri();

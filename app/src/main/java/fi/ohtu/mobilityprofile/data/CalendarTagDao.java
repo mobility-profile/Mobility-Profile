@@ -1,5 +1,8 @@
 package fi.ohtu.mobilityprofile.data;
 
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
 import java.util.List;
 
 /**
@@ -14,12 +17,12 @@ public class CalendarTagDao {
      * @param key Key of the calendar tag
      * @return Calendar tag with the highest counter
      */
-    public static CalendarTag findTheMostUsedTag(String key) {
-        List<CalendarTag> calendarTags = CalendarTag.findWithQuery(CalendarTag.class,
-                "SELECT * FROM CalendarTag " +
-                        "WHERE key = ? " +
-                        "ORDER BY counter DESC " +
-                        "LIMIT 1", key);
+    public CalendarTag findTheMostUsedTag(String key) {
+        List<CalendarTag> calendarTags = Select.from(CalendarTag.class)
+                .where(Condition.prop("key").eq(key))
+                .orderBy("counter DESC")
+                .limit("1")
+                .list();
 
         assert calendarTags.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
 
@@ -37,7 +40,7 @@ public class CalendarTagDao {
      *
      * @param tag Tag to be saved
      */
-    public static void insertCalendarTag(CalendarTag tag) {
+    public void insertCalendarTag(CalendarTag tag) {
         List<CalendarTag> calendarTags = CalendarTag.find(CalendarTag.class,
                 "key = ? AND value = ?", tag.key, tag.value);
 

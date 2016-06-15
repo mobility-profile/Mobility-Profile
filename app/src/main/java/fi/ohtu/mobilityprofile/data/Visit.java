@@ -3,16 +3,20 @@ package fi.ohtu.mobilityprofile.data;
 import com.orm.SugarRecord;
 
 public class Visit extends SugarRecord {
+    public static final int GPS_TRACKED = 1;
+    public static final int USER_SEARCH = 2;
+
     long timestamp;
     String location;
-    Visit nextVisit;
+    int type;
 
     public Visit() {
     }
 
-    public Visit(long timestamp, String location) {
+    public Visit(long timestamp, String location, int type) {
         this.timestamp = timestamp;
         this.location = location;
+        this.type = type;
     }
 
     public long getTimestamp() {
@@ -23,11 +27,7 @@ public class Visit extends SugarRecord {
         return location;
     }
 
-    public Visit getNextVisit() {
-        return nextVisit;
-    }
-
-    public void setNextVisit(Visit nextVisit) {
-        this.nextVisit = nextVisit;
+    public int getType() {
+        return type;
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="fi.ohtu.mobilityprofile">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -26,22 +27,27 @@
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            tools:node="replace"
+            android:value="8487000" />
 
         <meta-data android:name="DATABASE" android:value="mobilityprofile.db" />
-        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="VERSION" android:value="2" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="fi.ohtu" />
 
         <service
             android:name=".RemoteService"
             android:exported="true"
-            android:process=":remote">
+            android:process=":mobility_profile">
             <!-- TODO: Require permission to use our app. -->
 
             <intent-filter>
                 <action android:name="fi.ohtu.mobilityprofile.RemoteService"/>
             </intent-filter>
         </service>
+
+        <service
+            android:name=".LocationService"
+            android:process=":mobility_profile_location" />
     </application>
 </manifest>

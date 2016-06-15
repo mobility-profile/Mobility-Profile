@@ -7,8 +7,13 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.widget.Toast;
 
+import java.util.Date;
+import java.sql.Timestamp;
+
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.Visit;
+import fi.ohtu.mobilityprofile.data.VisitDao;
 
 import static fi.ohtu.mobilityprofile.RequestCode.*;
 
@@ -18,16 +23,22 @@ import static fi.ohtu.mobilityprofile.RequestCode.*;
 public class RequestHandler extends Handler {
     private Context context;
     private MobilityProfile mobilityProfile;
+    CalendarTagDao calendarTagDao;
+    VisitDao visitDao;
 
     /**
      * Creates the RequestHandler.
      *
      * @param context Context used for toast messages
      * @param mobilityProfile Journey planner that provides the logic for our app
+     * @param calendarTagDao DAO for calendar tags
+     * @param visitDao DAO for visits
      */
-    public RequestHandler(Context context, MobilityProfile mobilityProfile) {
+    public RequestHandler(Context context, MobilityProfile mobilityProfile, CalendarTagDao calendarTagDao, VisitDao visitDao) {
         this.context = context;
         this.mobilityProfile = mobilityProfile;
+        this.calendarTagDao = calendarTagDao;
+        this.visitDao = visitDao;
     }
 
     @Override
@@ -44,7 +55,6 @@ public class RequestHandler extends Handler {
                 break;
             case SEND_USED_DESTINATION:
                 processUsedRoute(msg);
-                // TODO: Save used route to the database.
                 return;
             default:
                 message = processErrorMessage(msg.what);
@@ -65,12 +75,15 @@ public class RequestHandler extends Handler {
     }
 
     private void processUsedRoute(Message message) {
+        Bundle bundle = message.getData();
+        String destination = bundle.getString(SEND_USED_DESTINATION+"");
         if (mobilityProfile.isCalendarDestination()) {
-            Bundle bundle = message.getData();
-            String destination = bundle.getString(SEND_USED_DESTINATION+"");
-
             CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestGivenDestination(), destination);
-            CalendarTagDao.insertCalendarTag(calendarTag);
+            calendarTagDao.insertCalendarTag(calendarTag);
+        } else {
+            Date date = new Date();
+            Visit visit = new Visit(date.getTime(), destination, Visit.USER_SEARCH);
+            visitDao.insertVisit(visit);
         }
     }
 
