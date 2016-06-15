@@ -28,15 +28,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        /*
         CalendarConnection cc = new CalendarConnection(this);
         List<String> el = new ArrayList<String>();
         el = cc.getLocations();
         for (String l : el) {
             System.out.println(l);
         }
-
-
+*/
         SugarContext.init(this);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
