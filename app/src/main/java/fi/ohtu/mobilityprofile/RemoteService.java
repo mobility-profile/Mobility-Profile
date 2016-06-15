@@ -18,8 +18,6 @@ public class RemoteService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        SugarContext.init(this);
-
         synchronized (RemoteService.class) {
             if (messenger == null) {
                 CalendarTagDao calendarTagDao = new CalendarTagDao();
