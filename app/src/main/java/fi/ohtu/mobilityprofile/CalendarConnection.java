@@ -50,6 +50,11 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
     private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY};
     private static final int HOUR = 3600 * 1000;
 
+    /**
+     * Creates the connection to the calendar.
+     *
+     * @param activity Main activity
+     */
     public CalendarConnection(Activity activity) {
         this.activity = activity;
 
@@ -266,6 +271,11 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
         private com.google.api.services.calendar.Calendar mService = null;
         private Exception mLastError = null;
 
+        /**
+         * Creates the request task.
+         *
+         * @param credential Credential
+         */
         public MakeRequestTask(GoogleAccountCredential credential) {
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -278,7 +288,8 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
         /**
          * Background task to call Google Calendar API.
          *
-         * @param params no parameters needed for this task.
+         * @param params No parameters needed for this task
+         * @return List of Strings describing returned events
          */
         @Override
         protected List<String> doInBackground(Void... params) {
@@ -294,7 +305,7 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
         /**
          * Fetch a list of the next 10 events from the primary calendar.
          *
-         * @return List of Strings describing returned events.
+         * @return List of Strings describing returned events
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
@@ -347,7 +358,11 @@ public class CalendarConnection implements EasyPermissions.PermissionCallbacks {
         }
 
 
-        // Returns data retrieved from the calendar to MainActivity
+        /**
+         * Returns data retrieved from the calendar to MainActivity
+         *
+         * @param events List of events
+         */
         private void sendDataToMainActivity(ArrayList<String> events) {
             Intent returnIntent = new Intent();
             returnIntent.putStringArrayListExtra("events", events);

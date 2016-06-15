@@ -22,6 +22,12 @@ public class MobilityProfile {
     private boolean calendarDestination;
     private String nextLocation;
 
+    /**
+     * Creates the MobilityProfile.
+     *
+     * @param calendarTagDao DAO for calendar tags
+     * @param visitDao DAO for visits
+     */
     public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao) {
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
@@ -46,7 +52,9 @@ public class MobilityProfile {
 
     /**
      * Finds all the visits where location is the startLocation
-     * and then decides the most likely next destination of them
+     * and then decides the most likely next destination of them.
+     *
+     * @param startLocation Starting location
      */
     private void getLocationFromDatabase(String startLocation) {
         List<Visit> visits = visitDao.getVisitsByLocation(startLocation);
@@ -62,8 +70,7 @@ public class MobilityProfile {
 
 
     /**
-     * Returns the first location queried from the calendar
-     * @return Location queried from the calendar or default location
+     * Returns the first location queried from the calendar.
      */
     private void getLocationFromCalendar() {
         if (calendarEvents.size() > 0) {
@@ -103,14 +110,29 @@ public class MobilityProfile {
         return location;
     }
 
+    /**
+     * Saves a list of calendar events.
+     *
+     * @param events List of events
+     */
     public void setCalendarEventList(ArrayList<String> events) {
         this.calendarEvents = events;
     }
 
+    /**
+     * Returns the latest destination that was sent to the client.
+     *
+     * @return Latest given destination
+     */
     public String getLatestGivenDestination() {
         return latestGivenDestination;
     }
 
+    /**
+     * Tells if the latest given location was retrieved from the calendar.
+     *
+     * @return True if the location was from calendar, false otherwise
+     */
     public boolean isCalendarDestination() {
         return calendarDestination;
     }

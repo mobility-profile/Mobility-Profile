@@ -57,11 +57,6 @@ public class VisitDao {
                 .orderBy("timestamp DESC")
                 .list();
 
-        //testing
-//        Visit visit = new Visit(1, "naantali");
-//        visit.save();
-//        visits.add(0, visit);
-
         return visits;
     }
 

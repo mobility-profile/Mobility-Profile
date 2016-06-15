@@ -31,6 +31,8 @@ public class RequestHandler extends Handler {
      *
      * @param context Context used for toast messages
      * @param mobilityProfile Journey planner that provides the logic for our app
+     * @param calendarTagDao DAO for calendar tags
+     * @param visitDao DAO for visits
      */
     public RequestHandler(Context context, MobilityProfile mobilityProfile, CalendarTagDao calendarTagDao, VisitDao visitDao) {
         this.context = context;

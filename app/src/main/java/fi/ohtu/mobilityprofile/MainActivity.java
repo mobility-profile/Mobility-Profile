@@ -43,9 +43,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     /**
-     * Receives event data from the calendar
-     * @param code
-     * @param data
+     * Receives event data from the calendar.
+     *
+     * @param code Code
+     * @param data Event data
      */
     public void onResult(int code, Intent data) {
         if (code == 1) {
@@ -57,6 +58,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
     }
 
+    /**
+     * Returns a list of events retrieved from calendar.
+     *
+     * @return List of events
+     */
     public List<String> getEventData() {
         return this.calendarEvents;
     }
