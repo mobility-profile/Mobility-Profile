@@ -47,7 +47,7 @@ dependencies {
         exclude group: 'com.google.guava'
     }
 
-    testCompile 'org.mockito:mockito-core:1.+'
+    testCompile 'org.mockito:mockito-core:1.9.+'
     compile 'com.android.support:design:23.0.1'
     androidTestCompile 'com.android.support.test:runner:0.4'
     // Set this dependency to use JUnit 4 rules

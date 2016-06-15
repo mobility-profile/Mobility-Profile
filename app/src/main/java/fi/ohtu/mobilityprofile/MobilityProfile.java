@@ -1,8 +1,9 @@
 package fi.ohtu.mobilityprofile;
 
 
+import android.content.Context;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
@@ -13,12 +14,24 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
  */
 public class MobilityProfile {
 
-    private List<String> calendarEvents = new ArrayList<>();
+    private List<String> eventLocations = new ArrayList<>();
 
+    private Context context;
     private String latestGivenDestination;
     private boolean calendarDestination;
     private String nextLocation;
 
+    /**
+     * Constructor of class MobilityProfile.
+     * @param context Context of the calling app. Used when getting events from calendars.
+     */
+    public MobilityProfile(Context context) {
+        this.context = context;
+    }
+
+    public MobilityProfile() {
+
+    }
     /**
      * Returns the most probable destination, when the user is in startLocation.
      *
@@ -40,12 +53,13 @@ public class MobilityProfile {
 
 
     /**
-     * Returns the first location queried from the calendar
-     * @return Location queried from the calendar or default location
+     * Selects location from calendar events
      */
     private void getLocationFromCalendar() {
-        if (calendarEvents.size() > 0) {
+        CalendarConnection cc = new CalendarConnection(context);
+        eventLocations = cc.getLocations();
 
+        if (eventLocations.size() > 0) {
             getNextValidLocation();
 
             latestGivenDestination = nextLocation;
@@ -59,30 +73,19 @@ public class MobilityProfile {
     }
 
     /**
-     * Get the first event from the list that has a valid location
+     * Selects the first valid location from the event location list
      */
     private void getNextValidLocation() {
-        for (int i = 0; i < calendarEvents.size(); i++) {
-            String location = extractLocationFromEventString(calendarEvents.get(i));
+        for (String location : eventLocations) {
             if (!location.equals("null")) {
-                nextLocation = location;
-                break;
+                    nextLocation = location;
+                    break;
             }
         }
     }
 
-    /**
-     * Extracts location from the event string
-     * @param event Event queried from the calendar
-     * @return location of the event
-     */
-    private String extractLocationFromEventString(String event) {
-        String location = event.split("%")[0];
-        return location;
-    }
-
     public void setCalendarEventList(ArrayList<String> events) {
-        this.calendarEvents = events;
+        this.eventLocations = events;
     }
 
     public String getLatestGivenDestination() {
