@@ -1,6 +1,7 @@
 package fi.ohtu.mobilityprofile;
 
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private CalendarConnection calendarConnection;
     private ArrayList<String> calendarEvents;
+
+    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

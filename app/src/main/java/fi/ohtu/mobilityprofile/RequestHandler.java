@@ -6,10 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.widget.Toast;
-
 import java.util.Date;
-import java.sql.Timestamp;
-
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.Visit;
@@ -23,8 +20,8 @@ import static fi.ohtu.mobilityprofile.RequestCode.*;
 public class RequestHandler extends Handler {
     private Context context;
     private MobilityProfile mobilityProfile;
-    CalendarTagDao calendarTagDao;
-    VisitDao visitDao;
+    private CalendarTagDao calendarTagDao;
+    private VisitDao visitDao;
 
     /**
      * Creates the RequestHandler.
