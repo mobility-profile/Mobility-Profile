@@ -2,7 +2,6 @@ package fi.ohtu.mobilityprofile;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
@@ -14,8 +13,6 @@ import fi.ohtu.mobilityprofile.data.VisitDao;
  * This class is used for calculating the most likely trips the user is going to make.
  */
 public class MobilityProfile {
-
-    private List<String> eventLocations = new ArrayList<>();
 
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -84,14 +81,14 @@ public class MobilityProfile {
 
 
     /**
-     * Selects location from calendar events
+     * Gets the most probable location from the calendar
      */
     private void getLocationFromCalendar() {
         CalendarConnection cc = new CalendarConnection(context);
-        eventLocations = cc.getLocations();
+        String eventLocation = cc.getEventLocation();
 
-        if (eventLocations.size() > 0) {
-            getNextValidLocation();
+        if (eventLocation != null) {
+           nextLocation = eventLocation;
 
             latestGivenDestination = nextLocation;
             calendarDestination = true;
@@ -104,26 +101,14 @@ public class MobilityProfile {
     }
 
     /**
-     * Selects the first valid location from the event location list
-     */
-    private void getNextValidLocation() {
-        for (String location : eventLocations) {
-            if (!location.equals("null")) {
-                    nextLocation = location;
-                    break;
-            }
-        }
-    }
-
-    /**
      * Saves a list of calendar events.
      *
      * @param events List of events
      */
-    public void setCalendarEventList(ArrayList<String> events) {
+    /*public void setCalendarEventList(ArrayList<String> events) {
         this.eventLocations = events;
     }
-
+*/
     /**
      * Returns the latest destination that was sent to the client.
      *
