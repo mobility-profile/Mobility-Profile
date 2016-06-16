@@ -50,7 +50,7 @@ public class RouteSearchDaoTest {
     }
 
     @Test
-    public void getRouteSearchesByLocationTest() {
+    public void getRouteSearchesByDestinationTest() {
         routeSearchDao.insertRouteSearch(new RouteSearch(1, "Lauttasaari",  "Sörnäinen"));
         routeSearchDao.insertRouteSearch(new RouteSearch(2, "Lauttasaari",  "Sörnäinen"));
         routeSearchDao.insertRouteSearch(new RouteSearch(3, "Lauttasaari",  "Kalasatama"));
@@ -66,12 +66,50 @@ public class RouteSearchDaoTest {
     }
 
     @Test
-    public void getLatestFindsNothing() {
+    public void getRouteSearchesByStartLocationTest() {
+        routeSearchDao.insertRouteSearch(new RouteSearch(1, "Lauttasaari",  "Sörnäinen"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(2, "Lauttasaari",  "Sörnäinen"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(3, "Hakaniemi",  "Kalasatama"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(4, "Pitäjänmäki",  "Sörnäinen"));
+
+        List<RouteSearch> searches = routeSearchDao.getRouteSearchesByStartlocation("Lauttasaari");
+
+        assertEquals(2, searches.get(0).getTimestamp());
+        assertEquals(1, searches.get(1).getTimestamp());
+        assertEquals(2, searches.size());
+
+    }
+
+    @Test
+    public void getRouteSearchesByStartlocationAndDestination() {
+        routeSearchDao.insertRouteSearch(new RouteSearch(1, "Lauttasaari",  "Sörnäinen"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(2, "Lauttasaari",  "Herttoniemi"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(3, "Hakaniemi",  "Kalasatama"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(4, "Pitäjänmäki",  "Sörnäinen"));
+
+        List<RouteSearch> searches = routeSearchDao.getRouteSearchesByStartlocationAndDestination("Lauttasaari","Herttoniemi");
+
+        assertEquals(2, searches.get(0).getTimestamp());
+        assertEquals(1, searches.size());
+    }
+
+    @Test
+    public void getLatestFindsNothingReturnsNull() {
         assertEquals(null, routeSearchDao.getLatestRouteSearch());
     }
 
     @Test
-    public void getByLocationFindsNothing() {
+    public void getByDestinationFindsNothingIsEmpty() {
         assertTrue(routeSearchDao.getRouteSearchesByDestination("Aurinko").isEmpty());
+    }
+
+    @Test
+    public void getByStartlocationFindsNothingIsEmpty() {
+        assertTrue(routeSearchDao.getRouteSearchesByStartlocation("Aurinko").isEmpty());
+    }
+
+    @Test
+    public void getByStartlocationAndDestinationFindsNothingIsEmpty() {
+        assertTrue(routeSearchDao.getRouteSearchesByStartlocationAndDestination("Aurinko", "Mars").isEmpty());
     }
 }
