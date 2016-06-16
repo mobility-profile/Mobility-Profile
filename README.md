@@ -9,4 +9,4 @@
 
 [Mobility-Profile-API](https://github.com/ZMaster13/Mobility-Profile-API)
 
-[sujuvuuscordova](https://github.com/jussiviinikka/sujuvuuscordova)
+[sujuvuusnavigaattori-wrapper cordovalle](https://github.com/jussiviinikka/sujuvuusnavigaattori-wrapper)
