@@ -51,12 +51,14 @@ public class MobilityProfile {
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
-
-        getLocationFromDatabase(startLocation);
-        latestGivenDestination = nextLocation;
-
         calendarDestination = false;
         getLocationFromCalendar();
+
+        if (calendarDestination == false) {
+            getLocationFromDatabase(startLocation);
+        }
+
+        latestGivenDestination = nextLocation;
 
         return nextLocation;
     }
@@ -88,9 +90,7 @@ public class MobilityProfile {
         String eventLocation = cc.getEventLocation();
 
         if (eventLocation != null) {
-           nextLocation = eventLocation;
-
-            latestGivenDestination = nextLocation;
+            nextLocation = eventLocation;
             calendarDestination = true;
 
             CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(nextLocation);
