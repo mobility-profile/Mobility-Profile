@@ -6,7 +6,6 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -81,8 +80,7 @@ public class MobilityProfile {
             nextLocation = "home";
         } else {
             // TODO: Add some logic.
-            nextLocation = visits.get(0).getLocation();
-
+            nextLocation = AddressConverter.convertToAddress(visits.get(0).getNearestKnownLocation().getLocation());
         }
     }
 
