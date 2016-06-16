@@ -6,6 +6,8 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
@@ -16,6 +18,7 @@ public class MobilityProfile {
 
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
+    private RouteSearchDao routeSearchDao;
 
     private Context context;
     private String latestGivenDestination;
@@ -40,9 +43,10 @@ public class MobilityProfile {
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
      */
-    public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao) {
+    public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
+        this.routeSearchDao = routeSearchDao;
     }
 
     /**
@@ -69,6 +73,8 @@ public class MobilityProfile {
      * @param startLocation Starting location
      */
     private void getLocationFromDatabase(String startLocation) {
+        // TODO: Use routesearchdao also
+
         List<Visit> visits = visitDao.getVisitsByLocation(startLocation);
         if (visits.isEmpty()) {
             // TODO: Something sensible

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
@@ -16,6 +17,7 @@ public class MobilityProfileTest {
     private MobilityProfile mp;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
+    private RouteSearchDao routeSearchDao;
     private String event;
 
     @Before
@@ -23,7 +25,7 @@ public class MobilityProfileTest {
         calendarTagDao = mock(CalendarTagDao.class);
         visitDao = mock(VisitDao.class);
 
-        mp = new MobilityProfile(calendarTagDao, visitDao);
+        mp = new MobilityProfile(calendarTagDao, visitDao, routeSearchDao);
         event = "Rautatieasema%02-02-2016";
 
         when(calendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
@@ -49,7 +51,7 @@ public class MobilityProfileTest {
     @Test
     public void suggestTheFirstVisitFromAllVisits() {
         mp.setCalendarEvent(null);
-        visitDao.insertVisit(new Visit(1234, "Kumpula", 1));
+        visitDao.insertVisit(new Visit(1234, "Kumpula"));
 
         String nextLocation = mp.getMostLikelyDestination("Kumpula");
         assertEquals("Kumpula", nextLocation);
