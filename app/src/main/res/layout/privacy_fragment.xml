@@ -16,21 +16,30 @@
         android:layout_marginTop="20dp" />
 
     <CheckBox
-        android:layout_width="225dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/checkbox_GPS"
         android:id="@+id/checkbox_GPS"
         android:layout_weight="0.04"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="start"
+        android:textSize="20sp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkbox_calendar"
+        android:id="@+id/checkbox_calendar"
+        android:layout_weight="0.04"
+        android:layout_gravity="start"
         android:textSize="20sp" />
 
     <CheckBox
         android:layout_width="227dp"
         android:layout_height="wrap_content"
-        android:text="@string/checkbox_calendar"
-        android:id="@+id/checkbox_calendar"
+        android:text="@string/checkbox_tracking"
+        android:id="@+id/checkbox_tracking"
         android:layout_weight="0.04"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="start"
         android:textSize="20sp" />
 
 </LinearLayout>

@@ -10,4 +10,5 @@
         With location data Mobilityprofile will learn to predict destinations.
     </string>
     <string name="last_places">Your last visited places</string>
+    <string name="checkbox_tracking">Continuous location tracking</string>
 </resources>

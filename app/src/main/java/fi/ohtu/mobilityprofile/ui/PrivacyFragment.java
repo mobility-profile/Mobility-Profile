@@ -1,7 +1,9 @@
 package fi.ohtu.mobilityprofile.ui;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import fi.ohtu.mobilityprofile.LocationService;
 import fi.ohtu.mobilityprofile.R;
 
 public class PrivacyFragment extends Fragment {
@@ -26,13 +29,15 @@ public class PrivacyFragment extends Fragment {
     private int permissionGPS;
     private int permissionCal;
 
-    private CheckBox GPSCheckBox;
-    private CheckBox CalendarCheckBox;
+    private CheckBox gpsCheckBox;
+    private CheckBox calendarCheckBox;
+    private CheckBox trackingCheckBox;
 
     private Context context;
 
     /**
      * Creates a new instance of PrivacyFragment (it is a tab in UI).
+     *
      * @return Privacy Fragment
      */
     public static PrivacyFragment newInstance() {
@@ -51,7 +56,7 @@ public class PrivacyFragment extends Fragment {
         checkPermissions();
     }
 
-    private void checkPermissions(){
+    private void checkPermissions() {
         permissionGPS = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
         permissionCal = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR);
     }
@@ -69,20 +74,21 @@ public class PrivacyFragment extends Fragment {
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
 
-        GPSCheckBox = (CheckBox) view.findViewById(R.id.checkbox_GPS);
-        CalendarCheckBox = (CheckBox) view.findViewById(R.id.checkbox_calendar);
+        gpsCheckBox = (CheckBox) view.findViewById(R.id.checkbox_GPS);
+        calendarCheckBox = (CheckBox) view.findViewById(R.id.checkbox_calendar);
+        trackingCheckBox = (CheckBox) view.findViewById(R.id.checkbox_tracking);
 
         setChecked();
         setListenerForCheckBoxGPS();
         setListenerForCheckBoxCalendar();
+        setListenerForCheckBoxTracking();
     }
 
-
     /**
-     * Sets OnCheckedChangeListener for GPSCheckBox.
+     * Sets OnCheckedChangeListener for gpsCheckBox.
      */
     private void setListenerForCheckBoxGPS() {
-        GPSCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        gpsCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             /**
              * If checkbox is changed to CHECKED -mode, will ask permission to access fine location
@@ -90,7 +96,7 @@ public class PrivacyFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 checkPermissions();
-                if(isChecked && permissionGPS != PackageManager.PERMISSION_GRANTED){
+                if (isChecked && permissionGPS != PackageManager.PERMISSION_GRANTED) {
                     getPermissionToAccessFineLocation();
                 } else if (isChecked) {
                     Toast.makeText(context, "Location tracking is used again", Toast.LENGTH_SHORT).show();
@@ -102,10 +108,10 @@ public class PrivacyFragment extends Fragment {
     }
 
     /**
-     * Sets OnCheckedChangeListener for CalendarCheckBox.
+     * Sets OnCheckedChangeListener for calendarCheckBox.
      */
     private void setListenerForCheckBoxCalendar() {
-        CalendarCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        calendarCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             /**
              * If checkbox is changed to CHECKED -mode, will ask permission to read calendar
@@ -113,7 +119,7 @@ public class PrivacyFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 checkPermissions();
-                if(isChecked && permissionCal != PackageManager.PERMISSION_GRANTED){
+                if (isChecked && permissionCal != PackageManager.PERMISSION_GRANTED) {
                     getPermissionToReadCalendar();
                 } else if (isChecked) {
                     Toast.makeText(context, "Calendar is used again", Toast.LENGTH_SHORT).show();
@@ -124,12 +130,24 @@ public class PrivacyFragment extends Fragment {
         });
     }
 
+    private void setListenerForCheckBoxTracking() {
+        trackingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    context.startService(new Intent(context, LocationService.class));
+                } else {
+                    context.stopService(new Intent(context, LocationService.class));
+                }
+            }
+        });
+    }
 
     /**
      * Checks if we have permission to fine location, and then if not, requests it.
      */
     private void getPermissionToAccessFineLocation() {
-        if(permissionGPS != PackageManager.PERMISSION_GRANTED) {
+        if (permissionGPS != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST);
         }
@@ -161,26 +179,28 @@ public class PrivacyFragment extends Fragment {
     }
 
     /**
-     * Depending on grantResults creates a Toast and updates the setting of GPSCheckBox
+     * Depending on grantResults creates a Toast and updates the setting of gpsCheckBox
+     *
      * @param grantResults
      */
     private void actGPSResult(@NonNull int[] grantResults) {
         if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(context, "GPS permission granted", Toast.LENGTH_SHORT).show();
         } else {
-            GPSCheckBox.setChecked(false);
+            gpsCheckBox.setChecked(false);
         }
     }
 
     /**
-     * Depending on grantResults creates a Toast and updates the setting of CalendarCheckBox
+     * Depending on grantResults creates a Toast and updates the setting of calendarCheckBox
+     *
      * @param grantResults
      */
     private void actCalendarResult(@NonNull int[] grantResults) {
         if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(context, "Read Calendar permission granted", Toast.LENGTH_SHORT).show();
         } else {
-            CalendarCheckBox.setChecked(false);
+            calendarCheckBox.setChecked(false);
         }
     }
 
@@ -191,15 +211,31 @@ public class PrivacyFragment extends Fragment {
     private void setChecked() {
         checkPermissions();
         if (permissionGPS != PackageManager.PERMISSION_GRANTED) {
-            GPSCheckBox.setChecked(false);
+            gpsCheckBox.setChecked(false);
         } else {
-            GPSCheckBox.setChecked(true);
+            gpsCheckBox.setChecked(true);
         }
 
         if (permissionCal != PackageManager.PERMISSION_GRANTED) {
-            CalendarCheckBox.setChecked(false);
+            calendarCheckBox.setChecked(false);
         } else {
-            CalendarCheckBox.setChecked(true);
+            calendarCheckBox.setChecked(true);
         }
+
+        if (isLocationServiceRunning()) {
+            trackingCheckBox.setChecked(true);
+        } else {
+            trackingCheckBox.setChecked(false);
+        }
+    }
+
+    private boolean isLocationServiceRunning() {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (LocationService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
