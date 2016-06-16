@@ -3,7 +3,7 @@
     <string name="allow_access">Allow Mobility Profile access to:</string>
     <string name="checkbox_GPS">GPS</string>
     <string name="checkbox_calendar">Read calendar</string>
-    <string name="checkbox_tracking">Continuous location tracking</string>
+    <string name="checkbox_tracking">Start continuous location tracking</string>
     <string name="info">is an app which magically offers your next destination to your favourite journey planner ;)</string>
     <string name="permissions_info">
         Mobility Profile needs permissions to read your calendar and access your location.\n\n
