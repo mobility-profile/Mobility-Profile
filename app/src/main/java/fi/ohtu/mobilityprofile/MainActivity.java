@@ -11,8 +11,6 @@ import android.support.v4.view.ViewPager;
 
 import com.orm.SugarContext;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
@@ -20,9 +18,6 @@ import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 public class MainActivity extends AppCompatActivity {
 
     FragmentPagerAdapter adapterViewPager;
-
-    private CalendarConnection calendarConnection;
-    private ArrayList<String> calendarEvents;
 
     private LocationService locationService;
 
