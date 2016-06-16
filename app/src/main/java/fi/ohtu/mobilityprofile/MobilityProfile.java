@@ -6,6 +6,8 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
@@ -16,11 +18,13 @@ public class MobilityProfile {
 
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
+    private RouteSearchDao routeSearchDao;
 
     private Context context;
     private String latestGivenDestination;
     private boolean calendarDestination;
     private String nextLocation;
+    private String eventLocation;
 
     /**
      * Constructor of class MobilityProfile.
@@ -39,9 +43,10 @@ public class MobilityProfile {
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
      */
-    public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao) {
+    public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
+        this.routeSearchDao = routeSearchDao;
     }
 
     /**
@@ -70,6 +75,8 @@ public class MobilityProfile {
      * @param startLocation Starting location
      */
     private void getLocationFromDatabase(String startLocation) {
+        // TODO: Use routesearchdao also
+
         List<Visit> visits = visitDao.getVisitsByLocation(startLocation);
         if (visits.isEmpty()) {
             // TODO: Something sensible
@@ -87,7 +94,7 @@ public class MobilityProfile {
      */
     private void getLocationFromCalendar() {
         CalendarConnection cc = new CalendarConnection(context);
-        String eventLocation = cc.getEventLocation();
+        eventLocation = cc.getEventLocation();
 
         if (eventLocation != null) {
             nextLocation = eventLocation;
@@ -101,14 +108,14 @@ public class MobilityProfile {
     }
 
     /**
-     * Saves a list of calendar events.
+     * Saves a calendar event.
      *
-     * @param events List of events
+     * @param event an events
      */
-    /*public void setCalendarEventList(ArrayList<String> events) {
-        this.eventLocations = events;
+    public void setCalendarEventLocation(String event) {
+        this.eventLocation = event;
     }
-*/
+
     /**
      * Returns the latest destination that was sent to the client.
      *

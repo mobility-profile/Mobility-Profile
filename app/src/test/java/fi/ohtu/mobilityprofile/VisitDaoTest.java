@@ -27,22 +27,22 @@ public class VisitDaoTest {
 
     @Test
     public void testInsertAndFindLatest() {
-        visitDao.insertVisit(new Visit(1234, "Kumpula", 1));
+        visitDao.insertVisit(new Visit(1234, "Kumpula"));
 
         assertEquals("Kumpula", visitDao.getLatestVisit().getLocation());
 
-        visitDao.insertVisit(new Visit(1300, "Herttoniemi", 1));
+        visitDao.insertVisit(new Visit(1300, "Herttoniemi"));
 
         assertEquals("Herttoniemi", visitDao.getLatestVisit().getLocation());
 
-        visitDao.insertVisit(new Visit(1100, "Lammassaari", 1));
+        visitDao.insertVisit(new Visit(1100, "Lammassaari"));
 
         assertEquals("Herttoniemi", visitDao.getLatestVisit().getLocation());
     }
 
     @Test
     public void testInsertAndFindByLocation() {
-        visitDao.insertVisit(new Visit(2345, "Helsinki", 1));
+        visitDao.insertVisit(new Visit(2345, "Helsinki"));
 
         List<Visit> visits = visitDao.getVisitsByLocation("Helsinki");
 
@@ -52,12 +52,12 @@ public class VisitDaoTest {
 
     @Test
     public void testMultipleInsertAndFindByLocation() {
-        visitDao.insertVisit(new Visit(123, "Kumpula", 1));
-        visitDao.insertVisit(new Visit(234, "Kumpula", 1));
-        visitDao.insertVisit(new Visit(345, "Kalasatama", 1));
-        visitDao.insertVisit(new Visit(456, "Tikkurila", 1));
-        visitDao.insertVisit(new Visit(987, "Kumpula", 1));
-        visitDao.insertVisit(new Visit(567, "Kumpulan kampus", 1));
+        visitDao.insertVisit(new Visit(123, "Kumpula"));
+        visitDao.insertVisit(new Visit(234, "Kumpula"));
+        visitDao.insertVisit(new Visit(345, "Kalasatama"));
+        visitDao.insertVisit(new Visit(456, "Tikkurila"));
+        visitDao.insertVisit(new Visit(987, "Kumpula"));
+        visitDao.insertVisit(new Visit(567, "Kumpulan kampus"));
 
         List<Visit> visits = visitDao.getVisitsByLocation("Kumpula");
 
@@ -77,28 +77,8 @@ public class VisitDaoTest {
         assertTrue(visitDao.getLatestVisit() == null);
         assertTrue(visitDao.getVisitsByLocation("Kumpula").isEmpty());
 
-        visitDao.insertVisit(new Visit(234, "Kumpula", 1));
+        visitDao.insertVisit(new Visit(234, "Kumpula"));
 
         assertTrue(visitDao.getVisitsByLocation("Herttoniemi").isEmpty());
-    }
-
-    @Test
-    public void testVisitTypes() {
-        visitDao.insertVisit(new Visit(123, "Kumpula", Visit.USER_SEARCH));
-        visitDao.insertVisit(new Visit(123, "Kumpula", Visit.GPS_TRACKED));
-
-        assertEquals(2, visitDao.getVisitsByLocation("Kumpula").size());
-        assertEquals(1, visitDao.getVisitsByLocation("Kumpula", Visit.USER_SEARCH).size());
-        assertEquals(1, visitDao.getVisitsByLocation("Kumpula", Visit.GPS_TRACKED).size());
-    }
-
-    @Test
-    public void testVisitTypes2() {
-        visitDao.insertVisit(new Visit(123, "Kumpula", Visit.GPS_TRACKED));
-        visitDao.insertVisit(new Visit(234, "Herttoniemi", Visit.USER_SEARCH));
-
-        assertEquals("Kumpula", visitDao.getLatestVisit(Visit.GPS_TRACKED).getLocation());
-        assertEquals("Herttoniemi", visitDao.getLatestVisit(Visit.USER_SEARCH).getLocation());
-        assertEquals("Herttoniemi", visitDao.getLatestVisit().getLocation());
     }
 }

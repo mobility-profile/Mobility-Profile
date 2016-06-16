@@ -20,19 +20,6 @@ public class VisitDao {
                 .limit("1"));
     }
 
-    /**
-     * Returns the latest visit of the given type from the database, or null if there is none.
-     *
-     * @param visitType Type of the visit
-     * @return Latest visit
-     */
-    public Visit getLatestVisit(int visitType) {
-        return getLatestVisit(Select.from(Visit.class)
-                .where(Condition.prop("type").eq(visitType))
-                .orderBy("timestamp DESC")
-                .limit("1"));
-    }
-
     private Visit getLatestVisit(Select<Visit> query) {
         List<Visit> visits = query.list();
 
@@ -54,23 +41,6 @@ public class VisitDao {
     public List<Visit> getVisitsByLocation(String location) {
         List<Visit> visits = Select.from(Visit.class)
                 .where(Condition.prop("location").eq(location))
-                .orderBy("timestamp DESC")
-                .list();
-
-        return visits;
-    }
-
-    /**
-     * Returns a list of visits of the given type where the location matches the given one.
-     *
-     * @param location Location of the visits
-     * @param visitType Visit type
-     * @return List of visits
-     */
-    public List<Visit> getVisitsByLocation(String location, int visitType) {
-        List<Visit> visits = Select.from(Visit.class)
-                .where(Condition.prop("location").eq(location))
-                .and(Condition.prop("type").eq(visitType))
                 .orderBy("timestamp DESC")
                 .list();
 

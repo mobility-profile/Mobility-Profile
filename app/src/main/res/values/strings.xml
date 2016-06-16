@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Mobility Profile</string>
-    <string name="allow_access">Allow mobilityprofile access to:</string>
+    <string name="allow_access">Allow Mobility Profile access to:</string>
     <string name="checkbox_GPS">GPS</string>
-    <string name="checkbox_calendar">Read Calendar</string>
+    <string name="checkbox_calendar">Read calendar</string>
+    <string name="checkbox_tracking">Continuous location tracking</string>
     <string name="info">is an app which magically offers your next destination to your favourite journey planner ;)</string>
     <string name="permissions_info">
-        Mobilityprofile needs permissions to read your calendar and access your location.\n\n
+        Mobility Profile needs permissions to read your calendar and access your location.\n\n
         Calendar is used to get your next probable destination from your events.\n\n
-        With location data Mobilityprofile will learn to predict destinations.
+        With location data Mobility Profile will learn to predict destinations.
     </string>
     <string name="last_places">Your last visited places</string>
-    <string name="checkbox_tracking">Continuous location tracking</string>
 </resources>

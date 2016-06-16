@@ -94,7 +94,7 @@ public class LocationService extends Service {
         Log.e(TAG, "onDestroy");
         super.onDestroy();
         if (mLocationManager != null) {
-            for (int i = 0; i < mLocationListeners.length; i++) {
+            for (LocationListener mLocationListener : mLocationListeners) {
                 try {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -106,7 +106,7 @@ public class LocationService extends Service {
                         // for ActivityCompat#requestPermissions for more details.
                         return;
                     }
-                    mLocationManager.removeUpdates(mLocationListeners[i]);
+                    mLocationManager.removeUpdates(mLocationListener);
                 } catch (Exception ex) {
                     Log.i(TAG, "fail to remove location listners, ignore", ex);
                 }

@@ -9,7 +9,8 @@ import android.widget.Toast;
 import java.util.Date;
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.Visit;
+import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
 import static fi.ohtu.mobilityprofile.RequestCode.*;
@@ -22,6 +23,7 @@ public class RequestHandler extends Handler {
     private MobilityProfile mobilityProfile;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
+    private RouteSearchDao routeSearchDao;
 
     /**
      * Creates the RequestHandler.
@@ -31,11 +33,13 @@ public class RequestHandler extends Handler {
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
      */
-    public RequestHandler(Context context, MobilityProfile mobilityProfile, CalendarTagDao calendarTagDao, VisitDao visitDao) {
+    public RequestHandler(Context context, MobilityProfile mobilityProfile,
+                          CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
         this.context = context;
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
+        this.routeSearchDao = routeSearchDao;
     }
 
     @Override
@@ -79,8 +83,8 @@ public class RequestHandler extends Handler {
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
             Date date = new Date();
-            Visit visit = new Visit(date.getTime(), destination, Visit.USER_SEARCH);
-            visitDao.insertVisit(visit);
+            RouteSearch routeSearch = new RouteSearch(date.getTime(), destination);
+            routeSearchDao.insertRouteSearch(routeSearch);
         }
     }
 

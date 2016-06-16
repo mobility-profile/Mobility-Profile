@@ -2,17 +2,20 @@ package fi.ohtu.mobilityprofile.data;
 
 import com.orm.SugarRecord;
 
-public class Visit extends SugarRecord {
+public class RouteSearch extends SugarRecord {
 
     long timestamp;
     String location;
+    int counter;
 
-    public Visit() {
+    public RouteSearch() {
+
     }
 
-    public Visit(long timestamp, String location) {
+    public RouteSearch(long timestamp, String location) {
         this.timestamp = timestamp;
         this.location = location;
+        this.counter = 1;
     }
 
     public long getTimestamp() {
@@ -21,5 +24,9 @@ public class Visit extends SugarRecord {
 
     public String getLocation() {
         return location;
+    }
+
+    public int getCounter() {
+        return counter;
     }
 }

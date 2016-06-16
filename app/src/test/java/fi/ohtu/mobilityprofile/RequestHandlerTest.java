@@ -16,6 +16,8 @@ import org.robolectric.annotation.Config;
 import static org.junit.Assert.*;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
 import static org.mockito.Mockito.mock;
@@ -31,16 +33,17 @@ public class RequestHandlerTest {
     private MobilityProfile mobilityProfile;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
-    private RequestCode requestCode;
+    private RouteSearchDao routeSearchDao;
 
     @Before
     public void setUp() {
         this.context = null;
         this.mobilityProfile = mock(MobilityProfile.class);
         this.calendarTagDao = mock(CalendarTagDao.class);
+        this.routeSearchDao = new RouteSearchDao();
         this.visitDao = new VisitDao();
 
-        this.requestHandler = new RequestHandler(context, mobilityProfile, calendarTagDao, visitDao);
+        this.requestHandler = new RequestHandler(context, mobilityProfile, calendarTagDao, visitDao, routeSearchDao);
 
         when(mobilityProfile.isCalendarDestination()).thenReturn(false);
 
@@ -57,6 +60,6 @@ public class RequestHandlerTest {
         msg.setData(bundle);
 
         requestHandler.handleMessage(msg);
-        assertTrue(visitDao.getLatestVisit().getLocation().equals("Naantali"));
+        assertTrue(routeSearchDao.getLatestRouteSearch().getLocation().equals("Naantali"));
     }
 }

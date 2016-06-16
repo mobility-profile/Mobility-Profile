@@ -98,10 +98,13 @@ public class PrivacyFragment extends Fragment {
                 checkPermissions();
                 if (isChecked && permissionGPS != PackageManager.PERMISSION_GRANTED) {
                     getPermissionToAccessFineLocation();
+                    trackingCheckBox.setEnabled(true); // TODO: Make sure we actually got the permission.
                 } else if (isChecked) {
                     Toast.makeText(context, "Location tracking is used again", Toast.LENGTH_SHORT).show();
+                    trackingCheckBox.setEnabled(true);
                 } else {
                     Toast.makeText(context, "Location tracking will not be used", Toast.LENGTH_SHORT).show();
+                    trackingCheckBox.setEnabled(false);
                 }
             }
         });
@@ -212,6 +215,7 @@ public class PrivacyFragment extends Fragment {
         checkPermissions();
         if (permissionGPS != PackageManager.PERMISSION_GRANTED) {
             gpsCheckBox.setChecked(false);
+            trackingCheckBox.setEnabled(false);
         } else {
             gpsCheckBox.setChecked(true);
         }
