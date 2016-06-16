@@ -23,7 +23,7 @@ public class MobilityProfile {
     private String latestGivenDestination;
     private boolean calendarDestination;
     private String nextLocation;
-    private String event;
+    private String eventLocation;
 
     /**
      * Constructor of class MobilityProfile.
@@ -55,12 +55,14 @@ public class MobilityProfile {
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
-
-        getLocationFromDatabase(startLocation);
-        latestGivenDestination = nextLocation;
-
         calendarDestination = false;
         getLocationFromCalendar();
+
+        if (calendarDestination == false) {
+            getLocationFromDatabase(startLocation);
+        }
+
+        latestGivenDestination = nextLocation;
 
         return nextLocation;
     }
@@ -90,12 +92,10 @@ public class MobilityProfile {
      */
     private void getLocationFromCalendar() {
         CalendarConnection cc = new CalendarConnection(context);
-        event = cc.getEventLocation();
+        eventLocation = cc.getEventLocation();
 
-        if (event != null) {
-           nextLocation = event;
-
-            latestGivenDestination = nextLocation;
+        if (eventLocation != null) {
+            nextLocation = eventLocation;
             calendarDestination = true;
 
             CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(nextLocation);
@@ -110,8 +110,8 @@ public class MobilityProfile {
      *
      * @param event an events
      */
-    public void setCalendarEvent(String event) {
-        this.event = event;
+    public void setCalendarEventLocation(String event) {
+        this.eventLocation = event;
     }
 
     /**

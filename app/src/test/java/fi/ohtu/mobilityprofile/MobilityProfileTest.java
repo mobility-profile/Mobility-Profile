@@ -18,7 +18,7 @@ public class MobilityProfileTest {
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
     private RouteSearchDao routeSearchDao;
-    private String event;
+    private String eventLocation;
 
     @Before
     public void setUp() throws Exception {
@@ -26,14 +26,14 @@ public class MobilityProfileTest {
         visitDao = mock(VisitDao.class);
 
         mp = new MobilityProfile(calendarTagDao, visitDao, routeSearchDao);
-        event = "Rautatieasema%02-02-2016";
+        eventLocation = "Rautatieasema";
 
         when(calendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
     }
 
     @Test
     public void suggestsFirstLocationFromTheCalendar() throws Exception {
-        mp.setCalendarEvent(event);
+        mp.setCalendarEventLocation(eventLocation);
 
         String nextLocation = mp.getMostLikelyDestination("Kumpula");
         assertEquals("Rautatieasema", nextLocation);
@@ -41,7 +41,7 @@ public class MobilityProfileTest {
 
     @Test
     public void suggestHomeIfNoVisitsMade() {
-        mp.setCalendarEvent(null);
+        mp.setCalendarEventLocation(null);
 
         String nextLocation = mp.getMostLikelyDestination("Rovaniemi");
         assertEquals("home", nextLocation);
@@ -50,7 +50,7 @@ public class MobilityProfileTest {
 
     @Test
     public void suggestTheFirstVisitFromAllVisits() {
-        mp.setCalendarEvent(null);
+        mp.setCalendarEventLocation(null);
         visitDao.insertVisit(new Visit(1234, "Kumpula"));
 
         String nextLocation = mp.getMostLikelyDestination("Kumpula");
