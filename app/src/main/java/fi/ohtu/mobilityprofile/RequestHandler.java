@@ -83,7 +83,7 @@ public class RequestHandler extends Handler {
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
             Date date = new Date();
-            RouteSearch routeSearch = new RouteSearch(date.getTime(), destination);
+            RouteSearch routeSearch = new RouteSearch(date.getTime(), "startlocation" , destination);
             routeSearchDao.insertRouteSearch(routeSearch);
         }
     }

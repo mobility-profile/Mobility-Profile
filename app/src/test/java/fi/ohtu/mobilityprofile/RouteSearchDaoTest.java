@@ -27,32 +27,36 @@ public class RouteSearchDaoTest {
 
     @Test
     public void insertRouteSearchTest() {
-        routeSearchDao.insertRouteSearch(new RouteSearch(1, "Ruoholahti"));
-        assertEquals(routeSearchDao.getLatestRouteSearch().getLocation(), "Ruoholahti");
+        routeSearchDao.insertRouteSearch(new RouteSearch(1, "Lauttasaari", "Ruoholahti"));
+        assertEquals(routeSearchDao.getLatestRouteSearch().getStartlocation(), "Lauttasaari");
+        assertEquals(routeSearchDao.getLatestRouteSearch().getDestination(), "Ruoholahti");
     }
 
     @Test
     public void getLatestRouteSearchTest() {
-        routeSearchDao.insertRouteSearch(new RouteSearch(2, "Kamppi"));
-        assertEquals("Kamppi", routeSearchDao.getLatestRouteSearch().getLocation());
+        routeSearchDao.insertRouteSearch(new RouteSearch(2, "Lauttasaari",  "Kamppi"));
+        assertEquals("Lauttasaari", routeSearchDao.getLatestRouteSearch().getStartlocation());
+        assertEquals("Kamppi", routeSearchDao.getLatestRouteSearch().getDestination());
 
-        routeSearchDao.insertRouteSearch(new RouteSearch(3, "Rautatientori"));
-        assertEquals("Rautatientori", routeSearchDao.getLatestRouteSearch().getLocation());
+        routeSearchDao.insertRouteSearch(new RouteSearch(3, "Lauttasaari",  "Rautatientori"));
+        assertEquals("Lauttasaari", routeSearchDao.getLatestRouteSearch().getStartlocation());
+        assertEquals("Rautatientori", routeSearchDao.getLatestRouteSearch().getDestination());
 
-        routeSearchDao.insertRouteSearch(new RouteSearch(4, "Helsingin yliopisto"));
-        routeSearchDao.insertRouteSearch(new RouteSearch(5, "Hakaniemi"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(4, "Lauttasaari",  "Helsingin yliopisto"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(5, "Lauttasaari",  "Hakaniemi"));
 
-        assertEquals("Hakaniemi", routeSearchDao.getLatestRouteSearch().getLocation());
+        assertEquals("Lauttasaari", routeSearchDao.getLatestRouteSearch().getStartlocation());
+        assertEquals("Hakaniemi", routeSearchDao.getLatestRouteSearch().getDestination());
     }
 
     @Test
     public void getRouteSearchesByLocationTest() {
-        routeSearchDao.insertRouteSearch(new RouteSearch(1, "Sörnäinen"));
-        routeSearchDao.insertRouteSearch(new RouteSearch(2, "Sörnäinen"));
-        routeSearchDao.insertRouteSearch(new RouteSearch(3, "Kalasatama"));
-        routeSearchDao.insertRouteSearch(new RouteSearch(4, "Sörnäinen"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(1, "Lauttasaari",  "Sörnäinen"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(2, "Lauttasaari",  "Sörnäinen"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(3, "Lauttasaari",  "Kalasatama"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(4, "Lauttasaari",  "Sörnäinen"));
 
-        List<RouteSearch> searches = routeSearchDao.getRouteSearchesByLocation("Sörnäinen");
+        List<RouteSearch> searches = routeSearchDao.getRouteSearchesByDestination("Sörnäinen");
 
         assertEquals(4, searches.get(0).getTimestamp());
         assertEquals(2, searches.get(1).getTimestamp());
@@ -68,6 +72,6 @@ public class RouteSearchDaoTest {
 
     @Test
     public void getByLocationFindsNothing() {
-        assertTrue(routeSearchDao.getRouteSearchesByLocation("Aurinko").isEmpty());
+        assertTrue(routeSearchDao.getRouteSearchesByDestination("Aurinko").isEmpty());
     }
 }

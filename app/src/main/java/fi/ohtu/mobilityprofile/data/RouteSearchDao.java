@@ -34,14 +34,45 @@ public class RouteSearchDao {
     }
 
     /**
-     * Returns a list of routesearches where the location matches the given one.
+     * Returns a list of routesearches where the startlocation matches the given one.
      *
-     * @param location Location of the routesearches
+     * @param startLocation StartLocation of the routesearches
      * @return List of routesearches
      */
-    public List<RouteSearch> getRouteSearchesByLocation(String location) {
+    public List<RouteSearch> getRouteSearchesByStartlocation(String startLocation) {
         List<RouteSearch> searches = Select.from(RouteSearch.class)
-                .where(Condition.prop("location").eq(location))
+                .where(Condition.prop("startlocation").eq(startLocation))
+                .orderBy("timestamp DESC")
+                .list();
+
+        return searches;
+    }
+
+    /**
+     * Returns a list of routesearches where the startlocation matches the given one.
+     *
+     * @param destination StartLocation of the routesearches
+     * @return List of routesearches
+     */
+    public List<RouteSearch> getRouteSearchesByDestination(String destination) {
+        List<RouteSearch> searches = Select.from(RouteSearch.class)
+                .where(Condition.prop("destination").eq(destination))
+                .orderBy("timestamp DESC")
+                .list();
+
+        return searches;
+    }
+
+    /**
+     * Returns a list of routesearches where the startlocation matches the given one.
+     *
+     * @param destination StartLocation of the routesearches
+     * @return List of routesearches
+     */
+    public List<RouteSearch> getRouteSearchesByStartlocationAndDestination(String startLocation, String destination) {
+        List<RouteSearch> searches = Select.from(RouteSearch.class)
+                .where(Condition.prop("startlocation").eq(startLocation))
+                .where(Condition.prop("destination").eq(destination))
                 .orderBy("timestamp DESC")
                 .list();
 

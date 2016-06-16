@@ -5,28 +5,28 @@ import com.orm.SugarRecord;
 public class RouteSearch extends SugarRecord {
 
     long timestamp;
-    String location;
-    int counter;
+    String startlocation;
+    String destination;
 
     public RouteSearch() {
 
     }
 
-    public RouteSearch(long timestamp, String location) {
+    public RouteSearch(long timestamp, String startlocation, String destination) {
         this.timestamp = timestamp;
-        this.location = location;
-        this.counter = 1;
+        this.startlocation = startlocation;
+        this.destination = destination;
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public String getLocation() {
-        return location;
+    public String getStartlocation() {
+        return startlocation;
     }
 
-    public int getCounter() {
-        return counter;
+    public String getDestination() {
+        return destination;
     }
 }
