@@ -21,6 +21,7 @@ public class MobilityProfile {
     private String latestGivenDestination;
     private boolean calendarDestination;
     private String nextLocation;
+    private String event;
 
     /**
      * Constructor of class MobilityProfile.
@@ -85,10 +86,10 @@ public class MobilityProfile {
      */
     private void getLocationFromCalendar() {
         CalendarConnection cc = new CalendarConnection(context);
-        String eventLocation = cc.getEventLocation();
+        event = cc.getEventLocation();
 
-        if (eventLocation != null) {
-           nextLocation = eventLocation;
+        if (event != null) {
+           nextLocation = event;
 
             latestGivenDestination = nextLocation;
             calendarDestination = true;
@@ -101,14 +102,14 @@ public class MobilityProfile {
     }
 
     /**
-     * Saves a list of calendar events.
+     * Saves a calendar event.
      *
-     * @param events List of events
+     * @param event an events
      */
-    /*public void setCalendarEventList(ArrayList<String> events) {
-        this.eventLocations = events;
+    public void setCalendarEvent(String event) {
+        this.event = event;
     }
-*/
+
     /**
      * Returns the latest destination that was sent to the client.
      *

@@ -16,7 +16,7 @@ public class MobilityProfileTest {
     private MobilityProfile mp;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
-    ArrayList<String> events;
+    private String event;
 
     @Before
     public void setUp() throws Exception {
@@ -24,31 +24,35 @@ public class MobilityProfileTest {
         visitDao = mock(VisitDao.class);
 
         mp = new MobilityProfile(calendarTagDao, visitDao);
-        events = new ArrayList<>();
-        events.add("Rautatieasema%02-02-2016");
-        events.add("Kumpulan kampus%02-02-2016");
+        event = "Rautatieasema%02-02-2016";
 
         when(calendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
     }
 
     @Test
-    public void suggestsFirstLocationFromTheEventList() throws Exception {
-        mp.setCalendarEventList(events);
+    public void suggestsFirstLocationFromTheCalendar() throws Exception {
+        mp.setCalendarEvent(event);
 
         String nextLocation = mp.getMostLikelyDestination("Kumpula");
         assertEquals("Rautatieasema", nextLocation);
     }
 
     @Test
-    public void suggestsTheFirstValidLocationFromTheEventListIfItContainsNullEventLocations() {
-        ArrayList<String> nullEvent = new ArrayList<>();
-        nullEvent.add("null%");
-        nullEvent.add("Rautatieasema%");
-        mp.setCalendarEventList(nullEvent);
+    public void suggestHomeIfNoVisitsMade() {
+        mp.setCalendarEvent(null);
 
-        String nextLocation = mp.getMostLikelyDestination("Kumpula");
-        assertEquals("Rautatieasema", nextLocation);
+        String nextLocation = mp.getMostLikelyDestination("Rovaniemi");
+        assertEquals("home", nextLocation);
+
     }
 
+    @Test
+    public void suggestTheFirstVisitFromAllVisits() {
+        mp.setCalendarEvent(null);
+        visitDao.insertVisit(new Visit(1234, "Kumpula", 1));
+
+        String nextLocation = mp.getMostLikelyDestination("Kumpula");
+        assertEquals("Kumpula", nextLocation);
+    }
 
 }
