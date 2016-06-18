@@ -2,10 +2,12 @@ package fi.ohtu.mobilityprofile;
 
 import android.content.Context;
 
+import java.sql.Time;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -22,8 +24,11 @@ public class MobilityProfile {
     private Context context;
     private String latestGivenDestination;
     private boolean calendarDestination;
+    private boolean routeDestination;
+    private String startLocation;
     private String nextLocation;
     private String eventLocation;
+    private Time currentTime;
 
     private List<Visit> visits;
     private List<RouteSearch> routes;
@@ -39,6 +44,7 @@ public class MobilityProfile {
     public MobilityProfile() {
 
     }
+
     /**
      * Creates the MobilityProfile.
      *
@@ -58,11 +64,14 @@ public class MobilityProfile {
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
+        this.startLocation = startLocation;
         calendarDestination = false;
+        routeDestination = false;
+
         getLocationFromCalendar();
 
-        if (calendarDestination == false) {
-            getLocationFromDatabase(startLocation);
+        if (!calendarDestination) {
+            getLocationFromDatabase();
         }
 
         latestGivenDestination = nextLocation;
@@ -71,19 +80,18 @@ public class MobilityProfile {
     }
 
     /**
-     * Finds all the visits where location is the startLocation
+     * Finds all the used routes and previous visits where location is the startLocation
      * and then decides the most likely next destination of them.
-     *
-     * @param startLocation Starting location
      */
-    private void getLocationFromDatabase(String startLocation) {
+    private void getLocationFromDatabase() {
         // TODO: Use routesearchdao also
 
-        routes = routeSearchDao.getRouteSearchesByStartlocation(startLocation);
-        searchFromUsedRoutes();
+        currentTime = new Time(System.currentTimeMillis());
 
-        visits = visitDao.getVisitsByLocation(startLocation);
-        searchFromPreviousVisits();
+        searchFromUsedRoutes();
+        if (!routeDestination) {
+           searchFromPreviousVisits();
+        }
 
         if (visits.isEmpty() && routes.isEmpty()) {
             // TODO: Something sensible
@@ -96,11 +104,11 @@ public class MobilityProfile {
 
 
     /**
-     * Gets the most probable location from the calendar
+     * Gets the most probable destination from the calendar
      */
     private void getLocationFromCalendar() {
-        CalendarConnection cc = new CalendarConnection(context);
-        eventLocation = cc.getEventLocation();
+        CalendarConnection calendar = new CalendarConnection(context);
+        eventLocation = calendar.getEventLocation();
 
         if (eventLocation != null) {
             nextLocation = eventLocation;
@@ -114,17 +122,56 @@ public class MobilityProfile {
     }
 
     /**
-     * Selects location based on previously used routes.
+     * Selects destination based on previously used routes.
      */
     private void searchFromUsedRoutes() {
-
+        routes = routeSearchDao.getRouteSearchesByStartlocation(startLocation);
+        if (routes != null) {
+            searchForPreviouslyUsedRouteAtTheSameTime();
+        }
     }
 
     /**
-     * Selects location based on previous visits.
+     * Checks if the user has gone to some destination at the same time in the past.
+     */
+    private void searchForPreviouslyUsedRouteAtTheSameTime() {
+        for (RouteSearch route : routes) {
+            Time routeTime = new Time(route.getTimestamp());
+            if (aroundTheSameTime(routeTime)) {
+                nextLocation = route.getDestination();
+                routeDestination = true;
+                break;
+            }
+        }
+    }
+
+    /**
+     * Checks if selected route was used at around the same time in the past, max 2 hours earlier
+     * or max 2 hours later than current time.
+     * @param routeTime timestamp of the route
+     * @return true if route was used within the time frame, false if not.
+     */
+    private boolean aroundTheSameTime(Time routeTime) {
+        int routeHour = routeTime.getHours();
+        int routeMin = routeTime.getMinutes();
+        int currentHour = currentTime.getHours();
+        int currentMin = currentTime.getMinutes();
+
+        if ((routeHour > currentHour - 2 || (routeHour == currentHour - 2 && routeMin >= currentMin))
+                && (routeHour < currentHour + 2 || (routeHour == currentHour + 2 && routeMin <= currentMin))) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Selects destination based on previous visits.
      */
     private void searchFromPreviousVisits() {
+        visits = visitDao.getVisitsByLocation(startLocation);
+        if (visits != null) {
 
+        }
     }
 
     /**
