@@ -26,6 +26,9 @@ public class MobilityProfile {
     private String nextLocation;
     private String eventLocation;
 
+    private List<Visit> visits;
+    private List<RouteSearch> routes;
+
     /**
      * Constructor of class MobilityProfile.
      * @param context Context of the calling app. Used when getting events from calendars.
@@ -77,8 +80,13 @@ public class MobilityProfile {
     private void getLocationFromDatabase(String startLocation) {
         // TODO: Use routesearchdao also
 
-        List<Visit> visits = visitDao.getVisitsByLocation(startLocation);
-        if (visits.isEmpty()) {
+        routes = routeSearchDao.getRouteSearchesByStartlocation(startLocation);
+        searchFromUsedRoutes();
+
+        visits = visitDao.getVisitsByLocation(startLocation);
+        searchFromPreviousVisits();
+
+        if (visits.isEmpty() && routes.isEmpty()) {
             // TODO: Something sensible
             nextLocation = "home";
         } else {
@@ -105,6 +113,20 @@ public class MobilityProfile {
                 nextLocation = calendarTag.getValue();
             }
         }
+    }
+
+    /**
+     * Selects location based on previously used routes.
+     */
+    private void searchFromUsedRoutes() {
+
+    }
+
+    /**
+     * Selects location based on previous visits.
+     */
+    private void searchFromPreviousVisits() {
+
     }
 
     /**
