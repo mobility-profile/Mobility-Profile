@@ -9,6 +9,7 @@ import org.robolectric.annotation.Config;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
@@ -21,7 +22,7 @@ public class VisitDaoTest {
 
     @Before
     public void setUp() {
-        this.visitDao = new VisitDao();
+        this.visitDao = new VisitDao(new UserLocationDao());
         Robolectric.setupActivity(MainActivityStub.class);
     }
 
@@ -29,15 +30,15 @@ public class VisitDaoTest {
     public void testInsertAndFindLatest() {
         visitDao.insertVisit(new Visit(1234, "Kumpula"));
 
-        assertEquals("Kumpula", visitDao.getLatestVisit().getLocation());
+        assertEquals("Kumpula", visitDao.getLatestVisit().getNearestKnownLocation());
 
         visitDao.insertVisit(new Visit(1300, "Herttoniemi"));
 
-        assertEquals("Herttoniemi", visitDao.getLatestVisit().getLocation());
+        assertEquals("Herttoniemi", visitDao.getLatestVisit().getNearestKnownLocation());
 
         visitDao.insertVisit(new Visit(1100, "Lammassaari"));
 
-        assertEquals("Herttoniemi", visitDao.getLatestVisit().getLocation());
+        assertEquals("Herttoniemi", visitDao.getLatestVisit().getNearestKnownLocation());
     }
 
     @Test
@@ -47,7 +48,7 @@ public class VisitDaoTest {
         List<Visit> visits = visitDao.getVisitsByLocation("Helsinki");
 
         assertEquals(1, visits.size());
-        assertEquals("Helsinki", visits.get(0).getLocation());
+        assertEquals("Helsinki", visits.get(0).getNearestKnownLocation());
     }
 
     @Test
@@ -62,14 +63,14 @@ public class VisitDaoTest {
         List<Visit> visits = visitDao.getVisitsByLocation("Kumpula");
 
         assertEquals(3, visits.size());
-        assertEquals("Kumpula", visits.get(0).getLocation());
-        assertEquals("Kumpula", visits.get(1).getLocation());
-        assertEquals("Kumpula", visits.get(2).getLocation());
+        assertEquals("Kumpula", visits.get(0).getNearestKnownLocation());
+        assertEquals("Kumpula", visits.get(1).getNearestKnownLocation());
+        assertEquals("Kumpula", visits.get(2).getNearestKnownLocation());
 
         List<Visit> visits2 = visitDao.getVisitsByLocation("Tikkurila");
 
         assertEquals(1, visits2.size());
-        assertEquals("Tikkurila", visits2.get(0).getLocation());
+        assertEquals("Tikkurila", visits2.get(0).getNearestKnownLocation());
     }
 
     @Test
