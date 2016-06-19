@@ -41,15 +41,12 @@ public class MobilityProfile {
         this.context = context;
     }
 
-    public MobilityProfile() {
-
-    }
-
     /**
      * Creates the MobilityProfile.
      *
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
+     * @param routeSearchDao DAO for routeSearch
      */
     public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
         this.calendarTagDao = calendarTagDao;
@@ -66,16 +63,13 @@ public class MobilityProfile {
     public String getMostLikelyDestination(String startLocation) {
         this.startLocation = startLocation;
         calendarDestination = false;
-        routeDestination = false;
 
         getLocationFromCalendar();
-
         if (!calendarDestination) {
             getLocationFromDatabase();
         }
 
         latestGivenDestination = nextLocation;
-
         return nextLocation;
     }
 
@@ -86,22 +80,22 @@ public class MobilityProfile {
     private void getLocationFromDatabase() {
         // TODO: Use routesearchdao also
 
+        routeDestination = false;
         currentTime = new Time(System.currentTimeMillis());
 
         searchFromUsedRoutes();
         if (!routeDestination) {
-           searchFromPreviousVisits();
+            searchFromPreviousVisits();
         }
 
         if (visits.isEmpty() && routes.isEmpty()) {
-            // TODO: Something sensible
+           // TODO: Something sensible
             nextLocation = "home";
         } else {
             // TODO: Add some logic.
             nextLocation = AddressConverter.convertToAddress(visits.get(0).getNearestKnownLocation().getLocation());
         }
     }
-
 
     /**
      * Gets the most probable destination from the calendar
@@ -133,11 +127,11 @@ public class MobilityProfile {
 
     /**
      * Checks if the user has gone to some destination at the same time in the past.
+     * Searches from previously used routes.
      */
     private void searchForPreviouslyUsedRouteAtTheSameTime() {
         for (RouteSearch route : routes) {
-            Time routeTime = new Time(route.getTimestamp());
-            if (aroundTheSameTime(routeTime)) {
+            if (aroundTheSameTime(new Time(route.getTimestamp()))) {
                 nextLocation = route.getDestination();
                 routeDestination = true;
                 break;
@@ -146,7 +140,7 @@ public class MobilityProfile {
     }
 
     /**
-     * Checks if selected route was used at around the same time in the past, max 2 hours earlier
+     * Checks if selected route was used around the same time in the past, max 2 hours earlier
      * or max 2 hours later than current time.
      * @param routeTime timestamp of the route
      * @return true if route was used within the time frame, false if not.

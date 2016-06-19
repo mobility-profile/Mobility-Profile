@@ -7,9 +7,16 @@ import com.orm.SugarRecord;
 public class UserLocation extends SugarRecord {
     PointF location;
 
+    /**
+     *
+     */
     public UserLocation() {
     }
 
+    /**
+     *
+     * @param location
+     */
     public UserLocation(PointF location) {
         this.location = location;
     }

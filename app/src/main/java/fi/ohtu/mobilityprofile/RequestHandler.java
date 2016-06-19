@@ -32,6 +32,7 @@ public class RequestHandler extends Handler {
      * @param mobilityProfile Journey planner that provides the logic for our app
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
+     * @param routeSearchDao DAO for routeSearch
      */
     public RequestHandler(Context context, MobilityProfile mobilityProfile,
                           CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
@@ -71,10 +72,18 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     private Message processDestinationRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination("FOR TESTING"));
     }
 
+    /**
+     *
+     * @param message
+     */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
         String destination = bundle.getString(SEND_USED_DESTINATION+"");
@@ -88,10 +97,21 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     *
+     * @param code
+     * @return
+     */
     private Message processErrorMessage(int code) {
         return createMessage(ERROR_UNKNOWN_CODE, code+"");
     }
 
+    /**
+     *
+     * @param code
+     * @param info
+     * @return
+     */
     private Message createMessage(int code, String info)  {
         // Setup the reply message
         Bundle bundle = new Bundle();

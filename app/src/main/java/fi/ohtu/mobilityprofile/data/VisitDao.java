@@ -26,6 +26,11 @@ public class VisitDao {
                 .limit("1"));
     }
 
+    /**
+     *
+     * @param query
+     * @return
+     */
     private Visit getLatestVisit(Select<Visit> query) {
         List<Visit> visits = query.list();
 

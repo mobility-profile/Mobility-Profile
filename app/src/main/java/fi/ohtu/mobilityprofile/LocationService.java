@@ -21,6 +21,10 @@ public class LocationService extends Service {
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
 
+        /**
+         *
+         * @param provider
+         */
         public LocationListener(String provider) {
             Log.e(TAG, "LocationListener " + provider);
             mLastLocation = new Location(provider);
@@ -49,8 +53,8 @@ public class LocationService extends Service {
     }
 
     LocationListener[] mLocationListeners = new LocationListener[]{
-            new LocationListener(LocationManager.GPS_PROVIDER),
-            new LocationListener(LocationManager.NETWORK_PROVIDER)
+        new LocationListener(LocationManager.GPS_PROVIDER),
+        new LocationListener(LocationManager.NETWORK_PROVIDER)
     };
 
     @Override
@@ -114,6 +118,9 @@ public class LocationService extends Service {
         }
     }
 
+    /**
+     *
+     */
     private void initializeLocationManager() {
         Log.e(TAG, "initializeLocationManager");
         if (mLocationManager == null) {
