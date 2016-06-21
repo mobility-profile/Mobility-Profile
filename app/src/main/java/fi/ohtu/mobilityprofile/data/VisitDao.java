@@ -59,6 +59,18 @@ public class VisitDao {
     }
 
     /**
+     * Returns a list of all visits.
+     * @return list of visits
+     */
+    public List<Visit> getAllVisits() {
+        List<Visit> visits = Select.from(Visit.class)
+                .orderBy("timestamp DESC")
+                .list();
+
+        return visits;
+    }
+
+    /**
      * Saves a visit to the database. Also sets the visit's nearest known location.
      *
      * @param visit Visit to be saved
