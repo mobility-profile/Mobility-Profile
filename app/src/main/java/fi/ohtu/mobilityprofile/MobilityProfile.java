@@ -28,6 +28,7 @@ public class MobilityProfile {
     private String latestGivenDestination;
     private boolean calendarDestination;
     private boolean routeDestination;
+    private boolean visitDestination;
     private String startLocation;
     private String nextLocation;
     private String eventLocation;
@@ -60,8 +61,7 @@ public class MobilityProfile {
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
-        this.startLocation = startLocation;
-        calendarDestination = false;
+        initialize(startLocation);
 
         getLocationFromCalendar();
         if (!calendarDestination) {
@@ -73,11 +73,22 @@ public class MobilityProfile {
     }
 
     /**
+     * Initializes startLocation and booleans for checking whether destination was
+     * acquired from calendars or the database.
+     * @param startLocation starting location
+     */
+    private void initialize(String startLocation) {
+        this.startLocation = startLocation;
+        calendarDestination = false;
+        routeDestination = false;
+        visitDestination = false;
+    }
+
+    /**
      * Finds all the used routes and previous visits where location is the startLocation
      * and then decides the most likely next destination of them.
      */
     private void getLocationFromDatabase() {
-        routeDestination = false;
         currentTime = new Date(System.currentTimeMillis());
 
         searchFromUsedRoutes();
@@ -85,16 +96,9 @@ public class MobilityProfile {
             searchFromPreviousVisits();
         }
 
-        if (visits.isEmpty() && routes.isEmpty()) {
-            // TODO: Something sensible
+        if (!routeDestination && !visitDestination) {
+           // TODO: Something sensible
             nextLocation = "home";
-        } else {
-            // TODO: Add some logic.
-            nextLocation = visits.get(0).getOriginalLocation();
-            if (!visits.isEmpty()) {
-                System.out.println(visits);
-                nextLocation = visits.get(0).getOriginalLocation();
-            }
         }
     }
 
@@ -181,6 +185,7 @@ public class MobilityProfile {
         for (Visit visit : visits) {
             if (aroundTheSameTime(new Time(visit.getTimestamp()), 1, 3)) {
                 nextLocation = visit.getOriginalLocation();
+                visitDestination = true;
                 break;
             }
         }
@@ -189,7 +194,7 @@ public class MobilityProfile {
     /**
      * Saves a calendar event.
      *
-     * @param event an events
+     * @param event an event
      */
     public void setCalendarEventLocation(String event) {
         this.eventLocation = event;

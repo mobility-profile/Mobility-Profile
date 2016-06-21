@@ -8,9 +8,10 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 
 /**
- * Used to get events from calendars.
+ * Class is used to get events from calendars.
  */
 public class CalendarConnection {
+
     private String[] EVENT_PROJECTION = new String[]{
         CalendarContract.Events.EVENT_LOCATION,
         CalendarContract.Instances.BEGIN,
@@ -88,7 +89,7 @@ public class CalendarConnection {
 
     /**
      * Returns location queried from calendar. If null, location of an all day event is returned.
-     * @return location.
+     * @return location of the event
      */
     public String getEventLocation() {
         return this.eventLocation != null ? eventLocation : allDayEventLocation;
