@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -28,9 +29,7 @@ public class AddressConverter {
     public static String convertToAddress(PointF location, Context context) {
 
         String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat=" + location.x +
-                "&point.lon=" + location.y + "&layers=address";
-
-
+                "&point.lon=" + location.y + "&layers=address&size=1";
 
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -38,9 +37,13 @@ public class AddressConverter {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            // TODO: Do the actual convert from this json mess to an address.
+
+                            //"name":"Karamzins strand 4"
+                            //"street":"Karamzins strand"
+                            //"label":"Karamzins strand 4, Helsinki, Finland"
+
                             JSONObject json = new JSONObject(response);
-                            System.out.println(json);
+                            System.out.println(json.get("name").toString());
                         } catch (Exception e) {
                             System.out.println("error in addressconverter");
                         }
@@ -54,8 +57,7 @@ public class AddressConverter {
         });
         queue.add(stringRequest);
 
-
-        return location.x + " " + location.y;
+        return location.x + "" + location.y;
     }
 
 }
