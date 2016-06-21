@@ -11,6 +11,10 @@ import java.util.List;
 public class VisitDao {
     private UserLocationDao userLocationDao;
 
+    /**
+     * Creates VisitDao.
+     * @param userLocationDao 
+     */
     public VisitDao(UserLocationDao userLocationDao) {
         this.userLocationDao = userLocationDao;
     }

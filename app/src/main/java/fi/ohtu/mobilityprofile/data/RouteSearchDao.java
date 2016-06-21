@@ -24,8 +24,8 @@ public class RouteSearchDao {
     /**
      * Returns the latest routesearch from the database based on custom query,
      * or null if there is none.
-     * @param query
-     * @return
+     * @param query custom query
+     * @return result of the query
      */
     private RouteSearch getLatestRouteSearch(Select<RouteSearch> query) {
         List<RouteSearch> routesearches = query.list();
