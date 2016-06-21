@@ -21,6 +21,11 @@ public class RouteSearchDao {
                 .limit("1"));
     }
 
+    /**
+     *
+     * @param query
+     * @return
+     */
     private RouteSearch getLatestRouteSearch(Select<RouteSearch> query) {
         List<RouteSearch> routesearches = query.list();
 
@@ -51,7 +56,7 @@ public class RouteSearchDao {
     /**
      * Returns a list of routesearches where the startlocation matches the given one.
      *
-     * @param destination StartLocation of the routesearches
+     * @param destination destination of the routesearches
      * @return List of routesearches
      */
     public List<RouteSearch> getRouteSearchesByDestination(String destination) {
@@ -66,7 +71,8 @@ public class RouteSearchDao {
     /**
      * Returns a list of routesearches where the startlocation matches the given one.
      *
-     * @param destination StartLocation of the routesearches
+     * @param startLocation Start location of the routesearche
+     * @param destination Destination of the routesearch
      * @return List of routesearches
      */
     public List<RouteSearch> getRouteSearchesByStartlocationAndDestination(String startLocation, String destination) {

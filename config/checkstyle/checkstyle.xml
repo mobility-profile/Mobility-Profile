@@ -8,11 +8,15 @@
   
   <module name="MethodLength">
 		<property name="tokens" value="METHOD_DEF"/>
-		<property name="max" value="15"/>
+		<property name="max" value="20"/>
+		<property name="countEmpty" value="false"/>
   </module>
    
   <module name="Indentation"/>
   <module name="LeftCurly"/>
-  <module name="JavadocMethod"/>
+  <module name="JavadocMethod">
+		<property name="allowMissingPropertyJavadoc" value="true"/>
+  </module>
+
   </module>
 </module>

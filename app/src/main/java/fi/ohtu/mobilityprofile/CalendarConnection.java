@@ -12,9 +12,9 @@ import android.provider.CalendarContract;
  */
 public class CalendarConnection {
     private String[] EVENT_PROJECTION = new String[]{
-            CalendarContract.Events.EVENT_LOCATION,
-            CalendarContract.Instances.BEGIN,
-            CalendarContract.Events.ALL_DAY
+        CalendarContract.Events.EVENT_LOCATION,
+        CalendarContract.Instances.BEGIN,
+        CalendarContract.Events.ALL_DAY
     };
 
     private Context context;

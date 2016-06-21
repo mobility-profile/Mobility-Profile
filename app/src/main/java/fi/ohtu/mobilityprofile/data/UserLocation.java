@@ -7,6 +7,9 @@ import com.orm.SugarRecord;
 public class UserLocation extends SugarRecord {
     String location;
 
+    /**
+     *
+     */
     public UserLocation() {
     }
 
