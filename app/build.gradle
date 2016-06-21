@@ -47,6 +47,7 @@ dependencies {
     compile ('com.github.satyan:sugar:1.5') {
         exclude group: 'com.google.guava'
     }
+    compile 'com.android.volley:volley:1.0.0'
 
     testCompile 'org.mockito:mockito-core:1.9.+'
     compile 'com.android.support:design:23.0.1'
