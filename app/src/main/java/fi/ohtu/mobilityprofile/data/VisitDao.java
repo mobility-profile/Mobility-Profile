@@ -1,7 +1,5 @@
 package fi.ohtu.mobilityprofile.data;
 
-import android.graphics.PointF;
-
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -46,7 +44,7 @@ public class VisitDao {
     }
 
     /**
-     * Returns a list of visits where the nearestKnownLocation matches the given one.
+     * Returns a list of visits where the nearestknownlocation matches the given one.
      *
      * @param location Location of the visits
      * @return List of visits
@@ -56,7 +54,7 @@ public class VisitDao {
         userLocation.save();
         userLocation.delete();
         List<Visit> visits = Select.from(Visit.class)
-                .where(Condition.prop("nearestKnownLocation").eq(location))
+                .where(Condition.prop("nearestknownlocation").eq(location))
                 .orderBy("timestamp DESC")
                 .list();
 
@@ -69,8 +67,8 @@ public class VisitDao {
      * @param visit Visit to be saved
      */
     public void insertVisit(Visit visit) {
-        UserLocation nearestLocation = userLocationDao.getNearestLocation(visit.getOriginalLocation(), 50);
-        visit.nearestKnownLocation = nearestLocation;
+        UserLocation nearestLocation = userLocationDao.getNearestLocation(visit.getOriginallocation(), 50);
+        visit.nearestknownlocation = nearestLocation;
         visit.save();
     }
 }

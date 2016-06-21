@@ -39,14 +39,14 @@ public class RouteSearchDao {
     }
 
     /**
-     * Returns a list of routesearches where the nearestKnownLocation matches the given one.
+     * Returns a list of routesearches where the nearestknownlocation matches the given one.
      *
      * @param startLocation StartLocation of the routesearches
      * @return List of routesearches
      */
     public List<RouteSearch> getRouteSearchesByStartlocation(String startLocation) {
         List<RouteSearch> searches = Select.from(RouteSearch.class)
-                .where(Condition.prop("nearestKnownLocation").eq(startLocation))
+                .where(Condition.prop("startlocation").eq(startLocation))
                 .orderBy("timestamp DESC")
                 .list();
 

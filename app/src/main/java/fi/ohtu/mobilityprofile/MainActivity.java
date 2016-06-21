@@ -12,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import com.orm.SugarContext;
 
 
+import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.data.UserLocation;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
 

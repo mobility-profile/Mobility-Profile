@@ -30,15 +30,15 @@ public class VisitDaoTest {
     public void testInsertAndFindLatest() {
         visitDao.insertVisit(new Visit(1234, "Kumpula"));
 
-        assertEquals("Kumpula", visitDao.getLatestVisit().getNearestKnownLocation());
+        assertEquals("Kumpula", visitDao.getLatestVisit().getNearestknownlocation());
 
         visitDao.insertVisit(new Visit(1300, "Herttoniemi"));
 
-        assertEquals("Herttoniemi", visitDao.getLatestVisit().getNearestKnownLocation());
+        assertEquals("Herttoniemi", visitDao.getLatestVisit().getNearestknownlocation());
 
         visitDao.insertVisit(new Visit(1100, "Lammassaari"));
 
-        assertEquals("Herttoniemi", visitDao.getLatestVisit().getNearestKnownLocation());
+        assertEquals("Herttoniemi", visitDao.getLatestVisit().getNearestknownlocation());
     }
 
     @Test
@@ -48,7 +48,7 @@ public class VisitDaoTest {
         List<Visit> visits = visitDao.getVisitsByLocation("Helsinki");
 
         assertEquals(1, visits.size());
-        assertEquals("Helsinki", visits.get(0).getNearestKnownLocation());
+        assertEquals("Helsinki", visits.get(0).getNearestknownlocation());
     }
 
     @Test
@@ -63,14 +63,14 @@ public class VisitDaoTest {
         List<Visit> visits = visitDao.getVisitsByLocation("Kumpula");
 
         assertEquals(3, visits.size());
-        assertEquals("Kumpula", visits.get(0).getNearestKnownLocation());
-        assertEquals("Kumpula", visits.get(1).getNearestKnownLocation());
-        assertEquals("Kumpula", visits.get(2).getNearestKnownLocation());
+        assertEquals("Kumpula", visits.get(0).getNearestknownlocation());
+        assertEquals("Kumpula", visits.get(1).getNearestknownlocation());
+        assertEquals("Kumpula", visits.get(2).getNearestknownlocation());
 
         List<Visit> visits2 = visitDao.getVisitsByLocation("Tikkurila");
 
         assertEquals(1, visits2.size());
-        assertEquals("Tikkurila", visits2.get(0).getNearestKnownLocation());
+        assertEquals("Tikkurila", visits2.get(0).getNearestknownlocation());
     }
 
     @Test
