@@ -22,6 +22,8 @@ public class MobilityProfile {
     private VisitDao visitDao;
     private RouteSearchDao routeSearchDao;
 
+    private CalendarConnection calendar;
+
     private Context context;
     private String latestGivenDestination;
     private boolean calendarDestination;
@@ -36,19 +38,11 @@ public class MobilityProfile {
     private List<RouteSearch> routes;
 
     /**
-     * Constructor of class MobilityProfile.
-     * @param context Context of the calling app. Used when getting events from calendars.
-     */
-    public MobilityProfile(Context context) {
-        this.context = context;
-    }
-
-    /**
      * Creates the MobilityProfile.
      *
-     * @param context Context of the calling app. Used when getting events from calendars.
+     * @param context        Context of the calling app. Used when getting events from calendars.
      * @param calendarTagDao DAO for calendar tags
-     * @param visitDao DAO for visits
+     * @param visitDao       DAO for visits
      * @param routeSearchDao DAO for used searches
      */
     public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
@@ -56,6 +50,8 @@ public class MobilityProfile {
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
         this.routeSearchDao = routeSearchDao;
+
+        this.calendar = new CalendarConnection(context);
     }
 
     /**
@@ -65,9 +61,8 @@ public class MobilityProfile {
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
-        this.startLocation = startLocation;
-        calendarDestination = false;
-        
+        initialize(startLocation);
+
         getLocationFromCalendar();
         if (!calendarDestination) {
             getLocationFromDatabase();
@@ -78,11 +73,22 @@ public class MobilityProfile {
     }
 
     /**
+     * Initializes startLocation and booleans for checking whether destination was
+     * acquired from calendars or the database.
+     * @param startLocation starting location
+     */
+    private void initialize(String startLocation) {
+        this.startLocation = startLocation;
+        calendarDestination = false;
+        routeDestination = false;
+        visitDestination = false;
+    }
+
+    /**
      * Finds all the used routes and previous visits where location is the startLocation
      * and then decides the most likely next destination of them.
      */
     private void getLocationFromDatabase() {
-        routeDestination = false;
         currentTime = new Date(System.currentTimeMillis());
 
         searchFromUsedRoutes();
@@ -100,7 +106,6 @@ public class MobilityProfile {
      * Gets the most probable destination from the calendar
      */
     private void getLocationFromCalendar() {
-        CalendarConnection calendar = new CalendarConnection(context);
         eventLocation = calendar.getEventLocation();
 
         if (eventLocation != null) {
@@ -142,9 +147,10 @@ public class MobilityProfile {
     /**
      * Checks if the selected location was visited or set as destination around the same time in the past,
      * max x hours earlier or max y hours later than current time.
-     * @param visitTime timestamp of the location
+     *
+     * @param visitTime    timestamp of the location
      * @param hoursEarlier hours earlier than current time
-     * @param hoursLater hours later than current time
+     * @param hoursLater   hours later than current time
      * @return true if location was visited within the time frame, false if not.
      */
     private boolean aroundTheSameTime(Time visitTime, int hoursEarlier, int hoursLater) {
@@ -167,8 +173,6 @@ public class MobilityProfile {
         visits = visitDao.getAllVisits();
         if (visits != null) {
             searchForPreviouslyVisitedLocationAtTheSameTime();
-        } else {
-            visitDestination = false;
         }
     }
 
@@ -185,7 +189,6 @@ public class MobilityProfile {
                 break;
             }
         }
-        visitDestination = false;
     }
 
     /**

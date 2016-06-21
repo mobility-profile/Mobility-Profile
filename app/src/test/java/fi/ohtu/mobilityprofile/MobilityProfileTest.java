@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
@@ -30,7 +31,8 @@ public class MobilityProfileTest {
     @Before
     public void setUp() throws Exception {
         calendarTagDao = mock(CalendarTagDao.class);
-        visitDao = mock(VisitDao.class);
+        visitDao = new VisitDao(mock(UserLocationDao.class));
+        routeSearchDao = mock(RouteSearchDao.class);
 
         mp = new MobilityProfile(Robolectric.setupActivity(MainActivityStub.class), calendarTagDao, visitDao, routeSearchDao);
         eventLocation = "Rautatieasema";

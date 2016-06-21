@@ -1,29 +1,28 @@
 package fi.ohtu.mobilityprofile.data;
 
-import android.graphics.PointF;
-
 import com.orm.SugarRecord;
 
+/**
+ * Class is used to save locations the user has visited.
+ */
 public class Visit extends SugarRecord {
 
     long timestamp;
     String originalLocation;             // Accurate point the user visited.
-    UserLocation nearestknownlocation;   // Closest known nearestKnownLocation that is within 50 meters (value may change) from the actual nearestKnownLocation.
+    UserLocation nearestKnownLocation;   // Closest known nearestKnownLocation that is within 50 meters (value may change) from the actual nearestKnownLocation.
 
-    /**
-     *
-     */
     public Visit() {
     }
 
     /**
-     * @param timestamp
-     * @param originalLocation
+     * Creates Visit.
+     * @param timestamp timestamp of the visit
+     * @param originalLocation exact location of the visit
      */
     public Visit(long timestamp, String originalLocation) {
         this.timestamp = timestamp;
         this.originalLocation = originalLocation;
-        this.nearestknownlocation = null;
+        this.nearestKnownLocation = null;
     }
 
     public long getTimestamp() {
@@ -35,6 +34,6 @@ public class Visit extends SugarRecord {
     }
 
     public UserLocation getNearestKnownLocation() {
-        return nearestknownlocation;
+        return nearestKnownLocation;
     }
 }
