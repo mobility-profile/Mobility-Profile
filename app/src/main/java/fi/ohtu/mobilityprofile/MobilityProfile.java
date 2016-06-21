@@ -65,8 +65,8 @@ public class MobilityProfile {
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
-        this.startLocation = startLocation;
-        calendarDestination = false;
+
+        initialize(startLocation);
         
         getLocationFromCalendar();
         if (!calendarDestination) {
@@ -78,11 +78,22 @@ public class MobilityProfile {
     }
 
     /**
+     * Initializes startLocation and booleans for checking whether destination was
+     * acquired from calendars or the database.
+     * @param startLocation starting location
+     */
+    private void initialize(String startLocation) {
+        this.startLocation = startLocation;
+        calendarDestination = false;
+        routeDestination = false;
+        visitDestination = false;
+    }
+
+    /**
      * Finds all the used routes and previous visits where location is the startLocation
      * and then decides the most likely next destination of them.
      */
     private void getLocationFromDatabase() {
-        routeDestination = false;
         currentTime = new Date(System.currentTimeMillis());
 
         searchFromUsedRoutes();
@@ -167,8 +178,6 @@ public class MobilityProfile {
         visits = visitDao.getAllVisits();
         if (visits != null) {
             searchForPreviouslyVisitedLocationAtTheSameTime();
-        } else {
-            visitDestination = false;
         }
     }
 
@@ -185,7 +194,6 @@ public class MobilityProfile {
                 break;
             }
         }
-        visitDestination = false;
     }
 
     /**
