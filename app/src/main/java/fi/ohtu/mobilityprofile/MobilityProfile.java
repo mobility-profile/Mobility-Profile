@@ -26,6 +26,7 @@ public class MobilityProfile {
     private String latestGivenDestination;
     private boolean calendarDestination;
     private boolean routeDestination;
+    private boolean visitDestination;
     private String startLocation;
     private String nextLocation;
     private String eventLocation;
@@ -89,15 +90,9 @@ public class MobilityProfile {
             searchFromPreviousVisits();
         }
 
-        if (visits.isEmpty() && routes.isEmpty()) {
+        if (!routeDestination && !visitDestination) {
            // TODO: Something sensible
             nextLocation = "home";
-        } else {
-            // TODO: Add some logic.
-//            if (!visits.isEmpty()) {
-//                System.out.println(visits);
-//                nextLocation = visits.get(0).getNearestKnownLocation().getLocation();
-//            }
         }
     }
 
@@ -172,6 +167,8 @@ public class MobilityProfile {
         visits = visitDao.getAllVisits();
         if (visits != null) {
             searchForPreviouslyVisitedLocationAtTheSameTime();
+        } else {
+            visitDestination = false;
         }
     }
 
@@ -184,15 +181,17 @@ public class MobilityProfile {
         for (Visit visit : visits) {
             if (aroundTheSameTime(new Time(visit.getTimestamp()), 1, 3)) {
                 nextLocation = visit.getOriginalLocation();
+                visitDestination = true;
                 break;
             }
         }
+        visitDestination = false;
     }
 
     /**
      * Saves a calendar event.
      *
-     * @param event an events
+     * @param event an event
      */
     public void setCalendarEventLocation(String event) {
         this.eventLocation = event;
