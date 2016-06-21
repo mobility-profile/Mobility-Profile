@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.data;
 
+import android.graphics.PointF;
+
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -50,8 +52,23 @@ public class VisitDao {
      * @return List of visits
      */
     public List<Visit> getVisitsByLocation(String location) {
+        UserLocation userLocation = new UserLocation("test");
+        userLocation.save();
+        userLocation.delete();
         List<Visit> visits = Select.from(Visit.class)
                 .where(Condition.prop("nearestknownlocation").eq(location))
+                .orderBy("timestamp DESC")
+                .list();
+
+        return visits;
+    }
+
+    /**
+     * Returns a list of all visits.
+     * @return list of visits
+     */
+    public List<Visit> getAllVisits() {
+        List<Visit> visits = Select.from(Visit.class)
                 .orderBy("timestamp DESC")
                 .list();
 
