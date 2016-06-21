@@ -48,7 +48,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
 
-        List<RouteSearch> searches = Select.from(RouteSearch.class).list();
+        List<RouteSearch> searches = Select.from(RouteSearch.class).orderBy("timestamp DESC").list();
 
         ArrayList<String> routes = new ArrayList<>();
 
