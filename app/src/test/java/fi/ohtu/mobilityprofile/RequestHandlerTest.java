@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
 import static org.mockito.Mockito.mock;
@@ -41,7 +42,7 @@ public class RequestHandlerTest {
         this.mobilityProfile = mock(MobilityProfile.class);
         this.calendarTagDao = mock(CalendarTagDao.class);
         this.routeSearchDao = new RouteSearchDao();
-        this.visitDao = new VisitDao();
+        this.visitDao = new VisitDao(new UserLocationDao());
 
         this.requestHandler = new RequestHandler(context, mobilityProfile, calendarTagDao, visitDao, routeSearchDao);
 

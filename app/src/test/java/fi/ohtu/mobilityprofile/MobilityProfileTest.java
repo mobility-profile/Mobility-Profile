@@ -2,6 +2,11 @@ package fi.ohtu.mobilityprofile;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -12,6 +17,8 @@ import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = "src/main/AndroidManifest.xml", constants = BuildConfig.class, sdk = 21)
 public class MobilityProfileTest {
 
     private MobilityProfile mp;
@@ -25,7 +32,7 @@ public class MobilityProfileTest {
         calendarTagDao = mock(CalendarTagDao.class);
         visitDao = mock(VisitDao.class);
 
-        mp = new MobilityProfile(calendarTagDao, visitDao, routeSearchDao);
+        mp = new MobilityProfile(Robolectric.setupActivity(MainActivityStub.class), calendarTagDao, visitDao, routeSearchDao);
         eventLocation = "Rautatieasema";
 
         when(calendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);

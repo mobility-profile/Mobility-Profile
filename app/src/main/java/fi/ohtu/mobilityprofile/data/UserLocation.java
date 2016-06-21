@@ -5,16 +5,16 @@ import android.graphics.PointF;
 import com.orm.SugarRecord;
 
 public class UserLocation extends SugarRecord {
-    PointF location;
+    String location;
 
     public UserLocation() {
     }
 
-    public UserLocation(PointF location) {
+    public UserLocation(String location) {
         this.location = location;
     }
 
-    public PointF getLocation() {
+    public String getLocation() {
         return location;
     }
 }

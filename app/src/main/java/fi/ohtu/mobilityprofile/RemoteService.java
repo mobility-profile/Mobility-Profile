@@ -23,7 +23,7 @@ public class RemoteService extends Service {
                 CalendarTagDao calendarTagDao = new CalendarTagDao();
                 VisitDao visitDao = new VisitDao(new UserLocationDao());
                 RouteSearchDao routeSearchDao = new RouteSearchDao();
-                messenger = new Messenger(new RequestHandler(this, new MobilityProfile(calendarTagDao, visitDao, routeSearchDao), calendarTagDao, visitDao, routeSearchDao));
+                messenger = new Messenger(new RequestHandler(this, new MobilityProfile(this, calendarTagDao, visitDao, routeSearchDao), calendarTagDao, visitDao, routeSearchDao));
             }
         }
 

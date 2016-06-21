@@ -26,23 +26,15 @@ public class MobilityProfile {
     private String eventLocation;
 
     /**
-     * Constructor of class MobilityProfile.
-     * @param context Context of the calling app. Used when getting events from calendars.
-     */
-    public MobilityProfile(Context context) {
-        this.context = context;
-    }
-
-    public MobilityProfile() {
-
-    }
-    /**
      * Creates the MobilityProfile.
      *
+     * @param context Context of the calling app. Used when getting events from calendars.
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
+     * @param routeSearchDao DAO for used searches
      */
-    public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
+    public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
+        this.context = context;
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
         this.routeSearchDao = routeSearchDao;
@@ -58,7 +50,7 @@ public class MobilityProfile {
         calendarDestination = false;
         getLocationFromCalendar();
 
-        if (calendarDestination == false) {
+        if (!calendarDestination) {
             getLocationFromDatabase(startLocation);
         }
 
@@ -82,7 +74,7 @@ public class MobilityProfile {
             nextLocation = "home";
         } else {
             // TODO: Add some logic.
-            nextLocation = AddressConverter.convertToAddress(visits.get(0).getNearestKnownLocation().getLocation());
+            nextLocation = visits.get(0).getNearestKnownLocation().getLocation();
         }
     }
 

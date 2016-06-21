@@ -31,7 +31,7 @@
             android:value="8487000" />
 
         <meta-data android:name="DATABASE" android:value="mobilityprofile.db" />
-        <meta-data android:name="VERSION" android:value="2" />
+        <meta-data android:name="VERSION" android:value="4" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="fi.ohtu" />
 
@@ -46,8 +46,8 @@
             </intent-filter>
         </service>
 
-        <service
+        <!-- <service
             android:name=".LocationService"
-            android:process=":mobility_profile_location" />
+            android:process=":mobility_profile_location" /> -->
     </application>
 </manifest>
