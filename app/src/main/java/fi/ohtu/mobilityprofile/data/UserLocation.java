@@ -4,6 +4,9 @@ import android.graphics.PointF;
 
 import com.orm.SugarRecord;
 
+/**
+ *
+ */
 public class UserLocation extends SugarRecord {
     String location;
 

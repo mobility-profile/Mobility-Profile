@@ -3,7 +3,8 @@ package fi.ohtu.mobilityprofile.data;
 import com.orm.SugarRecord;
 
 /**
- *
+ * Class is used to create and save calendar tags, which have calendar event locations as keys
+ * and user destination inputs as values.
  */
 public class CalendarTag extends SugarRecord {
     String key;
@@ -17,9 +18,9 @@ public class CalendarTag extends SugarRecord {
     }
 
     /**
-     *
-     * @param key
-     * @param value
+     * Creates CalendarTag.
+     * @param key key of the tag
+     * @param value value of the tag
      */
     public CalendarTag(String key, String value) {
         this.key = key;

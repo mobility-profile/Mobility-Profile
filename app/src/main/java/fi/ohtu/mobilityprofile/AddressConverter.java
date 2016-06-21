@@ -6,7 +6,7 @@ public class AddressConverter {
 
     /**
      * Converts GPS coordinates to an address.
-     * @param location
+     * @param location coordinates of the location
      * @return
      */
     public static String convertToAddress(PointF location) {
