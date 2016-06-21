@@ -21,17 +21,18 @@ public class Visit extends SugarRecord {
     public Visit(long timestamp, String originallocation) {
         this.timestamp = timestamp;
         this.originallocation = originallocation;
+        this.nearestknownlocation = null;
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public String getOriginallocation() {
+    public String getOriginaLocation() {
         return originallocation;
     }
 
-    public UserLocation getNearestknownlocation() {
+    public UserLocation getNearestKnownLocation() {
         return nearestknownlocation;
     }
 }

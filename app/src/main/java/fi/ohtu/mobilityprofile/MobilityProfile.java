@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile;
 import android.content.Context;
 
 import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.CalendarTag;
@@ -28,7 +29,7 @@ public class MobilityProfile {
     private String startLocation;
     private String nextLocation;
     private String eventLocation;
-    private Time currentTime;
+    private Date currentTime;
 
     private List<Visit> visits;
     private List<RouteSearch> routes;
@@ -48,7 +49,10 @@ public class MobilityProfile {
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
      * @param routeSearchDao DAO for used searches
+<<<<<<< HEAD
      * @param routeSearchDao DAO for routeSearch
+=======
+>>>>>>> e44e80183bc3ce98e2f982b0250113a13785c575
      */
     public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
         this.context = context;
@@ -81,10 +85,8 @@ public class MobilityProfile {
      * and then decides the most likely next destination of them.
      */
     private void getLocationFromDatabase() {
-        // TODO: Use routesearchdao also
-
         routeDestination = false;
-        currentTime = new Time(System.currentTimeMillis());
+        currentTime = new Date(System.currentTimeMillis());
 
         searchFromUsedRoutes();
         if (!routeDestination) {
@@ -96,7 +98,11 @@ public class MobilityProfile {
             nextLocation = "home";
         } else {
             // TODO: Add some logic.
-            nextLocation = visits.get(0).getNearestknownlocation().getLocation();
+            nextLocation = visits.get(0).getNearestKnownLocation().getLocation();
+//            if (!visits.isEmpty()) {
+//                System.out.println(visits);
+//                nextLocation = visits.get(0).getNearestKnownLocation().getLocation();
+//            }
         }
     }
 
@@ -129,12 +135,13 @@ public class MobilityProfile {
     }
 
     /**
-     * Checks if the user has gone to some destination at the same time in the past.
+     * Checks if the user has gone to some destination at the same time in the past,
+     * max 2 hours earlier or max 2 hours later than current time.
      * Searches from previously used routes.
      */
     private void searchForPreviouslyUsedRouteAtTheSameTime() {
         for (RouteSearch route : routes) {
-            if (aroundTheSameTime(new Time(route.getTimestamp()))) {
+            if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
                 nextLocation = route.getDestination();
                 routeDestination = true;
                 break;
@@ -143,19 +150,21 @@ public class MobilityProfile {
     }
 
     /**
-     * Checks if selected route was used around the same time in the past, max 2 hours earlier
-     * or max 2 hours later than current time.
-     * @param routeTime timestamp of the route
-     * @return true if route was used within the time frame, false if not.
+     * Checks if the selected location was visited or set as destination around the same time in the past,
+     * max x hours earlier or max y hours later than current time.
+     * @param visitTime timestamp of the location
+     * @param hoursEarlier hours earlier than current time
+     * @param hoursLater hours later than current time
+     * @return true if location was visited within the time frame, false if not.
      */
-    private boolean aroundTheSameTime(Time routeTime) {
-        int routeHour = routeTime.getHours();
-        int routeMin = routeTime.getMinutes();
+    private boolean aroundTheSameTime(Time visitTime, int hoursEarlier, int hoursLater) {
+        int visitHour = visitTime.getHours();
+        int visitMin = visitTime.getMinutes();
         int currentHour = currentTime.getHours();
         int currentMin = currentTime.getMinutes();
 
-        if ((routeHour > currentHour - 2 || (routeHour == currentHour - 2 && routeMin >= currentMin))
-                && (routeHour < currentHour + 2 || (routeHour == currentHour + 2 && routeMin <= currentMin))) {
+        if ((visitHour > currentHour - hoursEarlier || (visitHour == currentHour - hoursEarlier && visitMin >= currentMin))
+                && (visitHour < currentHour + hoursLater || (visitHour == currentHour + hoursLater && visitMin <= currentMin))) {
             return true;
         }
         return false;
@@ -165,9 +174,23 @@ public class MobilityProfile {
      * Selects destination based on previous visits.
      */
     private void searchFromPreviousVisits() {
-        visits = visitDao.getVisitsByLocation(startLocation);
+        visits = visitDao.getAllVisits();
         if (visits != null) {
+            searchForPreviouslyVisitedLocationAtTheSameTime();
+        }
+    }
 
+    /**
+     * Checks if the user has visited some location around the same time in the past,
+     * max 1 hour earlier or max 3 hours later than current time.
+     * Searches from visits.
+     */
+    private void searchForPreviouslyVisitedLocationAtTheSameTime() {
+        for (Visit visit : visits) {
+            if (aroundTheSameTime(new Time(visit.getTimestamp()), 1, 3)) {
+                nextLocation = visit.getOriginaLocation();
+                break;
+            }
         }
     }
 
