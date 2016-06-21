@@ -29,9 +29,10 @@ public class VisitDao {
     }
 
     /**
-     *
-     * @param query
-     * @return
+     * Returns the latest visit from the database based on custom query,
+     * or null if there is none.
+     * @param query custom query
+     * @return latest visit
      */
     private Visit getLatestVisit(Select<Visit> query) {
         List<Visit> visits = query.list();
@@ -68,11 +69,9 @@ public class VisitDao {
      * @return list of visits
      */
     public List<Visit> getAllVisits() {
-        List<Visit> visits = Select.from(Visit.class)
+        return Select.from(Visit.class)
                 .orderBy("timestamp DESC")
                 .list();
-
-        return visits;
     }
 
     /**

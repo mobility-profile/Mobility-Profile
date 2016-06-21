@@ -3,7 +3,7 @@ package fi.ohtu.mobilityprofile.data;
 import com.orm.SugarRecord;
 
 /**
- *
+ * Class is used to save route searches the user has made.
  */
 public class RouteSearch extends SugarRecord {
 
@@ -20,10 +20,10 @@ public class RouteSearch extends SugarRecord {
     }
 
     /**
-     *
-     * @param timestamp
-     * @param startlocation
-     * @param destination
+     * Creates Routesearch.
+     * @param timestamp timestamp of the routesearch
+     * @param startlocation starting location of the routesearch
+     * @param destination destination of the routesearch
      */
     public RouteSearch(long timestamp, String startlocation, String destination) {
         this.timestamp = timestamp;

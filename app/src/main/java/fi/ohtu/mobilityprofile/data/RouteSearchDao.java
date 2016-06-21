@@ -22,7 +22,8 @@ public class RouteSearchDao {
     }
 
     /**
-     *
+     * Returns the latest routesearch from the database based on custom query,
+     * or null if there is none.
      * @param query
      * @return
      */
