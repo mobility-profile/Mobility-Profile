@@ -17,7 +17,7 @@ public class UserLocationDao {
      * @param searchRadius Search radius in meters
      * @return Nearest UserLocation
      */
-    public UserLocation getNearestLocation(PointF searchLocation, int searchRadius) {
+    public UserLocation getNearestLocation(String searchLocation, int searchRadius) {
         List<UserLocation> userLocations = UserLocation.listAll(UserLocation.class);
 
         UserLocation nearestLocation = null;

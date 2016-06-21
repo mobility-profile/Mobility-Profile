@@ -35,6 +35,8 @@ public class MobilityProfile {
     private List<RouteSearch> routes;
 
     /**
+<<<<<<< HEAD
+=======
      * Constructor of class MobilityProfile.
      * @param context Context of the calling app. Used when getting events from calendars.
      */
@@ -43,13 +45,20 @@ public class MobilityProfile {
     }
 
     /**
+>>>>>>> b90e121b7d89c06d0d0b6ab230c32e6dfa2e6a98
      * Creates the MobilityProfile.
      *
+     * @param context Context of the calling app. Used when getting events from calendars.
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
+<<<<<<< HEAD
+     * @param routeSearchDao DAO for used searches
+=======
      * @param routeSearchDao DAO for routeSearch
+>>>>>>> b90e121b7d89c06d0d0b6ab230c32e6dfa2e6a98
      */
-    public MobilityProfile(CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
+    public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
+        this.context = context;
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
         this.routeSearchDao = routeSearchDao;
@@ -64,7 +73,7 @@ public class MobilityProfile {
     public String getMostLikelyDestination(String startLocation) {
         this.startLocation = startLocation;
         calendarDestination = false;
-
+        
         getLocationFromCalendar();
         if (!calendarDestination) {
             getLocationFromDatabase();
@@ -94,7 +103,7 @@ public class MobilityProfile {
             nextLocation = "home";
         } else {
             // TODO: Add some logic.
-            nextLocation = AddressConverter.convertToAddress(visits.get(0).getNearestKnownLocation().getLocation());
+            nextLocation = visits.get(0).getNearestKnownLocation().getLocation();
         }
     }
 
