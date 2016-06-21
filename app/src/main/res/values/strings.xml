@@ -10,5 +10,5 @@
         Calendar is used to get your next probable destination from your events.\n\n
         With location data Mobility Profile will learn to predict destinations.
     </string>
-    <string name="last_places">Your last visited places</string>
+    <string name="last_places">Your last searched places</string>
 </resources>

@@ -47,4 +47,9 @@ public class RouteSearch extends SugarRecord {
     public void setNearestKnownLocation(String nearestKnownLocation) {
         this.nearestknownlocation = nearestKnownLocation;
     }
+
+    @Override
+    public String toString() {
+        return "Start: " + startlocation + ". Destination: " + destination;
+    }
 }

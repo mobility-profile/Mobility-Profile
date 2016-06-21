@@ -1,28 +1,28 @@
 package fi.ohtu.mobilityprofile.ui;
 
-import android.app.ListActivity;
-import android.database.Cursor;
+import android.content.Context;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+
+import com.orm.query.Select;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.data.RouteSearch;
 
 public class ProfileFragment extends Fragment {
 
     private static final String title = "PROFILE";
     private static final int page = 1;
+    private Context context;
+
 
     public static ProfileFragment newInstance() {
         ProfileFragment profileFragment = new ProfileFragment();
@@ -34,9 +34,33 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void onViewCreated(View view, final Bundle savedInstanceState) {
+
+        List<RouteSearch> searches = Select.from(RouteSearch.class).list();
+
+        ArrayList<String> routes = new ArrayList<>();
+
+        for (RouteSearch r: searches) {
+            routes.add(r.toString());
+        }
+
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.profile_list_item, routes);
+
+        ListView listView = (ListView) view.findViewById(R.id.listView);
+        listView.setAdapter(adapter);
     }
 
     @Override
