@@ -174,17 +174,18 @@ public class MobilityProfile {
     private void searchFromPreviousVisits() {
         visits = visitDao.getAllVisits();
         if (visits != null) {
-            searchForPrevouslyVisitedLocationAtTheSameTime();
+            searchForPreviouslyVisitedLocationAtTheSameTime();
         }
     }
 
     /**
      * Checks if the user has visited some location at the same time in the past.
      */
-    private void searchForPrevouslyVisitedLocationAtTheSameTime() {
+    private void searchForPreviouslyVisitedLocationAtTheSameTime() {
         for (Visit visit : visits) {
             if (aroundTheSameTime(new Time(visit.getTimestamp()))) {
-                nextLocation = visit.getNearestKnownLocation();
+                nextLocation = visit.getOriginalLocation();
+                break;
             }
         }
     }
