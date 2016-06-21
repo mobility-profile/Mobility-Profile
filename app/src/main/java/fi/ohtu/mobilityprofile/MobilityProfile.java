@@ -41,6 +41,21 @@ public class MobilityProfile {
         this.context = context;
     }
 
+
+    /**
+     * Creates the MobilityProfile.
+     *
+     * @param calendarTagDao DAO for calendar tags
+     * @param visitDao DAO for visits
+     * @param routeSearchDao DAO for routeSearch
+     */
+    public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
+        this.context = context;
+        this.calendarTagDao = calendarTagDao;
+        this.visitDao = visitDao;
+        this.routeSearchDao = routeSearchDao;
+    }
+
     /**
      * Creates the MobilityProfile.
      *
@@ -78,8 +93,6 @@ public class MobilityProfile {
      * and then decides the most likely next destination of them.
      */
     private void getLocationFromDatabase() {
-        // TODO: Use routesearchdao also
-
         routeDestination = false;
         currentTime = new Time(System.currentTimeMillis());
 

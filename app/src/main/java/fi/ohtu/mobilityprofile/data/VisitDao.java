@@ -51,7 +51,7 @@ public class VisitDao {
      */
     public List<Visit> getVisitsByLocation(String location) {
         List<Visit> visits = Select.from(Visit.class)
-                .where(Condition.prop("nearestKnownLocation").eq(location))
+                .where(Condition.prop("nearestknownlocation").eq(location))
                 .orderBy("timestamp DESC")
                 .list();
 
@@ -65,7 +65,7 @@ public class VisitDao {
      */
     public void insertVisit(Visit visit) {
         UserLocation nearestLocation = userLocationDao.getNearestLocation(visit.getOriginalLocation(), 50);
-        visit.nearestKnownLocation = nearestLocation;
+        visit.nearestknownlocation = nearestLocation;
         visit.save();
     }
 }

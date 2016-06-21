@@ -10,6 +10,7 @@ public class RouteSearch extends SugarRecord {
     long timestamp;
     String startlocation;
     String destination;
+    String nearestknownlocation;
 
     /**
      *
@@ -28,6 +29,7 @@ public class RouteSearch extends SugarRecord {
         this.timestamp = timestamp;
         this.startlocation = startlocation;
         this.destination = destination;
+        this.nearestknownlocation = null;
     }
 
     public long getTimestamp() {
@@ -40,5 +42,9 @@ public class RouteSearch extends SugarRecord {
 
     public String getDestination() {
         return destination;
+    }
+
+    public void setNearestKnownLocation(String nearestKnownLocation) {
+        this.nearestknownlocation = nearestKnownLocation;
     }
 }
