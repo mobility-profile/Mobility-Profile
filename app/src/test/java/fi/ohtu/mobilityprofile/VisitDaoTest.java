@@ -30,15 +30,15 @@ public class VisitDaoTest {
     public void testInsertAndFindLatest() {
         visitDao.insertVisit(new Visit(1234, "Kumpula"));
 
-        assertEquals("Kumpula", visitDao.getLatestVisit().getNearestknownlocation());
+        assertEquals("Kumpula", visitDao.getLatestVisit().getOriginalLocation());
 
         visitDao.insertVisit(new Visit(1300, "Herttoniemi"));
 
-        assertEquals("Herttoniemi", visitDao.getLatestVisit().getNearestknownlocation());
+        assertEquals("Herttoniemi", visitDao.getLatestVisit().getOriginalLocation());
 
         visitDao.insertVisit(new Visit(1100, "Lammassaari"));
 
-        assertEquals("Herttoniemi", visitDao.getLatestVisit().getNearestknownlocation());
+        assertEquals("Herttoniemi", visitDao.getLatestVisit().getOriginalLocation());
     }
 
     @Test
@@ -48,7 +48,7 @@ public class VisitDaoTest {
         List<Visit> visits = visitDao.getVisitsByLocation("Helsinki");
 
         assertEquals(1, visits.size());
-        assertEquals("Helsinki", visits.get(0).getNearestknownlocation());
+        assertEquals("Helsinki", visits.get(0).getOriginalLocation());
     }
 
     @Test
@@ -63,14 +63,14 @@ public class VisitDaoTest {
         List<Visit> visits = visitDao.getVisitsByLocation("Kumpula");
 
         assertEquals(3, visits.size());
-        assertEquals("Kumpula", visits.get(0).getNearestknownlocation());
-        assertEquals("Kumpula", visits.get(1).getNearestknownlocation());
-        assertEquals("Kumpula", visits.get(2).getNearestknownlocation());
+        assertEquals("Kumpula", visits.get(0).getOriginalLocation());
+        assertEquals("Kumpula", visits.get(1).getOriginalLocation());
+        assertEquals("Kumpula", visits.get(2).getOriginalLocation());
 
         List<Visit> visits2 = visitDao.getVisitsByLocation("Tikkurila");
 
         assertEquals(1, visits2.size());
-        assertEquals("Tikkurila", visits2.get(0).getNearestknownlocation());
+        assertEquals("Tikkurila", visits2.get(0).getOriginalLocation());
     }
 
     @Test

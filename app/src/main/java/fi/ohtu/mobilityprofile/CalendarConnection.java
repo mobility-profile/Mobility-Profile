@@ -44,9 +44,12 @@ public class CalendarConnection {
         Uri eventUri = buildUri();
 
         cursor = cr.query(eventUri, EVENT_PROJECTION, null, null, null);
-        getLocation(cursor);
 
-        cursor.close();
+        if (cursor != null) {
+            getLocation(cursor);
+
+            cursor.close();
+        }
     }
 
     /**

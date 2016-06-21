@@ -13,7 +13,7 @@ public class UserLocationDao {
      * If no UserLocations were found, new one will be created with the given searchLocation. The
      * new UserLocation will then be saved to the database and returned.
      *
-     * @param searchLocation Search nearestknownlocation
+     * @param searchLocation Search nearestKnownLocation
      * @param searchRadius Search radius in meters
      * @return Nearest UserLocation
      */

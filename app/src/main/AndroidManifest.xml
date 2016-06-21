@@ -31,11 +31,7 @@
             android:value="8487000" />
 
         <meta-data android:name="DATABASE" android:value="mobilityprofile.db" />
-<<<<<<< HEAD
-        <meta-data android:name="VERSION" android:value="6" />
-=======
-        <meta-data android:name="VERSION" android:value="7" />
->>>>>>> e44e80183bc3ce98e2f982b0250113a13785c575
+        <meta-data android:name="VERSION" android:value="8" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="fi.ohtu" />
 

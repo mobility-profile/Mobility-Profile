@@ -5,8 +5,8 @@ import com.orm.SugarRecord;
 public class Visit extends SugarRecord {
 
     long timestamp;
-    String originallocation;             // Accurate point the user visited.
-    UserLocation nearestknownlocation;   // Closest known nearestknownlocation that is within 50 meters (value may change) from the actual nearestknownlocation.
+    String originalLocation;             // Accurate point the user visited.
+    UserLocation nearestKnownLocation;   // Closest known nearestKnownLocation that is within 50 meters (value may change) from the actual nearestKnownLocation.
 
     /**
      *
@@ -16,23 +16,23 @@ public class Visit extends SugarRecord {
 
     /**
      * @param timestamp
-     * @param originallocation
+     * @param originalLocation
      */
-    public Visit(long timestamp, String originallocation) {
+    public Visit(long timestamp, String originalLocation) {
         this.timestamp = timestamp;
-        this.originallocation = originallocation;
-        this.nearestknownlocation = null;
+        this.originalLocation = originalLocation;
+        this.nearestKnownLocation = null;
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public String getOriginaLocation() {
-        return originallocation;
+    public String getOriginalLocation() {
+        return originalLocation;
     }
 
     public UserLocation getNearestKnownLocation() {
-        return nearestknownlocation;
+        return nearestKnownLocation;
     }
 }

@@ -44,17 +44,14 @@ public class VisitDao {
     }
 
     /**
-     * Returns a list of visits where the nearestknownlocation matches the given one.
+     * Returns a list of visits where the nearestKnownLocation matches the given one.
      *
      * @param location Location of the visits
      * @return List of visits
      */
     public List<Visit> getVisitsByLocation(String location) {
-        UserLocation userLocation = new UserLocation("test");
-        userLocation.save();
-        userLocation.delete();
         List<Visit> visits = Select.from(Visit.class)
-                .where(Condition.prop("nearestknownlocation").eq(location))
+                .where(Condition.prop("original_location").eq(location))
                 .orderBy("timestamp DESC")
                 .list();
 
@@ -80,7 +77,7 @@ public class VisitDao {
      */
     public void insertVisit(Visit visit) {
         UserLocation nearestLocation = userLocationDao.getNearestLocation(visit.getOriginalLocation(), 50);
-        visit.nearestknownlocation = nearestLocation;
+        visit.nearestKnownLocation = nearestLocation;
         visit.save();
     }
 }

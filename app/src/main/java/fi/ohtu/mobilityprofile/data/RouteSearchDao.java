@@ -39,7 +39,7 @@ public class RouteSearchDao {
     }
 
     /**
-     * Returns a list of routesearches where the nearestknownlocation matches the given one.
+     * Returns a list of routesearches where the nearestKnownLocation matches the given one.
      *
      * @param startLocation StartLocation of the routesearches
      * @return List of routesearches
