@@ -13,17 +13,15 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 public class AddressConverter {
+
+    private static String address;
 
     /**
      * Converts GPS coordinates to an address.
      *
      * @param location coordinates of the location
+     * @param context for new request queue
      * @return
      */
     public static String convertToAddress(PointF location, Context context) {
@@ -38,26 +36,40 @@ public class AddressConverter {
                     public void onResponse(String response) {
                         try {
 
-                            //"name":"Karamzins strand 4"
-                            //"street":"Karamzins strand"
-                            //"label":"Karamzins strand 4, Helsinki, Finland"
+                            //different options:
+                            //  "name":"Karamzins strand 4"
+                            //  "street":"Karamzins strand"
+                            //  "label":"Karamzins strand 4, Helsinki, Finland"
 
                             JSONObject json = new JSONObject(response);
-                            System.out.println(json.get("name").toString());
+                            JSONArray features = new JSONArray(json.get("features").toString());
+                            JSONObject zero = new JSONObject(features.get(0).toString());
+                            JSONObject properties = new JSONObject(zero.get("properties").toString());
+                            String name = (properties.get("name").toString());
+                            address = name;
                         } catch (Exception e) {
-                            System.out.println("error in addressconverter");
+                            System.out.println("Exception in onResponse-method in convertToAddress-method of AddressConverter");
+                            e.printStackTrace();
                         }
-
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("error in addressconverter");
+                error.printStackTrace();
+                System.out.println("Exception in convertToAddress-method of AddressConverter");
             }
         });
         queue.add(stringRequest);
 
-        return location.x + "" + location.y;
-    }
+        System.out.println("address is ->>> " + address);
 
+        return address;
+    }
 }
+
+
+/* If you'd like to test this class, here is an example location:
+   AddressConverter.convertToAddress(new PointF(new Float(60.1756),new Float(24.9342)), context);
+
+   And the address is Karamzins strand 4
+ */
