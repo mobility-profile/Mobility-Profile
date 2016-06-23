@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.data.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.RouteSearch;
 
 /**
@@ -36,7 +37,7 @@ public class FavoritesFragment extends Fragment {
     private Context context;
 
     /**
-     * Creates a new instance of ProfileFragment.
+     * Creates a new instance of FavouritesFragment.
      * @return
      */
     public static FavoritesFragment newInstance() {
@@ -62,19 +63,19 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
-        List<RouteSearch> favorites = new ArrayList<>();
+        List<FavouritePlace> favouritePlaces = new ArrayList<>();
         try {
-            favorites = Select.from(RouteSearch.class).orderBy("timestamp DESC").list();
+            favouritePlaces = FavouritePlace.listAll(FavouritePlace.class);
         } catch (Exception e) {
         }
 
-        ArrayList<String> routes = new ArrayList<>();
+        ArrayList<String> favourites = new ArrayList<>();
 
-        for (RouteSearch r: favorites) {
-            routes.add(r.toString());
+        for (FavouritePlace r: favouritePlaces) {
+            favourites.add(r.toString());
         }
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.favorites_list_item, routes);
+        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.favorites_list_item, favourites);
         ListView listView = (ListView) view.findViewById(R.id.favorites_listView);
         listView.setAdapter(adapter);
     }

@@ -236,6 +236,9 @@ public class PrivacyFragment extends Fragment {
         return false;
     }
 
+    /**
+     * Deletes all data from the database.
+     */
     private void deleteAllDataFromDatabase() {
         new VisitDao().deleteAllData();
         new UserLocationDao().deleteAllData();
