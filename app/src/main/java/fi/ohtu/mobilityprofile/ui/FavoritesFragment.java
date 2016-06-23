@@ -62,6 +62,18 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
+
+        List<RouteSearch> favorites = Select.from(RouteSearch.class).orderBy("timestamp DESC").list();
+
+        ArrayList<String> routes = new ArrayList<>();
+
+        for (RouteSearch r: favorites) {
+            routes.add(r.toString());
+        }
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.favorites_list_item, routes);
+        ListView listView = (ListView) view.findViewById(R.id.favorites_listView);
+        listView.setAdapter(adapter);
     }
 
     @Override

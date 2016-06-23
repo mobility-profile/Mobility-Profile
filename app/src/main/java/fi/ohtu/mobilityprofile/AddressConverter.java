@@ -31,7 +31,7 @@ public class AddressConverter {
 
         String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
                 + location.x + "&point.lon="
-                + location.y + "&layers=address&size=1";
+                + location.y + "&layers=address&size=1&sources=osm";
 
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -49,8 +49,8 @@ public class AddressConverter {
                             JSONArray features = new JSONArray(json.get("features").toString());
                             JSONObject zero = new JSONObject(features.get(0).toString());
                             JSONObject properties = new JSONObject(zero.get("properties").toString());
-                            String name = (properties.get("name").toString());
-                            address = name;
+                            String label = (properties.get("label").toString());
+                            address = label;
                         } catch (Exception e) {
                             System.out.println("Exception in onResponse-method in convertToAddress-method of AddressConverter");
                             e.printStackTrace();
@@ -64,6 +64,8 @@ public class AddressConverter {
             }
         });
         queue.add(stringRequest);
+
+        System.out.println(address);
 
         return address;
     }

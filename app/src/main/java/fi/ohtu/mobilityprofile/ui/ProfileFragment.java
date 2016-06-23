@@ -72,7 +72,7 @@ public class ProfileFragment extends Fragment {
         }
 
         ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.profile_list_item, routes);
-        ListView listView = (ListView) view.findViewById(R.id.listView);
+        ListView listView = (ListView) view.findViewById(R.id.profile_listView);
         listView.setAdapter(adapter);
     }
 
