@@ -83,4 +83,8 @@ public class VisitDao {
         visit.nearestKnownLocation = nearestLocation;
         visit.save();
     }
+
+    public void deleteAllData() {
+        Visit.deleteAll(Visit.class);
+    }
 }

@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
-
+/*
         List<RouteSearch> searches = Select.from(RouteSearch.class).orderBy("timestamp DESC").list();
 
         ArrayList<String> routes = new ArrayList<>();
@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
         ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.profile_list_item, routes);
 
         ListView listView = (ListView) view.findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter);*/
     }
 
     @Override

@@ -94,4 +94,8 @@ public class RouteSearchDao {
     public void insertRouteSearch(RouteSearch routeSearch) {
         routeSearch.save();
     }
+
+    public void deleteAllData() {
+        RouteSearch.deleteAll(RouteSearch.class);
+    }
 }

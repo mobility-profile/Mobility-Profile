@@ -39,4 +39,8 @@ public class UserLocationDao {
 
         return nearestLocation;
     }
+
+    public void deleteAllData() {
+        UserLocation.deleteAll(UserLocation.class);
+    }
 }
