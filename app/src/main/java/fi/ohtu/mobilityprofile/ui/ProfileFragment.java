@@ -17,13 +17,28 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.RouteSearch;
 
+/**
+ * The class creates a component called ProfileFragment.
+ *
+ * ProfileFragment handles everything concerning the PROFILE tab in the UI.
+ */
 public class ProfileFragment extends Fragment {
 
+    /**
+     * The title of the fragment.
+     */
     private static final String title = "PROFILE";
+
+    /**
+     * The position of the fragment in the "queue" of all fragments.
+     */
     private static final int page = 1;
     private Context context;
 
-
+    /**
+     * Creates a new instance of ProfileFragment.
+     * @return
+     */
     public static ProfileFragment newInstance() {
         ProfileFragment profileFragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -56,9 +71,7 @@ public class ProfileFragment extends Fragment {
             routes.add(r.toString());
         }
 
-
         ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.profile_list_item, routes);
-
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listView.setAdapter(adapter);
     }
@@ -66,7 +79,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.profile_fragment, container, false);
     }
 }

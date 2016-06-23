@@ -13,6 +13,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * This class is used for converting GPS coordinates to an actual address.
+ */
 public class AddressConverter {
 
     private static String address;
@@ -22,12 +25,13 @@ public class AddressConverter {
      *
      * @param location coordinates of the location
      * @param context for new request queue
-     * @return
+     * @return an address
      */
     public static String convertToAddress(PointF location, Context context) {
 
-        String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat=" + location.x +
-                "&point.lon=" + location.y + "&layers=address&size=1";
+        String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
+                + location.x + "&point.lon="
+                + location.y + "&layers=address&size=1";
 
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -61,15 +65,6 @@ public class AddressConverter {
         });
         queue.add(stringRequest);
 
-        System.out.println("address is ->>> " + address);
-
         return address;
     }
 }
-
-
-/* If you'd like to test this class, here is an example location:
-   AddressConverter.convertToAddress(new PointF(new Float(60.1756),new Float(24.9342)), context);
-
-   And the address is Karamzins strand 4
- */
