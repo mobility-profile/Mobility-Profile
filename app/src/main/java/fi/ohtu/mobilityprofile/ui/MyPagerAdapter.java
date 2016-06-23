@@ -11,7 +11,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     /**
      * The number of fragments.
      */
-    private static final int NUM_ITEMS = 3;
+    private static final int NUM_ITEMS = 4;
 
 
     public MyPagerAdapter(FragmentManager fragmentManager) {
@@ -32,6 +32,8 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return ProfileFragment.newInstance();
             case 2:
                 return InfoFragment.newInstance();
+            case 3:
+                return FavoritesFragment.newInstance();
             default:
                 return new Fragment();
         }
@@ -46,6 +48,8 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return "PROFILE";
             case 2:
                 return "INFO";
+            case 3:
+                return "FAVORITES";
             default:
                 return "";
         }
