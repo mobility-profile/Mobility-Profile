@@ -11,6 +11,8 @@ import java.util.List;
 public class VisitDao {
     private UserLocationDao userLocationDao;
 
+    public VisitDao() {
+    }
     /**
      * Creates VisitDao.
      * @param userLocationDao 
