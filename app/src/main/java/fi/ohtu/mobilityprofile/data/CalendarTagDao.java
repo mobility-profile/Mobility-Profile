@@ -59,4 +59,8 @@ public class CalendarTagDao {
         calendarTag.counter++;
         calendarTag.save();
     }
+
+    public void deleteAllData() {
+        CalendarTag.deleteAll(CalendarTag.class);
+    }
 }

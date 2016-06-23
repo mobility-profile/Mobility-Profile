@@ -90,7 +90,7 @@ public class LocationService extends Service {
         }
         try {
             mLocationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,git 
+                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,git
                     mLocationListeners[0]);
             LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
         } catch (java.lang.SecurityException ex) {

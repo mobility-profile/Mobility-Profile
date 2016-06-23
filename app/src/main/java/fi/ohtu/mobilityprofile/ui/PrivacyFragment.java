@@ -19,6 +19,11 @@ import android.widget.Toast;
 import fi.ohtu.mobilityprofile.LocationService;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.data.UserLocationDao;
+import fi.ohtu.mobilityprofile.data.VisitDao;
 
 /**
  * The class creates a component called PrivacyFragment.
@@ -236,5 +241,15 @@ public class PrivacyFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    /**
+     * Deletes all data from the database.
+     */
+    private void deleteAllDataFromDatabase() {
+        new VisitDao().deleteAllData();
+        new UserLocationDao().deleteAllData();
+        new CalendarTagDao().deleteAllData();
+        new RouteSearchDao().deleteAllData();
     }
 }

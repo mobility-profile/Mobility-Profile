@@ -11,6 +11,8 @@ import java.util.List;
 public class VisitDao {
     private UserLocationDao userLocationDao;
 
+    public VisitDao() {
+    }
     /**
      * Creates VisitDao.
      * @param userLocationDao 
@@ -82,5 +84,9 @@ public class VisitDao {
         UserLocation nearestLocation = userLocationDao.getNearestLocation(visit.getOriginalLocation(), 50);
         visit.nearestKnownLocation = nearestLocation;
         visit.save();
+    }
+
+    public void deleteAllData() {
+        Visit.deleteAll(Visit.class);
     }
 }
