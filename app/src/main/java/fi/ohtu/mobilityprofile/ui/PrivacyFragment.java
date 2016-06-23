@@ -151,11 +151,17 @@ public class PrivacyFragment extends Fragment {
     }
 
     /**
-     * Checks if we have permission to fine location, and then if not, requests it.
+     * Checks if we have permission to access location, and then if not, requests it.
      */
     private void getPermissionToAccessFineLocation() {
         if (!PermissionManager.permissionToFineLocation()) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST);
+        }
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST);
         }
     }
@@ -187,6 +193,7 @@ public class PrivacyFragment extends Fragment {
                 } else {
                     calendarCheckBox.setChecked(false);
                 }
+                break;
         }
         PermissionManager.setPermissions(context);
     }
@@ -217,7 +224,7 @@ public class PrivacyFragment extends Fragment {
     }
 
     /**
-     * Checks if LocationService is running
+     * Checks if LocationService is running.
      * @see LocationService
      * @return true/false
      */

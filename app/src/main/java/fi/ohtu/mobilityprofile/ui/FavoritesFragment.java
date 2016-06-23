@@ -68,7 +68,7 @@ public class FavoritesFragment extends Fragment {
         ArrayList<String> routes = new ArrayList<>();
 
         for (RouteSearch r: favorites) {
-            routes.add(r.toString());
+            routes.add(r.getStartlocation() + "  ->  " + r.getDestination());
         }
 
         ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.favorites_list_item, routes);

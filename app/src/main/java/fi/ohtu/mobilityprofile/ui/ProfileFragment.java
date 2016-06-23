@@ -68,7 +68,7 @@ public class ProfileFragment extends Fragment {
         ArrayList<String> routes = new ArrayList<>();
 
         for (RouteSearch r: searches) {
-            routes.add(r.toString());
+            routes.add(r.getStartlocation() + "  ->  " + r.getDestination());
         }
 
         ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.profile_list_item, routes);

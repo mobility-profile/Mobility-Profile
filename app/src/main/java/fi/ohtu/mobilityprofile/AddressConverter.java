@@ -2,6 +2,7 @@ package fi.ohtu.mobilityprofile;
 
 import android.content.Context;
 import android.graphics.PointF;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,18 +40,14 @@ public class AddressConverter {
                     @Override
                     public void onResponse(String response) {
                         try {
-
-                            //different options:
-                            //  "name":"Karamzins strand 4"
-                            //  "street":"Karamzins strand"
-                            //  "label":"Karamzins strand 4, Helsinki, Finland"
-
                             JSONObject json = new JSONObject(response);
                             JSONArray features = new JSONArray(json.get("features").toString());
-                            JSONObject zero = new JSONObject(features.get(0).toString());
-                            JSONObject properties = new JSONObject(zero.get("properties").toString());
-                            String label = (properties.get("label").toString());
-                            address = label;
+                            if (features.length() > 0) {
+                                JSONObject zero = new JSONObject(features.get(0).toString());
+                                JSONObject properties = new JSONObject(zero.get("properties").toString());
+                                String label = (properties.get("label").toString());
+                                address = label;
+                            }
                         } catch (Exception e) {
                             System.out.println("Exception in onResponse-method in convertToAddress-method of AddressConverter");
                             e.printStackTrace();
@@ -65,7 +62,11 @@ public class AddressConverter {
         });
         queue.add(stringRequest);
 
-        System.out.println(address);
+        if (address == null) {
+            address = "";
+        }
+
+        Log.e("ADDRESSCONVERTER", "converted address -> " + address );
 
         return address;
     }

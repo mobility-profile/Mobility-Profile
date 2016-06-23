@@ -1,6 +1,8 @@
 package fi.ohtu.mobilityprofile;
 
 import android.content.Context;
+import android.graphics.PointF;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -92,8 +94,19 @@ public class RequestHandler extends Handler {
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
             Date date = new Date();
-            RouteSearch routeSearch = new RouteSearch(date.getTime(), "startlocation" , destination);
+            RouteSearch routeSearch = new RouteSearch(date.getTime(), getStartLocation(), destination);
             routeSearchDao.insertRouteSearch(routeSearch);
+        }
+    }
+
+    private String getStartLocation() {
+        Location location = LocationHandler.getLocation();
+        if (location == null) {
+            // TODO something better
+            return "startlocation";
+        } else {
+            return AddressConverter.convertToAddress(new PointF(new Float(60.1756), new Float(24.9342)), context);
+            //return AddressConverter.convertToAddress(new PointF(new Float(location.getLatitude()), new Float(location.getLongitude())), context);
         }
     }
 

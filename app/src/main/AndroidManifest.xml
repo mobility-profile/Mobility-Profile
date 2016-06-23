@@ -46,6 +46,16 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".LocationService"
+            android:exported="true"
+            android:process=":mobility_profile">
+            <!-- TODO: Require permission to use our app. -->
+
+            <intent-filter>
+                <action android:name="fi.ohtu.mobilityprofile.LocationService"/>
+            </intent-filter>
+        </service>
         <!-- <service
             android:name=".LocationService"
             android:process=":mobility_profile_location" /> -->

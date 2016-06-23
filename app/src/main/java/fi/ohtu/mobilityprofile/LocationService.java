@@ -10,7 +10,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import com.google.android.gms.common.api.GoogleApiClient;
 
 public class LocationService extends Service {
     private static final String TAG = "GPSTEST";
@@ -34,6 +37,7 @@ public class LocationService extends Service {
         public void onLocationChanged(Location location) {
             Log.e(TAG, "onLocationChanged: " + location);
             mLastLocation.set(location);
+            LocationHandler.setLocation(mLastLocation);
         }
 
         @Override
@@ -73,10 +77,12 @@ public class LocationService extends Service {
     public void onCreate() {
         Log.e(TAG, "onCreate");
         initializeLocationManager();
+
         try {
             mLocationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                     mLocationListeners[1]);
+            LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
         } catch (java.lang.SecurityException ex) {
             Log.i(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
@@ -84,8 +90,9 @@ public class LocationService extends Service {
         }
         try {
             mLocationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,git 
                     mLocationListeners[0]);
+            LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
         } catch (java.lang.SecurityException ex) {
             Log.i(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
@@ -117,6 +124,7 @@ public class LocationService extends Service {
             }
         }
     }
+
 
     /**
      *
