@@ -42,4 +42,10 @@
         android:layout_gravity="start"
         android:textSize="20sp" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reset app and delete all data"
+        android:layout_gravity="bottom" />
+
 </LinearLayout>
