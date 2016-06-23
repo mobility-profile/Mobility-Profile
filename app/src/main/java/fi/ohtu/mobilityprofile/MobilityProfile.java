@@ -92,9 +92,7 @@ public class MobilityProfile {
     private void getLocationFromDatabase() {
         currentTime = new Date(System.currentTimeMillis());
 
-        System.out.println("hei");
-        AddressConverter.convertToAddress(new PointF(new Float(60.1756),new Float(24.9342)), context);
-        System.out.println("hoi");
+        AddressConverter.convertToAddress(new PointF(new Float(60.1756), new Float(24.9342)), context);
 
         searchFromUsedRoutes();
         if (!routeDestination) {

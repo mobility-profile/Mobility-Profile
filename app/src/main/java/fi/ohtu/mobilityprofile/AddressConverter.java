@@ -10,27 +10,28 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+/**
+ * This class is used for converting GPS coordinates to an actual address.
+ */
 public class AddressConverter {
+
+    private static String address;
 
     /**
      * Converts GPS coordinates to an address.
      *
      * @param location coordinates of the location
-     * @return
+     * @param context for new request queue
+     * @return an address
      */
     public static String convertToAddress(PointF location, Context context) {
 
-        String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat=" + location.x +
-                "&point.lon=" + location.y + "&layers=address";
-
-
+        String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
+                + location.x + "&point.lon="
+                + location.y + "&layers=address&size=1&sources=osm";
 
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -38,24 +39,34 @@ public class AddressConverter {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            // TODO: Do the actual convert from this json mess to an address.
-                            JSONObject json = new JSONObject(response);
-                            System.out.println(json);
-                        } catch (Exception e) {
-                            System.out.println("error in addressconverter");
-                        }
 
+                            //different options:
+                            //  "name":"Karamzins strand 4"
+                            //  "street":"Karamzins strand"
+                            //  "label":"Karamzins strand 4, Helsinki, Finland"
+
+                            JSONObject json = new JSONObject(response);
+                            JSONArray features = new JSONArray(json.get("features").toString());
+                            JSONObject zero = new JSONObject(features.get(0).toString());
+                            JSONObject properties = new JSONObject(zero.get("properties").toString());
+                            String label = (properties.get("label").toString());
+                            address = label;
+                        } catch (Exception e) {
+                            System.out.println("Exception in onResponse-method in convertToAddress-method of AddressConverter");
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("error in addressconverter");
+                error.printStackTrace();
+                System.out.println("Exception in convertToAddress-method of AddressConverter");
             }
         });
         queue.add(stringRequest);
 
+        System.out.println(address);
 
-        return location.x + " " + location.y;
+        return address;
     }
-
 }

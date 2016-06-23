@@ -11,12 +11,13 @@
         android:layout_marginTop="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
-        android:text="@string/last_places"/>
+        android:text="@string/favorites_title"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/profile_listView"
+        android:id="@+id/favorites_listView"
         android:layout_gravity="center_horizontal" />
+
 
 </LinearLayout>

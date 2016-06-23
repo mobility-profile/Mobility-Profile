@@ -18,34 +18,34 @@ import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.RouteSearch;
 
 /**
- * The class creates a component called ProfileFragment.
+ * The class creates a component called FavoritesFragment.
  *
- * ProfileFragment handles everything concerning the PROFILE tab in the UI.
+ * FavoritesFragment handles everything concerning the FAVORITES tab in the UI.
  */
-public class ProfileFragment extends Fragment {
+public class FavoritesFragment extends Fragment {
 
     /**
      * The title of the fragment.
      */
-    private static final String title = "PROFILE";
+    private static final String title = "FAVORITES";
 
     /**
      * The position of the fragment in the "queue" of all fragments.
      */
-    private static final int page = 1;
+    private static final int page = 3;
     private Context context;
 
     /**
      * Creates a new instance of ProfileFragment.
      * @return
      */
-    public static ProfileFragment newInstance() {
-        ProfileFragment profileFragment = new ProfileFragment();
+    public static FavoritesFragment newInstance() {
+        FavoritesFragment favoritesFragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putInt("page", page);
         args.putString("title", title);
-        profileFragment.setArguments(args);
-        return profileFragment;
+        favoritesFragment.setArguments(args);
+        return favoritesFragment;
     }
 
     @Override
@@ -62,26 +62,26 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
-        List<RouteSearch> searches = new ArrayList<>();
+        List<RouteSearch> favorites = new ArrayList<>();
         try {
-            searches = Select.from(RouteSearch.class).orderBy("timestamp DESC").list();
-        } catch (Exception e){
+            favorites = Select.from(RouteSearch.class).orderBy("timestamp DESC").list();
+        } catch (Exception e) {
         }
 
         ArrayList<String> routes = new ArrayList<>();
-            for (RouteSearch r: searches) {
-                routes.add(r.toString());
-            }
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.profile_list_item, routes);
+        for (RouteSearch r: favorites) {
+            routes.add(r.toString());
+        }
 
-        ListView listView = (ListView) view.findViewById(R.id.profile_listView);
+        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.favorites_list_item, routes);
+        ListView listView = (ListView) view.findViewById(R.id.favorites_listView);
         listView.setAdapter(adapter);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.profile_fragment, container, false);
+        return inflater.inflate(R.layout.favorites_fragment, container, false);
     }
 }

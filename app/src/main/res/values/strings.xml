@@ -11,4 +11,5 @@
         With location data Mobility Profile will learn to predict destinations.
     </string>
     <string name="last_places">Your last searched places</string>
+    <string name="favorites_title">Your favorite places</string>
 </resources>

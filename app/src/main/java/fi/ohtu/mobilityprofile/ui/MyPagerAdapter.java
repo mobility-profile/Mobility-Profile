@@ -3,10 +3,16 @@ package fi.ohtu.mobilityprofile.ui;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.MotionEvent;
 
+/**
+ * This class manages all the fragments of the program.
+ */
 public class MyPagerAdapter extends FragmentPagerAdapter {
-    private static final int NUM_ITEMS = 3;
+    /**
+     * The number of fragments.
+     */
+    private static final int NUM_ITEMS = 4;
+
 
     public MyPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -26,12 +32,13 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return ProfileFragment.newInstance();
             case 2:
                 return InfoFragment.newInstance();
+            case 3:
+                return FavoritesFragment.newInstance();
             default:
                 return new Fragment();
         }
     }
 
-    // Returns the page title for the top indicator
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
@@ -41,6 +48,8 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return "PROFILE";
             case 2:
                 return "INFO";
+            case 3:
+                return "FAVORITES";
             default:
                 return "";
         }
