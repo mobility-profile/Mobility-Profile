@@ -43,9 +43,10 @@
         android:textSize="20sp" />
 
     <Button
+        android:id="@+id/resetbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Reset app and delete all data"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="end"/>
 
 </LinearLayout>

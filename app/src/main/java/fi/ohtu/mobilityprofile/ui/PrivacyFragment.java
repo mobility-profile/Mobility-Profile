@@ -2,7 +2,10 @@ package fi.ohtu.mobilityprofile.ui;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
@@ -20,6 +24,8 @@ import fi.ohtu.mobilityprofile.LocationService;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
@@ -47,6 +53,7 @@ public class PrivacyFragment extends Fragment {
     private CheckBox gpsCheckBox;
     private CheckBox calendarCheckBox;
     private CheckBox trackingCheckBox;
+    private Button resetbutton;
 
     private Context context;
 
@@ -85,11 +92,14 @@ public class PrivacyFragment extends Fragment {
         gpsCheckBox = (CheckBox) view.findViewById(R.id.checkbox_GPS);
         calendarCheckBox = (CheckBox) view.findViewById(R.id.checkbox_calendar);
         trackingCheckBox = (CheckBox) view.findViewById(R.id.checkbox_tracking);
+        resetbutton = (Button) view.findViewById(R.id.resetbutton);
 
         setChecked();
         setListenerForGPSCheckBox();
         setListenerForCheckBoxCalendar();
         setListenerForCheckBoxTracking();
+        resetbutton.setOnClickListener(onClickResetButton);
+
         PermissionManager.setPermissions(context);
     }
 
@@ -244,6 +254,33 @@ public class PrivacyFragment extends Fragment {
     }
 
     /**
+     * Creates alert dialog to confirm resetting of the app when reset button is clicked.
+     */
+    View.OnClickListener onClickResetButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
+
+        builder.setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+               deleteAllDataFromDatabase();
+            }
+        });
+        builder.setNegativeButton(R.string.reset_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked cancel button
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }};
+
+    /**
      * Deletes all data from the database.
      */
     private void deleteAllDataFromDatabase() {
@@ -251,5 +288,7 @@ public class PrivacyFragment extends Fragment {
         new UserLocationDao().deleteAllData();
         new CalendarTagDao().deleteAllData();
         new RouteSearchDao().deleteAllData();
+        new FavouritePlaceDao().deleteAllData();
     }
 }
+

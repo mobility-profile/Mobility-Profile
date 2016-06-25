@@ -12,4 +12,8 @@
     </string>
     <string name="last_places">Your last searched places</string>
     <string name="favorites_title">Your favorite places</string>
+    <string name="reset_title">Delete all collected data?</string>
+    <string name="reset_message">Deletes all collected data, including visited locations, searched routes, and favourite places.</string>
+    <string name="reset_ok">Delete</string>
+    <string name="reset_cancel">Cancel</string>
 </resources>
