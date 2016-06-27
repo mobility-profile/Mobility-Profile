@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/label"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingTop="20dp"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:textSize="16sp"
-    android:textColor="@color/colorPrimary">
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/favorites_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary">
 
-</TextView>
+    </TextView>
+
+    <ImageButton
+        android:id="@+id/favorites_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_delete"
+        android:contentDescription="@string/favorites_delete_title"
+        android:padding="5dp"
+        android:layout_gravity="end">
+    </ImageButton>
+
+</GridLayout>

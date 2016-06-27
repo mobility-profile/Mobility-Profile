@@ -3,9 +3,11 @@ package fi.ohtu.mobilityprofile.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,22 +67,17 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
-        addListenerOnButton(view);
+
         List<FavouritePlace> favouritePlaces = new ArrayList<>();
         try {
             favouritePlaces = FavouritePlace.listAll(FavouritePlace.class);
         } catch (Exception e) {
         }
 
-        ArrayList<String> favourites = new ArrayList<>();
-
-        for (FavouritePlace f : favouritePlaces) {
-            favourites.add(f.toString());
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.favorites_list_item, favourites);
+        final MyListAdapter adapter = new MyListAdapter(context, R.layout.favorites_list_item, favouritePlaces);
         ListView listView = (ListView) view.findViewById(R.id.favorites_listView);
         listView.setAdapter(adapter);
+        addListenerOnButton(view, adapter);
     }
 
     @Override
@@ -90,11 +87,12 @@ public class FavoritesFragment extends Fragment {
     }
 
 
-    private void addListenerOnButton(final View view) {
+    private void addListenerOnButton(final View view, final MyListAdapter adapter) {
 
         Button button = (Button) view.findViewById(R.id.add_favorite_button);
         final EditText addFavoriteName = (EditText) view.findViewById(R.id.add_favorite_name);
         final EditText addFavoriteAddress = (EditText) view.findViewById(R.id.add_favorite_address);
+        final Fragment thisFragment = this;
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -106,6 +104,13 @@ public class FavoritesFragment extends Fragment {
 
                 FavouritePlace fav = new FavouritePlace(name, address);
                 fav.save();
+
+                FragmentTransaction tr = getFragmentManager().beginTransaction();
+                tr.detach(thisFragment);
+                tr.attach(thisFragment);
+                tr.commit();
+
+                adapter.notifyDataSetChanged();
             }
 
         });
