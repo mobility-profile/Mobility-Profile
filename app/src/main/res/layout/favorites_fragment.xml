@@ -13,11 +13,19 @@
         android:textStyle="bold"
         android:text="@string/favorites_title"/>
 
+    <EditText
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_favorite"
+        android:layout_gravity="center_horizontal"
+        android:hint="Add a favorite place"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"/>
+
     <ListView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/favorites_listView"
         android:layout_gravity="center_horizontal" />
-
 
 </LinearLayout>
