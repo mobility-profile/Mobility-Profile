@@ -13,30 +13,38 @@
         android:textStyle="bold"
         android:text="@string/favorites_title"/>
 
-    <RelativeLayout
+    <GridLayout
         android:layout_width="wrap_content"
         android:id="@+id/relativeLayout1"
         android:layout_height="wrap_content"
         android:padding="20dp">
+
+        <EditText
+            android:id="@+id/add_favorite_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/favorites_name_hint"
+            android:padding="20dp">
+        </EditText>
+
+        <EditText
+            android:id="@+id/add_favorite_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/favorites_address_hint"
+            android:padding="20dp">
+        </EditText>
 
         <Button
             android:id="@+id/add_favorite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/favorites_button"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:padding="20dp"/>
 
-        <EditText
-            android:id="@+id/add_favorite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:hint="@string/favorites_hint"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
-        </EditText>
-    </RelativeLayout>
+    </GridLayout>
 
     <ListView
         android:layout_width="wrap_content"

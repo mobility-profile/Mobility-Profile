@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.orm.query.Select;
@@ -38,6 +40,7 @@ public class FavoritesFragment extends Fragment {
 
     /**
      * Creates a new instance of FavouritesFragment.
+     *
      * @return
      */
     public static FavoritesFragment newInstance() {
@@ -58,11 +61,11 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
+        addListenerOnButton(view);
         List<FavouritePlace> favouritePlaces = new ArrayList<>();
         try {
             favouritePlaces = FavouritePlace.listAll(FavouritePlace.class);
@@ -71,8 +74,8 @@ public class FavoritesFragment extends Fragment {
 
         ArrayList<String> favourites = new ArrayList<>();
 
-        for (FavouritePlace r: favouritePlaces) {
-            favourites.add(r.toString());
+        for (FavouritePlace f : favouritePlaces) {
+            favourites.add(f.toString());
         }
 
         ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.favorites_list_item, favourites);
@@ -85,4 +88,28 @@ public class FavoritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.favorites_fragment, container, false);
     }
+
+
+    private void addListenerOnButton(final View view) {
+
+        Button button = (Button) view.findViewById(R.id.add_favorite_button);
+        final EditText addFavoriteName = (EditText) view.findViewById(R.id.add_favorite_name);
+        final EditText addFavoriteAddress = (EditText) view.findViewById(R.id.add_favorite_address);
+
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                String name = addFavoriteName.getText().toString();
+                String address = addFavoriteAddress.getText().toString();
+
+                FavouritePlace fav = new FavouritePlace(name, address);
+                fav.save();
+            }
+
+        });
+
+    }
+
 }
