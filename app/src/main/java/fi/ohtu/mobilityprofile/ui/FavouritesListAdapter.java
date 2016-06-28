@@ -25,14 +25,14 @@ import fi.ohtu.mobilityprofile.data.FavouritePlace;
 /**
  * This class adapts a list of FavouritePlace to ListView.
  */
-public class FavoritesListAdapter extends ArrayAdapter<FavouritePlace> {
+public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
 
     private List<FavouritePlace> items;
     private int resourceId;
     private Context context;
     private Fragment fragment;
 
-    public FavoritesListAdapter(Context context, int resourceId, List<FavouritePlace> items, Fragment fragment) {
+    public FavouritesListAdapter(Context context, int resourceId, List<FavouritePlace> items, Fragment fragment) {
         super(context, resourceId, items);
         this.resourceId = resourceId;
         this.context = context;
@@ -48,11 +48,11 @@ public class FavoritesListAdapter extends ArrayAdapter<FavouritePlace> {
             view = ((Activity) context).getLayoutInflater().inflate(resourceId, parent, false);
         }
 
-        TextView listItemText = (TextView) view.findViewById(R.id.favorites_item);
+        TextView listItemText = (TextView) view.findViewById(R.id.favourites_item);
         listItemText.setText(items.get(position).toString());
 
-        ImageButton deleteButton = (ImageButton)view.findViewById(R.id.favorites_delete);
-        ImageButton editButton = (ImageButton)view.findViewById(R.id.favorites_edit);
+        ImageButton deleteButton = (ImageButton)view.findViewById(R.id.favourites_delete);
+        ImageButton editButton = (ImageButton)view.findViewById(R.id.favourites_edit);
 
         setListeners(position, deleteButton, editButton);
 
@@ -66,7 +66,7 @@ public class FavoritesListAdapter extends ArrayAdapter<FavouritePlace> {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder
-                        .setTitle(R.string.favorites_delete_title)
+                        .setTitle(R.string.favourites_delete_title)
                         .setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -102,7 +102,7 @@ public class FavoritesListAdapter extends ArrayAdapter<FavouritePlace> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder
-                        .setView(LayoutInflater.from(context).inflate(R.layout.favorites_edit_dialog, null))
+                        .setView(LayoutInflater.from(context).inflate(R.layout.favourites_edit_dialog, null))
                         .setPositiveButton(R.string.edit, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -114,8 +114,8 @@ public class FavoritesListAdapter extends ArrayAdapter<FavouritePlace> {
 
                                 if (favourites.size() == 1) {
 
-                                    EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavoriteName);
-                                    EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavoriteAddress);
+                                    EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteName);
+                                    EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
 
                                     FavouritePlace fav = favourites.get(0);
 
@@ -140,7 +140,7 @@ public class FavoritesListAdapter extends ArrayAdapter<FavouritePlace> {
                                 dialog.cancel();
                             }
                         })
-                        .setTitle(R.string.favorites_edit_title);
+                        .setTitle(R.string.favourites_edit_title);
 
                 AlertDialog dialog = builder.create();
                 dialog.show();

@@ -18,16 +18,16 @@ import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.FavouritePlace;
 
 /**
- * The class creates a component called FavoritesFragment.
+ * The class creates a component called FavouritesFragment.
  *
- * FavoritesFragment handles everything concerning the FAVORITES tab in the UI.
+ * FavouritesFragment handles everything concerning the FAVOURITES tab in the UI.
  */
-public class FavoritesFragment extends Fragment {
+public class FavouritesFragment extends Fragment {
 
     /**
      * The title of the fragment.
      */
-    private static final String title = "FAVORITES";
+    private static final String title = "FAVOURITES";
 
     /**
      * The position of the fragment in the "queue" of all fragments.
@@ -40,13 +40,13 @@ public class FavoritesFragment extends Fragment {
      *
      * @return
      */
-    public static FavoritesFragment newInstance() {
-        FavoritesFragment favoritesFragment = new FavoritesFragment();
+    public static FavouritesFragment newInstance() {
+        FavouritesFragment favouritesFragment = new FavouritesFragment();
         Bundle args = new Bundle();
         args.putInt("page", page);
         args.putString("title", title);
-        favoritesFragment.setArguments(args);
-        return favoritesFragment;
+        favouritesFragment.setArguments(args);
+        return favouritesFragment;
     }
 
     @Override
@@ -70,8 +70,8 @@ public class FavoritesFragment extends Fragment {
             e.printStackTrace();
         }
 
-        final FavoritesListAdapter adapter = new FavoritesListAdapter(context, R.layout.favorites_list_item, favouritePlaces, this);
-        ListView listView = (ListView) view.findViewById(R.id.favorites_listView);
+        final FavouritesListAdapter adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
+        ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
         listView.setAdapter(adapter);
         addListenerOnButton(view, adapter);
     }
@@ -79,22 +79,22 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.favorites_fragment, container, false);
+        return inflater.inflate(R.layout.favourites_fragment, container, false);
     }
 
 
-    private void addListenerOnButton(final View view, final FavoritesListAdapter adapter) {
+    private void addListenerOnButton(final View view, final FavouritesListAdapter adapter) {
 
-        Button button = (Button) view.findViewById(R.id.add_favorite_button);
-        final EditText addFavoriteName = (EditText) view.findViewById(R.id.add_favorite_name);
-        final EditText addFavoriteAddress = (EditText) view.findViewById(R.id.add_favorite_address);
+        Button button = (Button) view.findViewById(R.id.add_favourite_button);
+        final EditText addFavouriteName = (EditText) view.findViewById(R.id.add_favourite_name);
+        final EditText addFavouriteAddress = (EditText) view.findViewById(R.id.add_favourite_address);
 
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
 
-                FavouritePlace fav = new FavouritePlace(addFavoriteName.getText().toString(), addFavoriteAddress.getText().toString());
+                FavouritePlace fav = new FavouritePlace(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
                 fav.save();
                 updateView(adapter);
             }
@@ -103,7 +103,7 @@ public class FavoritesFragment extends Fragment {
 
     }
 
-    private void updateView(FavoritesListAdapter adapter) {
+    private void updateView(FavouritesListAdapter adapter) {
         FragmentTransaction tr = getFragmentManager().beginTransaction();
         tr.detach(this);
         tr.attach(this);

@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/favorites_item"
+        android:id="@+id/favourites_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
@@ -17,21 +17,21 @@
     </TextView>
 
     <ImageButton
-        android:id="@+id/favorites_edit"
+        android:id="@+id/favourites_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_edit"
-        android:contentDescription="@string/favorites_delete_title"
+        android:contentDescription="@string/favourites_delete_title"
         android:padding="5dp"
         android:layout_gravity="end">
     </ImageButton>
 
     <ImageButton
-        android:id="@+id/favorites_delete"
+        android:id="@+id/favourites_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_delete"
-        android:contentDescription="@string/favorites_delete_title"
+        android:contentDescription="@string/favourites_delete_title"
         android:padding="5dp"
         android:layout_gravity="end">
     </ImageButton>

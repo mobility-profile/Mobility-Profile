@@ -33,7 +33,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return InfoFragment.newInstance();
             case 3:
-                return FavoritesFragment.newInstance();
+                return FavouritesFragment.newInstance();
             default:
                 return new Fragment();
         }
@@ -49,7 +49,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return "INFO";
             case 3:
-                return "FAVORITES";
+                return "FAVOURITES";
             default:
                 return "";
         }

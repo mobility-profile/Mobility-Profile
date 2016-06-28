@@ -11,13 +11,13 @@
         With location data Mobility Profile will learn to predict destinations.
     </string>
     <string name="last_places">Your last searched places</string>
-    <string name="favorites_title">Your favorite places</string>
-    <string name="favorites_name_hint">Name</string>
-    <string name="favorites_address_hint">Address</string>
-    <string name="favorites_button">Add</string>
-    <string name="favorites_delete">Delete</string>
-    <string name="favorites_delete_title">Delete this favorite place?</string>
-    <string name="favorites_edit_title">Edit this favorite place</string>
+    <string name="favourites_title">Your favourite places</string>
+    <string name="favourites_name_hint">Name</string>
+    <string name="favourites_address_hint">Address</string>
+    <string name="favourites_button">Add</string>
+    <string name="favourites_delete">Delete</string>
+    <string name="favourites_delete_title">Delete this favourite place?</string>
+    <string name="favourites_edit_title">Edit this favourite place</string>
     <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>
     <string name="reset_title">Delete all collected data?</string>

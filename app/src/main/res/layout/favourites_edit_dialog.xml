@@ -9,14 +9,14 @@
         android:layout_height="wrap_content"
         android:width="150dp"
         android:layout_marginLeft="20dp"
-        android:id="@+id/editFavoriteName"
-        android:hint="@string/favorites_name_hint" />
+        android:id="@+id/editFavouriteName"
+        android:hint="@string/favourites_name_hint" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="150dp"
         android:layout_marginLeft="20dp"
-        android:id="@+id/editFavoriteAddress"
-        android:hint="@string/favorites_address_hint"/>
+        android:id="@+id/editFavouriteAddress"
+        android:hint="@string/favourites_address_hint"/>
 </LinearLayout>
