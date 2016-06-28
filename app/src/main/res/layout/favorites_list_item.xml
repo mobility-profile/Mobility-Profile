@@ -17,6 +17,16 @@
     </TextView>
 
     <ImageButton
+        android:id="@+id/favorites_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_edit"
+        android:contentDescription="@string/favorites_delete_title"
+        android:padding="5dp"
+        android:layout_gravity="end">
+    </ImageButton>
+
+    <ImageButton
         android:id="@+id/favorites_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

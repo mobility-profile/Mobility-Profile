@@ -7,20 +7,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.FavouritePlace;
-import fi.ohtu.mobilityprofile.data.RouteSearch;
 
 /**
  * The class creates a component called FavoritesFragment.
@@ -72,9 +67,10 @@ public class FavoritesFragment extends Fragment {
         try {
             favouritePlaces = FavouritePlace.listAll(FavouritePlace.class);
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        final MyListAdapter adapter = new MyListAdapter(context, R.layout.favorites_list_item, favouritePlaces);
+        final FavoritesListAdapter adapter = new FavoritesListAdapter(context, R.layout.favorites_list_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favorites_listView);
         listView.setAdapter(adapter);
         addListenerOnButton(view, adapter);
@@ -87,34 +83,32 @@ public class FavoritesFragment extends Fragment {
     }
 
 
-    private void addListenerOnButton(final View view, final MyListAdapter adapter) {
+    private void addListenerOnButton(final View view, final FavoritesListAdapter adapter) {
 
         Button button = (Button) view.findViewById(R.id.add_favorite_button);
         final EditText addFavoriteName = (EditText) view.findViewById(R.id.add_favorite_name);
         final EditText addFavoriteAddress = (EditText) view.findViewById(R.id.add_favorite_address);
-        final Fragment thisFragment = this;
 
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
 
-                String name = addFavoriteName.getText().toString();
-                String address = addFavoriteAddress.getText().toString();
-
-                FavouritePlace fav = new FavouritePlace(name, address);
+                FavouritePlace fav = new FavouritePlace(addFavoriteName.getText().toString(), addFavoriteAddress.getText().toString());
                 fav.save();
-
-                FragmentTransaction tr = getFragmentManager().beginTransaction();
-                tr.detach(thisFragment);
-                tr.attach(thisFragment);
-                tr.commit();
-
-                adapter.notifyDataSetChanged();
+                updateView(adapter);
             }
 
         });
 
+    }
+
+    private void updateView(FavoritesListAdapter adapter) {
+        FragmentTransaction tr = getFragmentManager().beginTransaction();
+        tr.detach(this);
+        tr.attach(this);
+        tr.commit();
+        adapter.notifyDataSetChanged();
     }
 
 }
