@@ -16,6 +16,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 
 /**
  * The class creates a component called FavouritesFragment.
@@ -68,7 +69,7 @@ public class FavouritesFragment extends Fragment {
             favouritePlaces = FavouritePlace.listAll(FavouritePlace.class);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        });
 
         final FavouritesListAdapter adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);

@@ -9,8 +9,12 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.widget.Toast;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -26,6 +30,7 @@ public class RequestHandler extends Handler {
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
     private RouteSearchDao routeSearchDao;
+    private FavouritePlaceDao favouritePlaceDao;
 
     /**
      * Creates the RequestHandler.
@@ -35,14 +40,16 @@ public class RequestHandler extends Handler {
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
      * @param routeSearchDao DAO for routeSearch
+     * @param favouritePlaceDao for favourite places
      */
     public RequestHandler(Context context, MobilityProfile mobilityProfile,
-                          CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
+                          CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
         this.context = context;
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
         this.routeSearchDao = routeSearchDao;
+        this.favouritePlaceDao = favouritePlaceDao;
     }
 
     @Override
@@ -60,6 +67,9 @@ public class RequestHandler extends Handler {
             case SEND_USED_DESTINATION:
                 processUsedRoute(msg);
                 return;
+            case RESPOND_FAVOURITE_PLACES:
+            message = getFavouritePlaces();
+            break;
             default:
                 message = processErrorMessage(msg.what);
         }
@@ -133,5 +143,27 @@ public class RequestHandler extends Handler {
         message.setData(bundle);
 
         return message;
+    }
+    
+    /**
+     * Create message that data is String array list.
+     * @param code Message code
+     * @param info Data of message, String array list
+     * @return message
+     */
+    private Message createMessage(int code, ArrayList<String> info) {
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(code+"", info);
+        Message message = Message.obtain(null, code);
+        message.setData(bundle);
+
+        return message;
+    }
+    
+    /**
+     * @return user's favourite places
+     */
+    private Message getFavouritePlaces() {
+        return createMessage(RESPOND_FAVOURITE_PLACES, favouritePlaceDao.getNamesOfFavouritePlaces());
     }
 }
