@@ -49,7 +49,7 @@
 
         <service
             android:name=".LocationService"
-            android:process="mobility_profile_location">
+            android:process=":mobility_profile_location">
         </service>
     </application>
 </manifest>
