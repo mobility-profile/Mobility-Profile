@@ -5,6 +5,7 @@ public class RequestCode {
     public static final int SEND_USED_DESTINATION = 102;
 
     public static final int RESPOND_MOST_LIKELY_DESTINATION = 201;
+    public static final int RESPOND_FAVOURITE_PLACES = 202;
 
     public static final int ERROR_UNKNOWN_CODE = 401;
 }

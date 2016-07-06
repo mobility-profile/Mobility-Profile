@@ -21,6 +21,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 
 /**
  * This class adapts a list of FavouritePlace to ListView.
@@ -70,7 +71,7 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
                         .setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-
+                                
                                 final List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
                                         .where(Condition.prop("id").eq(getItemId(position)))
                                         .limit("1")
