@@ -5,10 +5,6 @@ language: android
 branches:
   only:
     - master
-    
-addons:
-  code_climate:
-    repo_token: 07e7660af33d2dcef39d4eb005d1c139849e80e2a46eb3f42d7a4f43b90db848
 
 env:
   global:
