@@ -6,18 +6,7 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-<<<<<<< HEAD
 import fi.ohtu.mobilityprofile.data.*;
-=======
-import fi.ohtu.mobilityprofile.data.CalendarTag;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.FavouritePlace;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.RouteSearch;
-import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.Visit;
-import fi.ohtu.mobilityprofile.data.VisitDao;
->>>>>>> tietokanta
 
 /**
  * This class is used for calculating the most likely trips the user is going to make.

@@ -69,7 +69,7 @@ public class FavouritesFragment extends Fragment {
             favouritePlaces = FavouritePlace.listAll(FavouritePlace.class);
         } catch (Exception e) {
             e.printStackTrace();
-        });
+        }
 
         final FavouritesListAdapter adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
