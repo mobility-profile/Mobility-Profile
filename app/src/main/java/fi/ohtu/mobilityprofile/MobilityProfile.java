@@ -193,7 +193,7 @@ public class MobilityProfile {
      * @param event an event
      */
     public void setCalendarEventLocation(String event) {
-        this.eventLocation = event;
+        calendar.setEventLocation(event);
     }
 
     /**

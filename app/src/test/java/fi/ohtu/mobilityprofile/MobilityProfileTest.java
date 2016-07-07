@@ -44,13 +44,13 @@ public class MobilityProfileTest {
         when(calendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
     }
 
-    // @Test
-    // public void suggestsFirstLocationFromTheCalendar() throws Exception {
-    //     mp.setCalendarEventLocation(eventLocation);
-    //
-    //     String nextLocation = mp.getMostLikelyDestination("Kumpula");
-    //     assertEquals("Rautatieasema", nextLocation);
-    // }
+    @Test
+    public void suggestsFirstLocationFromTheCalendar() throws Exception {
+        mp.setCalendarEventLocation(eventLocation);
+
+        String nextLocation = mp.getMostLikelyDestination("Kumpula");
+        assertEquals("Rautatieasema", nextLocation);
+    }
 
     @Test
     public void suggestHomeIfNoVisitsMade() {
@@ -61,13 +61,13 @@ public class MobilityProfileTest {
 
     }
 
-    // @Test
-    // public void suggestTheFirstVisitFromAllVisits() {
-    //     mp.setCalendarEventLocation(null);
-    //     visitDao.insertVisit(new Visit(1234, "Kumpula"));
-    //
-    //     String nextLocation = mp.getMostLikelyDestination("Kumpula");
-    //     assertEquals("Kumpula", nextLocation);
-    // }
+    @Test
+    public void suggestTheFirstVisitFromAllVisits() {
+        mp.setCalendarEventLocation(null);
+        visitDao.insertVisit(new Visit(1234, "Kumpula"));
+
+        String nextLocation = mp.getMostLikelyDestination("Kumpula");
+        assertEquals("Kumpula", nextLocation);
+    }
 
 }
