@@ -64,7 +64,7 @@ public class MobilityProfileTest {
     @Test
     public void suggestTheFirstVisitFromAllVisits() {
         mp.setCalendarEventLocation(null);
-        visitDao.insertVisit(new Visit(1234, "Kumpula"));
+        visitDao.insertVisit(new Visit(System.currentTimeMillis(), "Kumpula"));
 
         String nextLocation = mp.getMostLikelyDestination("Kumpula");
         assertEquals("Kumpula", nextLocation);
