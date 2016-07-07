@@ -260,25 +260,25 @@ public class PrivacyFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
 
-        builder.setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-               deleteAllDataFromDatabase();
-            }
-        });
-        builder.setNegativeButton(R.string.reset_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                // user clicked cancel button
-                dialog.cancel();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }};
+            builder.setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    deleteAllDataFromDatabase();
+                }
+            });
+            builder.setNegativeButton(R.string.reset_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    // user clicked cancel button
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }};
 
     /**
      * Deletes all data from the database.

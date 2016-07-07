@@ -29,6 +29,10 @@ public class PermissionManager {
         return READ_CALENDAR;
     }
 
+    /**
+     * Sets the states of location and calendar permissions
+     * @param context context of the app
+     */
     public static void setPermissions(Context context) {
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)

@@ -40,6 +40,9 @@ public class UserLocationDao {
         return nearestLocation;
     }
 
+    /**
+     * Deletes all UserLocation data from the database
+     */
     public void deleteAllData() {
         UserLocation.deleteAll(UserLocation.class);
     }

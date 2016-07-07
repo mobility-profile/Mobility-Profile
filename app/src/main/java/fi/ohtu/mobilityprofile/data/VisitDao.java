@@ -11,6 +11,9 @@ import java.util.List;
 public class VisitDao {
     private UserLocationDao userLocationDao;
 
+    /**
+     *
+     */
     public VisitDao() {
     }
     /**
@@ -86,6 +89,9 @@ public class VisitDao {
         visit.save();
     }
 
+    /**
+     * Deletes all Visit data from the database
+     */
     public void deleteAllData() {
         Visit.deleteAll(Visit.class);
     }

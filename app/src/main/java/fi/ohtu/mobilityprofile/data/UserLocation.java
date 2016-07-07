@@ -16,6 +16,10 @@ public class UserLocation extends SugarRecord {
     public UserLocation() {
     }
 
+    /**
+     * Creates new User location
+     * @param location user's location
+     */
     public UserLocation(String location) {
         this.location = location;
     }

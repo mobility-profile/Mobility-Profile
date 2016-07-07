@@ -95,6 +95,9 @@ public class RouteSearchDao {
         routeSearch.save();
     }
 
+    /**
+     * Deletes all RouteSearch data from the database.
+     */
     public void deleteAllData() {
         RouteSearch.deleteAll(RouteSearch.class);
     }

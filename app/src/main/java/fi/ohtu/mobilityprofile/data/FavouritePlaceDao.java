@@ -14,7 +14,7 @@ public class FavouritePlaceDao {
 
     /**
      * Returns all the user's favourite places.
-     * @return
+     * @return list of all favourite places
      */
     public List<FavouritePlace> getAllFavouritePlaces() {
         return FavouritePlace.listAll(FavouritePlace.class);
@@ -59,7 +59,7 @@ public class FavouritePlaceDao {
      * @param favourite Favourite place to be saved
      */
     public void insertFavouritePlace(FavouritePlace favourite) {
-         favourite.save();
+        favourite.save();
     }
 
     /**
@@ -67,17 +67,7 @@ public class FavouritePlaceDao {
      * @param name name of the favourite place
      */
     public void deleteFavouritePlace(String name) {
-        List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
-                .where(Condition.prop("name").eq(name))
-                .limit("1")
-                .list();
-
-        assert favourites.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-
-        if (favourites.size() == 1) {
-            FavouritePlace fav = favourites.get(0);
-            fav.delete();
-        }
+        FavouritePlace.deleteAll(FavouritePlace.class, "name = ?", name);
     }
     
     /**

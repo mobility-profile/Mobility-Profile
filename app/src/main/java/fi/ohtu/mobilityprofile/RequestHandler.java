@@ -68,8 +68,8 @@ public class RequestHandler extends Handler {
                 processUsedRoute(msg);
                 return;
             case RESPOND_FAVOURITE_PLACES:
-            message = getFavouritePlaces();
-            break;
+                message = getFavouritePlaces();
+                break;
             default:
                 message = processErrorMessage(msg.what);
         }
@@ -109,6 +109,10 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     private String getStartLocation() {
         Location location = LocationHandler.getLocation();
         if (location == null) {

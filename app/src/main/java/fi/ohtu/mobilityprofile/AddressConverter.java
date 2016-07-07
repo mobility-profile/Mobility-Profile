@@ -54,12 +54,12 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                System.out.println("Exception in convertToAddress-method of AddressConverter");
-            }
-        });
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        System.out.println("Exception in convertToAddress-method of AddressConverter");
+                    }
+                });
         queue.add(stringRequest);
 
         if (address == null) {
