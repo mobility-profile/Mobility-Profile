@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
+import fi.ohtu.mobilityprofile.GoogleAPILocationService;
 import fi.ohtu.mobilityprofile.LocationService;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.Testing;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
@@ -54,6 +58,7 @@ public class PrivacyFragment extends Fragment {
     private Button resetbutton;
 
     private Context context;
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     /**
      * Creates a new instance of PrivacyFragment.
@@ -154,12 +159,14 @@ public class PrivacyFragment extends Fragment {
         trackingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    //context.startService(new Intent(context, LocationService.class));
-                    context.startService(new Intent(context, Testing.class));
+                if (isChecked && checkPlayServices()) {
+                    context.startService(new Intent(context, LocationService.class));
+                    if (checkPlayServices()) {
+                        context.startService(new Intent(context, GoogleAPILocationService.class));
+                    }
                 } else {
-                    //context.stopService(new Intent(context, LocationService.class));
-                    context.stopService(new Intent(context, Testing.class));
+                    context.stopService(new Intent(context, LocationService.class));
+                    context.stopService(new Intent(context, GoogleAPILocationService.class));
                 }
             }
         });
@@ -260,25 +267,25 @@ public class PrivacyFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
 
-        builder.setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-               deleteAllDataFromDatabase();
-            }
-        });
-        builder.setNegativeButton(R.string.reset_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                // user clicked cancel button
-                dialog.cancel();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }};
+            builder.setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    deleteAllDataFromDatabase();
+                }
+            });
+            builder.setNegativeButton(R.string.reset_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    // user clicked cancel button
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }};
 
     /**
      * Deletes all data from the database.
@@ -289,6 +296,26 @@ public class PrivacyFragment extends Fragment {
         new CalendarTagDao().deleteAllData();
         new RouteSearchDao().deleteAllData();
         new FavouritePlaceDao().deleteAllData();
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(context);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(getActivity(), resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i("TESTING", "This device is not supported.");
+            }
+            return false;
+        }
+        return true;
     }
 }
 

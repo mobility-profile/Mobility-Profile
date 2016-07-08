@@ -16,6 +16,8 @@ import org.robolectric.annotation.Config;
 import static org.junit.Assert.*;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
@@ -35,6 +37,7 @@ public class RequestHandlerTest {
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
     private RouteSearchDao routeSearchDao;
+    private FavouritePlaceDao favouritePlaceDao;
 
     @Before
     public void setUp() {
@@ -43,8 +46,9 @@ public class RequestHandlerTest {
         this.calendarTagDao = mock(CalendarTagDao.class);
         this.routeSearchDao = new RouteSearchDao();
         this.visitDao = new VisitDao(new UserLocationDao());
+        this.favouritePlaceDao = mock(FavouritePlaceDao.class);
 
-        this.requestHandler = new RequestHandler(context, mobilityProfile, calendarTagDao, visitDao, routeSearchDao);
+        this.requestHandler = new RequestHandler(context, mobilityProfile, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
 
         when(mobilityProfile.isCalendarDestination()).thenReturn(false);
 

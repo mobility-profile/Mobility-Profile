@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Messenger;
 
+import java.util.List;
+
+
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -23,7 +27,8 @@ public class RemoteService extends Service {
                 CalendarTagDao calendarTagDao = new CalendarTagDao();
                 VisitDao visitDao = new VisitDao(new UserLocationDao());
                 RouteSearchDao routeSearchDao = new RouteSearchDao();
-                messenger = new Messenger(new RequestHandler(this, new MobilityProfile(this, calendarTagDao, visitDao, routeSearchDao), calendarTagDao, visitDao, routeSearchDao));
+                FavouritePlaceDao favouritePlaceDao = new FavouritePlaceDao();
+                messenger = new Messenger(new RequestHandler(this, new MobilityProfile(this, calendarTagDao, visitDao, routeSearchDao), calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao));
             }
         }
 

@@ -26,6 +26,7 @@ public class TestingService extends IntentService {
             return;
         }
 
+        System.out.println(location);
 
         LocationHandler.setLocation(location);
     }

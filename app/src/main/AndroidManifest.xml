@@ -38,7 +38,10 @@
         <service
             android:name=".RemoteService"
             android:exported="true"
-            android:process=":mobility_profile">
+            android:process=":mobility_profile"
+            android:permission="">
+            <!-- TODO: Require permission to use our app. -->
+
             <intent-filter>
                 <action android:name="fi.ohtu.mobilityprofile.RemoteService"/>
             </intent-filter>
@@ -46,16 +49,11 @@
 
         <service
             android:name=".LocationService"
-            android:exported="true"
-            android:process=":mobility_profile">
-
-            <intent-filter>
-                <action android:name="fi.ohtu.mobilityprofile.LocationService"/>
-            </intent-filter>
+            android:process=":mobility_profile_location">
         </service>
         <service
-            android:name=".Testing"
-            android:process=":mobility_profile">
+            android:name=".GoogleAPILocationService"
+            android:process=":mobility_profile_location">
         </service>
     </application>
 </manifest>

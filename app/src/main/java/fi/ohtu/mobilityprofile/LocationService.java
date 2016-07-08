@@ -21,7 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 public class LocationService extends Service {
-    private static final String TAG = "GPSTEST";
+    private static final String TAG = "LocationService";
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 10f;
@@ -88,7 +88,7 @@ public class LocationService extends Service {
             mLocationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                     mLocationListeners[1]);
-            LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
+            LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
         } catch (java.lang.SecurityException ex) {
             Log.i(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
@@ -98,7 +98,7 @@ public class LocationService extends Service {
             mLocationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                     mLocationListeners[0]);
-            LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
+            LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
         } catch (java.lang.SecurityException ex) {
             Log.i(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
@@ -125,7 +125,7 @@ public class LocationService extends Service {
                     }
                     mLocationManager.removeUpdates(mLocationListener);
                 } catch (Exception ex) {
-                    Log.i(TAG, "fail to remove location listners, ignore", ex);
+                    Log.i(TAG, "fail to remove location listeners, ignore", ex);
                 }
             }
         }

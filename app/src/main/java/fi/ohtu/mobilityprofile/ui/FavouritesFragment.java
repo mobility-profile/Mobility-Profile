@@ -16,6 +16,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 
 /**
  * The class creates a component called FavouritesFragment.
@@ -38,7 +39,7 @@ public class FavouritesFragment extends Fragment {
     /**
      * Creates a new instance of FavouritesFragment.
      *
-     * @return
+     * @return favourites fragment
      */
     public static FavouritesFragment newInstance() {
         FavouritesFragment favouritesFragment = new FavouritesFragment();
@@ -82,7 +83,11 @@ public class FavouritesFragment extends Fragment {
         return inflater.inflate(R.layout.favourites_fragment, container, false);
     }
 
-
+    /**
+     * Listener to add favourite place button
+     * @param view
+     * @param adapter
+     */
     private void addListenerOnButton(final View view, final FavouritesListAdapter adapter) {
 
         Button button = (Button) view.findViewById(R.id.add_favourite_button);
@@ -103,6 +108,10 @@ public class FavouritesFragment extends Fragment {
 
     }
 
+    /**
+     * Updates the favourites fragment view
+     * @param adapter
+     */
     private void updateView(FavouritesListAdapter adapter) {
         FragmentTransaction tr = getFragmentManager().beginTransaction();
         tr.detach(this);

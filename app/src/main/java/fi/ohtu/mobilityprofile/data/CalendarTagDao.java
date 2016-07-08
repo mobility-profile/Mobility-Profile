@@ -60,6 +60,9 @@ public class CalendarTagDao {
         calendarTag.save();
     }
 
+    /**
+     * Deletes all CalendarTag data from the database.
+     */
     public void deleteAllData() {
         CalendarTag.deleteAll(CalendarTag.class);
     }

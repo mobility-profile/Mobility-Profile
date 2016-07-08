@@ -14,6 +14,10 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     private static final int NUM_ITEMS = 4;
 
 
+    /**
+     * Creates MyPagerAdapter.
+     * @param fragmentManager
+     */
     public MyPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }

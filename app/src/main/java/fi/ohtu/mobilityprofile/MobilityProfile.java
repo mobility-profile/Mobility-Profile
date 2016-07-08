@@ -1,18 +1,12 @@
 package fi.ohtu.mobilityprofile;
 
 import android.content.Context;
-import android.graphics.PointF;
 
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.CalendarTag;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.RouteSearch;
-import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.Visit;
-import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.data.*;
 
 /**
  * This class is used for calculating the most likely trips the user is going to make.
@@ -22,6 +16,7 @@ public class MobilityProfile {
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
     private RouteSearchDao routeSearchDao;
+    private FavouritePlaceDao favouritePlaceDao;
 
     private CalendarConnection calendar;
 
@@ -198,7 +193,7 @@ public class MobilityProfile {
      * @param event an event
      */
     public void setCalendarEventLocation(String event) {
-        this.eventLocation = event;
+        calendar.setEventLocation(event);
     }
 
     /**

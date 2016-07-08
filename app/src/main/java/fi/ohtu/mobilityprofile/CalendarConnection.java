@@ -94,4 +94,8 @@ public class CalendarConnection {
     public String getEventLocation() {
         return this.eventLocation != null ? eventLocation : allDayEventLocation;
     }
+
+    public void setEventLocation(String eventLocation) {
+        this.eventLocation = eventLocation;
+    }
 }

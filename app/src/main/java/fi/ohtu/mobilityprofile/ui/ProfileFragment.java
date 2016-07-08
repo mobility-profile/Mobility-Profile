@@ -37,7 +37,7 @@ public class ProfileFragment extends Fragment {
 
     /**
      * Creates a new instance of ProfileFragment.
-     * @return
+     * @return profile fragment
      */
     public static ProfileFragment newInstance() {
         ProfileFragment profileFragment = new ProfileFragment();

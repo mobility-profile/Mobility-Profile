@@ -21,6 +21,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 
 /**
  * This class adapts a list of FavouritePlace to ListView.
@@ -32,6 +33,13 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
     private Context context;
     private Fragment fragment;
 
+    /**
+     * Creates favouritesListAdapter
+     * @param context
+     * @param resourceId
+     * @param items
+     * @param fragment
+     */
     public FavouritesListAdapter(Context context, int resourceId, List<FavouritePlace> items, Fragment fragment) {
         super(context, resourceId, items);
         this.resourceId = resourceId;
@@ -59,6 +67,12 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
         return view;
     }
 
+    /**
+     *
+     * @param position
+     * @param deleteButton
+     * @param editButton
+     */
     private void setListeners(final int position, ImageButton deleteButton, ImageButton editButton) {
         deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -70,7 +84,7 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
                         .setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-
+                                
                                 final List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
                                         .where(Condition.prop("id").eq(getItemId(position)))
                                         .limit("1")
@@ -148,6 +162,9 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
         });
     }
 
+    /**
+     * Updates the favourites fragment view
+     */
     private void updateView() {
         FragmentTransaction tr = fragment.getFragmentManager().beginTransaction();
         tr.detach(fragment);
