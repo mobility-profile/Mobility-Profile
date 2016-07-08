@@ -82,4 +82,16 @@ public class VisitDaoTest {
 
         assertTrue(visitDao.getVisitsByLocation("Herttoniemi").isEmpty());
     }
+
+    @Test
+    public void testDeleteAll() {
+        visitDao.insertVisit(new Visit(123, "Kumpula"));
+        visitDao.insertVisit(new Visit(234, "Kumpula"));
+
+        assertEquals(2, visitDao.getVisitsByLocation("Kumpula").size());
+
+        VisitDao.deleteAllData();
+
+        assertEquals(0, visitDao.getVisitsByLocation("Kumpula").size());
+    }
 }

@@ -63,7 +63,7 @@ public class CalendarTagDao {
     /**
      * Deletes all CalendarTag data from the database.
      */
-    public void deleteAllData() {
+    public static void deleteAllData() {
         CalendarTag.deleteAll(CalendarTag.class);
     }
 }

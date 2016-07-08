@@ -43,7 +43,7 @@ public class UserLocationDao {
     /**
      * Deletes all UserLocation data from the database
      */
-    public void deleteAllData() {
+    public static void deleteAllData() {
         UserLocation.deleteAll(UserLocation.class);
     }
 }

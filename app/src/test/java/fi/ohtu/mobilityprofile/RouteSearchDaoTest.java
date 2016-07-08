@@ -112,4 +112,16 @@ public class RouteSearchDaoTest {
     public void getByStartlocationAndDestinationFindsNothingIsEmpty() {
         assertTrue(routeSearchDao.getRouteSearchesByStartlocationAndDestination("Aurinko", "Mars").isEmpty());
     }
+
+    @Test
+    public void testDeleteAll() {
+        routeSearchDao.insertRouteSearch(new RouteSearch(1, "Lauttasaari",  "Sörnäinen"));
+        routeSearchDao.insertRouteSearch(new RouteSearch(2, "Lauttasaari",  "Herttoniemi"));
+
+        assertEquals(2, routeSearchDao.getRouteSearchesByStartlocation("Lauttasaari").size());
+
+        RouteSearchDao.deleteAllData();
+
+        assertEquals(0, routeSearchDao.getRouteSearchesByStartlocation("Lauttasaari").size());
+    }
 }
