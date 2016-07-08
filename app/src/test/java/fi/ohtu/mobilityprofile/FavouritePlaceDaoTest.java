@@ -69,4 +69,28 @@ public class FavouritePlaceDaoTest {
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().size(), 2);
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().get(0), "koti");
     }
+
+    @Test
+    public void testDeleteById() {
+        FavouritePlace favouritePlace = new FavouritePlace("Jee", "Kumpula");
+        favouriteDao.insertFavouritePlace(favouritePlace);
+
+        assertEquals(favouritePlace.getName(), favouriteDao.getFavouritePlaceByName("Jee").getName());
+
+        favouriteDao.deleteFavouritePlaceById(favouritePlace.getId());
+
+        assertEquals(null, favouriteDao.getFavouritePlaceByName("Jee"));
+    }
+
+    @Test
+    public void testDeleteAll() {
+        favouriteDao.insertFavouritePlace(new FavouritePlace("koti", "Kotitie 10"));
+        favouriteDao.insertFavouritePlace(new FavouritePlace("koulu", "Kumpula"));
+
+        assertEquals(favouriteDao.getNamesOfFavouritePlaces().size(), 2);
+
+        FavouritePlaceDao.deleteAllData();
+
+        assertEquals(favouriteDao.getNamesOfFavouritePlaces().size(), 0);
+    }
 }

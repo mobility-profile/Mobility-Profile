@@ -62,4 +62,16 @@ public class CalendarTagDaoTest {
         assertEquals("Tali", calendarTagDao.findTheMostUsedTag("Kumpula").getValue());
         assertEquals("Myllypuro", calendarTagDao.findTheMostUsedTag("Oulunkylä").getValue());
     }
+
+    @Test
+    public void testReset() {
+        calendarTagDao.insertCalendarTag(new CalendarTag("Oulunkylä", "Helsinki"));
+        calendarTagDao.insertCalendarTag(new CalendarTag("Kumpula", "Helsinki"));
+
+        assertEquals("Helsinki", calendarTagDao.findTheMostUsedTag("Oulunkylä").getValue());
+
+        CalendarTagDao.deleteAllData();
+
+        assertEquals(null, calendarTagDao.findTheMostUsedTag("Oulunkylä"));
+    }
 }

@@ -91,7 +91,7 @@ public class FavouritePlaceDao {
     /**
      * Deletes all favourite places from the database.
      */
-    public void deleteAllData() {
+    public static void deleteAllData() {
         FavouritePlace.deleteAll(FavouritePlace.class);
     }
 }

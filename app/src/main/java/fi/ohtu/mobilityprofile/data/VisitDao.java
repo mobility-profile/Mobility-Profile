@@ -12,11 +12,6 @@ public class VisitDao {
     private UserLocationDao userLocationDao;
 
     /**
-     *
-     */
-    public VisitDao() {
-    }
-    /**
      * Creates VisitDao.
      * @param userLocationDao 
      */
@@ -92,7 +87,8 @@ public class VisitDao {
     /**
      * Deletes all Visit data from the database
      */
-    public void deleteAllData() {
+    public static void deleteAllData() {
+        UserLocationDao.deleteAllData();
         Visit.deleteAll(Visit.class);
     }
 }
