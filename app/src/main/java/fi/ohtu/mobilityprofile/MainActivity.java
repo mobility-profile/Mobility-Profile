@@ -1,6 +1,5 @@
 package fi.ohtu.mobilityprofile;
 
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,12 +11,7 @@ import com.orm.SugarContext;
 
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
-
 public class MainActivity extends AppCompatActivity {
-
-    FragmentPagerAdapter adapterViewPager;
-
-    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
         SugarContext.init(this);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapterViewPager);
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
+
 }

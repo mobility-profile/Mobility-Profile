@@ -3,7 +3,6 @@ package fi.ohtu.mobilityprofile.ui;
 import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,10 +22,9 @@ import android.widget.Toast;
 import fi.ohtu.mobilityprofile.LocationService;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.Testing;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -157,9 +155,11 @@ public class PrivacyFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    context.startService(new Intent(context, LocationService.class));
+                    //context.startService(new Intent(context, LocationService.class));
+                    context.startService(new Intent(context, Testing.class));
                 } else {
-                    context.stopService(new Intent(context, LocationService.class));
+                    //context.stopService(new Intent(context, LocationService.class));
+                    context.stopService(new Intent(context, Testing.class));
                 }
             }
         });

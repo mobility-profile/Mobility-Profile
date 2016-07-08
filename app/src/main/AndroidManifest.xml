@@ -28,7 +28,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             tools:node="replace"
-            android:value="8487000" />
+            android:value="@integer/google_play_services_version" />
 
         <meta-data android:name="DATABASE" android:value="mobilityprofile.db" />
         <meta-data android:name="VERSION" android:value="9" />
@@ -39,8 +39,6 @@
             android:name=".RemoteService"
             android:exported="true"
             android:process=":mobility_profile">
-            <!-- TODO: Require permission to use our app. -->
-
             <intent-filter>
                 <action android:name="fi.ohtu.mobilityprofile.RemoteService"/>
             </intent-filter>
@@ -50,14 +48,14 @@
             android:name=".LocationService"
             android:exported="true"
             android:process=":mobility_profile">
-            <!-- TODO: Require permission to use our app. -->
 
             <intent-filter>
                 <action android:name="fi.ohtu.mobilityprofile.LocationService"/>
             </intent-filter>
         </service>
-        <!-- <service
-            android:name=".LocationService"
-            android:process=":mobility_profile_location" /> -->
+        <service
+            android:name=".Testing"
+            android:process=":mobility_profile">
+        </service>
     </application>
 </manifest>
