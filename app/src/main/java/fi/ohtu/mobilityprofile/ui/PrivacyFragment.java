@@ -77,7 +77,6 @@ public class PrivacyFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
-        PermissionManager.setPermissions(context);
     }
 
     @Override
@@ -102,8 +101,6 @@ public class PrivacyFragment extends Fragment {
         setListenerForCheckBoxCalendar();
         setListenerForCheckBoxTracking();
         resetbutton.setOnClickListener(onClickResetButton);
-
-        PermissionManager.setPermissions(context);
     }
 
     /**
@@ -114,11 +111,9 @@ public class PrivacyFragment extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                PermissionManager.setPermissions(context);
-                if (isChecked && !PermissionManager.permissionToFineLocation()) {
+                if (isChecked && !PermissionManager.permissionToFineLocation(context)) {
                     getPermissionToAccessFineLocation();
-                    PermissionManager.setPermissions(context);
-                    if (PermissionManager.permissionToFineLocation()) {
+                    if (PermissionManager.permissionToFineLocation(context)) {
                         trackingCheckBox.setEnabled(true);
                     }
                 } else if (isChecked) {
@@ -140,8 +135,7 @@ public class PrivacyFragment extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                PermissionManager.setPermissions(context);
-                if (isChecked && !PermissionManager.permissionToReadCalendar()) {
+                if (isChecked && !PermissionManager.permissionToReadCalendar(context)) {
                     getPermissionToReadCalendar();
                 } else if (isChecked) {
                     Toast.makeText(context, "Calendar is used again", Toast.LENGTH_SHORT).show();
@@ -160,12 +154,12 @@ public class PrivacyFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked && checkPlayServices()) {
-                    context.startService(new Intent(context, LocationService.class));
+                    //context.startService(new Intent(context, LocationService.class));
                     if (checkPlayServices()) {
                         context.startService(new Intent(context, GoogleAPILocationService.class));
                     }
                 } else {
-                    context.stopService(new Intent(context, LocationService.class));
+                    //context.stopService(new Intent(context, LocationService.class));
                     context.stopService(new Intent(context, GoogleAPILocationService.class));
                 }
             }
@@ -176,7 +170,7 @@ public class PrivacyFragment extends Fragment {
      * Checks if we have permission to access location, and then if not, requests it.
      */
     private void getPermissionToAccessFineLocation() {
-        if (!PermissionManager.permissionToFineLocation()) {
+        if (!PermissionManager.permissionToFineLocation(context)) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST);
         }
@@ -192,7 +186,7 @@ public class PrivacyFragment extends Fragment {
      * Checks if we have permission to read calendar, and then if not, requests it.
      */
     private void getPermissionToReadCalendar() {
-        if (!PermissionManager.permissionToReadCalendar()) {
+        if (!PermissionManager.permissionToReadCalendar(context)) {
             requestPermissions(new String[]{Manifest.permission.READ_CALENDAR},
                     READ_CALENDAR_PERMISSIONS_REQUEST);
         }
@@ -217,22 +211,20 @@ public class PrivacyFragment extends Fragment {
                 }
                 break;
         }
-        PermissionManager.setPermissions(context);
     }
 
     /**
      * Sets the checkboxes checked or unchecked based on the states of the permissions.
      */
     private void setChecked() {
-        PermissionManager.setPermissions(context);
-        if (!PermissionManager.permissionToFineLocation()) {
+        if (!PermissionManager.permissionToFineLocation(context)) {
             gpsCheckBox.setChecked(false);
             trackingCheckBox.setEnabled(false);
         } else {
             gpsCheckBox.setChecked(true);
         }
 
-        if (!PermissionManager.permissionToReadCalendar()) {
+        if (!PermissionManager.permissionToReadCalendar(context)) {
             calendarCheckBox.setChecked(false);
         } else {
             calendarCheckBox.setChecked(true);
@@ -311,7 +303,7 @@ public class PrivacyFragment extends Fragment {
                 apiAvailability.getErrorDialog(getActivity(), resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
                         .show();
             } else {
-                Log.i("TESTING", "This device is not supported.");
+                Log.i("PrivacyFragment", "This device is not supported.");
             }
             return false;
         }

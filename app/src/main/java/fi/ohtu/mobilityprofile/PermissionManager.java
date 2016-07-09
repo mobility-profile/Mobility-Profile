@@ -10,43 +10,19 @@ import android.support.v4.content.ContextCompat;
  */
 public class PermissionManager {
 
-    private static boolean ACCESS_TO_FINE_LOCATION;
-    private static boolean READ_CALENDAR;
-
     /**
      * Gives the state of the fine location permission.
      * @return true/false
      */
-    public static boolean permissionToFineLocation() {
-        return ACCESS_TO_FINE_LOCATION;
+    public static boolean permissionToFineLocation(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
      * Gives the state of the read calendar permission.
      * @return true/false
      */
-    public static boolean permissionToReadCalendar() {
-        return READ_CALENDAR;
-    }
-
-    /**
-     * Sets the states of location and calendar permissions
-     * @param context context of the app
-     */
-    public static void setPermissions(Context context) {
-
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ACCESS_TO_FINE_LOCATION = false;
-        } else {
-            ACCESS_TO_FINE_LOCATION = true;
-        }
-
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR)
-                != PackageManager.PERMISSION_GRANTED) {
-            READ_CALENDAR = false;
-        } else {
-            READ_CALENDAR = true;
-        }
+    public static boolean permissionToReadCalendar(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED;
     }
 }

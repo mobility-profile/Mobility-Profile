@@ -1,32 +1,28 @@
 package fi.ohtu.mobilityprofile;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.IntentService;
-import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
+import android.graphics.PointF;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-public class GoogleAPILocationService extends IntentService implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
+public class GoogleAPILocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener
 {
     private static final String TAG = "GoogleAPILocationS";
     private static GoogleApiClient mApiClient;
-
-    public GoogleAPILocationService() {
-        super("GoogleAPILocationService");
-    }
 
     @Override
     public void onCreate() {
@@ -43,6 +39,7 @@ public class GoogleAPILocationService extends IntentService implements GoogleApi
         }
     }
 
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG,"onConnected");
@@ -51,15 +48,8 @@ public class GoogleAPILocationService extends IntentService implements GoogleApi
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         locationRequest.setInterval(1000);
 
-        Intent locationIntent = new Intent(getApplicationContext(), TestingService.class);
-        PendingIntent locationPendingIntent = PendingIntent
-                .getService(getApplicationContext(), 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mApiClient, locationRequest, this);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            System.out.println("moiiiii");
-            LocationServices.FusedLocationApi.requestLocationUpdates(mApiClient, locationRequest, locationPendingIntent);
-        }
     }
 
     @Override
@@ -76,7 +66,7 @@ public class GoogleAPILocationService extends IntentService implements GoogleApi
                 e.printStackTrace();
             }
         } else {
-            Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
+            Log.e(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
         }
     }
 
@@ -84,16 +74,19 @@ public class GoogleAPILocationService extends IntentService implements GoogleApi
     public void onDestroy() {
         Log.i(TAG,"onDestroy");
         super.onDestroy();
-
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-
-
-        System.out.println("hehehehehehahahahaah");
-
+    public void onLocationChanged(Location location) {
+        Log.i(TAG, "onLocationChanged: " + location);
+        AddressConverter.convertToAddressSave(new PointF(new Float(location.getLatitude()),
+                new Float(location.getLongitude())), getApplicationContext());
     }
 
 }

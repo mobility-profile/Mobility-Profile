@@ -14,21 +14,20 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import fi.ohtu.mobilityprofile.data.Visit;
+
 /**
- * This class is used for converting GPS coordinates to an actual address.
+ * This class is used for converting GPS coordinates to an actual address and save that address.
  */
 public class AddressConverter {
-
-    private static String address;
-
     /**
-     * Converts GPS coordinates to an address.
+     * Converts GPS coordinates to an address and saves it.
      *
      * @param location coordinates of the location
      * @param context for new request queue
      * @return an address
      */
-    public static String convertToAddress(PointF location, Context context) {
+    public static void convertToAddressSave(PointF location, Context context) {
 
         String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
                 + location.x + "&point.lon="
@@ -46,28 +45,27 @@ public class AddressConverter {
                                 JSONObject zero = new JSONObject(features.get(0).toString());
                                 JSONObject properties = new JSONObject(zero.get("properties").toString());
                                 String label = (properties.get("label").toString());
-                                address = label;
+
+                                if (label == null) label = "";
+
+                                Log.i("AddressConverter", "converted address -> " + label );
+
+                                Visit lastLocation = new Visit(System.currentTimeMillis(), label);
+                                lastLocation.save();
                             }
                         } catch (Exception e) {
-                            System.out.println("Exception in onResponse-method in convertToAddress-method of AddressConverter");
+                            Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        System.out.println("Exception in convertToAddress-method of AddressConverter");
-                    }
-                });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
+                error.printStackTrace();
+
+            }
+        });
         queue.add(stringRequest);
-
-        if (address == null) {
-            address = "";
-        }
-
-        Log.e("ADDRESSCONVERTER", "converted address -> " + address );
-
-        return address;
     }
 }

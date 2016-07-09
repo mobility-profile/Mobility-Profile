@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Messenger;
 
-import java.util.List;
-
-
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;

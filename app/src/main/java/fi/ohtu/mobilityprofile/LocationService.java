@@ -5,65 +5,54 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PointF;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
-    private LocationManager mLocationManager = null;
+    private android.location.LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 10f;
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
 
-        /**
-         *
-         * @param provider
-         */
         public LocationListener(String provider) {
-            Log.e(TAG, "LocationListener " + provider);
+            Log.i(TAG, "LocationListener " + provider);
             mLastLocation = new Location(provider);
         }
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.e(TAG, "onLocationChanged: " + location);
+            Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation.set(location);
-            LocationHandler.setLocation(mLastLocation);
+            AddressConverter.convertToAddressSave(new PointF(new Float(mLastLocation.getLatitude()),
+                    new Float(mLastLocation.getLongitude())), getApplicationContext());
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-            Log.e(TAG, "onProviderDisabled: " + provider);
+            Log.i(TAG, "onProviderDisabled: " + provider);
         }
 
         @Override
         public void onProviderEnabled(String provider) {
-            Log.e(TAG, "onProviderEnabled: " + provider);
+            Log.i(TAG, "onProviderEnabled: " + provider);
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.e(TAG, "onStatusChanged: " + provider);
+            Log.i(TAG, "onStatusChanged: " + provider);
         }
     }
 
     LocationListener[] mLocationListeners = new LocationListener[]{
-        new LocationListener(LocationManager.GPS_PROVIDER),
-        new LocationListener(LocationManager.NETWORK_PROVIDER)
+        new LocationListener(android.location.LocationManager.GPS_PROVIDER),
+        new LocationListener(android.location.LocationManager.NETWORK_PROVIDER)
     };
 
     @Override
@@ -73,7 +62,7 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG, "onStartCommand");
+        Log.i(TAG, "onStartCommand");
         super.onStartCommand(intent, flags, startId);
 
         return START_STICKY;
@@ -81,26 +70,24 @@ public class LocationService extends Service {
 
     @Override
     public void onCreate() {
-        Log.e(TAG, "onCreate");
+        Log.i(TAG, "onCreate");
         initializeLocationManager();
 
         try {
             mLocationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                    android.location.LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                     mLocationListeners[1]);
-            LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
         } catch (java.lang.SecurityException ex) {
-            Log.i(TAG, "fail to request location update, ignore", ex);
+            Log.e(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "network provider does not exist, " + ex.getMessage());
         }
         try {
             mLocationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                    android.location.LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                     mLocationListeners[0]);
-            LocationHandler.setLocation(mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
         } catch (java.lang.SecurityException ex) {
-            Log.i(TAG, "fail to request location update, ignore", ex);
+            Log.e(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
         }
@@ -108,12 +95,12 @@ public class LocationService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.e(TAG, "onDestroy");
+        Log.i(TAG, "onDestroy");
         super.onDestroy();
         if (mLocationManager != null) {
             for (LocationListener mLocationListener : mLocationListeners) {
                 try {
-                    if (!PermissionManager.permissionToFineLocation() && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (!PermissionManager.permissionToFineLocation(this) && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
                         // here to request the missing permissions, and then overriding
@@ -125,7 +112,7 @@ public class LocationService extends Service {
                     }
                     mLocationManager.removeUpdates(mLocationListener);
                 } catch (Exception ex) {
-                    Log.i(TAG, "fail to remove location listeners, ignore", ex);
+                    Log.e(TAG, "fail to remove location listeners, ignore", ex);
                 }
             }
         }
@@ -138,7 +125,7 @@ public class LocationService extends Service {
     private void initializeLocationManager() {
         Log.e(TAG, "initializeLocationManager");
         if (mLocationManager == null) {
-            mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            mLocationManager = (android.location.LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         }
     }
 }

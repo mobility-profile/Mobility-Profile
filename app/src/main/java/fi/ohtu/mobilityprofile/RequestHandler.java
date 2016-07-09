@@ -9,14 +9,13 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.widget.Toast;
 import java.util.Date;
-import java.util.List;
 import java.util.ArrayList;
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
 import static fi.ohtu.mobilityprofile.RequestCode.*;
@@ -89,7 +88,7 @@ public class RequestHandler extends Handler {
      * @return
      */
     private Message processDestinationRequest() {
-        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination("FOR TESTING"));
+        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination(getStartLocation()));
     }
 
     /**
@@ -114,13 +113,12 @@ public class RequestHandler extends Handler {
      * @return
      */
     private String getStartLocation() {
-        Location location = LocationHandler.getLocation();
-        if (location == null) {
+        Visit lastKnownVisit = visitDao.getLatestVisit();
+        if (lastKnownVisit == null) {
             // TODO something better
-            return "startlocation";
+            return "None";
         } else {
-            return AddressConverter.convertToAddress(new PointF(new Float(60.1756), new Float(24.9342)), context);
-            //return AddressConverter.convertToAddress(new PointF(new Float(location.getLatitude()), new Float(location.getLongitude())), context);
+            return lastKnownVisit.getOriginalLocation();
         }
     }
 
