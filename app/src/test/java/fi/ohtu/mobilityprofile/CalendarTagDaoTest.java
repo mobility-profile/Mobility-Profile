@@ -13,7 +13,7 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", constants = BuildConfig.class, sdk = 21)
+@Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class CalendarTagDaoTest {
     private CalendarTagDao calendarTagDao;
 

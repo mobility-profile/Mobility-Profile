@@ -21,7 +21,7 @@ import fi.ohtu.mobilityprofile.data.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", constants = BuildConfig.class, sdk = 21)
+@Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class MobilityProfileTest {
 
     private MobilityProfile mp;

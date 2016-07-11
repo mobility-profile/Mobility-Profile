@@ -15,7 +15,7 @@ import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", constants = BuildConfig.class, sdk = 21)
+@Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class RouteSearchDaoTest {
     private RouteSearchDao routeSearchDao;
 

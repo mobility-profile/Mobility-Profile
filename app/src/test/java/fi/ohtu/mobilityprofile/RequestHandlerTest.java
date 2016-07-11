@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", constants = BuildConfig.class, sdk = 21)
+@Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class RequestHandlerTest {
 
     private RequestHandler requestHandler;

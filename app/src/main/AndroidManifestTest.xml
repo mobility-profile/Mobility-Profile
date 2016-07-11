@@ -25,11 +25,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            tools:node="replace"
-            android:value="@integer/google_play_services_version" />
-
         <meta-data android:name="DATABASE" android:value="mobilityprofile.db" />
         <meta-data android:name="VERSION" android:value="10" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
