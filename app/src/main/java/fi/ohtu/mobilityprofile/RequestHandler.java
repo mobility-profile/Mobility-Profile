@@ -84,16 +84,16 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     *
-     * @return
+     * Returns a message with data that tells the most likely destination calculated in Mobility Profile.
+     * @return message
      */
     private Message processDestinationRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination(getStartLocation()));
     }
 
     /**
-     *
-     * @param message
+     * Processes new routes by adding them in calendarTags or RouteSearches
+     * @param message Message with data that tells which destination the user inputted
      */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
@@ -109,8 +109,8 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     *
-     * @return
+     * Returns the last known visit, the starting location
+     * @return the location of the last known visit
      */
     private String getStartLocation() {
         Visit lastKnownVisit = visitDao.getLatestVisit();
@@ -123,19 +123,19 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     *
-     * @param code
-     * @return
+     * Returns an error message.
+     * @param code Message code
+     * @return message
      */
     private Message processErrorMessage(int code) {
         return createMessage(ERROR_UNKNOWN_CODE, code+"");
     }
 
     /**
-     *
-     * @param code
-     * @param info
-     * @return
+     * Creates a message where the data is a String.
+     * @param code Message code
+     * @param info Data of the message
+     * @return message
      */
     private Message createMessage(int code, String info)  {
         // Setup the reply message
@@ -148,7 +148,7 @@ public class RequestHandler extends Handler {
     }
     
     /**
-     * Create message that data is String array list.
+     * Creates a message where the data is a String array list.
      * @param code Message code
      * @param info Data of message, String array list
      * @return message
@@ -163,6 +163,7 @@ public class RequestHandler extends Handler {
     }
     
     /**
+     * Returns a message with names of the favourite places
      * @return user's favourite places
      */
     private Message getFavouritePlaces() {

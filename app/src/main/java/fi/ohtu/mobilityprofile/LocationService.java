@@ -21,6 +21,10 @@ public class LocationService extends Service {
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
 
+        /**
+         * Creates LocationService
+         * @param provider gps provider
+         */
         public LocationListener(String provider) {
             Log.i(TAG, "LocationListener " + provider);
             mLastLocation = new Location(provider);
@@ -120,7 +124,7 @@ public class LocationService extends Service {
 
 
     /**
-     *
+     * Initializes LocationManager.
      */
     private void initializeLocationManager() {
         Log.e(TAG, "initializeLocationManager");

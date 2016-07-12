@@ -35,10 +35,10 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
 
     /**
      * Creates favouritesListAdapter
-     * @param context
-     * @param resourceId
-     * @param items
-     * @param fragment
+     * @param context context of the app
+     * @param resourceId resourceId
+     * @param items list of favourite places
+     * @param fragment fragment
      */
     public FavouritesListAdapter(Context context, int resourceId, List<FavouritePlace> items, Fragment fragment) {
         super(context, resourceId, items);
@@ -68,10 +68,10 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
     }
 
     /**
-     *
-     * @param position
-     * @param deleteButton
-     * @param editButton
+     * Sets listeners for delete and edit button
+     * @param position position of the favourite place item
+     * @param deleteButton delete button
+     * @param editButton edit button
      */
     private void setListeners(final int position, ImageButton deleteButton, ImageButton editButton) {
         deleteButton.setOnClickListener(new View.OnClickListener(){

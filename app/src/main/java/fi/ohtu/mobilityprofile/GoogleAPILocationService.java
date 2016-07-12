@@ -19,8 +19,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 public class GoogleAPILocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener
-{
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private static final String TAG = "GoogleAPILocationS";
     private static GoogleApiClient mApiClient;
 

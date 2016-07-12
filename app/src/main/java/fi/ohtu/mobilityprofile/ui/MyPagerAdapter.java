@@ -16,7 +16,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     /**
      * Creates MyPagerAdapter.
-     * @param fragmentManager
+     * @param fragmentManager FragmentManager
      */
     public MyPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);

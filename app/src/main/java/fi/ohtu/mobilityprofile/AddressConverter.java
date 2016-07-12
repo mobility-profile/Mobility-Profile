@@ -25,7 +25,6 @@ public class AddressConverter {
      *
      * @param location coordinates of the location
      * @param context for new request queue
-     * @return an address
      */
     public static void convertToAddressSave(PointF location, Context context) {
 
@@ -59,13 +58,13 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
-                error.printStackTrace();
+                    @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
+                            error.printStackTrace();
 
-            }
-        });
+                        }
+                });
         queue.add(stringRequest);
     }
 }

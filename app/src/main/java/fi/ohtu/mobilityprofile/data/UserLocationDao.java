@@ -8,6 +8,7 @@ import java.util.List;
  * DAO used for clustering visited locations.
  */
 public class UserLocationDao {
+
     /**
      * Returns the nearest known UserLocation from the searchLocation if it is within searchRadius.
      * If no UserLocations were found, new one will be created with the given searchLocation. The
