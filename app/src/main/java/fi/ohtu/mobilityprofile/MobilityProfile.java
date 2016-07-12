@@ -16,6 +16,7 @@ public class MobilityProfile {
     public static final int CALENDAR_SUGGESTION = 1;
     public static final int ROUTES_SUGGESTION = 2;
     public static final int VISITS_SUGGESTION = 3;
+    public static final int FAVORITES_SUGGESTION = 4;
 
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -50,6 +51,15 @@ public class MobilityProfile {
     /**
      * Returns the most probable destination, when the user is in startLocation.
      *
+     * The algorithm will first check if there are marked events in the calendar within a few hours.
+     * If none was found, it will then check places where the user has previously visited.
+     * If that data is not available, previously used searches are suggested.
+     * Lastly, it will check saved favorite location and suggest one of those.
+     *
+     * TODO: the algorithm shouldn't always take the first decent suggestion.
+     * It should instead compare suggestions from all the different sources and take the best
+     * one of those.
+     *
      * @param startLocation Location where the user is starting
      * @return Most probable destination
      */
@@ -58,20 +68,25 @@ public class MobilityProfile {
         String nextDestination;
 
         String calendarSuggestion = searchFromCalendar();
-        String routesSuggestion = searchFromUsedRoutes(startLocation);
         String visitsSuggestion = searchFromPreviousVisits();
+        String routesSuggestion = searchFromUsedRoutes(startLocation);
+        String favoritesSuggestion = searchFromFavorites();
 
         if (calendarSuggestion != null) {
             nextDestination = calendarSuggestion;
             suggestionSource = CALENDAR_SUGGESTION;
         }
+        else if (visitsSuggestion != null) {
+            nextDestination = visitsSuggestion;
+            suggestionSource = VISITS_SUGGESTION;
+        }
         else if (routesSuggestion != null) {
             nextDestination = routesSuggestion;
             suggestionSource = ROUTES_SUGGESTION;
         }
-        else if (visitsSuggestion != null) {
-            nextDestination = visitsSuggestion;
-            suggestionSource = VISITS_SUGGESTION;
+        else if (favoritesSuggestion != null) {
+            nextDestination = favoritesSuggestion;
+            suggestionSource = FAVORITES_SUGGESTION;
         }
         else {
             nextDestination = "Home";
@@ -83,7 +98,9 @@ public class MobilityProfile {
     }
 
     /**
-     * Gets the most probable destination from the calendar
+     * Returns the most probable destination from the calendar.
+     *
+     * @return Destination from calendar
      */
     private String searchFromCalendar() {
         String eventLocation = calendar.getEventLocation();
@@ -103,6 +120,10 @@ public class MobilityProfile {
      * Checks if the user has gone to some destination at the same time in the past,
      * max 2 hours earlier or max 2 hours later than current time.
      * Searches from previously used routes.
+     *
+     * @param startLocation Starting location
+     * @return Previously used destination
+     *
      */
     private String searchFromUsedRoutes(String startLocation) {
         List<RouteSearch> routes = routeSearchDao.getRouteSearchesByStartlocation(startLocation);
@@ -145,6 +166,8 @@ public class MobilityProfile {
      * Checks if the user has visited some location around the same time in the past,
      * max 1 hour earlier or max 3 hours later than current time.
      * Searches from visits.
+     *
+     * @return Previously visited place
      */
     private String searchFromPreviousVisits() {
         List<Visit> visits = visitDao.getAllVisits();
@@ -156,6 +179,19 @@ public class MobilityProfile {
         }
 
         return null;
+    }
+
+    /**
+     * Returns the fist saved favorite place.
+     *
+     * @return First favorite place
+     */
+    private String searchFromFavorites() {
+        List<FavouritePlace> favouritePlaces = favouritePlaceDao.getAllFavouritePlaces();
+
+        return favouritePlaces.isEmpty() ? null : favouritePlaces.get(0).getAddress();
+        // TODO: Add some logic to choosing from favorite places.
+        // E.g. add a counter that increases every time user uses the favorite place.
     }
 
     /**

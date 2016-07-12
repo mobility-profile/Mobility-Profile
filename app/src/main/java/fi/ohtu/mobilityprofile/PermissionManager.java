@@ -12,6 +12,7 @@ public class PermissionManager {
 
     /**
      * Gives the state of the fine location permission.
+     * @param context context
      * @return true/false
      */
     public static boolean permissionToFineLocation(Context context) {
@@ -20,6 +21,7 @@ public class PermissionManager {
 
     /**
      * Gives the state of the read calendar permission.
+     * @param context context
      * @return true/false
      */
     public static boolean permissionToReadCalendar(Context context) {

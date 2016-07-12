@@ -35,10 +35,10 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
 
     /**
      * Creates favouritesListAdapter
-     * @param context
-     * @param resourceId id of the layout
-     * @param items items that will be listed
-     * @param fragment
+     * @param context context of the app
+     * @param resourceId resourceId
+     * @param items list of favourite places
+     * @param fragment fragment
      */
     public FavouritesListAdapter(Context context, int resourceId, List<FavouritePlace> items, Fragment fragment) {
         super(context, resourceId, items);
