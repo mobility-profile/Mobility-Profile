@@ -35,7 +35,7 @@ public class MobilityProfileTest {
         routeSearchDao = mock(RouteSearchDao.class);
         favouritePlaceDao = mock(FavouritePlaceDao.class);
 
-        mp = new MobilityProfile(Robolectric.setupActivity(MainActivityStub.class), calendarTagDao, visitDao, routeSearchDao);
+        mp = new MobilityProfile(Robolectric.setupActivity(MainActivityStub.class), calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
         eventLocation = "Rautatieasema";
 
         when(calendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
