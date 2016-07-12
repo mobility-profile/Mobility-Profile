@@ -16,6 +16,7 @@ public class MobilityProfile {
     public static final int CALENDAR_SUGGESTION = 1;
     public static final int ROUTES_SUGGESTION = 2;
     public static final int VISITS_SUGGESTION = 3;
+    public static final int FAVORITES_SUGGESTION = 4;
 
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -60,6 +61,7 @@ public class MobilityProfile {
         String calendarSuggestion = searchFromCalendar();
         String routesSuggestion = searchFromUsedRoutes(startLocation);
         String visitsSuggestion = searchFromPreviousVisits();
+        String favoritesSuggestion = searchFromFavorites();
 
         if (calendarSuggestion != null) {
             nextDestination = calendarSuggestion;
@@ -72,6 +74,10 @@ public class MobilityProfile {
         else if (visitsSuggestion != null) {
             nextDestination = visitsSuggestion;
             suggestionSource = VISITS_SUGGESTION;
+        }
+        else if (favoritesSuggestion != null) {
+            nextDestination = favoritesSuggestion;
+            suggestionSource = FAVORITES_SUGGESTION;
         }
         else {
             nextDestination = "Home";
@@ -156,6 +162,19 @@ public class MobilityProfile {
         }
 
         return null;
+    }
+
+    /**
+     * Returns the fist saved favorite place.
+     *
+     * @return First favorite place
+     */
+    private String searchFromFavorites() {
+        List<FavouritePlace> favouritePlaces = favouritePlaceDao.getAllFavouritePlaces();
+
+        return favouritePlaces.isEmpty() ? null : favouritePlaces.get(0).getAddress();
+        // TODO: Add some logic to choosing from favorite places, e.g. add a counter that increases
+        // every time user uses the favorite place.
     }
 
     /**
