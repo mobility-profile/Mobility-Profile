@@ -12,6 +12,10 @@ import fi.ohtu.mobilityprofile.data.*;
  * This class is used for calculating the most likely trips the user is going to make.
  */
 public class MobilityProfile {
+    public static final int DEFAULT_SUGGESTION = 0;
+    public static final int CALENDAR_SUGGESTION = 1;
+    public static final int ROUTES_SUGGESTION = 2;
+    public static final int VISITS_SUGGESTION = 3;
 
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -20,18 +24,10 @@ public class MobilityProfile {
 
     private CalendarConnection calendar;
 
-    private Context context;
-    private String latestGivenDestination;
-    private boolean calendarDestination;
-    private boolean routeDestination;
-    private boolean visitDestination;
-    private String startLocation;
-    private String nextLocation;
-    private String eventLocation;
-    private Date currentTime;
+    private String latestStartLocation;
+    private String latestDestination;
 
-    private List<Visit> visits;
-    private List<RouteSearch> routes;
+    private int suggestionSource;
 
     /**
      * Creates the MobilityProfile.
@@ -41,11 +37,12 @@ public class MobilityProfile {
      * @param visitDao       DAO for visits
      * @param routeSearchDao DAO for used searches
      */
-    public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao) {
-        this.context = context;
+    public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao,
+                           RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
         this.routeSearchDao = routeSearchDao;
+        this.favouritePlaceDao = favouritePlaceDao;
 
         this.calendar = new CalendarConnection(context);
     }
@@ -57,87 +54,66 @@ public class MobilityProfile {
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
-        initialize(startLocation);
+        this.latestStartLocation = startLocation;
+        String nextDestination;
 
-        getLocationFromCalendar();
-        if (!calendarDestination) {
-            getLocationFromDatabase();
+        String calendarSuggestion = searchFromCalendar();
+        String routesSuggestion = searchFromUsedRoutes(startLocation);
+        String visitsSuggestion = searchFromPreviousVisits();
+
+        if (calendarSuggestion != null) {
+            nextDestination = calendarSuggestion;
+            suggestionSource = CALENDAR_SUGGESTION;
+        }
+        else if (routesSuggestion != null) {
+            nextDestination = routesSuggestion;
+            suggestionSource = ROUTES_SUGGESTION;
+        }
+        else if (visitsSuggestion != null) {
+            nextDestination = visitsSuggestion;
+            suggestionSource = VISITS_SUGGESTION;
+        }
+        else {
+            nextDestination = "Home";
+            suggestionSource = DEFAULT_SUGGESTION;
         }
 
-        latestGivenDestination = nextLocation;
-        return nextLocation;
-    }
-
-    /**
-     * Initializes startLocation and booleans for checking whether destination was
-     * acquired from calendars or the database.
-     * @param startLocation starting location
-     */
-    private void initialize(String startLocation) {
-        this.startLocation = startLocation;
-        calendarDestination = false;
-        routeDestination = false;
-        visitDestination = false;
-    }
-
-    /**
-     * Finds all the used routes and previous visits where location is the startLocation
-     * and then decides the most likely next destination of them.
-     */
-    private void getLocationFromDatabase() {
-        currentTime = new Date(System.currentTimeMillis());
-
-        searchFromUsedRoutes();
-        if (!routeDestination) {
-            searchFromPreviousVisits();
-        }
-
-        if (!routeDestination && !visitDestination) {
-           // TODO: Something sensible
-            nextLocation = "home";
-        }
+        latestDestination = nextDestination;
+        return nextDestination;
     }
 
     /**
      * Gets the most probable destination from the calendar
      */
-    private void getLocationFromCalendar() {
-        eventLocation = calendar.getEventLocation();
+    private String searchFromCalendar() {
+        String eventLocation = calendar.getEventLocation();
 
         if (eventLocation != null) {
-            nextLocation = eventLocation;
-            calendarDestination = true;
-
-            CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(nextLocation);
+            CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(eventLocation);
             if (calendarTag != null) {
-                nextLocation = calendarTag.getValue();
+                eventLocation = calendarTag.getValue();
             }
         }
+
+        return eventLocation;
     }
 
     /**
      * Selects destination based on previously used routes.
-     */
-    private void searchFromUsedRoutes() {
-        routes = routeSearchDao.getRouteSearchesByStartlocation(startLocation);
-        if (routes != null) {
-            searchForPreviouslyUsedRouteAtTheSameTime();
-        }
-    }
-
-    /**
      * Checks if the user has gone to some destination at the same time in the past,
      * max 2 hours earlier or max 2 hours later than current time.
      * Searches from previously used routes.
      */
-    private void searchForPreviouslyUsedRouteAtTheSameTime() {
+    private String searchFromUsedRoutes(String startLocation) {
+        List<RouteSearch> routes = routeSearchDao.getRouteSearchesByStartlocation(startLocation);
+
         for (RouteSearch route : routes) {
             if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
-                nextLocation = route.getDestination();
-                routeDestination = true;
-                break;
+                return route.getDestination();
             }
         }
+
+        return null;
     }
 
     /**
@@ -150,6 +126,8 @@ public class MobilityProfile {
      * @return true if location was visited within the time frame, false if not.
      */
     private boolean aroundTheSameTime(Time visitTime, int hoursEarlier, int hoursLater) {
+        Date currentTime = new Date(System.currentTimeMillis());
+
         int visitHour = visitTime.getHours();
         int visitMin = visitTime.getMinutes();
         int currentHour = currentTime.getHours();
@@ -164,27 +142,20 @@ public class MobilityProfile {
 
     /**
      * Selects destination based on previous visits.
-     */
-    private void searchFromPreviousVisits() {
-        visits = visitDao.getAllVisits();
-        if (visits != null) {
-            searchForPreviouslyVisitedLocationAtTheSameTime();
-        }
-    }
-
-    /**
      * Checks if the user has visited some location around the same time in the past,
      * max 1 hour earlier or max 3 hours later than current time.
      * Searches from visits.
      */
-    private void searchForPreviouslyVisitedLocationAtTheSameTime() {
+    private String searchFromPreviousVisits() {
+        List<Visit> visits = visitDao.getAllVisits();
+
         for (Visit visit : visits) {
             if (aroundTheSameTime(new Time(visit.getTimestamp()), 1, 3)) {
-                nextLocation = visit.getOriginalLocation();
-                visitDestination = true;
-                break;
+                return visit.getOriginalLocation();
             }
         }
+
+        return null;
     }
 
     /**
@@ -201,8 +172,8 @@ public class MobilityProfile {
      *
      * @return Latest given destination
      */
-    public String getLatestGivenDestination() {
-        return latestGivenDestination;
+    public String getLatestDestination() {
+        return latestDestination;
     }
 
     /**
@@ -211,6 +182,6 @@ public class MobilityProfile {
      * @return True if the location was from calendar, false otherwise
      */
     public boolean isCalendarDestination() {
-        return calendarDestination;
+        return suggestionSource == CALENDAR_SUGGESTION;
     }
 }
