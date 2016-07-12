@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.RouteSearch;
 
 /**
  * The class creates a component called ProfileFragment.

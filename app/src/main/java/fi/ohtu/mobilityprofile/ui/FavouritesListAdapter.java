@@ -20,8 +20,7 @@ import com.orm.query.Select;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.FavouritePlace;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
+import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 
 /**
  * This class adapts a list of FavouritePlace to ListView.

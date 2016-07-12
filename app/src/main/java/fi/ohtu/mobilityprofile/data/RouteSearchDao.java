@@ -5,6 +5,8 @@ import com.orm.query.Select;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.RouteSearch;
+
 /**
  * DAO used for saving and reading RouteSearches to/from the database.
  */

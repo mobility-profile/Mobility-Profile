@@ -1,19 +1,5 @@
 package fi.ohtu.mobilityprofile;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.Messenger;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.SmallTest;
-
-import org.junit.*;
-import org.junit.runner.RunWith;
-
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-
-import static org.junit.Assert.*;
-import static fi.ohtu.mobilityprofile.RequestCode.*;
 /*
 @RunWith(AndroidJUnit4.class)
 @SmallTest

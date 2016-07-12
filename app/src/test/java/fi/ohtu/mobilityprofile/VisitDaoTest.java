@@ -10,7 +10,7 @@ import org.robolectric.annotation.Config;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
-import fi.ohtu.mobilityprofile.data.Visit;
+import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
 import static org.junit.Assert.*;

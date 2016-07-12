@@ -23,8 +23,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import fi.ohtu.mobilityprofile.GoogleAPILocationService;
-import fi.ohtu.mobilityprofile.LocationService;
+import fi.ohtu.mobilityprofile.location.GoogleAPILocationService;
+import fi.ohtu.mobilityprofile.location.LocationService;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
