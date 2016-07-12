@@ -42,7 +42,6 @@ public class GoogleAPILocationService extends Service implements GoogleApiClient
         }
     }
 
-
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG,"onConnected");
