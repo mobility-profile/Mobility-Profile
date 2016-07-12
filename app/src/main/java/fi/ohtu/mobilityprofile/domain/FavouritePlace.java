@@ -46,4 +46,4 @@ public class FavouritePlace extends SugarRecord {
     public String toString() {
         return this.name + ": " + this.address;
     }
- }
+}

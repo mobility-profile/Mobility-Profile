@@ -153,14 +153,14 @@ public class PrivacyFragment extends Fragment {
         trackingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked && checkPlayServices()) {
-                    //context.startService(new Intent(context, LocationService.class));
-                    if (checkPlayServices()) {
-                        context.startService(new Intent(context, GoogleAPILocationService.class));
-                    }
+                if (isChecked) {
+                    context.startService(new Intent(context, LocationService.class));
+//                    if (checkPlayServices()) {
+//                        context.startService(new Intent(context, GoogleAPILocationService.class));
+//                    }
                 } else {
-                    //context.stopService(new Intent(context, LocationService.class));
-                    context.stopService(new Intent(context, GoogleAPILocationService.class));
+                    context.stopService(new Intent(context, LocationService.class));
+//                    context.stopService(new Intent(context, GoogleAPILocationService.class));
                 }
             }
         });
@@ -294,6 +294,7 @@ public class PrivacyFragment extends Fragment {
      * Check the device to make sure it has the Google Play Services APK. If
      * it doesn't, display a dialog that allows users to download the APK from
      * the Google Play Store or enable it in the device's system settings.
+     * @return true if the device has Goole Play Services APK, false if not.
      */
     private boolean checkPlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();

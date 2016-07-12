@@ -7,7 +7,6 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
-import java.util.Date;
 import java.util.ArrayList;
 
 import fi.ohtu.mobilityprofile.MobilityProfile;
@@ -38,7 +37,7 @@ public class RequestHandler extends Handler {
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
      * @param routeSearchDao DAO for routeSearch
-     * @param favouritePlaceDao for favourite places
+     * @param favouritePlaceDao DAO for favourite places
      */
     public RequestHandler(MobilityProfile mobilityProfile, CalendarTagDao calendarTagDao,
                           VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
@@ -77,8 +76,7 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Creates a response message to a destination request.
-     *
+     * Returns a message with data that tells the most likely destination calculated in Mobility Profile.
      * @return Response message
      */
     private Message processDestinationRequest() {
@@ -86,9 +84,9 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Processes a used route that was sent from a journey planner.
+     * Processes new routes by adding them in calendarTags or RouteSearches.
      *
-     * @param message Data from used route
+     * @param message Message with data that tells which destination the user inputted
      */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
@@ -97,15 +95,15 @@ public class RequestHandler extends Handler {
             CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestDestination(), destination);
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
-            Date date = new Date();
-            RouteSearch routeSearch = new RouteSearch(date.getTime(), getStartLocation(), destination);
+            RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), getStartLocation(), destination);
             routeSearchDao.insertRouteSearch(routeSearch);
         }
     }
 
     /**
+     * Return the start location a.k.a the last known location of user.
      *
-     * @return
+     * @return Start location address
      */
     private String getStartLocation() {
         Visit lastKnownVisit = visitDao.getLatestVisit();

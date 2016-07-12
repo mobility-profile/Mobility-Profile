@@ -5,7 +5,7 @@ import android.graphics.PointF;
 import com.orm.SugarRecord;
 
 /**
- *
+ * Class is used to save locations the user has visited.
  */
 public class UserLocation extends SugarRecord {
     String location;
