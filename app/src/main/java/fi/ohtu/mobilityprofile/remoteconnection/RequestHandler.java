@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.util.Log;
 import android.widget.Toast;
 import java.util.Date;
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
-    private Context context;
     private MobilityProfile mobilityProfile;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -34,16 +34,14 @@ public class RequestHandler extends Handler {
     /**
      * Creates the RequestHandler.
      *
-     * @param context Context used for toast messages
      * @param mobilityProfile Journey planner that provides the logic for our app
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
      * @param routeSearchDao DAO for routeSearch
      * @param favouritePlaceDao for favourite places
      */
-    public RequestHandler(Context context, MobilityProfile mobilityProfile,
-                          CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
-        this.context = context;
+    public RequestHandler(MobilityProfile mobilityProfile, CalendarTagDao calendarTagDao,
+                          VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
@@ -53,10 +51,7 @@ public class RequestHandler extends Handler {
 
     @Override
     public void handleMessage(Message msg) {
-        // For testing
-        if (context != null) {
-            Toast.makeText(context.getApplicationContext(), "Remote Service invoked (" + msg.what + ")", Toast.LENGTH_SHORT).show();
-        }
+        Log.d("Remote Service", "Remote Service invoked (" + msg.what + ")");
 
         Message message;
         switch (msg.what) {
@@ -77,23 +72,23 @@ public class RequestHandler extends Handler {
             // Make the RPC invocation
             msg.replyTo.send(message);
         } catch (RemoteException rme) {
-            if (context != null) {
-                Toast.makeText(context, "Invocation failed!", Toast.LENGTH_SHORT).show();
-            }
+            Log.d("Remote Service", "Invocation failed!");
         }
     }
 
     /**
+     * Creates a response message to a destination request.
      *
-     * @return
+     * @return Response message
      */
     private Message processDestinationRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination(getStartLocation()));
     }
 
     /**
+     * Processes a used route that was sent from a journey planner.
      *
-     * @param message
+     * @param message Data from used route
      */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
@@ -123,19 +118,21 @@ public class RequestHandler extends Handler {
     }
 
     /**
+     * Creates an error message.
      *
-     * @param code
-     * @return
+     * @param code Message code
+     * @return Error message
      */
     private Message processErrorMessage(int code) {
         return createMessage(ERROR_UNKNOWN_CODE, code+"");
     }
 
     /**
+     * Creates a message with the given code and info.
      *
-     * @param code
-     * @param info
-     * @return
+     * @param code Message code
+     * @param info Message information
+     * @return Created message
      */
     private Message createMessage(int code, String info)  {
         // Setup the reply message
@@ -148,10 +145,11 @@ public class RequestHandler extends Handler {
     }
     
     /**
-     * Create message that data is String array list.
+     * Creates a message that has a list of strings as info.
+     *
      * @param code Message code
-     * @param info Data of message, String array list
-     * @return message
+     * @param info List of info strings
+     * @return Created message
      */
     private Message createMessage(int code, ArrayList<String> info) {
         Bundle bundle = new Bundle();
@@ -163,7 +161,9 @@ public class RequestHandler extends Handler {
     }
     
     /**
-     * @return user's favourite places
+     * Returns a message that contains information of user's favorite places.
+     *
+     * @return User's favourite places as message
      */
     private Message getFavouritePlaces() {
         return createMessage(RESPOND_FAVOURITE_PLACES, favouritePlaceDao.getNamesOfFavouritePlaces());
