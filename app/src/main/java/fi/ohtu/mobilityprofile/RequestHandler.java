@@ -1,14 +1,11 @@
 package fi.ohtu.mobilityprofile;
 
 import android.content.Context;
-import android.graphics.PointF;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.widget.Toast;
-import java.util.Date;
 import java.util.ArrayList;
 import fi.ohtu.mobilityprofile.data.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -39,7 +36,7 @@ public class RequestHandler extends Handler {
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao DAO for visits
      * @param routeSearchDao DAO for routeSearch
-     * @param favouritePlaceDao for favourite places
+     * @param favouritePlaceDao DAO for favourite places
      */
     public RequestHandler(Context context, MobilityProfile mobilityProfile,
                           CalendarTagDao calendarTagDao, VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
@@ -84,15 +81,18 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     *
-     * @return
+     * Creates a message with most likely next destination.
+     * @return message
      */
     private Message processDestinationRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination(getStartLocation()));
     }
 
     /**
+     * Process the route which user chose.
      *
+     * If the route was calendar destination, a CalendarTag is created.
+     * Else a RouteSearch is created.
      * @param message
      */
     private void processUsedRoute(Message message) {
@@ -102,15 +102,14 @@ public class RequestHandler extends Handler {
             CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestGivenDestination(), destination);
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
-            Date date = new Date();
-            RouteSearch routeSearch = new RouteSearch(date.getTime(), getStartLocation(), destination);
+            RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), getStartLocation(), destination);
             routeSearchDao.insertRouteSearch(routeSearch);
         }
     }
 
     /**
-     *
-     * @return
+     * Return the start location a.k.a the last known location of user.
+     * @return address
      */
     private String getStartLocation() {
         Visit lastKnownVisit = visitDao.getLatestVisit();
@@ -123,19 +122,19 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     *
-     * @param code
-     * @return
+     * Create a error message with the given code.
+     * @param code Message code
+     * @return message
      */
     private Message processErrorMessage(int code) {
         return createMessage(ERROR_UNKNOWN_CODE, code+"");
     }
 
     /**
-     *
-     * @param code
-     * @param info
-     * @return
+     * Create a message with the given code and info.
+     * @param code Message code
+     * @param info Data of message, String
+     * @return message
      */
     private Message createMessage(int code, String info)  {
         // Setup the reply message
@@ -163,6 +162,7 @@ public class RequestHandler extends Handler {
     }
     
     /**
+     * Return user's favourite places
      * @return user's favourite places
      */
     private Message getFavouritePlaces() {

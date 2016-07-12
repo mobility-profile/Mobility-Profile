@@ -102,6 +102,8 @@ public class FavouritesFragment extends Fragment {
                 FavouritePlace fav = new FavouritePlace(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
                 fav.save();
                 updateView(adapter);
+                addFavouriteName.setText("");
+                addFavouriteAddress.setText("");
             }
 
         });

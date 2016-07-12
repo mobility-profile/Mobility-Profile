@@ -36,8 +36,8 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
     /**
      * Creates favouritesListAdapter
      * @param context
-     * @param resourceId
-     * @param items
+     * @param resourceId id of the layout
+     * @param items items that will be listed
      * @param fragment
      */
     public FavouritesListAdapter(Context context, int resourceId, List<FavouritePlace> items, Fragment fragment) {
@@ -47,7 +47,6 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
         this.items = items;
         this.fragment = fragment;
     }
-
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -68,10 +67,10 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
     }
 
     /**
-     *
-     * @param position
-     * @param deleteButton
-     * @param editButton
+     * Sets listeners for edit and delete buttons.
+     * @param position the position of an item in the list
+     * @param deleteButton item's delete button
+     * @param editButton item's edit button
      */
     private void setListeners(final int position, ImageButton deleteButton, ImageButton editButton) {
         deleteButton.setOnClickListener(new View.OnClickListener(){
@@ -84,11 +83,8 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
                         .setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                
-                                final List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
-                                        .where(Condition.prop("id").eq(getItemId(position)))
-                                        .limit("1")
-                                        .list();
+
+                                final List<FavouritePlace> favourites = getFavouritePlace(position);
 
                                 if (favourites.size() == 1) {
                                     favourites.get(0).delete();
@@ -112,41 +108,22 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
         editButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                final FavouritePlace fav = getFavouritePlace(position).get(0);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.favourites_edit_dialog, null);
 
                 builder
-                        .setView(LayoutInflater.from(context).inflate(R.layout.favourites_edit_dialog, null))
+                        .setView(dialogView)
                         .setPositiveButton(R.string.edit, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
 
-                                final List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
-                                        .where(Condition.prop("id").eq(getItemId(position)))
-                                        .limit("1")
-                                        .list();
+                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteName);
+                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
 
-                                if (favourites.size() == 1) {
-
-                                    EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteName);
-                                    EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
-
-                                    FavouritePlace fav = favourites.get(0);
-
-                                    String name = editTextName.getText().toString();
-                                    String address = editTextAddress.getText().toString();
-
-                                    if (!name.equals("")) {
-                                        fav.setName(name);
-                                    }
-
-                                    if (!address.equals("")) {
-                                        fav.setAddress(address);
-                                    }
-
-                                    fav.save();
-                                    updateView();
-                                }
+                                editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString(), fav);
+                                updateView();
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -156,6 +133,12 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
                         })
                         .setTitle(R.string.favourites_edit_title);
 
+                EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
+                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
+
+                editTextName.setText(fav.getName());
+                editTextAddress.setText(fav.getAddress());
+
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -163,7 +146,36 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
     }
 
     /**
-     * Updates the favourites fragment view
+     * Edits the given favourite place.
+     * @param name the new name
+     * @param address the new address
+     * @param fav the favourite place
+     */
+    private void editFavoritePlace(String name, String address, FavouritePlace fav){
+        if (!name.equals("")) {
+            fav.setName(name);
+        }
+
+        if (!address.equals("")) {
+            fav.setAddress(address);
+        }
+        fav.save();
+    }
+
+    /**
+     * Returns the favourite place by the position.
+     * @param position the position of the item in the list
+     * @return list of one favorite place
+     */
+    private List<FavouritePlace> getFavouritePlace(int position) {
+        return Select.from(FavouritePlace.class)
+                .where(Condition.prop("id").eq(getItemId(position)))
+                .limit("1")
+                .list();
+    }
+
+    /**
+     * Updates the favourites fragment view.
      */
     private void updateView() {
         FragmentTransaction tr = fragment.getFragmentManager().beginTransaction();
@@ -172,7 +184,6 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
         tr.commit();
         notifyDataSetChanged();
     }
-
 
     @Override
     public int getCount() {

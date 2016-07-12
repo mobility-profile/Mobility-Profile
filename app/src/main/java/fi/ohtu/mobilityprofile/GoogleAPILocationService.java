@@ -18,6 +18,9 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+/**
+ * This class listens to location changes using Google Play Service's FusedLocationApi.
+ */
 public class GoogleAPILocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener
 {
@@ -85,7 +88,7 @@ public class GoogleAPILocationService extends Service implements GoogleApiClient
     @Override
     public void onLocationChanged(Location location) {
         Log.i(TAG, "onLocationChanged: " + location);
-        AddressConverter.convertToAddressSave(new PointF(new Float(location.getLatitude()),
+        AddressConverter.convertToAddressAndSave(new PointF(new Float(location.getLatitude()),
                 new Float(location.getLongitude())), getApplicationContext());
     }
 
