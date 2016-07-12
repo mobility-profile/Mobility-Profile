@@ -99,7 +99,7 @@ public class RequestHandler extends Handler {
         Bundle bundle = message.getData();
         String destination = bundle.getString(SEND_USED_DESTINATION+"");
         if (mobilityProfile.isCalendarDestination()) {
-            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestGivenDestination(), destination);
+            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestDestination(), destination);
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
             RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), getStartLocation(), destination);
