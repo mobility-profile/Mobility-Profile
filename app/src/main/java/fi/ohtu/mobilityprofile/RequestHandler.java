@@ -1,8 +1,6 @@
 package fi.ohtu.mobilityprofile;
 
 import android.content.Context;
-import android.graphics.PointF;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -99,7 +97,7 @@ public class RequestHandler extends Handler {
         Bundle bundle = message.getData();
         String destination = bundle.getString(SEND_USED_DESTINATION+"");
         if (mobilityProfile.isCalendarDestination()) {
-            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestGivenDestination(), destination);
+            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestDestination(), destination);
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
             Date date = new Date();

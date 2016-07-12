@@ -57,7 +57,7 @@ public class MobilityProfileTest {
         mp.setCalendarEventLocation(null);
 
         String nextLocation = mp.getMostLikelyDestination("Rovaniemi");
-        assertEquals("home", nextLocation);
+        assertEquals("Home", nextLocation);
 
     }
 
