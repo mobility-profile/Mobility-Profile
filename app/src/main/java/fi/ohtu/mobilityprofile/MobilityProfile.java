@@ -37,6 +37,7 @@ public class MobilityProfile {
      * @param calendarTagDao DAO for calendar tags
      * @param visitDao       DAO for visits
      * @param routeSearchDao DAO for used searches
+     * @param favouritePlaceDao DAO for favourite places
      */
     public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao,
                            RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {

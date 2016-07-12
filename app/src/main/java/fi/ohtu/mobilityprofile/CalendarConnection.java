@@ -12,6 +12,8 @@ import android.provider.CalendarContract;
  */
 public class CalendarConnection {
 
+    // Projection is used to choose locations and beginning times of calendar events, and info about whether
+    // they are all day events or not.
     private String[] EVENT_PROJECTION = new String[]{
         CalendarContract.Events.EVENT_LOCATION,
         CalendarContract.Instances.BEGIN,
@@ -36,8 +38,7 @@ public class CalendarConnection {
     }
 
     /**
-     * Queries events from all calendars on the user's device. Selects only events that take place
-     * on the same day and/or within 3 hours.
+     * Queries events from all calendars on the user's device.
      */
     private void queryEvents() {
         Cursor cursor = null;
