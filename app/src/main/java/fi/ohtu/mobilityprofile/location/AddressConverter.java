@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.location;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -14,19 +14,20 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import fi.ohtu.mobilityprofile.data.Visit;
+import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
- * This class is used for converting GPS coordinates to an actual address and save that address.
+ * This class is used for converting GPS coordinates to an actual address and save that address to the database.
  */
 public class AddressConverter {
+
     /**
      * Converts GPS coordinates to an address and saves it.
      *
      * @param location coordinates of the location
      * @param context for new request queue
      */
-    public static void convertToAddressSave(PointF location, Context context) {
+    public static void convertToAddressAndSave(PointF location, Context context) {
 
         String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
                 + location.x + "&point.lon="
@@ -43,13 +44,13 @@ public class AddressConverter {
                             if (features.length() > 0) {
                                 JSONObject zero = new JSONObject(features.get(0).toString());
                                 JSONObject properties = new JSONObject(zero.get("properties").toString());
-                                String label = (properties.get("label").toString());
+                                String address = (properties.get("label").toString());
 
-                                if (label == null) label = "";
+                                if (address == null) address = "";
 
-                                Log.i("AddressConverter", "converted address -> " + label );
+                                Log.i("AddressConverter", "Converted address is: " + address);
 
-                                Visit lastLocation = new Visit(System.currentTimeMillis(), label);
+                                Visit lastLocation = new Visit(System.currentTimeMillis(), address);
                                 lastLocation.save();
                             }
                         } catch (Exception e) {

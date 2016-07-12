@@ -9,6 +9,8 @@ import android.test.suitebuilder.annotation.SmallTest;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
+import fi.ohtu.mobilityprofile.remoteconnection.RemoteService;
+
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)

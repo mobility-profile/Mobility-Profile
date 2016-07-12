@@ -1,10 +1,11 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.remoteconnection;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Messenger;
 
+import fi.ohtu.mobilityprofile.MobilityProfile;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
@@ -25,7 +26,7 @@ public class RemoteService extends Service {
                 VisitDao visitDao = new VisitDao(new UserLocationDao());
                 RouteSearchDao routeSearchDao = new RouteSearchDao();
                 FavouritePlaceDao favouritePlaceDao = new FavouritePlaceDao();
-                messenger = new Messenger(new RequestHandler(this, new MobilityProfile(this, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao), calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao));
+                messenger = new Messenger(new RequestHandler(new MobilityProfile(this, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao), calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao));
             }
         }
 

@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.data;
+package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
 
@@ -34,5 +34,13 @@ public class CalendarTag extends SugarRecord {
 
     public String getValue() {
         return value;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void increaseCounter() {
+        counter++;
     }
 }

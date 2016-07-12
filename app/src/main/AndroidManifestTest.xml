@@ -38,7 +38,7 @@
             <!-- TODO: Require permission to use our app. -->
 
             <intent-filter>
-                <action android:name="fi.ohtu.mobilityprofile.RemoteService"/>
+                <action android:name="fi.ohtu.mobilityprofile.remoteconnection.RemoteService"/>
             </intent-filter>
         </service>
 

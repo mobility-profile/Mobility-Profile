@@ -23,8 +23,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import fi.ohtu.mobilityprofile.GoogleAPILocationService;
-import fi.ohtu.mobilityprofile.LocationService;
+import fi.ohtu.mobilityprofile.location.GoogleAPILocationService;
+import fi.ohtu.mobilityprofile.location.LocationService;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -153,14 +153,14 @@ public class PrivacyFragment extends Fragment {
         trackingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked && checkPlayServices()) {
-                    //context.startService(new Intent(context, LocationService.class));
-                    if (checkPlayServices()) {
-                        context.startService(new Intent(context, GoogleAPILocationService.class));
-                    }
+                if (isChecked) {
+                    context.startService(new Intent(context, LocationService.class));
+//                    if (checkPlayServices()) {
+//                        context.startService(new Intent(context, GoogleAPILocationService.class));
+//                    }
                 } else {
-                    //context.stopService(new Intent(context, LocationService.class));
-                    context.stopService(new Intent(context, GoogleAPILocationService.class));
+                    context.stopService(new Intent(context, LocationService.class));
+//                    context.stopService(new Intent(context, GoogleAPILocationService.class));
                 }
             }
         });

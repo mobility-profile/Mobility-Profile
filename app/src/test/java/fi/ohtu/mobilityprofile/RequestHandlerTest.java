@@ -4,7 +4,6 @@ package fi.ohtu.mobilityprofile;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
-import android.os.Messenger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +15,11 @@ import org.robolectric.annotation.Config;
 import static org.junit.Assert.*;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.remoteconnection.RequestHandler;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

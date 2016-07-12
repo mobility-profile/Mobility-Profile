@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.data;
+package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
 

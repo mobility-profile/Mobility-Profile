@@ -5,6 +5,8 @@ import com.orm.query.Select;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.CalendarTag;
+
 /**
  * DAO used for saving and reading CalendarTags to/from the database.
  */
@@ -42,13 +44,13 @@ public class CalendarTagDao {
      */
     public void insertCalendarTag(CalendarTag tag) {
         List<CalendarTag> calendarTags = CalendarTag.find(CalendarTag.class,
-                "key = ? AND value = ?", tag.key, tag.value);
+                "key = ? AND value = ?", tag.getKey(), tag.getValue());
 
         assert calendarTags.size() <= 1 : "Inconsistent database: only one key-value pair should exist!";
 
         if (calendarTags.size() == 0) {
             // Tag with the key-value pair doesn't exist yet, so just save the given one.
-            assert tag.counter == 1 : "New tag should always have its counter set to one!";
+            assert tag.getCounter() == 1 : "New tag should always have its counter set to one!";
             tag.save();
             return;
         }
@@ -56,7 +58,7 @@ public class CalendarTagDao {
         // Tag already exists, just increase its counter by one and then save the modification to
         // the database.
         CalendarTag calendarTag = calendarTags.get(0);
-        calendarTag.counter++;
+        calendarTag.increaseCounter();
         calendarTag.save();
     }
 

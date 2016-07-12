@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.FavouritePlace;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
+import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 
 /**
  * The class creates a component called FavouritesFragment.
@@ -102,6 +101,8 @@ public class FavouritesFragment extends Fragment {
                 FavouritePlace fav = new FavouritePlace(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
                 fav.save();
                 updateView(adapter);
+                addFavouriteName.setText("");
+                addFavouriteAddress.setText("");
             }
 
         });
