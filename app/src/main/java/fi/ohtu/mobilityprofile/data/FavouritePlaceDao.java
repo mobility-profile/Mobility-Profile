@@ -3,9 +3,10 @@ package fi.ohtu.mobilityprofile.data;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
-import java.nio.channels.SelectableChannel;
 import java.util.List;
 import java.util.ArrayList;
+
+import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 
 /**
  * DAO used for saving and reading FavouritePlaces to/from database.

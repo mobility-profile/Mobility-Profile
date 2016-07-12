@@ -7,6 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.*;
+import fi.ohtu.mobilityprofile.domain.CalendarTag;
+import fi.ohtu.mobilityprofile.domain.FavouritePlace;
+import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
  * This class is used for calculating the most likely trips the user is going to make.

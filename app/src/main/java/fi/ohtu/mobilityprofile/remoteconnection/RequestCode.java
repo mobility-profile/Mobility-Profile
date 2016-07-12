@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.remoteconnection;
 
 public class RequestCode {
     public static final int REQUEST_MOST_LIKELY_DESTINATION = 101;

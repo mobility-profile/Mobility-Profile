@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 
 @RunWith(RobolectricTestRunner.class)

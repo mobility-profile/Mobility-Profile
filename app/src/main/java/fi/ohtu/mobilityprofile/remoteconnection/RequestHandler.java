@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.remoteconnection;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,15 +8,17 @@ import android.os.RemoteException;
 import android.widget.Toast;
 import java.util.Date;
 import java.util.ArrayList;
-import fi.ohtu.mobilityprofile.data.CalendarTag;
+
+import fi.ohtu.mobilityprofile.MobilityProfile;
+import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.Visit;
+import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
-import static fi.ohtu.mobilityprofile.RequestCode.*;
+import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
 
 /**
  * Used for processing incoming requests from other apps.

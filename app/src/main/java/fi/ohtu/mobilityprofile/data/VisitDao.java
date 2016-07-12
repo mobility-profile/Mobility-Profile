@@ -5,6 +5,9 @@ import com.orm.query.Select;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.UserLocation;
+import fi.ohtu.mobilityprofile.domain.Visit;
+
 /**
  * DAO used for saving and reading Visits to/from the database.
  */
@@ -80,7 +83,7 @@ public class VisitDao {
      */
     public void insertVisit(Visit visit) {
         UserLocation nearestLocation = userLocationDao.getNearestLocation(visit.getOriginalLocation(), 50);
-        visit.nearestKnownLocation = nearestLocation;
+        visit.setNearestKnownLocation(nearestLocation);
         visit.save();
     }
 

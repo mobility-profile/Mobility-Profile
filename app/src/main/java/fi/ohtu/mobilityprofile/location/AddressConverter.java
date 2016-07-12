@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.location;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -14,7 +14,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import fi.ohtu.mobilityprofile.data.Visit;
+import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
  * This class is used for converting GPS coordinates to an actual address and save that address.

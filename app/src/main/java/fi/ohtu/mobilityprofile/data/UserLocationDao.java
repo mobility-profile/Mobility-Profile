@@ -1,8 +1,8 @@
 package fi.ohtu.mobilityprofile.data;
 
-import android.graphics.PointF;
-
 import java.util.List;
+
+import fi.ohtu.mobilityprofile.domain.UserLocation;
 
 /**
  * DAO used for clustering visited locations.

@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.data;
+package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
 
@@ -38,5 +38,9 @@ public class Visit extends SugarRecord {
 
     public UserLocation getNearestKnownLocation() {
         return nearestKnownLocation;
+    }
+
+    public void setNearestKnownLocation(UserLocation nearestKnownLocation) {
+        this.nearestKnownLocation = nearestKnownLocation;
     }
 }
