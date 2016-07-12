@@ -37,8 +37,14 @@ public class GoogleAPILocationService extends Service implements GoogleApiClient
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-            mApiClient.connect();
         }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG,"onStartCommand");
+        mApiClient.connect();
+        return START_STICKY;
     }
 
     @Override
@@ -75,6 +81,7 @@ public class GoogleAPILocationService extends Service implements GoogleApiClient
     public void onDestroy() {
         Log.i(TAG,"onDestroy");
         super.onDestroy();
+        mApiClient.disconnect();
     }
 
     @Nullable
