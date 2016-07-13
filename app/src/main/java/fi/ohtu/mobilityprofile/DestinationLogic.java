@@ -15,7 +15,7 @@ import fi.ohtu.mobilityprofile.domain.Visit;
 /**
  * This class is used for calculating the most likely trips the user is going to make.
  */
-public class MobilityProfile {
+public class DestinationLogic {
     public static final int DEFAULT_SUGGESTION = 0;
     public static final int CALENDAR_SUGGESTION = 1;
     public static final int ROUTES_SUGGESTION = 2;
@@ -43,7 +43,7 @@ public class MobilityProfile {
      * @param routeSearchDao DAO for used searches
      * @param favouritePlaceDao DAO for favourite places
      */
-    public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao,
+    public DestinationLogic(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao,
                            RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;

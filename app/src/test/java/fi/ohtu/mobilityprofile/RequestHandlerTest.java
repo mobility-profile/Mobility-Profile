@@ -31,7 +31,7 @@ public class RequestHandlerTest {
 
     private RequestHandler requestHandler;
     private Context context;
-    private MobilityProfile mobilityProfile;
+    private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
     private RouteSearchDao routeSearchDao;
@@ -40,7 +40,7 @@ public class RequestHandlerTest {
     @Before
     public void setUp() {
         this.context = null;
-        this.mobilityProfile = mock(MobilityProfile.class);
+        this.mobilityProfile = mock(DestinationLogic.class);
         this.calendarTagDao = mock(CalendarTagDao.class);
         this.routeSearchDao = new RouteSearchDao();
         this.visitDao = new VisitDao(new UserLocationDao());
