@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_edit"
-        android:contentDescription="@string/favourites_delete_title"
+        android:contentDescription="@string/favourites_edit_title"
         android:padding="5dp"
         android:layout_gravity="end">
     </ImageButton>

@@ -154,13 +154,13 @@ public class PrivacyFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-//                    context.startService(new Intent(context, LocationService.class));
-                    if (checkPlayServices()) {
-                        context.startService(new Intent(context, GoogleAPILocationService.class));
-                    }
+                    context.startService(new Intent(context, LocationService.class));
+//                    if (checkPlayServices()) {
+//                        context.startService(new Intent(context, GoogleAPILocationService.class));
+//                    }
                 } else {
-//                    context.stopService(new Intent(context, LocationService.class));
-                    context.stopService(new Intent(context, GoogleAPILocationService.class));
+                    context.stopService(new Intent(context, LocationService.class));
+//                    context.stopService(new Intent(context, GoogleAPILocationService.class));
                 }
             }
         });
