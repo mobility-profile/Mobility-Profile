@@ -46,7 +46,7 @@ public class RequestHandlerTest {
         this.visitDao = new VisitDao(new UserLocationDao());
         this.favouritePlaceDao = mock(FavouritePlaceDao.class);
 
-        this.requestHandler = new RequestHandler(context, mobilityProfile, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
+        this.requestHandler = new RequestHandler(mobilityProfile, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
 
         when(mobilityProfile.isCalendarDestination()).thenReturn(false);
 
