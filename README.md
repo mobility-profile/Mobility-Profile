@@ -9,6 +9,6 @@
 
 [Mobility-Profile-API](https://github.com/ZMaster13/Mobility-Profile-API)
 
-[sujuvuusnavigaattori-wrapper cordovalle](https://github.com/jussiviinikka/sujuvuusnavigaattori-wrapper)
+[Digitransitin modattu versio](https://github.com/jussiviinikka/digitransit-ui)
 
 [Prosessiesittely](https://docs.google.com/presentation/d/1m_QtfJHZFI_l9gsEkPnJqHAfEKce4BovLgFwExHvbUc/edit?usp=sharing)
