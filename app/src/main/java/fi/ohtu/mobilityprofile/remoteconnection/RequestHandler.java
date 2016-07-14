@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import fi.ohtu.mobilityprofile.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
@@ -97,6 +98,11 @@ public class RequestHandler extends Handler {
         } else {
             RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), getStartLocation(), destination);
             routeSearchDao.insertRouteSearch(routeSearch);
+        }
+        
+        FavouritePlace fav = favouritePlaceDao.findFavouritePlaceByAddress(destination);
+        if (fav != null) {
+            fav.increaseCounter();
         }
     }
 

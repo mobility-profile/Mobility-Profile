@@ -187,7 +187,7 @@ public class DestinationLogic {
     }
 
     /**
-     * Returns the fist saved favorite place.
+     * Returns the first saved favorite place.
      *
      * @return First favorite place
      */

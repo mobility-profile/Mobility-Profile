@@ -8,6 +8,7 @@ import com.orm.SugarRecord;
 public class FavouritePlace extends SugarRecord {
     String name;
     String address;
+    int counter;
 
     /**
      *
@@ -24,6 +25,7 @@ public class FavouritePlace extends SugarRecord {
     public FavouritePlace(String name, String address) {
         this.name = name;
         this.address = address;
+        this.counter = 1;
     }
 
     public String getName() {
@@ -33,6 +35,14 @@ public class FavouritePlace extends SugarRecord {
     public String getAddress() {
         return address;
     }
+    
+    public int getCounter() {
+        return counter;
+    }
+    
+    public void increaseCounter() {
+        counter++;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -40,6 +50,10 @@ public class FavouritePlace extends SugarRecord {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+    
+    public void setCounter(int count) {
+        this.counter = count;
     }
 
     @Override
