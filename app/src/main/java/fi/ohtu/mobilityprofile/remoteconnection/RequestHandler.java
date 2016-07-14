@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 import java.util.ArrayList;
 
-import fi.ohtu.mobilityprofile.MobilityProfile;
+import fi.ohtu.mobilityprofile.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
@@ -24,7 +24,7 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
-    private MobilityProfile mobilityProfile;
+    private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
     private RouteSearchDao routeSearchDao;
@@ -39,7 +39,7 @@ public class RequestHandler extends Handler {
      * @param routeSearchDao DAO for routeSearch
      * @param favouritePlaceDao DAO for favourite places
      */
-    public RequestHandler(MobilityProfile mobilityProfile, CalendarTagDao calendarTagDao,
+    public RequestHandler(DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
                           VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;

@@ -21,7 +21,7 @@ import fi.ohtu.mobilityprofile.data.VisitDao;
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class MobilityProfileTest {
 
-    private MobilityProfile mp;
+    private DestinationLogic mp;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
     private RouteSearchDao routeSearchDao;
@@ -35,7 +35,7 @@ public class MobilityProfileTest {
         routeSearchDao = mock(RouteSearchDao.class);
         favouritePlaceDao = mock(FavouritePlaceDao.class);
 
-        mp = new MobilityProfile(Robolectric.setupActivity(MainActivityStub.class), calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
+        mp = new DestinationLogic(Robolectric.setupActivity(MainActivityStub.class), calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
         eventLocation = "Rautatieasema";
 
         when(calendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
