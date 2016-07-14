@@ -12,8 +12,10 @@
 
     <permission
         android:name="fi.ohtu.permission.MOBILITY_PROFILE"
+        android:protectionLevel="dangerous"
         android:label="Mobility Profile"
-        android:protectionLevel="dangerous" />
+        android:icon="@drawable/ic_perm_identity_black_24dp"
+        android:description="@string/custom_permission_info" />
 
     <application
         android:allowBackup="true"
