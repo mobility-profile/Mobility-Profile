@@ -34,12 +34,18 @@ public class MainActivity extends AppCompatActivity {
         checkSecurity();
     }
 
+    /**
+     * Checks if there are any security problems with other applications. Check SecurityCheck.java
+     * for more information.
+     */
     private void checkSecurity() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
 
         boolean securityOk = true;
 
-        if (!sharedPreferences.getBoolean("firstrun", true)) {
+        // If this is the first time the application is run, or security check is not ok, we should
+        // run the security check.
+        if (sharedPreferences.getBoolean("firstrun", true) || !SecurityCheck.securityCheckOk(sharedPreferences)) {
             securityOk = SecurityCheck.doSecurityCheck(this, sharedPreferences);
             sharedPreferences.edit().putBoolean("firstrun", false).apply();
         }
@@ -49,9 +55,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Informs the user about security problems.
+     *
+     * @param conflictApps List of applications that are causing the problems.
+     */
     private void processSecurityConflicts(List<PackageInfo> conflictApps) {
         for (PackageInfo packageInfo : conflictApps) {
             System.out.println("AAA " + packageInfo.packageName);
+            // TODO: Inform user about security problems.
         }
     }
 }
