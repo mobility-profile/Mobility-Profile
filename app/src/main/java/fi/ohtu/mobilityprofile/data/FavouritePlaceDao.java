@@ -20,7 +20,11 @@ public class FavouritePlaceDao {
     public List<FavouritePlace> getAllFavouritePlaces() {
         return FavouritePlace.listAll(FavouritePlace.class);
     }
-    
+
+    /**
+     * Returns all the users's favourite places order by counter of favourite place.
+     * @return List of all favourite places, the biggest counter is last.
+     */
     public List<FavouritePlace> findAllOrderByCounter() {
         List<FavouritePlace> favouritePlaces = Select.from(FavouritePlace.class)
             .orderBy("counter")
