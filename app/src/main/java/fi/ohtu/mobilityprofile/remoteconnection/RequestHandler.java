@@ -79,8 +79,16 @@ public class RequestHandler extends Handler {
      * Returns a message with data that tells the most likely destination calculated in Mobility Profile.
      * @return Response message
      */
-    private Message processDestinationRequest() {
+  /*  private Message processDestinationRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination(getStartLocation()));
+    }
+*/
+    /**
+     * Returns a message with data that tells the most likely destinations calculated in Mobility Profile.
+     * @return Response message
+     */
+    private Message processDestinationRequest() {
+        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getListOfMostLikelyDestinations(getStartLocation()));
     }
 
     /**
@@ -101,7 +109,7 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Return the start location a.k.a the last known location of user.
+     * Returns the start location a.k.a the last known location of user.
      *
      * @return Start location address
      */

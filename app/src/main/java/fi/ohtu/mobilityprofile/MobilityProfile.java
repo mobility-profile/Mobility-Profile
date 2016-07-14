@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile;
 import android.content.Context;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -100,6 +101,55 @@ public class MobilityProfile {
 
         latestDestination = nextDestination;
         return nextDestination;
+    }
+
+    /**
+     * Returns a list of most probable destinations, when the user is in startLocation.
+     *
+     * The algorithm will first check if there are marked events in the calendar within a few hours.
+     * It will then check previously used searches and places where the user has previously visited.
+     * Lastly, it will check saved favorite locations and suggest one of those.
+     *
+     * TODO: the algorithm shouldn't always take the first decent suggestion.
+     * It should instead compare suggestions from all the different sources and take the best
+     * one of those.
+     *
+     * @param startLocation Location where the user is starting
+     * @return List of most probable destinations
+     */
+    public ArrayList<String> getListOfMostLikelyDestinations(String startLocation) {
+        ArrayList<String> destinations = new ArrayList<>();
+        this.latestStartLocation = startLocation;
+        String nextDestination;
+
+        String calendarSuggestion = searchFromCalendar();
+        String visitsSuggestion = searchFromPreviousVisits();
+        String routesSuggestion = searchFromUsedRoutes(startLocation);
+        String favoritesSuggestion = searchFromFavorites();
+
+        if (calendarSuggestion != null) {
+            destinations.add(calendarSuggestion);
+            suggestionSource = CALENDAR_SUGGESTION;
+        }
+        if (visitsSuggestion != null) {
+            destinations.add(visitsSuggestion);
+            suggestionSource = VISITS_SUGGESTION;
+        }
+        if (routesSuggestion != null) {
+            destinations.add(routesSuggestion);
+            suggestionSource = ROUTES_SUGGESTION;
+        }
+        if (favoritesSuggestion != null) {
+            destinations.add(favoritesSuggestion);
+            suggestionSource = FAVORITES_SUGGESTION;
+        }
+        if (destinations.isEmpty()) {
+            destinations.add("Home");
+            suggestionSource = DEFAULT_SUGGESTION;
+        }
+
+//        latestDestination = nextDestination;
+        return destinations;
     }
 
     /**
