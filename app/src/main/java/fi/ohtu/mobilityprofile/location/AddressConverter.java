@@ -27,7 +27,7 @@ public class AddressConverter {
      * @param location coordinates of the location
      * @param context for new request queue
      */
-    public static void convertToAddressAndSave(PointF location, Context context) {
+    public static void convertToAddressAndSave(final PointF location, Context context) {
 
         String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
                 + location.x + "&point.lon="
@@ -50,7 +50,7 @@ public class AddressConverter {
 
                                 Log.i("AddressConverter", "Converted address is: " + address);
 
-                                Visit lastLocation = new Visit(System.currentTimeMillis(), address);
+                                Visit lastLocation = new Visit(System.currentTimeMillis(), address, location.x, location.y);
                                 lastLocation.save();
                             }
                         } catch (Exception e) {
