@@ -1,7 +1,9 @@
 package fi.ohtu.mobilityprofile;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -11,13 +13,16 @@ import android.support.v4.view.ViewPager;
 
 import com.orm.SugarContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.remoteconnection.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
+import fi.ohtu.mobilityprofile.ui.SecurityProblemActivity;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
+    public final static String CONFLICT_APPS = "conflictApps";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean securityOk = true;
 
-        // If this is the first time the application is run, or security check is not ok, we should
+        // If this is the first time the application is run or security check is not ok, we should
         // run the security check.
         if (sharedPreferences.getBoolean("firstrun", true) || !SecurityCheck.securityCheckOk(sharedPreferences)) {
             securityOk = SecurityCheck.doSecurityCheck(this, sharedPreferences);
@@ -61,9 +66,14 @@ public class MainActivity extends AppCompatActivity {
      * @param conflictApps List of applications that are causing the problems.
      */
     private void processSecurityConflicts(List<PackageInfo> conflictApps) {
+        ArrayList<String> appNames = new ArrayList<>();
+
         for (PackageInfo packageInfo : conflictApps) {
-            System.out.println("AAA " + packageInfo.packageName);
-            // TODO: Inform user about security problems.
+            appNames.add(getPackageManager().getApplicationLabel(packageInfo.applicationInfo).toString());
         }
+
+        Intent intent = new Intent(this, SecurityProblemActivity.class);
+        intent.putStringArrayListExtra(CONFLICT_APPS, appNames);
+        startActivity(intent);
     }
 }

@@ -25,4 +25,7 @@
     <string name="reset_ok">Delete</string>
     <string name="reset_cancel">Cancel</string>
     <string name="custom_permission_info">Allows the software to use information provided by Mobility Profile. Exact data collected by Mobility Profile won\'t be shared, only suggestions Mobility Profile is giving based on that data.</string>
+    <string name="conflict_header">The following applications have defined conflicting permissions with Mobility Profile:\n</string>
+    <string name="conflict_info">If two or more applications define the same permission, the application that is installed first is the one whose definition is used. Applications listed above were installed before Mobility Profile and have defined the same permission as Mobility Profile. To solve the problem, uninstall those applications, then run Mobility Profile and make sure this message is no longer shown. After that you can reinstall those applications.
+        \n\nMore information about the problem can be found at https://datatheorem.github.io/2014/04/16/custom-permissions/</string>
 </resources>

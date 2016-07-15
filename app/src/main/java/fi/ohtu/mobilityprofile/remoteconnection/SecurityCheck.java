@@ -20,7 +20,7 @@ import java.util.Map;
  * If there are conflicts, we shouldn't give any information to any applications before those
  * conflicts are solved. Only way to solve them is to uninstall the applications causing the
  * conflicts and run Mobility Profile after doing so. Then those applications can be safely
- * installed again (although any application shouldn't cause conflicts at all, and application that
+ * installed again (although applications shouldn't cause conflicts at all, and application that
  * is doing so is basically trying to hack Mobility Profile).
  */
 public class SecurityCheck {
@@ -47,6 +47,7 @@ public class SecurityCheck {
             return true;
         }
 
+        sharedPreferences.edit().putBoolean("securitycheck", false).apply();
         return false;
     }
 
