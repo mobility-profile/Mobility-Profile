@@ -32,6 +32,7 @@ public class DestinationLogic {
 
     private String latestStartLocation;
     private String latestDestination;
+    private ArrayList<String> latestDestinations;
 
     private int suggestionSource;
 
@@ -118,7 +119,7 @@ public class DestinationLogic {
      * @return List of most probable destinations
      */
     public ArrayList<String> getListOfMostLikelyDestinations(String startLocation) {
-        ArrayList<String> destinations = new ArrayList<>();
+        ArrayList<String> nextDestinations = new ArrayList<>();
         this.latestStartLocation = startLocation;
         String nextDestination;
 
@@ -128,28 +129,28 @@ public class DestinationLogic {
         String favoritesSuggestion = searchFromFavorites();
 
         if (calendarSuggestion != null) {
-            destinations.add(calendarSuggestion);
+            nextDestinations.add(calendarSuggestion);
             suggestionSource = CALENDAR_SUGGESTION;
         }
         if (visitsSuggestion != null) {
-            destinations.add(visitsSuggestion);
+            nextDestinations.add(visitsSuggestion);
             suggestionSource = VISITS_SUGGESTION;
         }
         if (routesSuggestion != null) {
-            destinations.add(routesSuggestion);
+            nextDestinations.add(routesSuggestion);
             suggestionSource = ROUTES_SUGGESTION;
         }
         if (favoritesSuggestion != null) {
-            destinations.add(favoritesSuggestion);
+            nextDestinations.add(favoritesSuggestion);
             suggestionSource = FAVORITES_SUGGESTION;
         }
-        if (destinations.isEmpty()) {
-            destinations.add("Home");
+        if (nextDestinations.isEmpty()) {
+            nextDestinations.add("Home");
             suggestionSource = DEFAULT_SUGGESTION;
         }
 
-//        latestDestination = nextDestination;
-        return destinations;
+        latestDestinations = nextDestinations;
+        return nextDestinations;
     }
 
     /**
@@ -269,6 +270,13 @@ public class DestinationLogic {
         return latestDestination;
     }
 
+    /**
+     * Returns a list of the latest destinations that were sent to the client.
+     * @return List of latest given destinations
+     */
+    public ArrayList<String> getListOfLatestDestinations() {
+        return latestDestinations;
+    }
     /**
      * Tells if the latest given location was retrieved from the calendar.
      *
