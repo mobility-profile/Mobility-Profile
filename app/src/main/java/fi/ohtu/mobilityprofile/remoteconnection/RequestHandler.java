@@ -17,6 +17,7 @@ import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.location.AddressConverter;
 
 import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
 
@@ -24,6 +25,7 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
+    private Context context;
     private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -41,6 +43,26 @@ public class RequestHandler extends Handler {
      */
     public RequestHandler(DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
                           VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
+        this.mobilityProfile = mobilityProfile;
+        this.calendarTagDao = calendarTagDao;
+        this.visitDao = visitDao;
+        this.routeSearchDao = routeSearchDao;
+        this.favouritePlaceDao = favouritePlaceDao;
+    }
+
+    /**
+     * Creates the RequestHandler.
+     *
+     * @param context for AddressConverter
+     * @param mobilityProfile Journey planner that provides the logic for our app
+     * @param calendarTagDao DAO for calendar tags
+     * @param visitDao DAO for visits
+     * @param routeSearchDao DAO for routeSearch
+     * @param favouritePlaceDao DAO for favourite places
+     */
+    public RequestHandler(Context context, DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
+                          VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
+        this.context = context;
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
@@ -106,8 +128,11 @@ public class RequestHandler extends Handler {
             CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestDestination(), destination);
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
-            RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), getStartLocation(), destination);
-            routeSearchDao.insertRouteSearch(routeSearch);
+            if (visitDao.getLatestVisit() == null) {
+                AddressConverter.convertToCoordinatesAndSave(destination, null, context);
+            } else {
+                AddressConverter.convertToCoordinatesAndSave(destination, visitDao.getLatestVisit(), context);
+            }
         }
     }
 
@@ -166,7 +191,7 @@ public class RequestHandler extends Handler {
 
         return message;
     }
-    
+
     /**
      * Creates a message that has a list of strings as info.
      *
@@ -182,7 +207,7 @@ public class RequestHandler extends Handler {
 
         return message;
     }
-    
+
     /**
      * Returns a message that contains information of user's favorite places.
      *

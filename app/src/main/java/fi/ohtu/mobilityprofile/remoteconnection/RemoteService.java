@@ -26,7 +26,7 @@ public class RemoteService extends Service {
                 VisitDao visitDao = new VisitDao(new UserLocationDao());
                 RouteSearchDao routeSearchDao = new RouteSearchDao();
                 FavouritePlaceDao favouritePlaceDao = new FavouritePlaceDao();
-                messenger = new Messenger(new RequestHandler(new DestinationLogic(this, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao), calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao));
+                messenger = new Messenger(new RequestHandler(this, new DestinationLogic(this, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao), calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao));
             }
         }
 
