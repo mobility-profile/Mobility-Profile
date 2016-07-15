@@ -22,6 +22,8 @@ import java.util.Map;
  * conflicts and run Mobility Profile after doing so. Then those applications can be safely
  * installed again (although applications shouldn't cause conflicts at all, and application that
  * is doing so is basically trying to hack Mobility Profile).
+ *
+ * More information at https://datatheorem.github.io/2014/04/16/custom-permissions/
  */
 public class SecurityCheck {
     /**
