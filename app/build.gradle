@@ -58,16 +58,20 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.robolectric:robolectric:3.0"
 
+
+    compile('com.commonsware.cwac:security:0.8.0') {  // Security checks
+        exclude group: 'com.android.support'
+    }
+
     compile 'com.android.support:appcompat-v7:23.0.1'
 
-
-    //Emulator does not work with these
-//    compile 'com.google.android.gms:play-services-identity:9.2.0'
-//    compile 'com.google.android.gms:play-services-location:9.2.0'
+    // Emulator does not work with these
+    // compile 'com.google.android.gms:play-services-identity:9.2.0'
+    // compile 'com.google.android.gms:play-services-location:9.2.0'
 
     compile 'com.google.android.gms:play-services-identity:8.1.0'
     compile 'com.google.android.gms:play-services-location:8.1.0'
-    compile ('pub.devrel:easypermissions:0.1.5') {
+    compile('pub.devrel:easypermissions:0.1.5') {
         exclude group: 'com.android.support'
     }
     compile('com.google.api-client:google-api-client-android:1.20.0') {
@@ -79,7 +83,7 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     }
     compile 'com.google.code.findbugs:jsr305:2.0.1'
-    compile ('com.github.satyan:sugar:1.5') {
+    compile('com.github.satyan:sugar:1.5') {
         exclude group: 'com.google.guava'
     }
     compile 'com.android.volley:volley:1.0.0'
