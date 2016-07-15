@@ -16,7 +16,7 @@ import fi.ohtu.mobilityprofile.domain.Visit;
 /**
  * This class is used for calculating the most likely trips the user is going to make.
  */
-public class MobilityProfile {
+public class DestinationLogic {
     public static final int DEFAULT_SUGGESTION = 0;
     public static final int CALENDAR_SUGGESTION = 1;
     public static final int ROUTES_SUGGESTION = 2;
@@ -44,7 +44,7 @@ public class MobilityProfile {
      * @param routeSearchDao DAO for used searches
      * @param favouritePlaceDao DAO for favourite places
      */
-    public MobilityProfile(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao,
+    public DestinationLogic(Context context, CalendarTagDao calendarTagDao, VisitDao visitDao,
                            RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
@@ -230,6 +230,8 @@ public class MobilityProfile {
         for (Visit visit : visits) {
             if (aroundTheSameTime(new Time(visit.getTimestamp()), 1, 3)) {
                 return visit.getOriginalLocation();
+                // This returns location with coordinates : "Liisankatu 1, Helsinki, Finland!00.0000!00.0000!"
+                //return visit.getOriginalLocation() + "!" + visit.getLatitude() + "!" + visit.getLongitude();
             }
         }
 
