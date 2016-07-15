@@ -58,6 +58,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.robolectric:robolectric:3.0"
 
+
+    compile('com.commonsware.cwac:security:0.8.0') {  // Security checks
+        exclude group: 'com.android.support'
+    }
+
     compile 'com.android.support:appcompat-v7:23.0.1'
 
     // Emulator does not work with these

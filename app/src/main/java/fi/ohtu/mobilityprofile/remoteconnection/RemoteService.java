@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Messenger;
 
+import com.commonsware.cwac.security.PermissionUtils;
+
 import fi.ohtu.mobilityprofile.DestinationLogic;
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
@@ -20,6 +23,12 @@ public class RemoteService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        // If there is a security problem, we shouldn't allow any application to get information
+        // from us. Check SecurityCheck.java for more information.
+        if (!SecurityCheck.securityCheckOk(getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE))) {
+            return null;
+        }
+
         synchronized (RemoteService.class) {
             if (messenger == null) {
                 CalendarTagDao calendarTagDao = new CalendarTagDao();
