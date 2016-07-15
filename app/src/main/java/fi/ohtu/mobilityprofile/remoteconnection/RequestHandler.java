@@ -125,7 +125,7 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Processes new routes by adding them in calendarTags or RouteSearches.
+     * Processes new routes by adding them in CalendarTags or Visits.
      *
      * @param message Message with data that tells which destination the user inputted
      */
@@ -133,7 +133,7 @@ public class RequestHandler extends Handler {
         Bundle bundle = message.getData();
         String destination = bundle.getString(SEND_USED_DESTINATION+"");
         if (mobilityProfile.isCalendarDestination()) {
-            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestDestination(), destination);
+            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getListOfLatestDestinations().get(0), destination);
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
             if (visitDao.getLatestVisit() == null) {
