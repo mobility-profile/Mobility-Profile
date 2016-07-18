@@ -17,11 +17,11 @@ import fi.ohtu.mobilityprofile.domain.Visit;
  * This class is used for calculating the most likely trips the user is going to make.
  */
 public class DestinationLogic {
-    public static final int DEFAULT_SUGGESTION = 0;
-    public static final int CALENDAR_SUGGESTION = 1;
-    public static final int ROUTES_SUGGESTION = 2;
-    public static final int VISITS_SUGGESTION = 3;
-    public static final int FAVORITES_SUGGESTION = 4;
+    private boolean defaultSource = false;
+    private boolean calendarSource = false;
+    private boolean routeSource = false;
+    private boolean visitSource = false;
+    private boolean favouritesSource = false;
 
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -33,8 +33,6 @@ public class DestinationLogic {
     private String latestStartLocation;
     private String latestDestination;
     private ArrayList<String> latestDestinations;
-
-    private int suggestionSource;
 
     /**
      * Creates the MobilityProfile.
@@ -81,23 +79,23 @@ public class DestinationLogic {
 
         if (calendarSuggestion != null) {
             nextDestination = calendarSuggestion;
-            suggestionSource = CALENDAR_SUGGESTION;
+            calendarSource = true;
         }
         else if (visitsSuggestion != null) {
             nextDestination = visitsSuggestion;
-            suggestionSource = VISITS_SUGGESTION;
+            visitSource = true;
         }
         else if (routesSuggestion != null) {
             nextDestination = routesSuggestion;
-            suggestionSource = ROUTES_SUGGESTION;
+            routeSource = true;
         }
         else if (favoritesSuggestion != null) {
             nextDestination = favoritesSuggestion;
-            suggestionSource = FAVORITES_SUGGESTION;
+            favouritesSource = true;
         }
         else {
             nextDestination = "Home";
-            suggestionSource = DEFAULT_SUGGESTION;
+            defaultSource = true;
         }
 
         latestDestination = nextDestination;
@@ -121,7 +119,6 @@ public class DestinationLogic {
     public ArrayList<String> getListOfMostLikelyDestinations(String startLocation) {
         ArrayList<String> nextDestinations = new ArrayList<>();
         this.latestStartLocation = startLocation;
-        String nextDestination;
 
         String calendarSuggestion = searchFromCalendar();
         String visitsSuggestion = searchFromPreviousVisits();
@@ -130,23 +127,23 @@ public class DestinationLogic {
 
         if (calendarSuggestion != null) {
             nextDestinations.add(calendarSuggestion);
-            suggestionSource = CALENDAR_SUGGESTION;
+            calendarSource = true;
         }
         if (visitsSuggestion != null) {
             nextDestinations.add(visitsSuggestion);
-            suggestionSource = VISITS_SUGGESTION;
+            visitSource = true;
         }
         if (routesSuggestion != null) {
             nextDestinations.add(routesSuggestion);
-            suggestionSource = ROUTES_SUGGESTION;
+            routeSource = true;
         }
         if (favoritesSuggestion != null) {
             nextDestinations.add(favoritesSuggestion);
-            suggestionSource = FAVORITES_SUGGESTION;
+            favouritesSource = true;
         }
         if (nextDestinations.isEmpty()) {
             nextDestinations.add("Home");
-            suggestionSource = DEFAULT_SUGGESTION;
+            defaultSource = true;
         }
 
         latestDestinations = nextDestinations;
@@ -277,12 +274,13 @@ public class DestinationLogic {
     public ArrayList<String> getListOfLatestDestinations() {
         return latestDestinations;
     }
+
     /**
      * Tells if the latest given location was retrieved from the calendar.
      *
      * @return True if the location was from calendar, false otherwise
      */
     public boolean isCalendarDestination() {
-        return suggestionSource == CALENDAR_SUGGESTION;
+        return calendarSource;
     }
 }
