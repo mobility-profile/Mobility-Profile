@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import fi.ohtu.mobilityprofile.PermissionManager;
@@ -22,23 +24,35 @@ public class LocationService extends Service {
     private android.location.LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 10f;
+    LocationListener[] mLocationListeners = null;
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
 
         /**
          * Creates LocationService
-         * @param provider gps provider
+         * @param provider GPS or Network
          */
-        public LocationListener(String provider) {
+        public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
-            mLastLocation = new Location(provider);
+
+            try {
+                Location location = locationManager.getLastKnownLocation(provider);
+                if (location != null) {
+                    mLastLocation = location;
+                    Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
+                    AddressConverter.convertToAddressAndSave(new PointF(new Float(mLastLocation.getLatitude()),
+                            new Float(mLastLocation.getLongitude())), getApplicationContext());
+                }
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onLocationChanged(Location location) {
             Log.i(TAG, "onLocationChanged: " + location);
-            mLastLocation.set(location);
+            mLastLocation = location;
             AddressConverter.convertToAddressAndSave(new PointF(new Float(mLastLocation.getLatitude()),
                     new Float(mLastLocation.getLongitude())), getApplicationContext());
         }
@@ -59,10 +73,26 @@ public class LocationService extends Service {
         }
     }
 
-    LocationListener[] mLocationListeners = new LocationListener[]{
-        new LocationListener(android.location.LocationManager.GPS_PROVIDER),
-        new LocationListener(android.location.LocationManager.NETWORK_PROVIDER)
-    };
+    /**
+     * Initializes LocationManager.
+     */
+    private void initializeLocationManager() {
+        Log.i(TAG, "initializeLocationManager");
+        if (mLocationManager == null) {
+            mLocationManager = (android.location.LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        }
+    }
+
+    /**
+     * Initializes LocationListeners.
+     */
+    private void initializeLocationListeners() {
+        mLocationListeners = new LocationListener[]{
+                new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
+                new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
+        };
+    }
+
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -81,6 +111,7 @@ public class LocationService extends Service {
     public void onCreate() {
         Log.i(TAG, "onCreate");
         initializeLocationManager();
+        initializeLocationListeners();
 
         try {
             mLocationManager.requestLocationUpdates(
@@ -120,14 +151,4 @@ public class LocationService extends Service {
         }
     }
 
-
-    /**
-     * Initializes LocationManager.
-     */
-    private void initializeLocationManager() {
-        Log.i(TAG, "initializeLocationManager");
-        if (mLocationManager == null) {
-            mLocationManager = (android.location.LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        }
-    }
 }

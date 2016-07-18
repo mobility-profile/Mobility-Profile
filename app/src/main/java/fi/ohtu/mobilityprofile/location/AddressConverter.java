@@ -121,7 +121,7 @@ public class AddressConverter {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
+                Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
                 error.printStackTrace();
 
             }
