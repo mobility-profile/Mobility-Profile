@@ -189,14 +189,14 @@ public class DestinationLogic {
     }
 
     /**
-     * Returns the fist saved favorite place.
+     * Returns the first saved favorite place.
      *
      * @return First favorite place
      */
     private String searchFromFavorites() {
-        List<FavouritePlace> favouritePlaces = favouritePlaceDao.getAllFavouritePlaces();
+        List<FavouritePlace> favouritePlaces = favouritePlaceDao.findAllOrderByCounter();
 
-        return favouritePlaces.isEmpty() ? null : favouritePlaces.get(0).getAddress();
+        return favouritePlaces.isEmpty() ? null : favouritePlaces.get(favouritePlaces.size() - 1).getAddress();
         // TODO: Add some logic to choosing from favorite places.
         // E.g. add a counter that increases every time user uses the favorite place.
     }

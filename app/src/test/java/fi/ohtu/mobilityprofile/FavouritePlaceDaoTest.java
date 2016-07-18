@@ -10,6 +10,8 @@ import org.robolectric.annotation.Config;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
@@ -22,6 +24,7 @@ public class FavouritePlaceDaoTest {
     public void setUp() {
         favouriteDao = new FavouritePlaceDao();
         fav = new FavouritePlace("Kumpulan kampus", "Kumpulan kampus");
+        fav.setCounter(10);
         Robolectric.setupActivity(MainActivityStub.class);
     }
 
@@ -93,4 +96,14 @@ public class FavouritePlaceDaoTest {
 
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().size(), 0);
     }
+    
+    @Test
+    public void testFindAllOrderByCounter() {
+        favouriteDao.insertFavouritePlace(fav);
+        favouriteDao.insertFavouritePlace(new FavouritePlace("Koti", "kotitie 5"));
+        List<FavouritePlace> places = favouriteDao.findAllOrderByCounter();
+        
+        assertEquals("Kumpulan kampus", places.get(places.size() -1 ).getName());
+    }
+    
 }

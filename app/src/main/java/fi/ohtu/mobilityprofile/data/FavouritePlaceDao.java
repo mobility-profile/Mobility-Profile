@@ -20,6 +20,18 @@ public class FavouritePlaceDao {
     public List<FavouritePlace> getAllFavouritePlaces() {
         return FavouritePlace.listAll(FavouritePlace.class);
     }
+
+    /**
+     * Returns all the users's favourite places order by counter of favourite place.
+     * @return List of all favourite places, the biggest counter is last.
+     */
+    public List<FavouritePlace> findAllOrderByCounter() {
+        List<FavouritePlace> favouritePlaces = Select.from(FavouritePlace.class)
+            .orderBy("counter")
+            .list();
+        
+        return favouritePlaces;
+    }
     
     /**
      * Returns a list of names of favourite places.
@@ -53,6 +65,21 @@ public class FavouritePlaceDao {
             return null;
         }
         return favourites.get(0);
+    }
+    
+    public FavouritePlace findFavouritePlaceByAddress(String address) {
+        List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
+                .where(Condition.prop("address").eq(address))
+                .limit("1")
+                .list();
+
+        assert favourites.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+
+        if (favourites.size() == 0) {
+            return null;
+        }
+        return favourites.get(0);
+        
     }
 
     /**
