@@ -20,6 +20,7 @@ import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.remoteconnection.RequestHandler;
+import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
