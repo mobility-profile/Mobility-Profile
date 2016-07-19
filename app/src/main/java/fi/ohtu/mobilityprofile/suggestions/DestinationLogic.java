@@ -55,7 +55,7 @@ public class DestinationLogic {
      * @param startLocation Location where the user is starting
      * @return List of most probable destinations
      */
-    public List<String> getListOfMostLikelyDestinations(String startLocation) {
+    public ArrayList<String> getListOfMostLikelyDestinations(String startLocation) {
         this.latestStartLocation = startLocation;
 
         List<Suggestion> suggestions = new ArrayList<>();
@@ -65,7 +65,7 @@ public class DestinationLogic {
 
         latestSuggestions = suggestions;
 
-        List<String> destinations = new ArrayList<>();
+        ArrayList<String> destinations = new ArrayList<>();
         for (Suggestion suggestion : suggestions) {
             destinations.add(suggestion.getDestination());
         }
