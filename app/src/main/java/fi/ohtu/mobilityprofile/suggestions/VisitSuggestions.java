@@ -17,12 +17,11 @@ public class VisitSuggestions implements SuggestionSource {
     }
 
     /**
-     * Selects destination based on previous visits.
-     * Checks if the user has visited some location around the same time in the past,
-     * max 1 hour earlier or max 3 hours later than current time.
-     * Searches from visits.
+     * Returns a list of probable locations the user could want to visit based on the data collected
+     * from previous visits. A visit is considered valid if it was max 1 hour earlier or max 3 hours
+     * later that the current time.
      *
-     * @return Previously visited place
+     * @return List of probable destinations
      */
     @Override
     public List<Suggestion> getSuggestions(String startLocation) {

@@ -49,15 +49,13 @@ public class RequestHandlerTest {
 
         this.requestHandler = new RequestHandler(mobilityProfile, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
 
-        when(mobilityProfile.isCalendarDestination()).thenReturn(false);
-
         Robolectric.setupActivity(MainActivityStub.class);
     }
 
     @Test
-    public void insertsASearchedRoutetoDatabase() {
+    public void insertsASearchedRouteToDatabase() {
         Bundle bundle = new Bundle();
-        bundle.putString(102+"", "Naantali");
+        bundle.putString(102+"", "Kumpula Naantali");
 
         Message msg = new Message();
         msg.what = 102;

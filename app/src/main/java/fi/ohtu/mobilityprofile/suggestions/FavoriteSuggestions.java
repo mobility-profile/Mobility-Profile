@@ -14,17 +14,17 @@ public class FavoriteSuggestions implements SuggestionSource {
     }
 
     /**
-     * Returns the first saved favorite place.
+     * Returns three most used favorite places.
      *
-     * @return First favorite place
+     * @return Three favorite places
      */
     @Override
     public List<Suggestion> getSuggestions(String startLocation) {
-        List<FavouritePlace> favouritePlaces = favouritePlaceDao.findAllOrderByCounter();
-
         List<Suggestion> suggestions = new ArrayList<>();
-        if (!favouritePlaces.isEmpty()) {
-            suggestions.add(new Suggestion(favouritePlaces.get(0).getAddress(), SuggestionAccuracy.MODERATE, FAVORITE_SUGGESTION));
+
+        for (FavouritePlace favouritePlace : favouritePlaceDao.FindAmountOrderByCounter(3)) {
+            Suggestion suggestion = new Suggestion(favouritePlace.getAddress(), SuggestionAccuracy.MODERATE, FAVORITE_SUGGESTION);
+            suggestions.add(suggestion);
         }
 
         return suggestions;
