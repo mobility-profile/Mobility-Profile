@@ -83,9 +83,6 @@ public class RequestHandler extends Handler {
             case SEND_USED_DESTINATION:
                 processUsedRoute(msg);
                 return;
-            case REQUEST_START_LOCATION:
-                message = processStartLocationRequest();
-                return;
             case RESPOND_FAVOURITE_PLACES:
                 message = getFavouritePlaces();
                 break;
@@ -99,14 +96,6 @@ public class RequestHandler extends Handler {
         } catch (RemoteException rme) {
             Log.d("Remote Service", "Invocation failed!");
         }
-    }
-
-    /**
-     * Returns a message with start location.
-     * @return Response message
-     */
-    private Message processStartLocationRequest() {
-        return createMessage(RESPOND_START_LOCATION, getStartLocationWithCoordinates());
     }
 
     /**
@@ -165,19 +154,6 @@ public class RequestHandler extends Handler {
         }
     }
 
-    /**
-     * Return the start location with coordinates.
-     * @return Start location address and coordinates
-     */
-    private String getStartLocationWithCoordinates() {
-        Visit lastKnownVisit = visitDao.getLatestVisit();
-        if (lastKnownVisit == null) {
-            // TODO something better
-            return "None";
-        } else {
-            return lastKnownVisit.getOriginalLocation() + "!" + lastKnownVisit.getLatitude() + "!" + lastKnownVisit.getLongitude();
-        }
-    }
 
     /**
      * Creates an error message.
