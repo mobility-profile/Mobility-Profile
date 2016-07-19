@@ -16,6 +16,7 @@ import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)

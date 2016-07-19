@@ -6,15 +6,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
+
 import java.util.ArrayList;
 
-import fi.ohtu.mobilityprofile.DestinationLogic;
+import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -123,7 +122,7 @@ public class RequestHandler extends Handler {
         Bundle bundle = message.getData();
         String destination = bundle.getString(SEND_USED_DESTINATION+"");
         if (mobilityProfile.isCalendarDestination()) {
-            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getListOfLatestDestinations().get(0), destination);
+            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestSuggestions().get(0), destination);
             calendarTagDao.insertCalendarTag(calendarTag);
         } else {
             if (visitDao.getLatestVisit() == null) {
