@@ -17,13 +17,12 @@ public class RouteSuggestions implements SuggestionSource {
     }
 
     /**
-     * Selects destination based on previously used routes.
-     * Checks if the user has gone to some destination at the same time in the past,
-     * max 2 hours earlier or max 2 hours later than current time.
-     * Searches from previously used routes.
+     * Returns a list of probable locations the user would like to visit based on the previous
+     * route searches user has made. A route search is considered valid if it was max 2 hours
+     * earlier or max 2 hours later that the current time.
      *
      * @param startLocation Starting location
-     * @return Previously used destination
+     * @return List of probable destinations
      *
      */
     @Override

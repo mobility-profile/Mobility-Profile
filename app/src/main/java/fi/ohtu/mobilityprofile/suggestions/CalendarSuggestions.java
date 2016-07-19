@@ -29,13 +29,14 @@ public class CalendarSuggestions implements SuggestionSource {
 
         if (eventLocation != null) {
             CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(eventLocation);
+
             if (calendarTag != null) {
                 eventLocation = calendarTag.getValue();
             }
-        }
 
-        Suggestion suggestion = new Suggestion(eventLocation, SuggestionAccuracy.VERY_HIGH, CALENDAR_SUGGESTION);
-        suggestions.add(suggestion);
+            Suggestion suggestion = new Suggestion(eventLocation, SuggestionAccuracy.VERY_HIGH, CALENDAR_SUGGESTION);
+            suggestions.add(suggestion);
+        }
 
         return suggestions;
     }
