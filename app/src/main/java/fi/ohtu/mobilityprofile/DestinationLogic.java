@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile;
 import android.content.Context;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,11 +17,11 @@ import fi.ohtu.mobilityprofile.domain.Visit;
  * This class is used for calculating the most likely trips the user is going to make.
  */
 public class DestinationLogic {
-    public static final int DEFAULT_SUGGESTION = 0;
-    public static final int CALENDAR_SUGGESTION = 1;
-    public static final int ROUTES_SUGGESTION = 2;
-    public static final int VISITS_SUGGESTION = 3;
-    public static final int FAVORITES_SUGGESTION = 4;
+    private boolean defaultSource = false;
+    private boolean calendarSource = false;
+    private boolean routeSource = false;
+    private boolean visitSource = false;
+    private boolean favouritesSource = false;
 
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -31,8 +32,7 @@ public class DestinationLogic {
 
     private String latestStartLocation;
     private String latestDestination;
-
-    private int suggestionSource;
+    private ArrayList<String> latestDestinations;
 
     /**
      * Creates the MobilityProfile.
@@ -79,27 +79,75 @@ public class DestinationLogic {
 
         if (calendarSuggestion != null) {
             nextDestination = calendarSuggestion;
-            suggestionSource = CALENDAR_SUGGESTION;
+            calendarSource = true;
         }
         else if (visitsSuggestion != null) {
             nextDestination = visitsSuggestion;
-            suggestionSource = VISITS_SUGGESTION;
+            visitSource = true;
         }
         else if (routesSuggestion != null) {
             nextDestination = routesSuggestion;
-            suggestionSource = ROUTES_SUGGESTION;
+            routeSource = true;
         }
         else if (favoritesSuggestion != null) {
             nextDestination = favoritesSuggestion;
-            suggestionSource = FAVORITES_SUGGESTION;
+            favouritesSource = true;
         }
         else {
             nextDestination = "Home";
-            suggestionSource = DEFAULT_SUGGESTION;
+            defaultSource = true;
         }
 
         latestDestination = nextDestination;
         return nextDestination;
+    }
+
+    /**
+     * Returns a list of most probable destinations, when the user is in startLocation.
+     *
+     * The algorithm will first check if there are marked events in the calendar within a few hours.
+     * It will then check previously used searches and places where the user has previously visited.
+     * Lastly, it will check saved favorite locations and suggest one of those.
+     *
+     * TODO: the algorithm shouldn't always take the first decent suggestion.
+     * It should instead compare suggestions from all the different sources and take the best
+     * one of those.
+     *
+     * @param startLocation Location where the user is starting
+     * @return List of most probable destinations
+     */
+    public ArrayList<String> getListOfMostLikelyDestinations(String startLocation) {
+        ArrayList<String> nextDestinations = new ArrayList<>();
+        this.latestStartLocation = startLocation;
+
+        String calendarSuggestion = searchFromCalendar();
+        String visitsSuggestion = searchFromPreviousVisits();
+        String routesSuggestion = searchFromUsedRoutes(startLocation);
+        String favoritesSuggestion = searchFromFavorites();
+
+        if (calendarSuggestion != null) {
+            nextDestinations.add(calendarSuggestion);
+            calendarSource = true;
+        }
+        if (visitsSuggestion != null) {
+            nextDestinations.add(visitsSuggestion);
+            visitSource = true;
+        }
+        if (routesSuggestion != null) {
+            nextDestinations.add(routesSuggestion);
+            routeSource = true;
+        }
+        if (favoritesSuggestion != null) {
+            nextDestinations.add(favoritesSuggestion);
+            favouritesSource = true;
+        }
+        if (nextDestinations.isEmpty()) {
+            nextDestinations.add("Home");
+            defaultSource = true;
+        }
+
+        latestDestinations = nextDestinations;
+        return nextDestinations;
     }
 
     /**
@@ -220,11 +268,19 @@ public class DestinationLogic {
     }
 
     /**
+     * Returns a list of the latest destinations that were sent to the client.
+     * @return List of latest given destinations
+     */
+    public ArrayList<String> getListOfLatestDestinations() {
+        return latestDestinations;
+    }
+
+    /**
      * Tells if the latest given location was retrieved from the calendar.
      *
      * @return True if the location was from calendar, false otherwise
      */
     public boolean isCalendarDestination() {
-        return suggestionSource == CALENDAR_SUGGESTION;
+        return calendarSource;
     }
 }
