@@ -8,7 +8,10 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
+import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -18,6 +21,8 @@ import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.location.AddressConverter;
+import fi.ohtu.mobilityprofile.suggestions.Suggestion;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
 import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
 
@@ -79,7 +84,7 @@ public class RequestHandler extends Handler {
             case REQUEST_MOST_LIKELY_DESTINATION:
                 message = processDestinationRequest();
                 break;
-            case SEND_USED_DESTINATION:
+            case SEND_USED_ROUTE:
                 processUsedRoute(msg);
                 return;
             case RESPOND_FAVOURITE_PLACES:
@@ -114,23 +119,26 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Processes new routes by adding them in CalendarTags or Visits.
+     * Processes used route by adding it to calendar tags and used routes.
      *
      * @param message Message with data that tells which destination the user inputted
      */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
-        String destination = bundle.getString(SEND_USED_DESTINATION+"");
-        if (mobilityProfile.isCalendarDestination()) {
-            CalendarTag calendarTag = new CalendarTag(mobilityProfile.getLatestSuggestions().get(0), destination);
-            calendarTagDao.insertCalendarTag(calendarTag);
-        } else {
-            if (visitDao.getLatestVisit() == null) {
-                AddressConverter.convertToCoordinatesAndSave(destination, null, context);
-            } else {
-                AddressConverter.convertToCoordinatesAndSave(destination, visitDao.getLatestVisit(), context);
+        StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_USED_ROUTE+""));
+        String startLocation = tokenizer.nextToken();
+        String destination = tokenizer.nextToken();
+
+        List<Suggestion> suggestions = mobilityProfile.getLatestSuggestions();
+        for (Suggestion suggestion : suggestions) {
+            if (suggestion.getSource() == SuggestionSource.CALENDAR_SUGGESTION) {
+                CalendarTag calendarTag = new CalendarTag(suggestion.getDestination(), destination);
+                calendarTagDao.insertCalendarTag(calendarTag);
             }
         }
+
+        RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
+        routeSearchDao.insertRouteSearch(routeSearch);
         
         FavouritePlace fav = favouritePlaceDao.findFavouritePlaceByAddress(destination);
         if (fav != null) {
