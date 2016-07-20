@@ -7,10 +7,19 @@ import fi.ohtu.mobilityprofile.CalendarConnection;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 
+/**
+ * This class creates suggestions based on data collected from the user's calendar.
+ */
 public class CalendarSuggestions implements SuggestionSource {
     private CalendarConnection calendar;
     private CalendarTagDao calendarTagDao;
 
+    /**
+     * Creates the CalendarSuggestions.
+     *
+     * @param calendar Interface for connecting to the calendar
+     * @param calendarTagDao DAO for calendar tags
+     */
     public CalendarSuggestions(CalendarConnection calendar, CalendarTagDao calendarTagDao) {
         this.calendar = calendar;
         this.calendarTagDao = calendarTagDao;

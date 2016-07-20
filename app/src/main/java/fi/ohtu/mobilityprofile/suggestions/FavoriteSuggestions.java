@@ -6,9 +6,17 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 
+/**
+ * This class creates suggestions based on favorites the user has saved.
+ */
 public class FavoriteSuggestions implements SuggestionSource {
     private FavouritePlaceDao favouritePlaceDao;
 
+    /**
+     * Creates the FavoriteSuggestions
+     *
+     * @param favouritePlaceDao DAO for favorite places
+     */
     public FavoriteSuggestions(FavouritePlaceDao favouritePlaceDao) {
         this.favouritePlaceDao = favouritePlaceDao;
     }
