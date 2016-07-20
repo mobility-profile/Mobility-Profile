@@ -2,16 +2,23 @@ package fi.ohtu.mobilityprofile.suggestions;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
+/**
+ * This class creates suggestions based on data collected about user's movement and visited places.
+ */
 public class VisitSuggestions implements SuggestionSource {
     private VisitDao visitDao;
 
+    /**
+     * Creates the VisitSuggestions.
+     *
+     * @param visitDao DAO for visits user has made
+     */
     public VisitSuggestions(VisitDao visitDao) {
         this.visitDao = visitDao;
     }

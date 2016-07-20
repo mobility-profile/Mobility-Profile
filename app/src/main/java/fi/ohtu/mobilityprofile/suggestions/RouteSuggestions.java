@@ -2,16 +2,23 @@ package fi.ohtu.mobilityprofile.suggestions;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 
+/**
+ * This class creates suggestions based on previous route searches user has made.
+ */
 public class RouteSuggestions implements SuggestionSource {
     private RouteSearchDao routeSearchDao;
 
+    /**
+     * Creates the RouteSuggestions.
+     *
+     * @param routeSearchDao DAO for saved route searches
+     */
     public RouteSuggestions(RouteSearchDao routeSearchDao) {
         this.routeSearchDao = routeSearchDao;
     }
