@@ -60,7 +60,7 @@ Tietokantataulut:
 
 **Visit**
 * timestamp(datetime)
-* location(fk)
+* significantPlace(fk)
 * next place(fk)
 
 **Skenaario: Ohjelma rakentaa käyttäjän sijantihistoriaa**

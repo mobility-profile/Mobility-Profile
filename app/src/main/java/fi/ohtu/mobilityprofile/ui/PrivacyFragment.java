@@ -116,10 +116,10 @@ public class PrivacyFragment extends Fragment {
                         trackingCheckBox.setEnabled(true);
                     }
                 } else if (isChecked) {
-                    Toast.makeText(context, "Location tracking is used again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "SignificantPlace tracking is used again", Toast.LENGTH_SHORT).show();
                     trackingCheckBox.setEnabled(true);
                 } else {
-                    Toast.makeText(context, "Location tracking will not be used", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "SignificantPlace tracking will not be used", Toast.LENGTH_SHORT).show();
                     trackingCheckBox.setEnabled(false);
                 }
             }

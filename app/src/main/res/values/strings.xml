@@ -3,12 +3,12 @@
     <string name="allow_access">Allow Mobility Profile access to:</string>
     <string name="checkbox_GPS">GPS</string>
     <string name="checkbox_calendar">Read calendar</string>
-    <string name="checkbox_tracking">Start continuous location tracking</string>
+    <string name="checkbox_tracking">Start continuous significantPlace tracking</string>
     <string name="info">is an app which magically offers your next destination to your favourite journey planner ;)</string>
     <string name="permissions_info">
-        Mobility Profile needs permissions to read your calendar and access your location.\n\n
+        Mobility Profile needs permissions to read your calendar and access your significantPlace.\n\n
         Calendar is used to get your next probable destination from your events.\n\n
-        With location data Mobility Profile will learn to predict destinations.
+        With significantPlace data Mobility Profile will learn to predict destinations.
     </string>
     <string name="last_places">Your last searched places</string>
     <string name="favourites_title">Your favourite places</string>
@@ -21,7 +21,7 @@
     <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>
     <string name="reset_title">Delete all collected data?</string>
-    <string name="reset_message">Deletes all collected data, including visited locations, searched routes, and favourite places.</string>
+    <string name="reset_message">Deletes all collected data, including visited significantPlaces, searched routes, and favourite places.</string>
     <string name="reset_ok">Delete</string>
     <string name="reset_cancel">Cancel</string>
     <string name="custom_permission_info">Allows the software to use information provided by Mobility Profile. Exact data collected by Mobility Profile won\'t be shared, only suggestions Mobility Profile is giving based on that data.</string>

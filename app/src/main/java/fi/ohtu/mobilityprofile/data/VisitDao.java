@@ -6,7 +6,7 @@ import com.orm.query.Select;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.domain.Location;
+import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
  * DAO used for saving and reading Visits to/from the database.
@@ -54,7 +54,7 @@ public class VisitDao {
     /**
      * Returns a list of visits where the nearestKnownLocation matches the given one.
      *
-     * @param location Location of the visits
+     * @param location SignificantPlace of the visits
      * @return List of visits
      */
     public List<Place> getVisitsByLocation(String location) {
@@ -82,8 +82,8 @@ public class VisitDao {
      * @param place Place to be saved
      */
     public void insertVisit(Place place) {
-        Location nearestLocation = userLocationDao.getNearestLocation(place.getOriginalLocation(), 50);
-        place.setNearestKnownLocation(nearestLocation);
+        SignificantPlace nearestSignificantPlace = userLocationDao.getNearestLocation(place.getOriginalLocation(), 50);
+        place.setNearestKnownLocation(nearestSignificantPlace);
         place.save();
     }
 

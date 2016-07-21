@@ -24,7 +24,7 @@ public class DestinationLogic {
     /**
      * Returns the most probable destination, when the user is in startLocation.
      *
-     * @param startLocation Location where the user is starting
+     * @param startLocation SignificantPlace where the user is starting
      * @return Most probable destination
      */
     public String getMostLikelyDestination(String startLocation) {
@@ -35,7 +35,7 @@ public class DestinationLogic {
     /**
      * Returns a list of most probable destinations, when the user is in startLocation.
      *
-     * @param startLocation Location where the user is starting
+     * @param startLocation SignificantPlace where the user is starting
      * @return List of most probable destinations
      */
     public ArrayList<String> getListOfMostLikelyDestinations(String startLocation) {
