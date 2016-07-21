@@ -5,38 +5,38 @@ import com.orm.SugarRecord;
 /**
  * Class is used to save locations the user has visited.
  */
-public class Visit extends SugarRecord {
+public class Place extends SugarRecord {
 
     long timestamp;
     String originalLocation;             // Accurate point the user visited.
-    UserLocation nearestKnownLocation;   // Closest known nearestKnownLocation that is within 50 meters (value may change) from the actual nearestKnownLocation.
+    Location nearestKnownLocation;   // Closest known nearestKnownLocation that is within 50 meters (value may change) from the actual nearestKnownLocation.
     Float latitude;
     Float longitude;
     /**
      *
      */
-    public Visit() {
+    public Place() {
     }
 
     /**
-     * Creates Visit.
+     * Creates Place.
      * @param timestamp timestamp of the visit
      * @param originalLocation exact location of the visit
      */
-    public Visit(long timestamp, String originalLocation) {
+    public Place(long timestamp, String originalLocation) {
         this.timestamp = timestamp;
         this.originalLocation = originalLocation;
         this.nearestKnownLocation = null;
     }
 
     /**
-     * Creates Visit.
+     * Creates Place.
      * @param timestamp timestamp of the visit
      * @param originalLocation exact location of the visit
      * @param latitude latitude of the location
      * @param longitude longitude of the location
      */
-    public Visit(long timestamp, String originalLocation, Float latitude, Float longitude) {
+    public Place(long timestamp, String originalLocation, Float latitude, Float longitude) {
         this.timestamp = timestamp;
         this.originalLocation = originalLocation;
         this.nearestKnownLocation = null;
@@ -52,11 +52,11 @@ public class Visit extends SugarRecord {
         return originalLocation;
     }
 
-    public UserLocation getNearestKnownLocation() {
+    public Location getNearestKnownLocation() {
         return nearestKnownLocation;
     }
 
-    public void setNearestKnownLocation(UserLocation nearestKnownLocation) {
+    public void setNearestKnownLocation(Location nearestKnownLocation) {
         this.nearestKnownLocation = nearestKnownLocation;
     }
 

@@ -2,7 +2,7 @@ package fi.ohtu.mobilityprofile.data;
 
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.UserLocation;
+import fi.ohtu.mobilityprofile.domain.Location;
 
 /**
  * DAO used for clustering visited locations.
@@ -10,31 +10,31 @@ import fi.ohtu.mobilityprofile.domain.UserLocation;
 public class UserLocationDao {
 
     /**
-     * Returns the nearest known UserLocation from the searchLocation if it is within searchRadius.
+     * Returns the nearest known Location from the searchLocation if it is within searchRadius.
      * If no UserLocations were found, new one will be created with the given searchLocation. The
-     * new UserLocation will then be saved to the database and returned.
+     * new Location will then be saved to the database and returned.
      *
      * @param searchLocation Search nearestKnownLocation
      * @param searchRadius Search radius in meters
-     * @return Nearest UserLocation
+     * @return Nearest Location
      */
-    public UserLocation getNearestLocation(String searchLocation, int searchRadius) {
-        List<UserLocation> userLocations = UserLocation.listAll(UserLocation.class);
+    public Location getNearestLocation(String searchLocation, int searchRadius) {
+        List<Location> locations = Location.listAll(Location.class);
 
-        UserLocation nearestLocation = null;
-        for (UserLocation userLocation : userLocations) {
-            if (userLocation.getLocation().equals(searchLocation)) {
-                nearestLocation = userLocation;
+        Location nearestLocation = null;
+        for (Location location : locations) {
+            if (location.getLocation().equals(searchLocation)) {
+                nearestLocation = location;
                 break;
-                // TODO: Check if userLocation is within searchRadius from the searchLocation.
-                // Also check all userLocations to make sure we find the closest one.
+                // TODO: Check if location is within searchRadius from the searchLocation.
+                // Also check all locations to make sure we find the closest one.
             }
         }
 
         if (nearestLocation == null) {
             // There weren't any saved locations within searchRadius, so just create a new one and
             // save it to the database.
-            nearestLocation = new UserLocation(searchLocation);
+            nearestLocation = new Location(searchLocation);
             nearestLocation.save();
         }
 
@@ -42,9 +42,9 @@ public class UserLocationDao {
     }
 
     /**
-     * Deletes all UserLocation data from the database
+     * Deletes all Location data from the database
      */
     public static void deleteAllData() {
-        UserLocation.deleteAll(UserLocation.class);
+        Location.deleteAll(Location.class);
     }
 }

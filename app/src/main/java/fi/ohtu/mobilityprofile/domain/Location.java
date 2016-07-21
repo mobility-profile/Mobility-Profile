@@ -7,20 +7,20 @@ import com.orm.SugarRecord;
 /**
  * Class is used to save locations the user has visited.
  */
-public class UserLocation extends SugarRecord {
+public class Location extends SugarRecord {
     String location;
 
     /**
      *
      */
-    public UserLocation() {
+    public Location() {
     }
 
     /**
      * Creates new User location
      * @param location user's location
      */
-    public UserLocation(String location) {
+    public Location(String location) {
         this.location = location;
     }
 

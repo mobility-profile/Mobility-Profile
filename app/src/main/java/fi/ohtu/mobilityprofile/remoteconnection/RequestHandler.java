@@ -18,9 +18,8 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.domain.Visit;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.data.VisitDao;
-import fi.ohtu.mobilityprofile.location.AddressConverter;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
@@ -152,12 +151,12 @@ public class RequestHandler extends Handler {
      * @return Start location address
      */
     private String getStartLocation() {
-        Visit lastKnownVisit = visitDao.getLatestVisit();
-        if (lastKnownVisit == null) {
+        Place lastKnownPlace = visitDao.getLatestVisit();
+        if (lastKnownPlace == null) {
             // TODO something better
             return "None";
         } else {
-            return lastKnownVisit.getOriginalLocation();
+            return lastKnownPlace.getOriginalLocation();
         }
     }
 

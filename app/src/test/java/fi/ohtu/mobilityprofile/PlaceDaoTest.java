@@ -10,14 +10,14 @@ import org.robolectric.annotation.Config;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
-import fi.ohtu.mobilityprofile.domain.Visit;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
-public class VisitDaoTest {
+public class PlaceDaoTest {
     private VisitDao visitDao;
 
     @Before
@@ -28,46 +28,46 @@ public class VisitDaoTest {
 
     @Test
     public void testInsertAndFindLatest() {
-        visitDao.insertVisit(new Visit(1234, "Kumpula"));
+        visitDao.insertVisit(new Place(1234, "Kumpula"));
 
         assertEquals("Kumpula", visitDao.getLatestVisit().getOriginalLocation());
 
-        visitDao.insertVisit(new Visit(1300, "Herttoniemi"));
+        visitDao.insertVisit(new Place(1300, "Herttoniemi"));
 
         assertEquals("Herttoniemi", visitDao.getLatestVisit().getOriginalLocation());
 
-        visitDao.insertVisit(new Visit(1100, "Lammassaari"));
+        visitDao.insertVisit(new Place(1100, "Lammassaari"));
 
         assertEquals("Herttoniemi", visitDao.getLatestVisit().getOriginalLocation());
     }
 
     @Test
     public void testInsertAndFindByLocation() {
-        visitDao.insertVisit(new Visit(2345, "Helsinki"));
+        visitDao.insertVisit(new Place(2345, "Helsinki"));
 
-        List<Visit> visits = visitDao.getVisitsByLocation("Helsinki");
+        List<Place> places = visitDao.getVisitsByLocation("Helsinki");
 
-        assertEquals(1, visits.size());
-        assertEquals("Helsinki", visits.get(0).getOriginalLocation());
+        assertEquals(1, places.size());
+        assertEquals("Helsinki", places.get(0).getOriginalLocation());
     }
 
     @Test
     public void testMultipleInsertAndFindByLocation() {
-        visitDao.insertVisit(new Visit(123, "Kumpula"));
-        visitDao.insertVisit(new Visit(234, "Kumpula"));
-        visitDao.insertVisit(new Visit(345, "Kalasatama"));
-        visitDao.insertVisit(new Visit(456, "Tikkurila"));
-        visitDao.insertVisit(new Visit(987, "Kumpula"));
-        visitDao.insertVisit(new Visit(567, "Kumpulan kampus"));
+        visitDao.insertVisit(new Place(123, "Kumpula"));
+        visitDao.insertVisit(new Place(234, "Kumpula"));
+        visitDao.insertVisit(new Place(345, "Kalasatama"));
+        visitDao.insertVisit(new Place(456, "Tikkurila"));
+        visitDao.insertVisit(new Place(987, "Kumpula"));
+        visitDao.insertVisit(new Place(567, "Kumpulan kampus"));
 
-        List<Visit> visits = visitDao.getVisitsByLocation("Kumpula");
+        List<Place> places = visitDao.getVisitsByLocation("Kumpula");
 
-        assertEquals(3, visits.size());
-        assertEquals("Kumpula", visits.get(0).getOriginalLocation());
-        assertEquals("Kumpula", visits.get(1).getOriginalLocation());
-        assertEquals("Kumpula", visits.get(2).getOriginalLocation());
+        assertEquals(3, places.size());
+        assertEquals("Kumpula", places.get(0).getOriginalLocation());
+        assertEquals("Kumpula", places.get(1).getOriginalLocation());
+        assertEquals("Kumpula", places.get(2).getOriginalLocation());
 
-        List<Visit> visits2 = visitDao.getVisitsByLocation("Tikkurila");
+        List<Place> visits2 = visitDao.getVisitsByLocation("Tikkurila");
 
         assertEquals(1, visits2.size());
         assertEquals("Tikkurila", visits2.get(0).getOriginalLocation());
@@ -78,15 +78,15 @@ public class VisitDaoTest {
         assertTrue(visitDao.getLatestVisit() == null);
         assertTrue(visitDao.getVisitsByLocation("Kumpula").isEmpty());
 
-        visitDao.insertVisit(new Visit(234, "Kumpula"));
+        visitDao.insertVisit(new Place(234, "Kumpula"));
 
         assertTrue(visitDao.getVisitsByLocation("Herttoniemi").isEmpty());
     }
 
     @Test
     public void testDeleteAll() {
-        visitDao.insertVisit(new Visit(123, "Kumpula"));
-        visitDao.insertVisit(new Visit(234, "Kumpula"));
+        visitDao.insertVisit(new Place(123, "Kumpula"));
+        visitDao.insertVisit(new Place(234, "Kumpula"));
 
         assertEquals(2, visitDao.getVisitsByLocation("Kumpula").size());
 
