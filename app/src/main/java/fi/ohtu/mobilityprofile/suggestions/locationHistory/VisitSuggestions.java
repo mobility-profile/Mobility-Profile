@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.suggestions;
+package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -7,6 +7,9 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.suggestions.Suggestion;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
 /**
  * This class creates suggestions based on data collected about user's movement and visited places.
