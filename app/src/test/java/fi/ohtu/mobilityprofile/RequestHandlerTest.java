@@ -55,7 +55,7 @@ public class RequestHandlerTest {
     @Test
     public void insertsASearchedRouteToDatabase() {
         Bundle bundle = new Bundle();
-        bundle.putString(102+"", "Kumpula Naantali");
+        bundle.putString(102+"", "Kumpula|Naantali");
 
         Message msg = new Message();
         msg.what = 102;
