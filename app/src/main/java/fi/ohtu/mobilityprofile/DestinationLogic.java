@@ -228,8 +228,6 @@ public class DestinationLogic {
         for (Visit visit : visits) {
             if (aroundTheSameTime(new Time(visit.getTimestamp()), 1, 3)) {
                 return visit.getOriginalLocation();
-                // This returns location with coordinates : "Liisankatu 1, Helsinki, Finland!00.0000!00.0000!"
-                //return visit.getOriginalLocation() + "!" + visit.getLatitude() + "!" + visit.getLongitude();
             }
         }
 

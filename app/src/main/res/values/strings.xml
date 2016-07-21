@@ -20,6 +20,7 @@
     <string name="favourites_edit_title">Edit this favourite place</string>
     <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>
+    <string name="reset_button_text">Reset app and delete all data</string>
     <string name="reset_title">Delete all collected data?</string>
     <string name="reset_message">Deletes all collected data, including visited locations, searched routes, and favourite places.</string>
     <string name="reset_ok">Delete</string>
