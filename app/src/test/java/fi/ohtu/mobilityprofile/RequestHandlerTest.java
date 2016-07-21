@@ -20,6 +20,7 @@ import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.UserLocationDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.remoteconnection.RequestHandler;
+import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,15 +49,13 @@ public class RequestHandlerTest {
 
         this.requestHandler = new RequestHandler(mobilityProfile, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
 
-        when(mobilityProfile.isCalendarDestination()).thenReturn(false);
-
         Robolectric.setupActivity(MainActivityStub.class);
     }
 
     @Test
-    public void insertsASearchedRoutetoDatabase() {
+    public void insertsASearchedRouteToDatabase() {
         Bundle bundle = new Bundle();
-        bundle.putString(102+"", "Naantali");
+        bundle.putString(102+"", "Kumpula Naantali");
 
         Message msg = new Message();
         msg.what = 102;
