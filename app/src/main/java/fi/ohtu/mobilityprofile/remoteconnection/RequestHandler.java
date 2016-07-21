@@ -1,6 +1,5 @@
 package fi.ohtu.mobilityprofile.remoteconnection;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,7 +28,6 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
-    private Context context;
     private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -47,26 +45,6 @@ public class RequestHandler extends Handler {
      */
     public RequestHandler(DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
                           VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
-        this.mobilityProfile = mobilityProfile;
-        this.calendarTagDao = calendarTagDao;
-        this.visitDao = visitDao;
-        this.routeSearchDao = routeSearchDao;
-        this.favouritePlaceDao = favouritePlaceDao;
-    }
-
-    /**
-     * Creates the RequestHandler.
-     *
-     * @param context for AddressConverter
-     * @param mobilityProfile Journey planner that provides the logic for our app
-     * @param calendarTagDao DAO for calendar tags
-     * @param visitDao DAO for visits
-     * @param routeSearchDao DAO for routeSearch
-     * @param favouritePlaceDao DAO for favourite places
-     */
-    public RequestHandler(Context context, DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
-                          VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
-        this.context = context;
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;
         this.visitDao = visitDao;
