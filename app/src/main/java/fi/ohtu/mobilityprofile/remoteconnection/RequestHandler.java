@@ -20,7 +20,6 @@ import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
-import fi.ohtu.mobilityprofile.location.AddressConverter;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
@@ -84,7 +83,7 @@ public class RequestHandler extends Handler {
             case REQUEST_MOST_LIKELY_DESTINATION:
                 message = processDestinationRequest();
                 break;
-            case SEND_USED_ROUTE:
+            case SEND_SEARCHED_ROUTE:
                 processUsedRoute(msg);
                 return;
             case RESPOND_FAVOURITE_PLACES:
@@ -125,7 +124,7 @@ public class RequestHandler extends Handler {
      */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
-        StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_USED_ROUTE+""));
+        StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_SEARCHED_ROUTE +""), "|");
         String startLocation = tokenizer.nextToken();
         String destination = tokenizer.nextToken();
 
