@@ -101,7 +101,7 @@ public class FavouritePlaceDaoTest {
     public void testFindAllOrderByCounter() {
         favouriteDao.insertFavouritePlace(fav);
         favouriteDao.insertFavouritePlace(new FavouritePlace("Koti", "kotitie 5"));
-        List<FavouritePlace> places = favouriteDao.FindAmountOrderByCounter();
+        List<FavouritePlace> places = favouriteDao.FindAmountOrderByCounter(3);
         
         assertEquals("Kumpulan kampus", places.get(0).getName());
     }

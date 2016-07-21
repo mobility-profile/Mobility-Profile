@@ -1,6 +1,5 @@
 package fi.ohtu.mobilityprofile.remoteconnection;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,7 +19,6 @@ import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.data.VisitDao;
-import fi.ohtu.mobilityprofile.location.AddressConverter;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
@@ -30,7 +28,6 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
-    private Context context;
     private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
     private VisitDao visitDao;
@@ -55,26 +52,6 @@ public class RequestHandler extends Handler {
         this.favouritePlaceDao = favouritePlaceDao;
     }
 
-    /**
-     * Creates the RequestHandler.
-     *
-     * @param context for AddressConverter
-     * @param mobilityProfile Journey planner that provides the logic for our app
-     * @param calendarTagDao DAO for calendar tags
-     * @param visitDao DAO for visits
-     * @param routeSearchDao DAO for routeSearch
-     * @param favouritePlaceDao DAO for favourite places
-     */
-    public RequestHandler(Context context, DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
-                          VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
-        this.context = context;
-        this.mobilityProfile = mobilityProfile;
-        this.calendarTagDao = calendarTagDao;
-        this.visitDao = visitDao;
-        this.routeSearchDao = routeSearchDao;
-        this.favouritePlaceDao = favouritePlaceDao;
-    }
-
     @Override
     public void handleMessage(Message msg) {
         Log.d("Remote Service", "Remote Service invoked (" + msg.what + ")");
@@ -84,7 +61,7 @@ public class RequestHandler extends Handler {
             case REQUEST_MOST_LIKELY_DESTINATION:
                 message = processDestinationRequest();
                 break;
-            case SEND_USED_ROUTE:
+            case SEND_SEARCHED_ROUTE:
                 processUsedRoute(msg);
                 return;
             case RESPOND_FAVOURITE_PLACES:
@@ -125,7 +102,7 @@ public class RequestHandler extends Handler {
      */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
-        StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_USED_ROUTE+""));
+        StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_SEARCHED_ROUTE +""), "|");
         String startLocation = tokenizer.nextToken();
         String destination = tokenizer.nextToken();
 
