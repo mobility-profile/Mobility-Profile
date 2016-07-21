@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class is used to get events from calendars.
  */
@@ -21,8 +24,8 @@ public class CalendarConnection {
     };
 
     private Context context;
-    private String eventLocation;
-    private String allDayEventLocation;
+    private List<String> eventLocations;
+    private List<String> allDayEventLocations;
     private static final int HOUR = 3600 * 1000;
     private static final int LOCATION = 0;
     private static final int ALL_DAY = 1;
@@ -34,6 +37,10 @@ public class CalendarConnection {
      */
     public CalendarConnection(Context context) {
         this.context = context;
+
+        this.eventLocations = new ArrayList<>();
+        this.allDayEventLocations = new ArrayList<>();
+
         queryEvents();
     }
 
@@ -78,25 +85,30 @@ public class CalendarConnection {
         while (cursor.moveToNext()) {
             String location = cursor.getString(LOCATION);
             if (location != null) {
-                if (cursor.getString(ALL_DAY) == "1") {
-                    allDayEventLocation = location;
+                if (cursor.getString(ALL_DAY).equals("1")) {
+                    allDayEventLocations.add(location);
                 } else {
-                    eventLocation = location;
-                    break;
+                    eventLocations.add(location);
                 }
             }
         }
     }
 
     /**
-     * Returns location queried from calendar. If null, location of an all day event is returned.
-     * @return location of the event
+     * Returns locations queried from calendar.
+     *
+     * @return locations of the events
      */
-    public String getEventLocation() {
-        return this.eventLocation != null ? eventLocation : allDayEventLocation;
+    public List<String> getEventLocations() {
+        return eventLocations;
     }
 
-    public void setEventLocation(String eventLocation) {
-        this.eventLocation = eventLocation;
+    /**
+     * Returns all day event locations queried from calendar.
+     *
+     * @return locations of the events
+     */
+    public List<String> getAllDayEventLocations() {
+        return allDayEventLocations;
     }
 }
