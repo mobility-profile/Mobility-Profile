@@ -55,8 +55,7 @@ public class CalendarConnection {
         cursor = cr.query(eventUri, EVENT_PROJECTION, null, null, null);
 
         if (cursor != null) {
-            getLocation(cursor);
-
+            getLocations(cursor);
             cursor.close();
         }
     }
@@ -78,10 +77,10 @@ public class CalendarConnection {
     }
 
     /**
-     * Finds the first valid location from the results of the query.
+     * Adds all valid locations to a list from the results of the query.
      * @param cursor Pointer to the results of the query.
      */
-    private void getLocation(Cursor cursor) {
+    private void getLocations(Cursor cursor) {
         while (cursor.moveToNext()) {
             String location = cursor.getString(LOCATION);
             if (location != null) {

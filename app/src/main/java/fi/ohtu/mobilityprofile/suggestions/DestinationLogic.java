@@ -15,7 +15,7 @@ public class DestinationLogic {
     /**
      * Creates the MobilityProfile.
      *
-     * @param suggestionSources
+     * @param suggestionSources sources of the suggestions
      */
     public DestinationLogic(List<SuggestionSource> suggestionSources) {
         this.suggestionSources = suggestionSources;

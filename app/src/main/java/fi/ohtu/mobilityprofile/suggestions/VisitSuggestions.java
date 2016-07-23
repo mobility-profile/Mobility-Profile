@@ -28,6 +28,7 @@ public class VisitSuggestions implements SuggestionSource {
      * from previous visits. A visit is considered valid if it was max 1 hour earlier or max 3 hours
      * later that the current time.
      *
+     * @param startLocation Location where the user starts the journey
      * @return List of probable destinations
      */
     @Override

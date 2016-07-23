@@ -28,6 +28,7 @@ public class CalendarSuggestions implements SuggestionSource {
     /**
      * Returns the most probable destination from the calendar.
      *
+     * @param startLocation Location where the user starts the journey
      * @return Destination from calendar
      */
     @Override
