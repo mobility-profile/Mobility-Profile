@@ -20,7 +20,7 @@ import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.suggestions.VisitSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.VisitSuggestions;
 
 /**
  * Used to enable cross-app communication.

@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.location;
+package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import android.Manifest;
 import android.app.Service;
@@ -11,7 +11,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import fi.ohtu.mobilityprofile.PermissionManager;

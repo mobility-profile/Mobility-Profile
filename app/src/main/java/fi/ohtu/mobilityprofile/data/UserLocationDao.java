@@ -2,7 +2,7 @@ package fi.ohtu.mobilityprofile.data;
 
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.UserLocation;
+import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
  * DAO used for clustering visited locations.
@@ -10,41 +10,41 @@ import fi.ohtu.mobilityprofile.domain.UserLocation;
 public class UserLocationDao {
 
     /**
-     * Returns the nearest known UserLocation from the searchLocation if it is within searchRadius.
+     * Returns the nearest known SignificantPlace from the searchLocation if it is within searchRadius.
      * If no UserLocations were found, new one will be created with the given searchLocation. The
-     * new UserLocation will then be saved to the database and returned.
+     * new SignificantPlace will then be saved to the database and returned.
      *
      * @param searchLocation Search nearestKnownLocation
      * @param searchRadius Search radius in meters
-     * @return Nearest UserLocation
+     * @return Nearest SignificantPlace
      */
-    public UserLocation getNearestLocation(String searchLocation, int searchRadius) {
-        List<UserLocation> userLocations = UserLocation.listAll(UserLocation.class);
+    public SignificantPlace getNearestLocation(String searchLocation, int searchRadius) {
+        List<SignificantPlace> significantPlaces = SignificantPlace.listAll(SignificantPlace.class);
 
-        UserLocation nearestLocation = null;
-        for (UserLocation userLocation : userLocations) {
-            if (userLocation.getLocation().equals(searchLocation)) {
-                nearestLocation = userLocation;
+        SignificantPlace nearestSignificantPlace = null;
+        for (SignificantPlace significantPlace : significantPlaces) {
+            if (significantPlace.getLocation().equals(searchLocation)) {
+                nearestSignificantPlace = significantPlace;
                 break;
-                // TODO: Check if userLocation is within searchRadius from the searchLocation.
-                // Also check all userLocations to make sure we find the closest one.
+                // TODO: Check if significantPlace is within searchRadius from the searchLocation.
+                // Also check all significantPlaces to make sure we find the closest one.
             }
         }
 
-        if (nearestLocation == null) {
-            // There weren't any saved locations within searchRadius, so just create a new one and
+        if (nearestSignificantPlace == null) {
+            // There weren't any saved significantPlaces within searchRadius, so just create a new one and
             // save it to the database.
-            nearestLocation = new UserLocation(searchLocation);
-            nearestLocation.save();
+            nearestSignificantPlace = new SignificantPlace(searchLocation);
+            nearestSignificantPlace.save();
         }
 
-        return nearestLocation;
+        return nearestSignificantPlace;
     }
 
     /**
-     * Deletes all UserLocation data from the database
+     * Deletes all SignificantPlace data from the database
      */
     public static void deleteAllData() {
-        UserLocation.deleteAll(UserLocation.class);
+        SignificantPlace.deleteAll(SignificantPlace.class);
     }
 }

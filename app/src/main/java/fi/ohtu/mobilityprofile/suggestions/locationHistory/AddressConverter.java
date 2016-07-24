@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.location;
+package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
-import fi.ohtu.mobilityprofile.domain.Visit;
+import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
  * This class is used for converting GPS coordinates to an actual address and save that address to the database.
@@ -51,7 +51,7 @@ public class AddressConverter {
 
                                 Log.i("AddressConverter", "Converted address is: " + address);
 
-                                Visit lastLocation = new Visit(System.currentTimeMillis(), address, location.x, location.y);
+                                Place lastLocation = new Place(System.currentTimeMillis(), address, location.x, location.y);
                                 lastLocation.save();
                             }
                         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class AddressConverter {
      * @param latest latest visit
      * @param context for new request queue
      */
-    public static void convertToCoordinatesAndSave(final String destination, final Visit latest, Context context) {
+    public static void convertToCoordinatesAndSave(final String destination, final Place latest, Context context) {
 
         String url = "https://search.mapzen.com/v1/search?api_key=search-xPjnrpR&text="
                 + destination + "&layers=address&size=1&sources=osm&boundary.country=FIN";

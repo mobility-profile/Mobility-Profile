@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.location;
+package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import android.app.Activity;
 import android.app.Service;
@@ -73,7 +73,7 @@ public class GoogleAPILocationService extends Service implements GoogleApiClient
                 e.printStackTrace();
             }
         } else {
-            Log.e(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
+            Log.e(TAG, "SignificantPlace services connection failed with code " + connectionResult.getErrorCode());
         }
     }
 

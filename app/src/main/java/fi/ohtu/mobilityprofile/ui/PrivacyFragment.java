@@ -23,8 +23,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import fi.ohtu.mobilityprofile.location.GoogleAPILocationService;
-import fi.ohtu.mobilityprofile.location.LocationService;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.LocationService;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -117,10 +116,10 @@ public class PrivacyFragment extends Fragment {
                         trackingCheckBox.setEnabled(true);
                     }
                 } else if (isChecked) {
-                    Toast.makeText(context, "Location tracking is used again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "SignificantPlace tracking is used again", Toast.LENGTH_SHORT).show();
                     trackingCheckBox.setEnabled(true);
                 } else {
-                    Toast.makeText(context, "Location tracking will not be used", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "SignificantPlace tracking will not be used", Toast.LENGTH_SHORT).show();
                     trackingCheckBox.setEnabled(false);
                 }
             }

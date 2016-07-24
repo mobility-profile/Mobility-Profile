@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.suggestions;
+package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -6,7 +6,10 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.VisitDao;
-import fi.ohtu.mobilityprofile.domain.Visit;
+import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.suggestions.Suggestion;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
 /**
  * This class creates suggestions based on data collected from the user's movement and visited places.
@@ -35,9 +38,9 @@ public class VisitSuggestions implements SuggestionSource {
     public List<Suggestion> getSuggestions(String startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
-        for (Visit visit : visitDao.getAllVisits()) {
-            if (Util.aroundTheSameTime(new Time(visit.getTimestamp()), 1, 3)) {
-                Suggestion suggestion = new Suggestion(visit.getOriginalLocation(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION);
+        for (Place place : visitDao.getAllVisits()) {
+            if (Util.aroundTheSameTime(new Time(place.getTimestamp()), 1, 3)) {
+                Suggestion suggestion = new Suggestion(place.getOriginalLocation(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION);
                 suggestions.add(suggestion);
                 // This returns location with coordinates : "Liisankatu 1, Helsinki, Finland!00.0000!00.0000!"
             }
