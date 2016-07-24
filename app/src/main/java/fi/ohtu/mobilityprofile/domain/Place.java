@@ -20,8 +20,8 @@ public class Place extends SugarRecord {
 
     /**
      * Creates Place.
-     * @param timestamp timestamp of the visit
-     * @param originalLocation exact location of the visit
+     * @param timestamp timestamp of the place visited
+     * @param originalLocation exact location of the visited place
      */
     public Place(long timestamp, String originalLocation) {
         this.timestamp = timestamp;
@@ -31,7 +31,7 @@ public class Place extends SugarRecord {
 
     /**
      * Creates Place.
-     * @param timestamp timestamp of the visit
+     * @param timestamp timestamp of the place visited
      * @param originalLocation exact location of the visit
      * @param latitude latitude of the location
      * @param longitude longitude of the location

@@ -29,8 +29,8 @@ import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.UserLocationDao;
-import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 
 /**
  * The class creates a component called PrivacyFragment.
@@ -282,8 +282,8 @@ public class PrivacyFragment extends Fragment {
      * Deletes all data from the database.
      */
     private void deleteAllDataFromDatabase() {
-        VisitDao.deleteAllData();
-        UserLocationDao.deleteAllData();
+        PlaceDao.deleteAllData();
+        SignificantPlaceDao.deleteAllData();
         CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         FavouritePlaceDao.deleteAllData();

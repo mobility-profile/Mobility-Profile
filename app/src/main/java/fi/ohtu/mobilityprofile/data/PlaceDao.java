@@ -9,23 +9,23 @@ import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
- * DAO used for saving and reading Visits to/from the database.
+ * DAO used for saving and reading Places to/from the database.
  */
-public class VisitDao {
-    private UserLocationDao userLocationDao;
+public class PlaceDao {
+    private SignificantPlaceDao significantPlaceDao;
 
     /**
-     * Creates VisitDao.
-     * @param userLocationDao 
+     * Creates PlaceDao.
+     * @param significantPlaceDao
      */
-    public VisitDao(UserLocationDao userLocationDao) {
-        this.userLocationDao = userLocationDao;
+    public PlaceDao(SignificantPlaceDao significantPlaceDao) {
+        this.significantPlaceDao = significantPlaceDao;
     }
 
     /**
-     * Returns the latest visit from the database, or null if there is none.
+     * Returns the last visited place from the database, or null if there is none.
      *
-     * @return Latest visit
+     * @return Last visited place
      */
     public Place getLatestVisit() {
         return getLatestVisit(Select.from(Place.class)
@@ -34,10 +34,10 @@ public class VisitDao {
     }
 
     /**
-     * Returns the latest visit from the database based on custom query,
+     * Returns the last visited place from the database based on custom query,
      * or null if there is none.
      * @param query custom query
-     * @return latest visit
+     * @return last visited place
      */
     private Place getLatestVisit(Select<Place> query) {
         List<Place> places = query.list();
@@ -67,8 +67,8 @@ public class VisitDao {
     }
 
     /**
-     * Returns a list of all visits.
-     * @return list of visits
+     * Returns a list of all visited places.
+     * @return list of visited places
      */
     public List<Place> getAllVisits() {
         return Select.from(Place.class)
@@ -82,7 +82,7 @@ public class VisitDao {
      * @param place Place to be saved
      */
     public void insertVisit(Place place) {
-        SignificantPlace nearestSignificantPlace = userLocationDao.getNearestLocation(place.getOriginalLocation(), 50);
+        SignificantPlace nearestSignificantPlace = significantPlaceDao.getNearestLocation(place.getOriginalLocation(), 50);
         place.setNearestKnownLocation(nearestSignificantPlace);
         place.save();
     }
@@ -91,7 +91,7 @@ public class VisitDao {
      * Deletes all Place data from the database
      */
     public static void deleteAllData() {
-        UserLocationDao.deleteAllData();
+        SignificantPlaceDao.deleteAllData();
         Place.deleteAll(Place.class);
     }
 }

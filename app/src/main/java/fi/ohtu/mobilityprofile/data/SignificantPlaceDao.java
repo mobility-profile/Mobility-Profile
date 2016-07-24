@@ -7,7 +7,7 @@ import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 /**
  * DAO used for clustering visited locations.
  */
-public class UserLocationDao {
+public class SignificantPlaceDao {
 
     /**
      * Returns the nearest known SignificantPlace from the searchLocation if it is within searchRadius.

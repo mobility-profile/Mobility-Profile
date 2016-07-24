@@ -17,13 +17,12 @@ import static org.junit.Assert.*;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.UserLocationDao;
-import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.remoteconnection.RequestHandler;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -34,7 +33,7 @@ public class RequestHandlerTest {
     private Context context;
     private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
-    private VisitDao visitDao;
+    private PlaceDao placeDao;
     private RouteSearchDao routeSearchDao;
     private FavouritePlaceDao favouritePlaceDao;
 
@@ -44,10 +43,10 @@ public class RequestHandlerTest {
         this.mobilityProfile = mock(DestinationLogic.class);
         this.calendarTagDao = mock(CalendarTagDao.class);
         this.routeSearchDao = new RouteSearchDao();
-        this.visitDao = new VisitDao(new UserLocationDao());
+        this.placeDao = new PlaceDao(new SignificantPlaceDao());
         this.favouritePlaceDao = mock(FavouritePlaceDao.class);
 
-        this.requestHandler = new RequestHandler(mobilityProfile, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao);
+        this.requestHandler = new RequestHandler(mobilityProfile, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao);
 
         Robolectric.setupActivity(MainActivityStub.class);
     }
