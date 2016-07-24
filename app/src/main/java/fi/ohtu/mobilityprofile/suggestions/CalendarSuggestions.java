@@ -26,10 +26,10 @@ public class CalendarSuggestions implements SuggestionSource {
     }
 
     /**
-     * Returns the most probable destination from the calendar.
+     * Returns the most probable destinations from the calendar.
      *
      * @param startLocation Location where the user starts the journey
-     * @return Destination from calendar
+     * @return List of destinations from the calendar
      */
     @Override
     public List<Suggestion> getSuggestions(String startLocation) {
@@ -55,10 +55,11 @@ public class CalendarSuggestions implements SuggestionSource {
     }
 
     /**
-     * Creates a suggestion object form event locations string.
+     * Creates a suggestion object from the event location.
+     * Changes the name of the location to a calendar tag if there is one with the given location as a key.
      *
      * @param eventLocation Location of the event
-     * @return Suggestion from the location
+     * @return Suggestion object
      */
     private Suggestion createSuggestion(String eventLocation) {
         CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(eventLocation);

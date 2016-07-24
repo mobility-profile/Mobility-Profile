@@ -138,7 +138,6 @@ public class RequestHandler extends Handler {
         }
     }
 
-
     /**
      * Creates an error message.
      *

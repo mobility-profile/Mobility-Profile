@@ -9,7 +9,7 @@ import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
- * This class creates suggestions based on data collected about user's movement and visited places.
+ * This class creates suggestions based on data collected from the user's movement and visited places.
  */
 public class VisitSuggestions implements SuggestionSource {
     private VisitDao visitDao;
@@ -24,7 +24,7 @@ public class VisitSuggestions implements SuggestionSource {
     }
 
     /**
-     * Returns a list of probable locations the user could want to visit based on the data collected
+     * Returns a list of probable locations the user would want to visit based on the data collected
      * from previous visits. A visit is considered valid if it was max 1 hour earlier or max 3 hours
      * later that the current time.
      *

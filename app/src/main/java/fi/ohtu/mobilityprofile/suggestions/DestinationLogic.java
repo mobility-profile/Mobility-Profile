@@ -9,7 +9,6 @@ import java.util.List;
 public class DestinationLogic {
     private String latestStartLocation;
     private List<Suggestion> latestSuggestions;
-
     private List<SuggestionSource> suggestionSources;
 
     /**
