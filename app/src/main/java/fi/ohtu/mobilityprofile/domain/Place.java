@@ -9,7 +9,7 @@ public class Place extends SugarRecord {
 
     long timestamp;
     String originalLocation;             // Accurate point the user visited.
-    Location nearestKnownLocation;   // Closest known nearestKnownLocation that is within 50 meters (value may change) from the actual nearestKnownLocation.
+    SignificantPlace nearestKnownLocation;   // Closest known nearestKnownLocation that is within 50 meters (value may change) from the actual nearestKnownLocation.
     Float latitude;
     Float longitude;
     /**
@@ -52,11 +52,11 @@ public class Place extends SugarRecord {
         return originalLocation;
     }
 
-    public Location getNearestKnownLocation() {
+    public SignificantPlace getNearestKnownLocation() {
         return nearestKnownLocation;
     }
 
-    public void setNearestKnownLocation(Location nearestKnownLocation) {
+    public void setNearestKnownLocation(SignificantPlace nearestKnownLocation) {
         this.nearestKnownLocation = nearestKnownLocation;
     }
 
