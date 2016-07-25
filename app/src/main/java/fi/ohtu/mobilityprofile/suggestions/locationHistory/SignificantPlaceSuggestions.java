@@ -28,7 +28,7 @@ public class SignificantPlaceSuggestions implements SuggestionSource {
     public List<Suggestion> getSuggestions(String startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
-        SignificantPlace significantPlace = significantPlaceDao.getNearestLocation(startLocation, 100);
+        SignificantPlace significantPlace = significantPlaceDao.getSignificantPlaceIfCurrentLocationIsOne(startLocation, 100);
 
 
         return suggestions;

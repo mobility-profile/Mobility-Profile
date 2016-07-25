@@ -9,7 +9,7 @@ import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
- * DAO used for saving and reading Places to/from the database.
+ * DAO used for saving and reading visited Places to/from the database.
  */
 public class PlaceDao {
     private SignificantPlaceDao significantPlaceDao;
