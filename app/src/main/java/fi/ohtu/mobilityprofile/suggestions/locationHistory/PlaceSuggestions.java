@@ -14,15 +14,15 @@ import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 /**
  * This class creates suggestions based on data collected from the user's movement and visited places.
  */
-public class VisitSuggestions implements SuggestionSource {
+public class PlaceSuggestions implements SuggestionSource {
     private PlaceDao placeDao;
 
     /**
-     * Creates the VisitSuggestions.
+     * Creates the PlaceSuggestions.
      *
      * @param placeDao DAO for visits user has made
      */
-    public VisitSuggestions(PlaceDao placeDao) {
+    public PlaceSuggestions(PlaceDao placeDao) {
         this.placeDao = placeDao;
     }
 

@@ -8,7 +8,7 @@ import com.orm.SugarRecord;
  * Class is used to save locations the user visits frequently.
  */
 public class SignificantPlace extends SugarRecord {
-    String location;
+    private String location;
 
     /**
      *
