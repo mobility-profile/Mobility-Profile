@@ -30,6 +30,7 @@ public class SignificantPlaceSuggestions implements SuggestionSource {
 
         SignificantPlace significantPlace = significantPlaceDao.getNearestLocation(startLocation, 100);
 
+
         return suggestions;
     }
 }

@@ -1,7 +1,10 @@
 package fi.ohtu.mobilityprofile.data;
 
+import com.orm.query.Select;
+
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
@@ -34,11 +37,21 @@ public class SignificantPlaceDao {
         if (nearestSignificantPlace == null) {
             // There weren't any saved significantPlaces within searchRadius, so just create a new one and
             // save it to the database.
-            nearestSignificantPlace = new SignificantPlace(searchLocation);
+            nearestSignificantPlace = new SignificantPlace(searchLocation, System.currentTimeMillis());
             nearestSignificantPlace.save();
         }
 
         return nearestSignificantPlace;
+    }
+
+    /**
+     * Returns a list of all SignificantPlaces.
+     * @return List of SignificantPlaces.
+     */
+    public List<SignificantPlace> getAllVisitsToSignificantPlaces() {
+        return Select.from(SignificantPlace.class)
+                .orderBy("timestamp DESC")
+                .list();
     }
 
     /**
