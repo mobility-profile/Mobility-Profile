@@ -51,8 +51,8 @@ public class VisitSuggestions implements SuggestionSource {
 
         // number of visits must at least four so it can provide next, current, previous and before previous locations.
         if (visits.size() >= 4) {
-            String previousLocation = visits.get(0).getSignificantPlace().getLocation();
-            String beforePrevious = visits.get(1).getSignificantPlace().getLocation();
+            String previousLocation = visits.get(1).getSignificantPlace().getLocation();
+            String beforePrevious = visits.get(2).getSignificantPlace().getLocation();
 
             // first and two last items are ignored because they do not have either next or previous and before previous location
             for (int i = 1; i < visits.size() - 2; i++) {
