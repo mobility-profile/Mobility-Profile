@@ -20,13 +20,9 @@ public class PlaceClusterizer {
         for(Place place : places) {
             if(modifiedPlaces.contains(place)) {
                 Place origin = place;
-                while(distance(origin, mean(findPlacesWithinDistance(place, modifiedPlaces, distanceLimit))) > 50) {
-                    origin = mean(findPlacesWithinDistance(place, modifiedPlaces, distanceLimit));
-                }
-                List<Place> klusteri = findPlacesWithinDistance(origin, modifiedPlaces, distanceLimit);
                 if(findPlacesWithinDistance(origin, places, distanceLimit).size() > hitLimit) {
-                    significantPlaces.add(origin);
-                    modifiedPlaces.removeAll(findPlacesWithinDistance(origin, modifiedPlaces, distanceLimit));
+                    significantPlaces.add(mean(findPlacesWithinDistance(origin, places, distanceLimit)));
+                    modifiedPlaces.removeAll(findPlacesWithinDistance(mean(findPlacesWithinDistance(origin, places, distanceLimit)), modifiedPlaces, distanceLimit));
                 }
             }
         }
