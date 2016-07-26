@@ -13,8 +13,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
@@ -36,19 +38,26 @@ public class PlaceRecorder extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
-        
+
         Intent notificationIntent = new Intent(this, PlaceRecorder.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        Notification notification = new Notification.Builder(this)
-                .setContentTitle("Test")
-                .setContentText("Testiä vaan")
+        Notification.Builder notification = new Notification.Builder(this)
+                .setContentTitle("Location tracking")
+                .setContentText("Mobility Profile is tracking your location")
                 .setSmallIcon(R.mipmap.logo)
                 .setContentIntent(pendingIntent)
-                .setOngoing(true)
-                .build();
+                .setOngoing(true);
 
-        startForeground(NOTIFICATION_ID, notification);
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        notification.setContentIntent(resultPendingIntent);
+
+        startForeground(NOTIFICATION_ID, notification.build());
 
         return START_STICKY;
     }
