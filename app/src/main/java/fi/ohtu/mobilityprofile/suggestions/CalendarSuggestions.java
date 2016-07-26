@@ -63,11 +63,15 @@ public class CalendarSuggestions implements SuggestionSource {
      * @return Suggestion object
      */
     private Suggestion createSuggestion(String eventLocation) {
+        // TODO: Fix calendar tags.
+        // This functionality isn't working currently, as it makes mistakes too easily.
+        /*
         CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(eventLocation);
 
         if (calendarTag != null) {
             eventLocation = calendarTag.getValue();
         }
+        */
 
         return new Suggestion(eventLocation, SuggestionAccuracy.VERY_HIGH, CALENDAR_SUGGESTION);
     }
