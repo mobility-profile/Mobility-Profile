@@ -9,13 +9,12 @@ import java.util.List;
 public class DestinationLogic {
     private String latestStartLocation;
     private List<Suggestion> latestSuggestions;
-
     private List<SuggestionSource> suggestionSources;
 
     /**
      * Creates the MobilityProfile.
      *
-     * @param suggestionSources
+     * @param suggestionSources sources of the suggestions
      */
     public DestinationLogic(List<SuggestionSource> suggestionSources) {
         this.suggestionSources = suggestionSources;

@@ -24,6 +24,7 @@ public class FavoriteSuggestions implements SuggestionSource {
     /**
      * Returns three most used favorite places.
      *
+     * @param startLocation Location where the user starts the journey
      * @return Three favorite places
      */
     @Override
