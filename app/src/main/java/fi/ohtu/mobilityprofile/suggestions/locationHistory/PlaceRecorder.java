@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ import fi.ohtu.mobilityprofile.domain.Place;
  */
 public class PlaceRecorder extends Service {
     private static final int NOTIFICATION_ID = 120;
+    private static final String ACTION_STOP_SERVICE = "StopIt!";
     private static final String TAG = "PlaceRecorder";
 
     private static final int LOCATION_INTERVAL = 1000; //300000 = 5 minutes
@@ -39,9 +41,16 @@ public class PlaceRecorder extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
 
+        if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
+            stopSelf();
+            return START_STICKY;
+        }
+
+        // Create intent for the service
         Intent notificationIntent = new Intent(this, PlaceRecorder.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
+        // Create the notification
         Notification.Builder notification = new Notification.Builder(this)
                 .setContentTitle("Location tracking")
                 .setContentText("Mobility Profile is tracking your location")
@@ -49,14 +58,21 @@ public class PlaceRecorder extends Service {
                 .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
+        // Create intent for resuming to app when user clicks on the notification
         Intent resultIntent = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
         notification.setContentIntent(resultPendingIntent);
 
+        // Create intent for stopping the service
+        Intent actionIntent = new Intent(this, PlaceRecorder.class);
+        actionIntent.setAction(ACTION_STOP_SERVICE);
+        PendingIntent actionPendingIntent = PendingIntent.getService(this, 0, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        notification.addAction(R.mipmap.logo, "Stop tracking", actionPendingIntent);
+
+        // Start the service
         startForeground(NOTIFICATION_ID, notification.build());
 
         return START_STICKY;
