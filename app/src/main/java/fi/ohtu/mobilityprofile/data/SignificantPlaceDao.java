@@ -79,6 +79,11 @@ public class SignificantPlaceDao {
         return (!places.isEmpty()) ? places.get(0) : null;
     }
 
+    public List<SignificantPlace> getAllSignificantPlaces() {
+        return Select.from(SignificantPlace.class)
+                .list();
+    }
+
     /**
      * Deletes all SignificantPlace data from the database
      */

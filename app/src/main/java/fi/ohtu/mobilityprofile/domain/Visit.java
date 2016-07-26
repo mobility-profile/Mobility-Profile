@@ -19,12 +19,20 @@ public class Visit extends SugarRecord {
 
     /**
      * Creates Visit.
-     * @param timestamp timestamp of the place visited
+     * @param timestamp timestamp of the visit
      * @param place SignificantPlace to be referred to
      */
     public Visit(long timestamp, SignificantPlace place) {
         this.timestamp = timestamp;
         this.significantPlace = place;
+    }
+
+    /**
+     * Creates Visit.
+     * @param timestamp timestamp of the visit
+     */
+    public Visit(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public long getTimestamp() {

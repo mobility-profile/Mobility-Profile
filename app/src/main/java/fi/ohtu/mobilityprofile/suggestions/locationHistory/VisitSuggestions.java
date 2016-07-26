@@ -49,8 +49,8 @@ public class VisitSuggestions implements SuggestionSource {
     private void calculateNextDestination(SignificantPlace startLocation) {
         List<Visit> visits = visitdao.getAllVisitsToSignificantPlaces();
 
-        // number of visits must at least four so it can provide next, current, previous and before previous locations.
-        if (visits.size() >= 4) {
+        // number of visits must be more than four so it can provide next, current, previous and before previous locations.
+        if (visits.size() > 4) {
             String previousLocation = visits.get(1).getSignificantPlace().getLocation();
             String beforePrevious = visits.get(2).getSignificantPlace().getLocation();
 
