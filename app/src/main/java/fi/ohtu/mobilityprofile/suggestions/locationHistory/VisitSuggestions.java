@@ -48,18 +48,22 @@ public class VisitSuggestions implements SuggestionSource {
      */
     private void calculateNextDestination(SignificantPlace startLocation) {
         List<Visit> visits = visitdao.getAllVisitsToSignificantPlaces();
-        if (!visits.isEmpty()) {
-            String previousLocation = visits.get(0).getSignificantPlace().getLocation();
-            //TODO: before previous location
 
-            // first and last items are ignored because they do not have either next or previous location
-            for (int i = 1; i < visits.size() - 1; i++) {
+        // number of visits must at least four so it can provide next, current, previous and before previous locations.
+        if (visits.size() >= 4) {
+            String previousLocation = visits.get(0).getSignificantPlace().getLocation();
+            String beforePrevious = visits.get(1).getSignificantPlace().getLocation();
+
+            // first and two last items are ignored because they do not have either next or previous and before previous location
+            for (int i = 1; i < visits.size() - 2; i++) {
 
                 // checks if startLocation is the same as the location currently examined in the list
                 if (visits.get(i).getSignificantPlace().getLocation().equals(startLocation)) {
 
                     // checks if the previous location in the past is the same as previous location from the current location
-                    if (visits.get(i + 1).getSignificantPlace().getLocation().equals(previousLocation)) {
+                    // and before previous location in the past is the same as before previous location from the current location
+                    if ((visits.get(i + 1).getSignificantPlace().getLocation().equals(previousLocation))
+                            && (visits.get(i + 2).getSignificantPlace().getLocation().equals(beforePrevious))) {
                         suggestions.add(new Suggestion(visits.get(i - 1).getSignificantPlace().getLocation(), SuggestionAccuracy.HIGH, VISIT_SUGGESTIONS));
                     }
 
