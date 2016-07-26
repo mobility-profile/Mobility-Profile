@@ -8,23 +8,26 @@ import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
- * Created by jussiviinikka on 21/07/16.
+ * Class for clusterizing places into significant locations
  */
 public class PlaceClusterizer {
 
     public static List<Place> clusterize(List<Place> places) {
         List<Place> significantPlaces = new ArrayList<>();
         List<Place> modifiedPlaces = new ArrayList<>(places);
-        int distanceLimit = 500;
-        long timeLimit = 600000; //10 minutes;
+        int distanceLimit = 100;
+        int hitLimit = 10;
         for(Place place : places) {
             if(modifiedPlaces.contains(place)) {
                 Place origin = place;
-                while(distance(origin, mean(findPlacesWithinDistanceAndTime(place, modifiedPlaces, distanceLimit, timeLimit))) > 50) {
-                    origin = mean(findPlacesWithinDistanceAndTime(place, modifiedPlaces, distanceLimit, timeLimit));
+                while(distance(origin, mean(findPlacesWithinDistance(place, modifiedPlaces, distanceLimit))) > 50) {
+                    origin = mean(findPlacesWithinDistance(place, modifiedPlaces, distanceLimit));
                 }
-                significantPlaces.add(origin);
-                modifiedPlaces.removeAll(findPlacesWithinDistanceAndTime(origin, modifiedPlaces, distanceLimit, timeLimit));
+                List<Place> klusteri = findPlacesWithinDistance(origin, modifiedPlaces, distanceLimit);
+                if(findPlacesWithinDistance(origin, places, distanceLimit).size() > hitLimit) {
+                    significantPlaces.add(origin);
+                    modifiedPlaces.removeAll(findPlacesWithinDistance(origin, modifiedPlaces, distanceLimit));
+                }
             }
         }
         for(Place place : significantPlaces) {
@@ -59,13 +62,13 @@ public class PlaceClusterizer {
         time /= places.size();
         lat /= places.size();
         lon /= places.size();
-        return new Place(time, lat, lon);
+        return new Place(0, lat, lon);
     }
 
-    private static List<Place> findPlacesWithinDistanceAndTime(Place origin, List<Place> places, double distanceLimit, long timeLimit) {
+    private static List<Place> findPlacesWithinDistance(Place origin, List<Place> places, double distanceLimit) {
         ArrayList<Place> placesWithinDistance = new ArrayList<Place>();
         for(Place place : places) {
-            if((distance(origin, place) < distanceLimit) && (Math.abs(origin.getTimestamp() - place.getTimestamp()) < timeLimit)) {
+            if((distance(origin, place) < distanceLimit)) {
                 placesWithinDistance.add(place);
             }
         }
