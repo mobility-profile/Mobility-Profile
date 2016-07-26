@@ -10,6 +10,7 @@ import com.orm.SugarRecord;
 public class SignificantPlace extends SugarRecord {
     private String location;
     private long timestamp;
+    private
 
     /**
      *

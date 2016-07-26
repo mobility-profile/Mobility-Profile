@@ -29,7 +29,9 @@ public class SignificantPlaceSuggestions implements SuggestionSource {
         List<Suggestion> suggestions = new ArrayList<>();
 
         SignificantPlace significantPlace = significantPlaceDao.getSignificantPlaceIfCurrentLocationIsOne(startLocation, 100);
+        if (significantPlace != null) {
 
+        }
 
         return suggestions;
     }

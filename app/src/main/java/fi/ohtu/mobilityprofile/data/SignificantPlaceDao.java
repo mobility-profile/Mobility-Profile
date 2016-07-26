@@ -37,8 +37,7 @@ public class SignificantPlaceDao {
         if (nearestSignificantPlace == null) {
             // There weren't any saved significantPlaces within searchRadius, so just create a new one and
             // save it to the database.
-            nearestSignificantPlace = new SignificantPlace(searchLocation, System.currentTimeMillis());
-            nearestSignificantPlace.save();
+            insertSignificantPlace(new SignificantPlace(searchLocation, System.currentTimeMillis()));
         }
 
         return nearestSignificantPlace;
