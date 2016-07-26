@@ -119,13 +119,13 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
-                error.printStackTrace();
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
+                        error.printStackTrace();
 
-            }
-        });
+                    }
+                });
         queue.add(stringRequest);
     }
 }

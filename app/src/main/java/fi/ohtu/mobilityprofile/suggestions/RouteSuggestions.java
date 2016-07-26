@@ -27,7 +27,7 @@ public class RouteSuggestions implements SuggestionSource {
 
     /**
      * Returns a list of probable locations the user would like to visit based on the previous
-     * route searches user has made. A route search is considered valid if it was max 2 hours
+     * route searches the user has made. A route search is considered valid if it was max 2 hours
      * earlier or max 2 hours later that the current time.
      *
      * @param startLocation Starting location

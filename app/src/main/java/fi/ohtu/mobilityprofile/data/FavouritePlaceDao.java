@@ -24,7 +24,7 @@ public class FavouritePlaceDao {
 
     /**
      * Returns all the users's favourite places order by counter of favourite place.
-     *
+     * @param limit the maximum number of favourite places to search for
      * @return List of all favourite places, the biggest counter is first.
      */
     public List<FavouritePlace> FindAmountOrderByCounter(int limit) {
@@ -72,6 +72,12 @@ public class FavouritePlaceDao {
         return favourites.get(0);
     }
 
+    /**
+     * Returns a favourite place where the address matches the given one.
+     *
+     * @param address address of the favourite place
+     * @return favourite place
+     */
     public FavouritePlace findFavouritePlaceByAddress(String address) {
         List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
                 .where(Condition.prop("address").eq(address))
