@@ -7,7 +7,7 @@ import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 /**
  * DAO used for clustering visited locations.
  */
-public class UserLocationDao {
+public class SignificantPlaceDao {
 
     /**
      * Returns the nearest known SignificantPlace from the searchLocation if it is within searchRadius.
@@ -34,7 +34,7 @@ public class UserLocationDao {
         if (nearestSignificantPlace == null) {
             // There weren't any saved significantPlaces within searchRadius, so just create a new one and
             // save it to the database.
-            nearestSignificantPlace = new SignificantPlace(searchLocation);
+            nearestSignificantPlace = new SignificantPlace();
             nearestSignificantPlace.save();
         }
 

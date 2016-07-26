@@ -51,7 +51,7 @@ public class AddressConverter {
 
                                 Log.i("AddressConverter", "Converted address is: " + address);
 
-                                Place lastLocation = new Place(System.currentTimeMillis(), address, location.x, location.y);
+                                Place lastLocation = new Place(System.currentTimeMillis(), location.x, location.y);
                                 lastLocation.save();
                             }
                         } catch (Exception e) {
@@ -102,7 +102,7 @@ public class AddressConverter {
 
                                 if (latest != null) {
                                     route = new RouteSearch(System.currentTimeMillis(),
-                                            latest.getOriginalLocation(), destination, latest.getLatitude(),
+                                            "Kumpula", destination, latest.getLatitude(),
                                             latest.getLongitude(), lat, lon);
                                 } else {
                                     route = new RouteSearch(System.currentTimeMillis(),

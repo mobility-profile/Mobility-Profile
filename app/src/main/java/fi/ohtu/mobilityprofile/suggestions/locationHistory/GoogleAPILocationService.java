@@ -73,7 +73,7 @@ public class GoogleAPILocationService extends Service implements GoogleApiClient
                 e.printStackTrace();
             }
         } else {
-            Log.e(TAG, "SignificantPlace services connection failed with code " + connectionResult.getErrorCode());
+            Log.e(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
         }
     }
 

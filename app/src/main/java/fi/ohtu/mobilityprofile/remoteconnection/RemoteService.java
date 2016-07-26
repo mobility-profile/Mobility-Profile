@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.CalendarConnection;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.suggestions.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.UserLocationDao;
-import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
@@ -39,18 +39,18 @@ public class RemoteService extends Service {
         synchronized (RemoteService.class) {
             if (messenger == null) {
                 CalendarTagDao calendarTagDao = new CalendarTagDao();
-                VisitDao visitDao = new VisitDao(new UserLocationDao());
+                PlaceDao placeDao = new PlaceDao(new SignificantPlaceDao());
                 RouteSearchDao routeSearchDao = new RouteSearchDao();
                 FavouritePlaceDao favouritePlaceDao = new FavouritePlaceDao();
 
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
                 suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this), calendarTagDao));
-                suggestionSources.add(new VisitSuggestions(visitDao));
+                suggestionSources.add(new VisitSuggestions(placeDao));
                 suggestionSources.add(new RouteSuggestions(routeSearchDao));
                 suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));
                 DestinationLogic destinationLogic = new DestinationLogic(suggestionSources);
 
-                messenger = new Messenger(new RequestHandler(this, destinationLogic, calendarTagDao, visitDao, routeSearchDao, favouritePlaceDao));
+                messenger = new Messenger(new RequestHandler(this, destinationLogic, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao));
 
             }
         }

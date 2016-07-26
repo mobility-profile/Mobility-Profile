@@ -6,20 +6,19 @@ import com.orm.query.Select;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
  * DAO used for saving and reading Visits to/from the database.
  */
-public class VisitDao {
-    private UserLocationDao userLocationDao;
+public class PlaceDao {
+    private SignificantPlaceDao significantPlaceDao;
 
     /**
-     * Creates VisitDao.
-     * @param userLocationDao 
+     * Creates PlaceDao.
+     * @param significantPlaceDao
      */
-    public VisitDao(UserLocationDao userLocationDao) {
-        this.userLocationDao = userLocationDao;
+    public PlaceDao(SignificantPlaceDao significantPlaceDao) {
+        this.significantPlaceDao = significantPlaceDao;
     }
 
     /**
@@ -70,20 +69,18 @@ public class VisitDao {
      * Returns a list of all visits.
      * @return list of visits
      */
-    public List<Place> getAllVisits() {
+    public static List<Place> getAll() {
         return Select.from(Place.class)
                 .orderBy("timestamp DESC")
                 .list();
     }
 
     /**
-     * Saves a place to the database. Also sets the place's nearest known location.
+     * Saves a place to the database.
      *
      * @param place Place to be saved
      */
     public void insertVisit(Place place) {
-        SignificantPlace nearestSignificantPlace = userLocationDao.getNearestLocation(place.getOriginalLocation(), 50);
-        place.setNearestKnownLocation(nearestSignificantPlace);
         place.save();
     }
 
@@ -91,7 +88,7 @@ public class VisitDao {
      * Deletes all Place data from the database
      */
     public static void deleteAllData() {
-        UserLocationDao.deleteAllData();
+        SignificantPlaceDao.deleteAllData();
         Place.deleteAll(Place.class);
     }
 }
