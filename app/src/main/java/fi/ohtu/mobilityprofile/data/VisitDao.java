@@ -21,6 +21,10 @@ public class VisitDao {
         this.significantPlaceDao = significantPlaceDao;
     }
 
+    public VisitDao() {
+
+    }
+
     /**
      * Returns a list of all Visits.
      * @return
