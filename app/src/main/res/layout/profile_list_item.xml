@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/label"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingTop="20dp"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:textSize="16sp"
-    android:textColor="@color/colorPrimary">
-</TextView>
+    android:layout_height="wrap_content" >
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/profile_item_start"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark">
+    </TextView>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/profile_item_destination"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark">
+    </TextView>
+
+
+    <ImageButton
+        android:id="@+id/profile_item_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_trash"
+        android:contentDescription="@string/profile_item_delete_title"
+        android:padding="5dp"
+        android:layout_gravity="end"
+        android:background="@color/colorWhite">
+    </ImageButton>
+
+</GridLayout>

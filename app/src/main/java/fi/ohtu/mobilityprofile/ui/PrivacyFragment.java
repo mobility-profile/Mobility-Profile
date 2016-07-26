@@ -15,9 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -54,8 +57,12 @@ public class PrivacyFragment extends Fragment {
 
     private CheckBox gpsCheckBox;
     private CheckBox calendarCheckBox;
-    private CheckBox trackingCheckBox;
+
+    private Button startButton;
+    private Button stopButton;
     private Button resetbutton;
+
+    private ImageView compass;
 
     private Context context;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -93,13 +100,19 @@ public class PrivacyFragment extends Fragment {
     public void onViewCreated(View view, final Bundle savedInstanceState) {
         gpsCheckBox = (CheckBox) view.findViewById(R.id.checkbox_GPS);
         calendarCheckBox = (CheckBox) view.findViewById(R.id.checkbox_calendar);
-        trackingCheckBox = (CheckBox) view.findViewById(R.id.checkbox_tracking);
+
+        startButton = (Button) view.findViewById(R.id.tracking_start);
+        stopButton = (Button) view.findViewById(R.id.tracking_stop);
         resetbutton = (Button) view.findViewById(R.id.resetbutton);
+        stopButton.setVisibility(View.GONE);
+
+        compass = (ImageView) view.findViewById(R.id.tracking_on);
+        compass.setAlpha(0.1f);
 
         setChecked();
         setListenerForGPSCheckBox();
         setListenerForCheckBoxCalendar();
-        setListenerForCheckBoxTracking();
+        setListenerForTrackingButtons();
         resetbutton.setOnClickListener(onClickResetButton);
     }
 
@@ -111,20 +124,34 @@ public class PrivacyFragment extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked && !PermissionManager.permissionToFineLocation(context)) {
-                    getPermissionToAccessFineLocation();
-                    if (PermissionManager.permissionToFineLocation(context)) {
-                        trackingCheckBox.setEnabled(true);
+
+                if (isChecked) {
+                    if (!PermissionManager.permissionToFineLocation(context)) {
+                        getPermissionToAccessFineLocation();
+                    } else {
+                        GPSCheckedOn();
+                        Toast.makeText(context, "Location tracking is used again", Toast.LENGTH_SHORT).show();
                     }
-                } else if (isChecked) {
-                    Toast.makeText(context, "Location tracking is used again", Toast.LENGTH_SHORT).show();
-                    trackingCheckBox.setEnabled(true);
+
                 } else {
+                    GPSCheckedOff();
                     Toast.makeText(context, "Location tracking will not be used", Toast.LENGTH_SHORT).show();
-                    trackingCheckBox.setEnabled(false);
                 }
             }
         });
+    }
+
+    private void GPSCheckedOn() {
+        stopButton.setVisibility(View.GONE);
+        startButton.setVisibility(View.VISIBLE);
+        startButton.setEnabled(true);
+    }
+
+    private void GPSCheckedOff() {
+        stopButton.setVisibility(View.GONE);
+        startButton.setVisibility(View.VISIBLE);
+        startButton.setEnabled(false);
+        context.stopService(new Intent(context, LocationService.class));
     }
 
     /**
@@ -149,19 +176,33 @@ public class PrivacyFragment extends Fragment {
     /**
      * Sets a listener for trackingCheckBox.
      */
-    private void setListenerForCheckBoxTracking() {
-        trackingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setListenerForTrackingButtons() {
+
+        final AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+        animation.setDuration(750);
+        animation.setStartOffset(500);
+        animation.setRepeatCount(Animation.INFINITE);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    context.startService(new Intent(context, LocationService.class));
-//                    if (checkPlayServices()) {
-//                        context.startService(new Intent(context, GoogleAPILocationService.class));
-//                    }
-                } else {
-                    context.stopService(new Intent(context, LocationService.class));
-//                    context.stopService(new Intent(context, GoogleAPILocationService.class));
-                }
+            public void onClick(View v) {
+                context.startService(new Intent(context, LocationService.class));
+                startButton.setVisibility(View.GONE);
+                stopButton.setVisibility(View.VISIBLE);
+                compass.setAlpha(1.0f);
+                compass.startAnimation(animation);
+            }
+        });
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.stopService(new Intent(context, LocationService.class));
+                startButton.setVisibility(View.VISIBLE);
+                stopButton.setVisibility(View.GONE);
+                animation.cancel();
+                animation.reset();
+                compass.setAlpha(0.5f);
             }
         });
     }
@@ -199,8 +240,10 @@ public class PrivacyFragment extends Fragment {
             case ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST:
                 if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(context, "GPS permission granted", Toast.LENGTH_SHORT).show();
+                    GPSCheckedOn();
                 } else {
                     gpsCheckBox.setChecked(false);
+                    GPSCheckedOff();
                 }
                 break;
             case READ_CALENDAR_PERMISSIONS_REQUEST:
@@ -217,23 +260,26 @@ public class PrivacyFragment extends Fragment {
      * Sets the checkboxes checked or unchecked based on the states of the permissions.
      */
     private void setChecked() {
-        if (!PermissionManager.permissionToFineLocation(context)) {
-            gpsCheckBox.setChecked(false);
-            trackingCheckBox.setEnabled(false);
-        } else {
-            gpsCheckBox.setChecked(true);
-        }
-
         if (!PermissionManager.permissionToReadCalendar(context)) {
             calendarCheckBox.setChecked(false);
         } else {
             calendarCheckBox.setChecked(true);
         }
 
-        if (isLocationServiceRunning()) {
-            trackingCheckBox.setChecked(true);
+        if (!PermissionManager.permissionToFineLocation(context)) {
+            gpsCheckBox.setChecked(false);
+            startButton.setEnabled(false);
         } else {
-            trackingCheckBox.setChecked(false);
+            gpsCheckBox.setChecked(true);
+            startButton.setEnabled(true);
+        }
+
+        if (isLocationServiceRunning()) {
+            stopButton.setVisibility(View.VISIBLE);
+            startButton.setVisibility(View.GONE);
+        } else {
+            stopButton.setVisibility(View.GONE);
+            startButton.setVisibility(View.VISIBLE);
         }
     }
 
