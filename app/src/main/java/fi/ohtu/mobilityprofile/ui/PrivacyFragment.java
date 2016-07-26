@@ -1,8 +1,11 @@
 package fi.ohtu.mobilityprofile.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -154,12 +157,8 @@ public class PrivacyFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     context.startService(new Intent(context, PlaceRecorder.class));
-//                    if (checkPlayServices()) {
-//                        context.startService(new Intent(context, GoogleAPILocationService.class));
-//                    }
                 } else {
                     context.stopService(new Intent(context, PlaceRecorder.class));
-//                    context.stopService(new Intent(context, GoogleAPILocationService.class));
                 }
             }
         });

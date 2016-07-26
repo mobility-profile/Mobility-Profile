@@ -1,6 +1,8 @@
 package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import fi.ohtu.mobilityprofile.PermissionManager;
+import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
 
@@ -21,11 +24,34 @@ import fi.ohtu.mobilityprofile.domain.Place;
  * PlaceRecorder listens to location changes.
  */
 public class PlaceRecorder extends Service {
+    private static final int NOTIFICATION_ID = 120;
     private static final String TAG = "PlaceRecorder";
-    private android.location.LocationManager mLocationManager = null;
+
     private static final int LOCATION_INTERVAL = 1000; //300000 = 5 minutes
     private static final float LOCATION_DISTANCE = 0f;
-    LocationListener[] mLocationListeners = null;
+
+    private android.location.LocationManager mLocationManager;
+    private LocationListener[] mLocationListeners = null;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG, "onStartCommand");
+        
+        Intent notificationIntent = new Intent(this, PlaceRecorder.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        Notification notification = new Notification.Builder(this)
+                .setContentTitle("Test")
+                .setContentText("Testiä vaan")
+                .setSmallIcon(R.mipmap.logo)
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .build();
+
+        startForeground(NOTIFICATION_ID, notification);
+
+        return START_STICKY;
+    }
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
@@ -106,14 +132,6 @@ public class PlaceRecorder extends Service {
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "onStartCommand");
-        super.onStartCommand(intent, flags, startId);
-
-        return START_STICKY;
     }
 
     @Override
