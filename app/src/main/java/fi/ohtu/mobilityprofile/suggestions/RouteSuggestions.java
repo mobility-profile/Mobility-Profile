@@ -2,7 +2,9 @@ package fi.ohtu.mobilityprofile.suggestions;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
@@ -35,11 +37,20 @@ public class RouteSuggestions implements SuggestionSource {
     @Override
     public List<Suggestion> getSuggestions(String startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
+        Set<String> destinations = new HashSet<>();
 
-        for (RouteSearch route : routeSearchDao.getRouteSearchesByStartlocation(startLocation)) {
+        int counter = 0;
+        for (RouteSearch route : routeSearchDao.getAllRouteSearches()) {
             if (Util.aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
+                if (destinations.contains(route.getDestination())) continue; // Don't add the same suggestion more than once.
+
                 Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
                 suggestions.add(suggestion);
+
+                destinations.add(route.getDestination());
+
+                counter++;
+                if (counter >= 3) break; // Only suggest 3 most recent searches at most.
             }
         }
 
