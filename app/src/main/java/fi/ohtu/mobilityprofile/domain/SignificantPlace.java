@@ -9,8 +9,8 @@ import com.orm.SugarRecord;
  */
 public class SignificantPlace extends SugarRecord {
     private String location;
-    private long timestamp;
-    private
+    private Float latitude;
+    private Float longitude;
 
     /**
      *
@@ -20,18 +20,28 @@ public class SignificantPlace extends SugarRecord {
 
     /**
      * Creates new SignificantPlace
-     * @param location user's location
+     * @param location location of the significantPlace
+     * @param latitude latitude of the location
+     * @param longitude longitude of the location
      */
-    public SignificantPlace(String location, long timestamp) {
+    public SignificantPlace(String location, Float latitude, Float longitude) {
         this.location = location;
-        this.timestamp = timestamp;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getLocation() {
         return location;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public Float getLatitude() {
+        return latitude;
     }
+
+    public Float getLongitude() {
+        return longitude;
+    }
+
+
+
 }
