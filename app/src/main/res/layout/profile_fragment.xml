@@ -9,9 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:text="@string/last_places"/>
+        android:text="@string/last_searches"/>
 
     <ListView
         android:layout_width="match_parent"

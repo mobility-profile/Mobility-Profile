@@ -35,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info);
+
 
         checkSecurity();
     }
