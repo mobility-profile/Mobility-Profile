@@ -1,5 +1,6 @@
 package fi.ohtu.mobilityprofile.data;
 
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.List;
@@ -34,13 +35,14 @@ public class SignificantPlaceDao {
             }
         }
 
-        if (nearestSignificantPlace == null) {
+       /* if (nearestSignificantPlace == null) {
             // There weren't any saved significantPlaces within searchRadius, so just create a new one and
             // save it to the database.
-            insertSignificantPlace(new SignificantPlace(searchLocation, System.currentTimeMillis()));
+            insertSignificantPlace(new SignificantPlace(searchLocation));
         }
-
+        */
         return nearestSignificantPlace;
+
     }
 
     /**
@@ -56,22 +58,27 @@ public class SignificantPlaceDao {
     }
 
     /**
-     * Returns a list of all SignificantPlaces.
-     * @return List of SignificantPlaces.
-     */
-    public List<SignificantPlace> getAllSignificantPlaces() {
-        return Select.from(SignificantPlace.class)
-                .orderBy("timestamp DESC")
-                .list();
-    }
-
-    /**
      * Saves a SignificantPlace to the database.
      * @param significantPlace SignificantPlace to be saved
      */
     public void insertSignificantPlace(SignificantPlace significantPlace) {
         significantPlace.save();
     }
+
+    /**
+     * Returns a SignificantPlace based on location.
+     */
+    public SignificantPlace getSignificantPlaceBasedOnLocation(String location) {
+       List<SignificantPlace> places = Select.from(SignificantPlace.class)
+                .where(Condition.prop("location").eq(location))
+                .limit("1")
+                .list();
+
+        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+
+        return (!places.isEmpty()) ? places.get(0) : null;
+    }
+
     /**
      * Deletes all SignificantPlace data from the database
      */

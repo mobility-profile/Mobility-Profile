@@ -40,7 +40,7 @@ public class PlaceSuggestions implements SuggestionSource {
 
         for (Place place : placeDao.getAllVisits()) {
             if (Util.aroundTheSameTime(new Time(place.getTimestamp()), 1, 3)) {
-                Suggestion suggestion = new Suggestion(place.getOriginalLocation(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION);
+                Suggestion suggestion = new Suggestion(place.getOriginalLocation(), SuggestionAccuracy.HIGH, PLACE_SUGGESTIONS);
                 suggestions.add(suggestion);
                 // This returns location with coordinates : "Liisankatu 1, Helsinki, Finland!00.0000!00.0000!"
             }

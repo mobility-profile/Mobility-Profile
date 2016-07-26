@@ -81,7 +81,7 @@ public class PlaceDao {
      *
      * @param place Place to be saved
      */
-    public void insertVisit(Place place) {
+    public void insertPlace(Place place) {
         SignificantPlace nearestSignificantPlace = significantPlaceDao.getNearestLocation(place.getOriginalLocation(), 50);
         place.setNearestKnownLocation(nearestSignificantPlace);
         place.save();

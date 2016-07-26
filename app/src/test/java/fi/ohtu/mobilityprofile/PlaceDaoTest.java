@@ -28,22 +28,22 @@ public class PlaceDaoTest {
 
     @Test
     public void testInsertAndFindLatest() {
-        placeDao.insertVisit(new Place(1234, "Kumpula"));
+        placeDao.insertPlace(new Place(1234, "Kumpula"));
 
         assertEquals("Kumpula", placeDao.getLatestVisit().getOriginalLocation());
 
-        placeDao.insertVisit(new Place(1300, "Herttoniemi"));
+        placeDao.insertPlace(new Place(1300, "Herttoniemi"));
 
         assertEquals("Herttoniemi", placeDao.getLatestVisit().getOriginalLocation());
 
-        placeDao.insertVisit(new Place(1100, "Lammassaari"));
+        placeDao.insertPlace(new Place(1100, "Lammassaari"));
 
         assertEquals("Herttoniemi", placeDao.getLatestVisit().getOriginalLocation());
     }
 
     @Test
     public void testInsertAndFindByLocation() {
-        placeDao.insertVisit(new Place(2345, "Helsinki"));
+        placeDao.insertPlace(new Place(2345, "Helsinki"));
 
         List<Place> places = placeDao.getVisitsByLocation("Helsinki");
 
@@ -53,12 +53,12 @@ public class PlaceDaoTest {
 
     @Test
     public void testMultipleInsertAndFindByLocation() {
-        placeDao.insertVisit(new Place(123, "Kumpula"));
-        placeDao.insertVisit(new Place(234, "Kumpula"));
-        placeDao.insertVisit(new Place(345, "Kalasatama"));
-        placeDao.insertVisit(new Place(456, "Tikkurila"));
-        placeDao.insertVisit(new Place(987, "Kumpula"));
-        placeDao.insertVisit(new Place(567, "Kumpulan kampus"));
+        placeDao.insertPlace(new Place(123, "Kumpula"));
+        placeDao.insertPlace(new Place(234, "Kumpula"));
+        placeDao.insertPlace(new Place(345, "Kalasatama"));
+        placeDao.insertPlace(new Place(456, "Tikkurila"));
+        placeDao.insertPlace(new Place(987, "Kumpula"));
+        placeDao.insertPlace(new Place(567, "Kumpulan kampus"));
 
         List<Place> places = placeDao.getVisitsByLocation("Kumpula");
 
@@ -78,15 +78,15 @@ public class PlaceDaoTest {
         assertTrue(placeDao.getLatestVisit() == null);
         assertTrue(placeDao.getVisitsByLocation("Kumpula").isEmpty());
 
-        placeDao.insertVisit(new Place(234, "Kumpula"));
+        placeDao.insertPlace(new Place(234, "Kumpula"));
 
         assertTrue(placeDao.getVisitsByLocation("Herttoniemi").isEmpty());
     }
 
     @Test
     public void testDeleteAll() {
-        placeDao.insertVisit(new Place(123, "Kumpula"));
-        placeDao.insertVisit(new Place(234, "Kumpula"));
+        placeDao.insertPlace(new Place(123, "Kumpula"));
+        placeDao.insertPlace(new Place(234, "Kumpula"));
 
         assertEquals(2, placeDao.getVisitsByLocation("Kumpula").size());
 
