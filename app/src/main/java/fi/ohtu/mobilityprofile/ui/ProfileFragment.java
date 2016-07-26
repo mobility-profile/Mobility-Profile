@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,14 +66,7 @@ public class ProfileFragment extends Fragment {
         List<RouteSearch> searches = new ArrayList<>();
         searches = Select.from(RouteSearch.class).orderBy("timestamp DESC").list();
 
-        ArrayList<String> routes = new ArrayList<>();
-
-        for (RouteSearch r: searches) {
-            routes.add(r.getStartlocation() + "  ->  " + r.getDestination());
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.profile_list_item, routes);
-
+        ProfileListAdapter adapter = new ProfileListAdapter(context, R.layout.profile_list_item, searches, this);
         ListView listView = (ListView) view.findViewById(R.id.profile_listView);
         listView.setAdapter(adapter);
     }
