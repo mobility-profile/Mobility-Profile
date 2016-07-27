@@ -37,7 +37,7 @@ public class VisitSuggestions implements SuggestionSource {
     @Override
     public List<Suggestion> getSuggestions(String startLocation) {
 
-        SignificantPlace significantPlace = significantPlaceDao.getSignificantPlaceIfCurrentLocationIsOne(startLocation, 100);
+        SignificantPlace significantPlace = significantPlaceDao.getSignificantPlaceIfCurrentLocationIsOne(startLocation, 50);
         if (significantPlace != null) {
             calculateNextDestinations(significantPlace);
             calculateSuggestions();
