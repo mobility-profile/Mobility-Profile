@@ -80,8 +80,11 @@ public class RequestHandler extends Handler {
 
         Message message;
         switch (msg.what) {
-            case REQUEST_MOST_LIKELY_DESTINATION:
-                message = processDestinationRequest();
+            case REQUEST_INTRA_CITY_SUGGESTIONS:
+                message = processIntraCitySuggestionsRequest();
+                break;
+            case REQUEST_INTER_CITY_SUGGESTIONS:
+                message = processInterCitySuggestionsRequest();
                 break;
             case SEND_SEARCHED_ROUTE:
                 processUsedRoute(msg);
@@ -105,7 +108,7 @@ public class RequestHandler extends Handler {
      * Returns a message with data that tells the most likely destination calculated in Mobility Profile.
      * @return Response message
      */
-  /*  private Message processDestinationRequest() {
+  /*  private Message processIntraCitySuggestionsRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination(getStartLocation()));
     }
 */
@@ -113,8 +116,12 @@ public class RequestHandler extends Handler {
      * Returns a message with data that tells the most likely destinations calculated in Mobility Profile.
      * @return Response message
      */
-    private Message processDestinationRequest() {
-        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getListOfMostLikelyDestinations(getStartLocation()));
+    private Message processIntraCitySuggestionsRequest() {
+        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getListOfIntraCitySuggestions(getStartLocation()));
+    }
+
+    private Message processInterCitySuggestionsRequest() {
+        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getListOfInterCitySuggestions(getStartLocation()));
     }
 
     /**
