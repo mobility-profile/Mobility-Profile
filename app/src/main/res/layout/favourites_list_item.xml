@@ -3,6 +3,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
+    <ImageButton
+        android:id="@+id/favourite_auto_generated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_wizard"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/favourite_auto_generated_hint"
+        android:padding="5dp"/>
+
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/favourites_item"
         android:layout_width="250dp"
