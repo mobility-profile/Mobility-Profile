@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.domainTests;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +9,8 @@ import org.robolectric.annotation.Config;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.BuildConfig;
+import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 

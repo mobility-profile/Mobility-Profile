@@ -61,7 +61,7 @@ public class VisitSuggestions implements SuggestionSource {
     }
 
     /**
-     * Calculates next destination based on visited SignificantPlaces in the past.
+     * Calculates next destinations based on visited SignificantPlaces in the past.
      * @param startLocation starting location
      */
     private void calculateNextDestinations(SignificantPlace startLocation) {

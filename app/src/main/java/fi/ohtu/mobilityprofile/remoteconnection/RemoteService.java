@@ -20,7 +20,6 @@ import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.VisitSuggestions;
 
 /**

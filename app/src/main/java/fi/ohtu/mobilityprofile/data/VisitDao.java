@@ -40,8 +40,6 @@ public class VisitDao {
      * @param visit
      */
     public void insertVisit(Visit visit) {
-        SignificantPlace significantPlace = significantPlaceDao.getSignificantPlaceBasedOnLocation(visit.getSignificantPlace().getLocation());
-        visit.setSignificantPlace(significantPlace);
         visit.save();
     }
 

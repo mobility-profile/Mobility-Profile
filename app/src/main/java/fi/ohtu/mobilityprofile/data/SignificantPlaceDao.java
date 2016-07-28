@@ -11,7 +11,7 @@ public class SignificantPlaceDao {
 
     /**
      * Returns the nearest known SignificantPlace from the searchLocation if it is within searchRadius.
-     * If no UserLocations were found, new one will be created with the given searchLocation. The
+     * If no SignificantPlaces were found, new one will be created with the given searchLocation. The
      * new SignificantPlace will then be saved to the database and returned.
      *
      * @param searchLocation Search nearestKnownLocation

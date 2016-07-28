@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.SuggestionTests;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -11,6 +11,9 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
+import fi.ohtu.mobilityprofile.BuildConfig;
+import fi.ohtu.mobilityprofile.CalendarConnection;
+import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;

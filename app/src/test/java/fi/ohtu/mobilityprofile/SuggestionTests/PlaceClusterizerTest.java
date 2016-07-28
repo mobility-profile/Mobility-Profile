@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.SuggestionTests;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
