@@ -7,13 +7,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PointF;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
@@ -31,7 +29,7 @@ public class PlaceRecorder extends Service {
     private static final String ACTION_STOP_SERVICE = "StopIt!";
     private static final String TAG = "PlaceRecorder";
 
-    private static final int LOCATION_INTERVAL = 1000; //300000 = 5 minutes
+    private static final int LOCATION_INTERVAL = 2 * 60 * 1000;
     private static final float LOCATION_DISTANCE = 0f;
 
     private android.location.LocationManager mLocationManager;
