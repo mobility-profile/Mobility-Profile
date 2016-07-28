@@ -1,11 +1,9 @@
 package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
  * Class for clusterizing places into significant locations
@@ -13,25 +11,50 @@ import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 public class PlaceClusterizer {
 
     public static List<Place> clusterize(List<Place> places) {
+
         List<Place> significantPlaces = new ArrayList<>();
         List<Place> modifiedPlaces = new ArrayList<>(places);
-        int distanceLimit = 100;
-        int hitLimit = 10;
-        for(Place place : places) {
-            if(modifiedPlaces.contains(place)) {
-                Place origin = place;
-                if(findPlacesWithinDistance(origin, places, distanceLimit).size() > hitLimit) {
-                    significantPlaces.add(mean(findPlacesWithinDistance(origin, places, distanceLimit)));
-                    modifiedPlaces.removeAll(findPlacesWithinDistance(mean(findPlacesWithinDistance(origin, places, distanceLimit)), modifiedPlaces, distanceLimit));
+
+        double speedLimit = 0.8;
+        long timeSpentInClusterThreshold = 600000; //10 minutes
+        double wanderingDistanceLimit = 70;
+        double clusterRadius = 100;
+
+        for(int i = 0; i < places.size() - 1; i++) {
+            if(modifiedPlaces.contains(places.get(i)) && speedBetweenPlaces(places.get(i), places.get(i+1)) < speedLimit) {
+                List<Place> cluster = new ArrayList<>();
+                int j = i;
+                long timeSpentInCluster = 0;
+                while (j < places.size() - 1 && speedBetweenPlaces(places.get(j), places.get(j+1)) < speedLimit) {
+                    cluster.add(places.get(j));
+                    timeSpentInCluster += places.get(j+1).getTimestamp() - places.get(j).getTimestamp();
+                    j++;
+                    if(timeSpentInCluster > timeSpentInClusterThreshold && distance(places.get(j), places.get(j+1)) > wanderingDistanceLimit){
+                        break;
+                    }
+                }
+                if(timeSpentInCluster > timeSpentInClusterThreshold) {
+                    cluster.add(places.get(j));
+                    significantPlaces.add(mean(cluster));
+                    modifiedPlaces.removeAll(findPlacesWithinDistance(mean(cluster), places, clusterRadius));
                 }
             }
         }
         for(Place place : significantPlaces) {
-            System.out.println("SIGNIFICANT PLACE lat: " + place.getLatitude() + " lon: " + place.getLongitude());
+            //System.out.println("SIGNIFICANT PLACE lat: " + place.getLatitude() + " lon: " + place.getLongitude());
+            print(place, 0);
         }
         return significantPlaces;
     }
 
+    private static double speedBetweenPlaces(Place place1, Place place2) {
+        double distance = distance(place1, place2);
+        return distance / ((place2.getTimestamp()/1000) - (place1.getTimestamp()/1000));
+    }
+
+    private static void print(Place place, int order){
+        System.out.println("<trkpt lat=\"" + place.getLatitude() + "\" lon=\"" + place.getLongitude() +"\"><time>2016-07-21T"+order+":00:00Z</time><src>network</src></trkpt>");
+    }
 
     public static double distance(Place place1, Place place2) {
         final int R = 6371; // Radius of the earth
