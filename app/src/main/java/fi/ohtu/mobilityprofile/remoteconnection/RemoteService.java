@@ -21,6 +21,7 @@ import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.VisitSuggestions;
 
 /**
  * Used to enable cross-app communication.
@@ -45,13 +46,13 @@ public class RemoteService extends Service {
 
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
                 suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this), calendarTagDao));
-                suggestionSources.add(new PlaceSuggestions(placeDao));
+                suggestionSources.add(new VisitSuggestions(placeDao));
+
                 suggestionSources.add(new RouteSuggestions(routeSearchDao));
                 suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));
                 DestinationLogic destinationLogic = new DestinationLogic(suggestionSources);
 
-                messenger = new Messenger(new RequestHandler(destinationLogic, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao));
-
+                messenger = new Messenger(new RequestHandler(this, destinationLogic, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao));
             }
         }
 

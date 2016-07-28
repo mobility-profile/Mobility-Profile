@@ -13,15 +13,15 @@ import static org.mockito.Mockito.*;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
-import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.suggestions.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.VisitSuggestions;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
@@ -40,7 +40,7 @@ public class DestinationLogicTest {
 
         List<SuggestionSource> suggestionSources = new ArrayList<>();
         suggestionSources.add(new CalendarSuggestions(new CalendarConnection(Robolectric.setupActivity(MainActivityStub.class)), calendarTagDao));
-        suggestionSources.add(new PlaceSuggestions(placeDao));
+        suggestionSources.add(new VisitSuggestions(placeDao));
         suggestionSources.add(new RouteSuggestions(routeSearchDao));
         suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));
 

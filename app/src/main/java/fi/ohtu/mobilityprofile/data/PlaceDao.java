@@ -6,10 +6,9 @@ import com.orm.query.Select;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
- * DAO used for saving and reading visited Places to/from the database.
+ * DAO used for saving and reading Visits to/from the database.
  */
 public class PlaceDao {
     private SignificantPlaceDao significantPlaceDao;
@@ -23,9 +22,9 @@ public class PlaceDao {
     }
 
     /**
-     * Returns the last visited place from the database, or null if there is none.
+     * Returns the latest visit from the database, or null if there is none.
      *
-     * @return Last visited place
+     * @return Latest visit
      */
     public Place getLatestVisit() {
         return getLatestVisit(Select.from(Place.class)
@@ -34,10 +33,10 @@ public class PlaceDao {
     }
 
     /**
-     * Returns the last visited place from the database based on custom query,
+     * Returns the latest visit from the database based on custom query,
      * or null if there is none.
      * @param query custom query
-     * @return last visited place
+     * @return latest visit
      */
     private Place getLatestVisit(Select<Place> query) {
         List<Place> places = query.list();
@@ -67,23 +66,21 @@ public class PlaceDao {
     }
 
     /**
-     * Returns a list of all visited places.
-     * @return list of visited places
+     * Returns a list of all visits.
+     * @return list of visits
      */
-    public List<Place> getAllVisits() {
+    public static List<Place> getAll() {
         return Select.from(Place.class)
                 .orderBy("timestamp DESC")
                 .list();
     }
 
     /**
-     * Saves a place to the database. Also sets the place's nearest known location.
+     * Saves a place to the database.
      *
      * @param place Place to be saved
      */
-    public void insertPlace(Place place) {
-        SignificantPlace nearestSignificantPlace = significantPlaceDao.getNearestLocation(place.getOriginalLocation(), 50);
-        place.setNearestKnownLocation(nearestSignificantPlace);
+    public void insertVisit(Place place) {
         place.save();
     }
 

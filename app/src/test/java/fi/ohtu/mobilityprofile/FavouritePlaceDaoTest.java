@@ -68,7 +68,7 @@ public class FavouritePlaceDaoTest {
     public void getFavouritePlaceNamesTest() {
         favouriteDao.insertFavouritePlace(new FavouritePlace("koti", "Kotitie 10"));
         favouriteDao.insertFavouritePlace(new FavouritePlace("koulu", "Kumpula"));
-        
+
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().size(), 2);
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().get(0), "koti");
     }
@@ -96,14 +96,14 @@ public class FavouritePlaceDaoTest {
 
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().size(), 0);
     }
-    
+
     @Test
     public void testFindAllOrderByCounter() {
         favouriteDao.insertFavouritePlace(fav);
         favouriteDao.insertFavouritePlace(new FavouritePlace("Koti", "kotitie 5"));
-        List<FavouritePlace> places = favouriteDao.FindAmountOrderByCounter(3);
-        
+        List<FavouritePlace> places = favouriteDao.FindAmountOrderByCounter(1);
+
         assertEquals("Kumpulan kampus", places.get(0).getName());
     }
-    
+
 }

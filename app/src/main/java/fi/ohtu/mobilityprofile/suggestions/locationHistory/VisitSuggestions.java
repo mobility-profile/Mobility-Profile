@@ -6,26 +6,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
-import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.domain.Visit;
-import fi.ohtu.mobilityprofile.suggestions.Suggestion;
-import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
-import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
+
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.suggestions.*;
 
 /**
  * This class creates suggestions based on the user's visits to places he has visited frequently in the past.
  */
 public class VisitSuggestions implements SuggestionSource {
+
     private SignificantPlaceDao significantPlaceDao;
     private VisitDao visitdao;
     private List<Suggestion> suggestions;
     private Map<String, Integer> nextDestinations;
+    private PlaceDao placeDao;
 
     public VisitSuggestions(SignificantPlaceDao dao, VisitDao visitdao) {
         this.significantPlaceDao = dao;
         this.visitdao = visitdao;
+    }
+
+    /**
+     * Creates the VisitSuggestions.
+     *
+     * @param placeDao DAO for visits user has made
+     */
+    public VisitSuggestions(PlaceDao placeDao) {
+        this.placeDao = placeDao;
     }
 
     /**
@@ -37,11 +49,13 @@ public class VisitSuggestions implements SuggestionSource {
     @Override
     public List<Suggestion> getSuggestions(String startLocation) {
 
-        SignificantPlace significantPlace = significantPlaceDao.getSignificantPlaceIfCurrentLocationIsOne(startLocation, 50);
-        if (significantPlace != null) {
-            calculateNextDestinations(significantPlace);
-            calculateSuggestions();
-        }
+//        for (Place place : placeDao.getAll()) {
+//            if (Util.aroundTheSameTime(new Time(place.getTimestamp()), 1, 3)) {
+//                Suggestion suggestion = new Suggestion(place.getOriginalLocation(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION);
+//                suggestions.add(suggestion);
+//                // This returns location with coordinates : "Liisankatu 1, Helsinki, Finland!00.0000!00.0000!"
+//            }
+//        }
 
         return suggestions;
     }

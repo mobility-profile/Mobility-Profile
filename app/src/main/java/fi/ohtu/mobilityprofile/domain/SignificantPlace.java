@@ -1,16 +1,15 @@
 package fi.ohtu.mobilityprofile.domain;
 
-import android.graphics.PointF;
-
 import com.orm.SugarRecord;
 
 /**
- * Class is used to save locations the user visits frequently.
+ * Class is used to save places assumed significant to the user (ie. places where he/she spends some
+ * time and not just points on the road).
  */
 public class SignificantPlace extends SugarRecord {
-    private String location;
-    private Float latitude;
-    private Float longitude;
+    String address;
+    Float latitude;
+    Float longitude;
 
     /**
      *
@@ -19,29 +18,22 @@ public class SignificantPlace extends SugarRecord {
     }
 
     /**
-     * Creates new SignificantPlace
-     * @param location location of the significantPlace
+     * Creates SignificantPlace.
      * @param latitude latitude of the location
      * @param longitude longitude of the location
      */
-    public SignificantPlace(String location, Float latitude, Float longitude) {
-        this.location = location;
+    public SignificantPlace(Float latitude, Float longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public Float getLatitude() {
-        return latitude;
     }
 
     public Float getLongitude() {
         return longitude;
     }
 
+    public Float getLatitude() {
+        return latitude;
+    }
 
-
+    public String getLocation() { return address; }
 }

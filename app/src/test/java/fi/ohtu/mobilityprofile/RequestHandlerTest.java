@@ -16,9 +16,10 @@ import static org.junit.Assert.*;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
-import fi.ohtu.mobilityprofile.data.PlaceDao;
+
 import fi.ohtu.mobilityprofile.remoteconnection.RequestHandler;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 

@@ -59,7 +59,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".suggestions.locationHistory.LocationService"
+            android:name=".suggestions.locationHistory.PlaceRecorder"
             android:process=":mobility_profile_location" />
         <service
             android:name=".suggestions.locationHistory.GoogleAPILocationService"

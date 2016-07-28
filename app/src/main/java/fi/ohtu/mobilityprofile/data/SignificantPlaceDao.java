@@ -1,11 +1,7 @@
 package fi.ohtu.mobilityprofile.data;
 
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
@@ -15,7 +11,7 @@ public class SignificantPlaceDao {
 
     /**
      * Returns the nearest known SignificantPlace from the searchLocation if it is within searchRadius.
-     * If no SignificantPlaces were found, new one will be created with the given searchLocation. The
+     * If no UserLocations were found, new one will be created with the given searchLocation. The
      * new SignificantPlace will then be saved to the database and returned.
      *
      * @param searchLocation Search nearestKnownLocation
@@ -35,53 +31,14 @@ public class SignificantPlaceDao {
             }
         }
 
-       /* if (nearestSignificantPlace == null) {
+        if (nearestSignificantPlace == null) {
             // There weren't any saved significantPlaces within searchRadius, so just create a new one and
             // save it to the database.
-            insertSignificantPlace(new SignificantPlace(searchLocation));
+            nearestSignificantPlace = new SignificantPlace();
+            nearestSignificantPlace.save();
         }
-        */
+
         return nearestSignificantPlace;
-
-    }
-
-    /**
-     * Checks if the current location is within SignificantPlace and if it is, returns SignificantPlace.
-     * If location is not a SignificantPlace, null is returned.
-     * @param searchLocation Nearest known location
-     * @param searchRadius Search radius in meters
-     * @return SignificantPlace if current location is one, null otherwise
-     */
-    public SignificantPlace getSignificantPlaceIfCurrentLocationIsOne(String searchLocation, int searchRadius) {
-
-        return null;
-    }
-
-    /**
-     * Saves a SignificantPlace to the database.
-     * @param significantPlace SignificantPlace to be saved
-     */
-    public void insertSignificantPlace(SignificantPlace significantPlace) {
-        significantPlace.save();
-    }
-
-    /**
-     * Returns a SignificantPlace based on location.
-     */
-    public SignificantPlace getSignificantPlaceBasedOnLocation(String location) {
-       List<SignificantPlace> places = Select.from(SignificantPlace.class)
-                .where(Condition.prop("location").eq(location))
-                .limit("1")
-                .list();
-
-        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-
-        return (!places.isEmpty()) ? places.get(0) : null;
-    }
-
-    public List<SignificantPlace> getAllSignificantPlaces() {
-        return Select.from(SignificantPlace.class)
-                .list();
     }
 
     /**

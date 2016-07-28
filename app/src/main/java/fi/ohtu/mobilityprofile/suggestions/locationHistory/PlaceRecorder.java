@@ -14,22 +14,24 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import fi.ohtu.mobilityprofile.PermissionManager;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
- * LocationService listens to location changes.
+ * PlaceRecorder listens to location changes.
  */
-public class LocationService extends Service {
-    private static final String TAG = "LocationService";
+public class PlaceRecorder extends Service {
+    private static final String TAG = "PlaceRecorder";
     private android.location.LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 1000;
-    private static final float LOCATION_DISTANCE = 10f;
+    private static final int LOCATION_INTERVAL = 1000; //300000 = 5 minutes
+    private static final float LOCATION_DISTANCE = 0f;
     LocationListener[] mLocationListeners = null;
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
 
         /**
-         * Creates LocationService
+         * Creates PlaceRecorder
          *
          * @param provider GPS or Network
          * @param context
@@ -43,8 +45,7 @@ public class LocationService extends Service {
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
-                    AddressConverter.convertToAddressAndSave(new PointF(new Float(mLastLocation.getLatitude()),
-                            new Float(mLastLocation.getLongitude())), getApplicationContext());
+                    savePlace(location);
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -55,8 +56,16 @@ public class LocationService extends Service {
         public void onLocationChanged(Location location) {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
-            AddressConverter.convertToAddressAndSave(new PointF(new Float(mLastLocation.getLatitude()),
-                    new Float(mLastLocation.getLongitude())), getApplicationContext());
+            savePlace(location);
+            if (PlaceDao.getAll().size() == (10000 / LOCATION_INTERVAL)) { //24 hour interval
+                PlaceClusterizer.clusterize(PlaceDao.getAll());
+            }
+        }
+
+        private void savePlace(Location location) {
+            System.out.println(System.currentTimeMillis());
+            Place place = new Place(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+            place.save();
         }
 
         @Override
