@@ -19,6 +19,7 @@ import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+
 import fi.ohtu.mobilityprofile.remoteconnection.RequestHandler;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 
@@ -54,7 +55,7 @@ public class RequestHandlerTest {
     @Test
     public void insertsASearchedRouteToDatabase() {
         Bundle bundle = new Bundle();
-        bundle.putString(102+"", "Kumpula Naantali");
+        bundle.putString(102+"", "Kumpula|Naantali");
 
         Message msg = new Message();
         msg.what = 102;

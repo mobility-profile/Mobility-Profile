@@ -301,4 +301,3 @@ public class PrivacyFragment extends Fragment {
         return true;
     }
 }
-

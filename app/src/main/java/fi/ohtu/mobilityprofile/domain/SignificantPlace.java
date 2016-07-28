@@ -7,10 +7,10 @@ import com.orm.SugarRecord;
  * time and not just points on the road).
  */
 public class SignificantPlace extends SugarRecord {
+    private String address;
+    private Float latitude;
+    private Float longitude;
 
-    String address;
-    Float latitude;
-    Float longitude;
     /**
      *
      */
@@ -22,7 +22,8 @@ public class SignificantPlace extends SugarRecord {
      * @param latitude latitude of the location
      * @param longitude longitude of the location
      */
-    public SignificantPlace(Float latitude, Float longitude) {
+    public SignificantPlace(String address, Float latitude, Float longitude) {
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
     }
