@@ -42,6 +42,14 @@ public class SignificantPlaceDao {
     }
 
     /**
+     * Saves a Visit to the database.
+     * @param significantPlace
+     */
+    public void insertSignificantPlace(SignificantPlace significantPlace) {
+        significantPlace.save();
+    }
+
+    /**
      * Deletes all SignificantPlace data from the database
      */
     public static void deleteAllData() {

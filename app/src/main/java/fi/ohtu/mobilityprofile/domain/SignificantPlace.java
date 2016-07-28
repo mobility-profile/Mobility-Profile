@@ -22,7 +22,8 @@ public class SignificantPlace extends SugarRecord {
      * @param latitude latitude of the location
      * @param longitude longitude of the location
      */
-    public SignificantPlace(Float latitude, Float longitude) {
+    public SignificantPlace(String address, Float latitude, Float longitude) {
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
     }
