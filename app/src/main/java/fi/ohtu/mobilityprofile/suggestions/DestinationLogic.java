@@ -23,12 +23,13 @@ public class DestinationLogic {
     }
 
     /**
-     * Returns a list of most probable destinations, when the user is in startLocation.
+     * Returns a list of most probable destinations when the user is in startLocation.
+     * (Inside a city)
      *
      * @param startLocation Place where the user is starting
      * @return List of most probable destinations
      */
-    public ArrayList<String> getListOfMostLikelyDestinations(GPSPoint startLocation) {
+    public ArrayList<String> getListOfIntraCitySuggestions(GPSPoint startLocation) {
         this.latestStartLocation = startLocation;
 
         List<Suggestion> suggestions = new ArrayList<>();
@@ -44,6 +45,18 @@ public class DestinationLogic {
         }
 
         return destinations;
+    }
+
+    /**
+     * Returns a list of most probable destinations when the user is in startLocation.
+     * (Between cities)
+     *
+     * @param startLocation Location where the user is starting
+     * @return List of most probable destinations
+     */
+    public ArrayList<String> getListOfInterCitySuggestions(String startLocation) {
+        // TODO: Create inter city suggestions.
+        return new ArrayList<>();
     }
 
     /**
