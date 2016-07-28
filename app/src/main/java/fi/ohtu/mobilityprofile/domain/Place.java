@@ -6,10 +6,10 @@ import com.orm.SugarRecord;
  * Class is used to save raw gps data.
  */
 public class Place extends SugarRecord {
-
     long timestamp;
     Float latitude;
     Float longitude;
+
     /**
      *
      */

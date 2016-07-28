@@ -46,12 +46,12 @@ public class RemoteService extends Service {
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
                 suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this), calendarTagDao));
                 suggestionSources.add(new VisitSuggestions(placeDao));
+
                 suggestionSources.add(new RouteSuggestions(routeSearchDao));
                 suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));
                 DestinationLogic destinationLogic = new DestinationLogic(suggestionSources);
 
                 messenger = new Messenger(new RequestHandler(this, destinationLogic, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao));
-
             }
         }
 
