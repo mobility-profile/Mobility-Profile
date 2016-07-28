@@ -39,4 +39,9 @@ public class Place extends SugarRecord {
     public Float getLatitude() {
         return latitude;
     }
+
+    @Override
+    public String toString() {
+        return "lat="+latitude+" lon="+longitude;
+    }
 }

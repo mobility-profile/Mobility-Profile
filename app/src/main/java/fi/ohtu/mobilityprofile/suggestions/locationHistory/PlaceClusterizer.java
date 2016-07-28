@@ -33,8 +33,9 @@ public class PlaceClusterizer {
                         break;
                     }
                 }
-                if(timeSpentInCluster > timeSpentInClusterThreshold) {
-                    cluster.add(places.get(j));
+
+                cluster.add(places.get(j));
+                if(timeSpentInCluster > timeSpentInClusterThreshold && findPlacesWithinDistance(mean(cluster), significantPlaces, clusterRadius).isEmpty()) {
                     significantPlaces.add(mean(cluster));
                     modifiedPlaces.removeAll(findPlacesWithinDistance(mean(cluster), places, clusterRadius));
                 }
@@ -44,6 +45,7 @@ public class PlaceClusterizer {
             //System.out.println("SIGNIFICANT PLACE lat: " + place.getLatitude() + " lon: " + place.getLongitude());
             print(place, 0);
         }
+
         return significantPlaces;
     }
 
@@ -93,8 +95,4 @@ public class PlaceClusterizer {
         }
         return placesWithinDistance;
     }
-
-
-
-
 }
