@@ -105,14 +105,6 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Returns a message with data that tells the most likely destination calculated in Mobility Profile.
-     * @return Response message
-     */
-  /*  private Message processIntraCitySuggestionsRequest() {
-        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination(getStartLocation()));
-    }
-*/
-    /**
      * Returns a message with data that tells the most likely destinations calculated in Mobility Profile.
      * @return Response message
      */
