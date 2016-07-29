@@ -18,37 +18,52 @@ public class ProfileBackup {
 
     /**
      * Creates ProfileBackup.
-     * @param context context used for creating Toast messages
+     * @param context context for creating Toast messages
      */
     public ProfileBackup(Context context) {
         this.context = context;
     }
+
     /**
-     * Makes a copy of the database and saves it in SD card.
+     * Backs up the database to the device or imports it from the device.
+     * @param procedure back up or import
      */
-    public void exportDatabase() {
+    public void handleBackup(String procedure) {
+        Boolean sdAvailable = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        if (!sdAvailable) {
+            Toast.makeText(context, "Failed to " + procedure + " data. There is no SD card available.", Toast.LENGTH_LONG).show();
+            return;
+        }
         File sd = Environment.getExternalStorageDirectory();
         File data = Environment.getDataDirectory();
-        String currentDBPath = "/data/"+ "com.authorwjf.sqliteexport" +"/databases/" + DB_NAME;
-        String backupDBPath = DB_NAME;
-        File currentDB = new File(data, currentDBPath);
-        File backUpDB = new File(sd, backupDBPath);
+        String currentDBPath = null;
+        String backupDBPath = null;
+        File currentDB = null;
+        File backupDB = null;
+
+        switch (procedure) {
+            case "back up":
+                currentDBPath = "/data/" + context.getPackageName() + "/databases/" + DB_NAME;
+                backupDBPath = DB_NAME;
+                currentDB = new File(data, currentDBPath);
+                backupDB = new File(sd, backupDBPath);
+            case "import":
+                currentDBPath = DB_NAME;
+                backupDBPath = "/data/" + context.getPackageName() + "/databases/" + DB_NAME;
+                currentDB = new File(sd, currentDBPath);
+                backupDB = new File(data, backupDBPath);
+        }
 
         try {
             FileChannel source = new FileInputStream(currentDB).getChannel();
-            FileChannel destination = new FileOutputStream(backUpDB).getChannel();
+            FileChannel destination = new FileOutputStream(backupDB).getChannel();
             destination.transferFrom(source, 0, source.size());
             source.close();
             destination.close();
+            Toast.makeText(context, "Succeeded to " + procedure + " data!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Failed to " + procedure + " data.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    /**
-     * Imports an existing Mobility Profile database.
-     */
-    public void importDatabase() {
 
     }
 
