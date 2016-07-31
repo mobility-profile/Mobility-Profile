@@ -108,6 +108,7 @@ public class PrivacyFragment extends Fragment {
 
         compass = (ImageView) view.findViewById(R.id.tracking_on);
         compass.setAlpha(0.1f);
+        compass.setContentDescription("continuous location tracking is off");
 
         setChecked();
         setListenerForGPSCheckBox();
@@ -191,6 +192,7 @@ public class PrivacyFragment extends Fragment {
                 stopButton.setVisibility(View.VISIBLE);
                 compass.setAlpha(1.0f);
                 compass.startAnimation(animation);
+                compass.setContentDescription("continuous location tracking is on");
             }
         });
 
@@ -203,6 +205,7 @@ public class PrivacyFragment extends Fragment {
                 animation.cancel();
                 animation.reset();
                 compass.setAlpha(0.5f);
+                compass.setContentDescription("continuous location tracking is off");
             }
         });
     }
@@ -308,13 +311,13 @@ public class PrivacyFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
 
-            builder.setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
                     deleteAllDataFromDatabase();
                 }
             });
-            builder.setNegativeButton(R.string.reset_cancel, new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
                     // user clicked cancel button

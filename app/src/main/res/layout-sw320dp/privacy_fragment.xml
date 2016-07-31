@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_compass"
         android:layout_gravity="center_horizontal"
-        android:contentDescription="@string/tracking_on"
+        android:contentDescription="@string/tracking_on_hint"
         android:layout_marginTop="10dp" />
 
     <Button
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/tracking"
+        android:text="@string/tracking_start"
         android:layout_gravity="center_horizontal"
         android:background="@color/colorAccentSand"/>
 

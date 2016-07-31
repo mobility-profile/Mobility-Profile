@@ -3,9 +3,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
+    <ImageButton
+        android:id="@+id/favourite_auto_generated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_wizard"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/favourite_auto_generated_hint"
+        android:padding="5dp"/>
+
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/favourites_item"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -22,8 +31,17 @@
         android:src="@drawable/ic_action_edit"
         android:contentDescription="@string/favourites_edit_title"
         android:padding="5dp"
-        android:layout_gravity="end"
-        android:background="@color/colorWhite">
+        android:layout_gravity="end">
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/favourites_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_tick"
+        android:contentDescription="@string/favourites_edit_title"
+        android:padding="5dp"
+        android:layout_gravity="end">
     </ImageButton>
 
     <ImageButton
@@ -33,8 +51,7 @@
         android:src="@drawable/ic_action_trash"
         android:contentDescription="@string/favourites_delete_title"
         android:padding="5dp"
-        android:layout_gravity="end"
-        android:background="@color/colorWhite">
+        android:layout_gravity="end">
     </ImageButton>
 
 </GridLayout>

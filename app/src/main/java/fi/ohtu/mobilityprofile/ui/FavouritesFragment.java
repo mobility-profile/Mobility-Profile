@@ -70,6 +70,19 @@ public class FavouritesFragment extends Fragment {
             e.printStackTrace();
         }
 
+//        List<FavouritePlace> significantPlaces = new ArrayList<>();
+//        try {
+//            significantPlaces = FavouritePlace.listAll(FavouritePlace.class);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        for (FavouritePlace f : significantPlaces) {
+//            f.setName("auto");
+//        }
+//
+//        favouritePlaces.addAll(significantPlaces);
+
         final FavouritesListAdapter adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
         listView.setAdapter(adapter);
@@ -98,11 +111,13 @@ public class FavouritesFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
 
-                FavouritePlace fav = new FavouritePlace(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
-                fav.save();
-                updateView(adapter);
-                addFavouriteName.setText("");
-                addFavouriteAddress.setText("");
+                if (!addFavouriteName.getText().toString().equals("") && !addFavouriteAddress.getText().toString().equals("")) {
+                    FavouritePlace fav = new FavouritePlace(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
+                    fav.save();
+                    updateView(adapter);
+                    addFavouriteName.setText("");
+                    addFavouriteAddress.setText("");
+                }
             }
 
         });

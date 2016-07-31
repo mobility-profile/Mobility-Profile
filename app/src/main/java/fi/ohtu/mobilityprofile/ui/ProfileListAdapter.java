@@ -80,7 +80,7 @@ public class ProfileListAdapter extends ArrayAdapter<RouteSearch> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder
                         .setTitle(R.string.profile_item_delete_title)
-                        .setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
 
@@ -93,7 +93,7 @@ public class ProfileListAdapter extends ArrayAdapter<RouteSearch> {
                                 }
                             }
                         })
-                        .setNegativeButton(R.string.reset_cancel, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
