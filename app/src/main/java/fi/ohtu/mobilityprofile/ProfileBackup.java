@@ -26,7 +26,7 @@ public class ProfileBackup {
 
     /**
      * Backs up the database to the device or imports it from the device.
-     * @param procedure back up or import
+     * @param procedure "back up" or "import" in String
      */
     public void handleBackup(String procedure) {
         Boolean sdAvailable = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
