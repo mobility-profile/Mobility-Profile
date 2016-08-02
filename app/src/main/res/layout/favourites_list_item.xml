@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ImageButton
+        android:id="@+id/favourite_auto_generated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_wizard"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/favourite_auto_generated_hint"
+        android:padding="5dp"/>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/favourites_item"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textSize="16sp"
-        android:textColor="@color/colorPrimary">
-
+        android:textColor="@color/colorPrimaryDark">
     </TextView>
 
     <ImageButton
         android:id="@+id/favourites_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_edit"
+        android:src="@drawable/ic_action_edit"
         android:contentDescription="@string/favourites_edit_title"
         android:padding="5dp"
-        android:layout_gravity="end">
+        android:layout_gravity="end"
+        android:background="@color/colorWhite">
     </ImageButton>
 
     <ImageButton
         android:id="@+id/favourites_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_delete"
+        android:src="@drawable/ic_action_trash"
         android:contentDescription="@string/favourites_delete_title"
         android:padding="5dp"
-        android:layout_gravity="end">
+        android:layout_gravity="end"
+        android:background="@color/colorWhite">
     </ImageButton>
 
 </GridLayout>

@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.ui;
+package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.orm.query.Select;
@@ -16,6 +15,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.ui.list_adapters.ProfileListAdapter;
 
 /**
  * The class creates a component called ProfileFragment.
@@ -65,14 +65,7 @@ public class ProfileFragment extends Fragment {
         List<RouteSearch> searches = new ArrayList<>();
         searches = Select.from(RouteSearch.class).orderBy("timestamp DESC").list();
 
-        ArrayList<String> routes = new ArrayList<>();
-
-        for (RouteSearch r: searches) {
-            routes.add(r.getStartlocation() + "  ->  " + r.getDestination());
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.profile_list_item, routes);
-
+        ProfileListAdapter adapter = new ProfileListAdapter(context, R.layout.profile_list_item, searches, this);
         ListView listView = (ListView) view.findViewById(R.id.profile_listView);
         listView.setAdapter(adapter);
     }

@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.ui;
+package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,7 +23,7 @@ public class InfoFragment extends Fragment {
     /**
      * The position of the fragment in the "queue" of all fragments.
      */
-    private static final int page = 2;
+    private static final int page = 3;
 
     /**
      * Creates a new instance of InfoFragment.

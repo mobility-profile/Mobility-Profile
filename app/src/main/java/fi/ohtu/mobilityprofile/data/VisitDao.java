@@ -15,7 +15,7 @@ public class VisitDao {
 
     /**
      * Creates VisitDao.
-     * @param significantPlaceDao
+     * @param significantPlaceDao SignificantPlaceDao
      */
     public VisitDao(SignificantPlaceDao significantPlaceDao) {
         this.significantPlaceDao = significantPlaceDao;
@@ -27,7 +27,7 @@ public class VisitDao {
 
     /**
      * Returns a list of all Visits.
-     * @return
+     * @return list of all visits
      */
     public List<Visit> getAllVisitsToSignificantPlaces() {
         return Select.from(Visit.class)
@@ -43,12 +43,15 @@ public class VisitDao {
 
     /**
      * Saves a Visit to the database.
-     * @param visit
+     * @param visit Visit to be saved
      */
     public void insertVisit(Visit visit) {
         visit.save();
     }
 
+    /**
+     * Deletes all Visits from the database
+     */
     public void deleteAllData() {
         Visit.deleteAll(Visit.class);
     }

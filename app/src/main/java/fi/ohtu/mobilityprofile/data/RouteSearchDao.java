@@ -89,6 +89,19 @@ public class RouteSearchDao {
     }
 
     /**
+     * Returns all saved routesearches.
+     *
+     * @return List of routesearches
+     */
+    public List<RouteSearch> getAllRouteSearches() {
+        List<RouteSearch> searches = Select.from(RouteSearch.class)
+                .orderBy("timestamp DESC")
+                .list();
+
+        return searches;
+    }
+
+    /**
      * Saves a routesearch to the database.
      *
      * @param routeSearch routesearch to be saved

@@ -93,7 +93,6 @@ public class RouteSearch extends SugarRecord {
 
     @Override
     public String toString() {
-        return "Start: " + startlocation + ", " +  startlatitude + ", " + startlongitude +
-                ". Destination: " + destination + ", " + destinationlatitude + ", " + destinationlongitude;
+        return "Start: " + startlocation + ". Destination: " + destination;
     }
 }

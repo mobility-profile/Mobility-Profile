@@ -1,5 +1,8 @@
 package fi.ohtu.mobilityprofile.data;
 
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
@@ -10,6 +13,11 @@ import fi.ohtu.mobilityprofile.domain.SignificantPlace;
  */
 public class SignificantPlaceDao {
 
+    /**
+     * Returns a SignificantPlace closest to given coordinates
+     * @param coordinate coordinates of the given location
+     * @return SignificantPlace
+     */
     public SignificantPlace getSignificantPlaceClosestTo(Coordinate coordinate) {
         List<SignificantPlace> significantPlaces = getAll();
         SignificantPlace result = null;
@@ -59,12 +67,56 @@ public class SignificantPlaceDao {
     }
 
     /**
-     * Saves a Visit to the database.
-     * @param significantPlace
+     * Saves a SignificantPlace to the database.
+     * @param significantPlace SignificantPlace to be saved
      */
     public void insertSignificantPlace(SignificantPlace significantPlace) {
         //significantPlace.getCoordinate().save();
         significantPlace.save();
+    }
+
+    /**
+     * Finds a SignificantPlace by name
+     * @param name name of the significantPlace
+     * @return SignificantPlace with the given name
+     */
+
+    public SignificantPlace getSignificantPlaceByName(String name) {
+        List<SignificantPlace> places = Select.from(SignificantPlace.class)
+                .where(Condition.prop("name").eq(name))
+                .limit("1")
+                .list();
+
+        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+
+        return  (places.size() == 1) ? places.get(0) : null;
+    }
+
+    /**
+     * Finds a significantPlace by name
+     * @param address address of the significantPlace
+     * @return SignificantPlace with the given address
+     */
+    public SignificantPlace getSignificantPlaceByAddress(String address) {
+        List<SignificantPlace> places = Select.from(SignificantPlace.class)
+                .where(Condition.prop("address").eq(address))
+                .limit("1")
+                .list();
+
+        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+
+        return  (places.size() == 1) ? places.get(0) : null;
+    }
+
+    /**
+     * Deletes a SignificantPlace by address
+     * @param address address of the significantPlace to be deleted
+     */
+    public void deleteSignificantPlaceByAddress(String address) {
+        SignificantPlace place = getSignificantPlaceByAddress(address);
+        if (place != null) {
+            place.delete();
+        }
     }
 
     /**

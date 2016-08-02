@@ -41,7 +41,7 @@ public class CalendarSuggestions implements SuggestionSource {
         }
 
         // Then loop through all day event locations
-        for (String eventLocation : calendar.getEventLocations()) {
+        for (String eventLocation : calendar.getAllDayEventLocations()) {
             if (suggestions.size() >= 3) {
                 // Only add all day event locations to the list if there are less than 3 events
                 // added.
@@ -56,17 +56,22 @@ public class CalendarSuggestions implements SuggestionSource {
 
     /**
      * Creates a suggestion object from the event location.
-     * Changes the name of the location to a calendar tag if there is one with the given location as a key.
+     * Changes the name of the location to a calendar tag if there is one with the given location
+     * as a key.
      *
      * @param eventLocation Location of the event
      * @return Suggestion object
      */
     private Suggestion createSuggestion(String eventLocation) {
+        // TODO: Fix calendar tags.
+        // This functionality isn't working currently, as it makes mistakes too easily.
+        /*
         CalendarTag calendarTag = calendarTagDao.findTheMostUsedTag(eventLocation);
 
         if (calendarTag != null) {
             eventLocation = calendarTag.getValue();
         }
+        */
 
         return new Suggestion(eventLocation, SuggestionAccuracy.VERY_HIGH, CALENDAR_SUGGESTION);
     }

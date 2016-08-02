@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.ui;
+package fi.ohtu.mobilityprofile.ui.list_adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
+import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
  * This class adapts a list of FavouritePlace to ListView.
@@ -31,6 +33,11 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
     private int resourceId;
     private Context context;
     private Fragment fragment;
+
+    private ImageButton editButton;
+    private ImageButton verifyButton;
+    private ImageButton deleteButton;
+    private ImageButton wizard;
 
     /**
      * Creates favouritesListAdapter
@@ -49,29 +56,40 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
         View view = convertView;
         if (view == null) {
             view = ((Activity) context).getLayoutInflater().inflate(resourceId, parent, false);
         }
 
         TextView listItemText = (TextView) view.findViewById(R.id.favourites_item);
+        deleteButton = (ImageButton)view.findViewById(R.id.favourites_delete);
+        editButton = (ImageButton)view.findViewById(R.id.favourites_edit);
+        verifyButton = (ImageButton)view.findViewById(R.id.favourites_verify);
+        wizard = (ImageButton) view.findViewById(R.id.favourite_auto_generated);
+
+        setColorsForFavourite(view);
+        setVisibilitiesForFavourite();
+
+
         listItemText.setText(items.get(position).toString());
-
-        ImageButton deleteButton = (ImageButton)view.findViewById(R.id.favourites_delete);
-        ImageButton editButton = (ImageButton)view.findViewById(R.id.favourites_edit);
-
-        setListeners(position, deleteButton, editButton);
+        setListeners(position);
 
         return view;
     }
 
+
     /**
      * Sets listeners for edit and delete buttons.
      * @param position the position of an item in the list
-     * @param deleteButton item's delete button
-     * @param editButton item's edit button
      */
-    private void setListeners(final int position, ImageButton deleteButton, ImageButton editButton) {
+    private void setListeners(final int position) {
+
+        deleteButtonListener(position);
+        editButtonListener(position);
+    }
+
+    private void deleteButtonListener(final int position) {
         deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -79,7 +97,7 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder
                         .setTitle(R.string.favourites_delete_title)
-                        .setPositiveButton(R.string.reset_ok, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
 
@@ -92,7 +110,7 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
                                 }
                             }
                         })
-                        .setNegativeButton(R.string.reset_cancel, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -103,7 +121,9 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
 
             }
         });
+    }
 
+    private void editButtonListener(final int position) {
         editButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -142,6 +162,7 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
                 dialog.show();
             }
         });
+
     }
 
     /**
@@ -160,6 +181,7 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
         }
         fav.save();
     }
+
 
     /**
      * Returns the favourite place by the position.
@@ -182,6 +204,19 @@ public class FavouritesListAdapter extends ArrayAdapter<FavouritePlace> {
         tr.attach(fragment);
         tr.commit();
         notifyDataSetChanged();
+    }
+
+    private void setVisibilitiesForFavourite() {
+        wizard.setVisibility(View.INVISIBLE);
+        verifyButton.setVisibility(View.GONE);
+        editButton.setVisibility(View.VISIBLE);
+    }
+
+    private void setColorsForFavourite(View view) {
+        int white = ContextCompat.getColor(context, R.color.colorWhite);
+        view.setBackgroundColor(white);
+        editButton.setBackgroundColor(white);
+        deleteButton.setBackgroundColor(white);
     }
 
     @Override
