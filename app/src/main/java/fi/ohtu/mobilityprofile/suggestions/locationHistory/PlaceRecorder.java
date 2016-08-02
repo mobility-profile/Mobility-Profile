@@ -107,7 +107,7 @@ public class PlaceRecorder extends Service {
             mLastLocation = location;
             savePlace(location);
             if (PlaceDao.getAll().size() == (10000 / LOCATION_INTERVAL)) { //24 hour interval
-                PlaceClusterizer.clusterize(PlaceDao.getAll());
+                //PlaceClusterizer.updateVisitHistory(PlaceDao.getAll());
             }
         }
 

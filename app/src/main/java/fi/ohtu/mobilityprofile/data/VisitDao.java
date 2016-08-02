@@ -35,6 +35,12 @@ public class VisitDao {
                 .list();
     }
 
+    public Visit getLastVisit() {
+        return Select.from(Visit.class)
+                .orderBy("timestamp DESC")
+                .first();
+    }
+
     /**
      * Saves a Visit to the database.
      * @param visit

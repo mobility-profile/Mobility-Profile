@@ -2,8 +2,6 @@ package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
 
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
-
 /**
  * Class is used to save visits to SignificantPlaces.
  */
@@ -43,11 +41,18 @@ public class Visit extends SugarRecord {
         return significantPlace;
     }
 
-    public String getLocation() {
-        return significantPlace.getLocation();
+    public String getAddress() {
+        return significantPlace.getAddress();
     }
 
     public void setSignificantPlace(SignificantPlace place) {
         this.significantPlace = place;
     }
+
+    @Override
+    public long save() {
+        this.significantPlace.save();
+        return super.save();
+    }
+
 }

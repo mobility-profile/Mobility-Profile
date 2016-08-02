@@ -5,13 +5,26 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
 import static org.junit.Assert.*;
 
+import fi.ohtu.mobilityprofile.BuildConfig;
+import fi.ohtu.mobilityprofile.MainActivityStub;
+import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceClusterizer;
 
 /**
@@ -26,7 +39,13 @@ import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceClusterizer;
  * find: lat="([\S]*?)" lon="([\S]*?)">
  * replace: $1f, $2f),
  */
+
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class PlaceClusterizerTest {
+
+    private SignificantPlaceDao significantPlaceDao;
+    private VisitDao visitDao;
 
     private List<Place> places;
     private List<Place> places2;
@@ -46,11 +65,23 @@ public class PlaceClusterizerTest {
         return 0;
     }
 
+    private static String getTimeFormatted(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date now = new Date(timestamp);
+        String strDate = sdf.format(now);
+        return strDate;
+    }
+
     @Before
     public void setUp() {
 
+        Robolectric.setupActivity(MainActivityStub.class);
+
+        this.significantPlaceDao = new SignificantPlaceDao();
+        this.visitDao = new VisitDao();
+
         // Caloniuksenkatu 9, Mannerheimintie 3, Kaivokatu 1, Tallinnanaukio 3, Lokitie 30, Myrskyläntie 22, Jokisuuntie 13, Siltavoudintie 19
-        this.places = createListOfPlaces(
+        this.places = deleteRandomPlacesFromList(createListOfPlaces(
                 new Place(getTimeStamp("2016-07-27T06:58:38Z"), 60.174633f, 24.9209466f),
                 new Place(getTimeStamp("2016-07-27T07:02:03Z"), 60.1745624f, 24.9209915f),
                 new Place(getTimeStamp("2016-07-27T07:03:35Z"), 60.1746326f, 24.9210397f),
@@ -366,7 +397,7 @@ public class PlaceClusterizerTest {
                 new Place(getTimeStamp("2016-07-27T20:55:02Z"), 60.2094635f, 25.1271615f),
                 new Place(getTimeStamp("2016-07-27T20:56:03Z"), 60.2095214f, 25.1271014f),
                 new Place(getTimeStamp("2016-07-27T20:57:31Z"), 60.2095214f, 25.127101f)
-        );
+        ), -1);
 
         //messeniuksenkatu 5, caloniuksenkatu 9, tenholantie 16
         this.places2 = createListOfPlaces(
@@ -893,12 +924,29 @@ public class PlaceClusterizerTest {
 
     @Test
     public void clusterizerFindsCorrectSignificantPlaces() {
-        PlaceClusterizer.clusterize(this.places);
+        PlaceClusterizer placeClusterizer = new PlaceClusterizer();
+        placeClusterizer.updateVisitHistory(this.places);
+        List<Visit> visits = this.visitDao.getAllVisitsToSignificantPlaces();
+        Collections.reverse(visits);
+        for(Visit visit : visits) {
+            System.out.println("<trkpt lat=\"" + visit.getSignificantPlace().getCoordinate().getLatitude() + "\" lon=\"" + visit.getSignificantPlace().getCoordinate().getLongitude() + "\"><time>" + getTimeFormatted(visit.getTimestamp()) + "</time><src>network</src></trkpt>");
+        }
         assertTrue(true);
     }
 
     private List<Place> createListOfPlaces(Place... places) {
         return new ArrayList<Place>(Arrays.asList(places));
+    }
+
+    private List<Place> deleteRandomPlacesFromList(List<Place> places, double percentage) {
+        Random random = new Random();
+        List<Place> prunedList = new ArrayList<>();
+        for(Place place : places) {
+            if(random.nextDouble() > percentage) {
+                prunedList.add(place);
+            }
+        }
+        return prunedList;
     }
 
 }
