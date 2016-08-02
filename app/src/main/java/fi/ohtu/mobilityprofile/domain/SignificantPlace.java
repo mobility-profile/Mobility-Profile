@@ -36,5 +36,9 @@ public class SignificantPlace extends SugarRecord {
         return latitude;
     }
 
-    public String getLocation() { return address; }
+    public String getAddress() { return address; }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

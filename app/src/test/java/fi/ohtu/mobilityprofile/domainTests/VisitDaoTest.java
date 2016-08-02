@@ -9,7 +9,6 @@ import org.robolectric.annotation.Config;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.domain.Visit;
@@ -30,7 +29,7 @@ public class VisitDaoTest {
     @Test
     public void testInsert() {
         visitDao.insertVisit(new Visit(1223, new SignificantPlace("Kumpulan kampus", new Float(123), new Float(234))));
-        assertEquals("Kumpulan Kampus", visitDao.getAllVisitsToSignificantPlaces().get(0).getSignificantPlace().getLocation());
+        assertEquals("Kumpulan Kampus", visitDao.getAllVisitsToSignificantPlaces().get(0).getSignificantPlace().getAddress());
     }
 
     @Test
