@@ -10,6 +10,8 @@ public class SignificantPlace extends SugarRecord {
     private String address;
     private Float latitude;
     private Float longitude;
+    private boolean favourite;
+    private boolean removed;
 
     /**
      *
@@ -19,13 +21,16 @@ public class SignificantPlace extends SugarRecord {
 
     /**
      * Creates SignificantPlace.
-     * @param latitude latitude of the location
+     *
+     * @param latitude  latitude of the location
      * @param longitude longitude of the location
      */
     public SignificantPlace(String address, Float latitude, Float longitude) {
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.favourite = false;
+        this.removed = false;
     }
 
     public Float getLongitude() {
@@ -36,5 +41,23 @@ public class SignificantPlace extends SugarRecord {
         return latitude;
     }
 
-    public String getLocation() { return address; }
+    public String getLocation() {
+        return address;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
+    }
 }

@@ -48,7 +48,7 @@ public class CalendarConnection {
      * Queries events from all calendars on the user's device.
      */
     private void queryEvents() {
-        Cursor cursor = null;
+        Cursor cursor;
         ContentResolver cr = context.getContentResolver();
         Uri eventUri = buildUri();
 
@@ -71,9 +71,8 @@ public class CalendarConnection {
         Uri.Builder eventsUriBuilder = CalendarContract.Instances.CONTENT_URI.buildUpon();
         ContentUris.appendId(eventsUriBuilder, now);
         ContentUris.appendId(eventsUriBuilder, endTime);
-        Uri eventUri = eventsUriBuilder.build();
 
-        return eventUri;
+        return eventsUriBuilder.build();
     }
 
     /**
@@ -84,7 +83,7 @@ public class CalendarConnection {
         while (cursor.moveToNext()) {
             String location = cursor.getString(LOCATION);
             if (location != null) {
-                if (cursor.getString(ALL_DAY).equals("1")) {
+                if (cursor.getString(ALL_DAY).equals("1469491200000")) {
                     allDayEventLocations.add(location);
                 } else {
                     eventLocations.add(location);
