@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 //TODO
                 return true;
             case R.id.action_backup:
-                //TODO
+                new ProfileBackup(this).handleBackup("back up");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -36,8 +36,8 @@ public class ProfileBackup {
         }
         File sd = Environment.getExternalStorageDirectory();
         File data = Environment.getDataDirectory();
-        String currentDBPath = null;
-        String backupDBPath = null;
+        String currentDBPath;
+        String backupDBPath;
         File currentDB = null;
         File backupDB = null;
 
@@ -47,11 +47,13 @@ public class ProfileBackup {
                 backupDBPath = DB_NAME;
                 currentDB = new File(data, currentDBPath);
                 backupDB = new File(sd, backupDBPath);
+                break;
             case "import":
                 currentDBPath = DB_NAME;
                 backupDBPath = "/data/" + context.getPackageName() + "/databases/" + DB_NAME;
                 currentDB = new File(sd, currentDBPath);
                 backupDB = new File(data, backupDBPath);
+                break;
         }
 
         try {
@@ -62,6 +64,7 @@ public class ProfileBackup {
             destination.close();
             Toast.makeText(context, "Succeeded to " + procedure + " data!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
+            e.printStackTrace();
             Toast.makeText(context, "Failed to " + procedure + " data.", Toast.LENGTH_SHORT).show();
         }
 
