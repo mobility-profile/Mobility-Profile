@@ -12,3 +12,5 @@
 [Digitransitin modattu versio](https://github.com/jussiviinikka/digitransit-ui)
 
 [Prosessiesittely](https://docs.google.com/presentation/d/1m_QtfJHZFI_l9gsEkPnJqHAfEKce4BovLgFwExHvbUc/edit?usp=sharing)
+
+[iOS-Mobility Profile](https://github.com/RonjaO/Mobility-Profile-iOS)

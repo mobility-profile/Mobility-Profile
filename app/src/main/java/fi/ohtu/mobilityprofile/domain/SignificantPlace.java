@@ -9,6 +9,8 @@ import com.orm.SugarRecord;
 public class SignificantPlace extends SugarRecord {
     private String name;
     private String address;
+    private boolean favourite;
+    private boolean removed;
     private Coordinate coordinate;
 
     /**
@@ -26,6 +28,8 @@ public class SignificantPlace extends SugarRecord {
     public SignificantPlace(String name, String address, Coordinate coordinate) {
         this.name = name;
         this.address = address;
+        this.favourite = false;
+        this.removed = false;
         this.coordinate = coordinate;
     }
 
@@ -60,6 +64,26 @@ public class SignificantPlace extends SugarRecord {
 
         return coordinate.equals(that.coordinate);
 
+    }
+
+    public String getLocation() {
+        return address;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 
     public void setAddress(String address) {
