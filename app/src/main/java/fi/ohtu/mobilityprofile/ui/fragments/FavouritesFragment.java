@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.ui;
+package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,14 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
+import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.ui.list_adapters.FavouritesListAdapter;
+import fi.ohtu.mobilityprofile.ui.list_adapters.SignificantsListAdapter;
 
 /**
  * The class creates a component called FavouritesFragment.
@@ -63,30 +68,80 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
 
+        setFavouritesListView(view);
+        setSuggestionsListView(view);
+    }
+
+    private void setFavouritesListView(View view) {
+        List<FavouritePlace> favouritePlaces = getFavouritePlaces();
+
+        final FavouritesListAdapter adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
+        ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
+        listView.setAdapter(adapter);
+
+        addButtonListener(view, adapter);
+    }
+
+    private void setSuggestionsListView(View view) {
+        List<SignificantPlace> significantPlaces = getSignificantPlaces();
+
+        final SignificantsListAdapter adapter = new SignificantsListAdapter(context, R.layout.favourites_list_item, significantPlaces, this);
+        ListView listView = (ListView) view.findViewById(R.id.significants_listView);
+        listView.setAdapter(adapter);
+        listView.setVisibility(View.GONE);
+
+        switchListener(view, listView);
+    }
+
+    private List<SignificantPlace> getSignificantPlaces() {
+        List<SignificantPlace> significantPlaces = new ArrayList<>();
+        try {
+            significantPlaces = SignificantPlace.listAll(SignificantPlace.class);
+            List<SignificantPlace> remove = new ArrayList<>();
+
+            for (SignificantPlace s : significantPlaces) {
+                if (s.isFavourite() || s.isRemoved()) {
+                    remove.add(s);
+                }
+            }
+
+            significantPlaces.removeAll(remove);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return significantPlaces;
+    }
+
+    private List<FavouritePlace> getFavouritePlaces() {
         List<FavouritePlace> favouritePlaces = new ArrayList<>();
         try {
             favouritePlaces = FavouritePlace.listAll(FavouritePlace.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return favouritePlaces;
+    }
 
-//        List<FavouritePlace> significantPlaces = new ArrayList<>();
-//        try {
-//            significantPlaces = FavouritePlace.listAll(FavouritePlace.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        for (FavouritePlace f : significantPlaces) {
-//            f.setName("auto");
-//        }
-//
-//        favouritePlaces.addAll(significantPlaces);
 
-        final FavouritesListAdapter adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
-        ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
-        listView.setAdapter(adapter);
-        addListenerOnButton(view, adapter);
+    /**
+     * Listener for see suggestions switch
+     * @param view view inside the fragment
+     * @param listView the list of suggestions
+     */
+    private void switchListener(View view, final ListView listView) {
+        Switch seeSuggestions = (Switch) view.findViewById(R.id.switchSuggestions);
+
+        seeSuggestions.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    listView.setVisibility(View.VISIBLE);
+                } else {
+                    listView.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -100,7 +155,7 @@ public class FavouritesFragment extends Fragment {
      * @param view view inside the fragment
      * @param adapter FavouritesListAdapter
      */
-    private void addListenerOnButton(final View view, final FavouritesListAdapter adapter) {
+    private void addButtonListener(final View view, final FavouritesListAdapter adapter) {
 
         Button button = (Button) view.findViewById(R.id.add_favourite_button);
         final EditText addFavouriteName = (EditText) view.findViewById(R.id.add_favourite_name);

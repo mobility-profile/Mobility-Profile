@@ -1,5 +1,6 @@
 package fi.ohtu.mobilityprofile.remoteconnection;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
@@ -17,8 +19,7 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.domain.Visit;
-import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
@@ -28,9 +29,10 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
+    private Context context;
     private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
-    private VisitDao visitDao;
+    private PlaceDao placeDao;
     private RouteSearchDao routeSearchDao;
     private FavouritePlaceDao favouritePlaceDao;
 
@@ -39,15 +41,35 @@ public class RequestHandler extends Handler {
      *
      * @param mobilityProfile Journey planner that provides the logic for our app
      * @param calendarTagDao DAO for calendar tags
-     * @param visitDao DAO for visits
+     * @param placeDao DAO for visits
      * @param routeSearchDao DAO for routeSearch
      * @param favouritePlaceDao DAO for favourite places
      */
     public RequestHandler(DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
-                          VisitDao visitDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
+                          PlaceDao placeDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;
-        this.visitDao = visitDao;
+        this.placeDao = placeDao;
+        this.routeSearchDao = routeSearchDao;
+        this.favouritePlaceDao = favouritePlaceDao;
+    }
+
+    /**
+     * Creates the RequestHandler.
+     *
+     * @param context for AddressConverter
+     * @param mobilityProfile Journey planner that provides the logic for our app
+     * @param calendarTagDao DAO for calendar tags
+     * @param placeDao DAO for visits
+     * @param routeSearchDao DAO for routeSearch
+     * @param favouritePlaceDao DAO for favourite places
+     */
+    public RequestHandler(Context context, DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
+                          PlaceDao placeDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
+        this.context = context;
+        this.mobilityProfile = mobilityProfile;
+        this.calendarTagDao = calendarTagDao;
+        this.placeDao = placeDao;
         this.routeSearchDao = routeSearchDao;
         this.favouritePlaceDao = favouritePlaceDao;
     }
@@ -129,12 +151,12 @@ public class RequestHandler extends Handler {
      * @return Start location address
      */
     private String getStartLocation() {
-        Visit lastKnownVisit = visitDao.getLatestVisit();
-        if (lastKnownVisit == null) {
+        Place lastKnownPlace = placeDao.getLatestVisit();
+        if (lastKnownPlace == null) {
             // TODO something better
             return "None";
         } else {
-            return lastKnownVisit.getOriginalLocation();
+            return "Kumpula";
         }
     }
 

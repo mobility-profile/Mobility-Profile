@@ -1,36 +1,86 @@
-package fi.ohtu.mobilityprofile.location;
+package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PointF;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.PermissionManager;
+import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
- * LocationService listens to location changes.
+ * PlaceRecorder listens to location changes.
  */
-public class LocationService extends Service {
-    private static final String TAG = "LocationService";
-    private android.location.LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 1000;
-    private static final float LOCATION_DISTANCE = 10f;
-    LocationListener[] mLocationListeners = null;
+public class PlaceRecorder extends Service {
+    private static final int NOTIFICATION_ID = 120;
+    private static final String ACTION_STOP_SERVICE = "StopIt!";
+    private static final String TAG = "PlaceRecorder";
+
+    private static final int LOCATION_INTERVAL = 2 * 60 * 1000;
+    private static final float LOCATION_DISTANCE = 0f;
+
+    private android.location.LocationManager mLocationManager;
+    private LocationListener[] mLocationListeners = null;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG, "onStartCommand");
+
+        if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
+            stopSelf();
+            return START_STICKY;
+        }
+
+        // Create intent for the service
+        Intent notificationIntent = new Intent(this, PlaceRecorder.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        // Create the notification
+        Notification.Builder notification = new Notification.Builder(this)
+                .setContentTitle("Location tracking")
+                .setContentText("Mobility Profile is tracking your location")
+                .setSmallIcon(R.mipmap.logo)
+                .setContentIntent(pendingIntent)
+                .setOngoing(true);
+
+        // Create intent for resuming to app when user clicks on the notification
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentIntent(resultPendingIntent);
+
+        // Create intent for stopping the service
+        Intent actionIntent = new Intent(this, PlaceRecorder.class);
+        actionIntent.setAction(ACTION_STOP_SERVICE);
+        PendingIntent actionPendingIntent = PendingIntent.getService(this, 0, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        notification.addAction(R.mipmap.logo, "Stop tracking", actionPendingIntent);
+
+        // Start the service
+        startForeground(NOTIFICATION_ID, notification.build());
+
+        return START_STICKY;
+    }
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
 
         /**
-         * Creates LocationService
+         * Creates PlaceRecorder
          *
          * @param provider GPS or Network
          * @param context
@@ -44,8 +94,7 @@ public class LocationService extends Service {
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
-                    AddressConverter.convertToAddressAndSave(new PointF(new Float(mLastLocation.getLatitude()),
-                            new Float(mLastLocation.getLongitude())), getApplicationContext());
+                    savePlace(location);
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -56,8 +105,16 @@ public class LocationService extends Service {
         public void onLocationChanged(Location location) {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
-            AddressConverter.convertToAddressAndSave(new PointF(new Float(mLastLocation.getLatitude()),
-                    new Float(mLastLocation.getLongitude())), getApplicationContext());
+            savePlace(location);
+            if (PlaceDao.getAll().size() == (10000 / LOCATION_INTERVAL)) { //24 hour interval
+                //PlaceClusterizer.updateVisitHistory(PlaceDao.getAll());
+            }
+        }
+
+        private void savePlace(Location location) {
+            System.out.println(System.currentTimeMillis());
+            Place place = new Place(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+            place.save();
         }
 
         @Override
@@ -100,14 +157,6 @@ public class LocationService extends Service {
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "onStartCommand");
-        super.onStartCommand(intent, flags, startId);
-
-        return START_STICKY;
     }
 
     @Override

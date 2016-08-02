@@ -1,97 +1,58 @@
 package fi.ohtu.mobilityprofile.data;
 
-import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.UserLocation;
+import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
  * DAO used for saving and reading Visits to/from the database.
  */
 public class VisitDao {
-    private UserLocationDao userLocationDao;
+    private SignificantPlaceDao significantPlaceDao;
 
     /**
      * Creates VisitDao.
-     * @param userLocationDao 
+     * @param significantPlaceDao SignificantPlaceDao
      */
-    public VisitDao(UserLocationDao userLocationDao) {
-        this.userLocationDao = userLocationDao;
+    public VisitDao(SignificantPlaceDao significantPlaceDao) {
+        this.significantPlaceDao = significantPlaceDao;
+    }
+
+    public VisitDao() {
+
     }
 
     /**
-     * Returns the latest visit from the database, or null if there is none.
-     *
-     * @return Latest visit
+     * Returns a list of all Visits.
+     * @return list of all visits
      */
-    public Visit getLatestVisit() {
-        return getLatestVisit(Select.from(Visit.class)
-                .orderBy("timestamp DESC")
-                .limit("1"));
-    }
-
-    /**
-     * Returns the latest visit from the database based on custom query,
-     * or null if there is none.
-     * @param query custom query
-     * @return latest visit
-     */
-    private Visit getLatestVisit(Select<Visit> query) {
-        List<Visit> visits = query.list();
-
-        assert visits.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-
-        if (visits.size() == 0) {
-            return null;
-        }
-
-        return visits.get(0);
-    }
-
-    /**
-     * Returns a list of visits where the nearestKnownLocation matches the given one.
-     *
-     * @param location Location of the visits
-     * @return List of visits
-     */
-    public List<Visit> getVisitsByLocation(String location) {
-        List<Visit> visits = Select.from(Visit.class)
-                .where(Condition.prop("original_location").eq(location))
-                .orderBy("timestamp DESC")
-                .list();
-
-        return visits;
-    }
-
-    /**
-     * Returns a list of all visits.
-     * @return list of visits
-     */
-    public List<Visit> getAllVisits() {
+    public List<Visit> getAllVisitsToSignificantPlaces() {
         return Select.from(Visit.class)
                 .orderBy("timestamp DESC")
                 .list();
     }
 
+    public Visit getLastVisit() {
+        return Select.from(Visit.class)
+                .orderBy("timestamp DESC")
+                .first();
+    }
+
     /**
-     * Saves a visit to the database. Also sets the visit's nearest known location.
-     *
+     * Saves a Visit to the database.
      * @param visit Visit to be saved
      */
     public void insertVisit(Visit visit) {
-        UserLocation nearestLocation = userLocationDao.getNearestLocation(visit.getOriginalLocation(), 50);
-        visit.setNearestKnownLocation(nearestLocation);
         visit.save();
     }
 
     /**
-     * Deletes all Visit data from the database
+     * Deletes all Visits from the database
      */
-    public static void deleteAllData() {
-        UserLocationDao.deleteAllData();
+    public void deleteAllData() {
         Visit.deleteAll(Visit.class);
     }
 }

@@ -5,7 +5,6 @@
     <string name="allow_access">Allow Mobility Profile access to:</string>
     <string name="checkbox_GPS">GPS</string>
     <string name="checkbox_calendar">Read calendar</string>
-
     <!--Tracking-->
     <string name="tracking_title">Location tracking</string>
     <string name="tracking_start">Start</string>
@@ -29,10 +28,12 @@
     <string name="favourites_edit_title">Edit this favourite place</string>
     <string name="favourites_delete_title">Delete this favourite place?</string>
     <string name="favourites_verify_title">Verify this suggested place</string>
+    <string name="favourites_auto_generated_delete_title">Delete this suggestion?</string>
     <string name="favourites_name_hint">Name</string>
     <string name="favourites_address_hint">Address</string>
     <string name="favourites_add_button">Add</string>
     <string name="favourites_delete_button">Delete</string>
+    <string name="favourites_see_suggestions">See new favourite place suggestions</string>
     <string name="favourite_auto_generated_hint">This is auto generated suggestion of a favourite place</string>
 
     <string name="favourite_auto_generated_title">Auto generated suggestion</string>
@@ -47,7 +48,8 @@
 
     <string name="reset_button_text">Reset app and delete all data</string>
     <string name="reset_title">Delete all collected data?</string>
-    <string name="reset_message">Deletes all collected data, including visited locations, searched routes, and favourite places.</string>
+    <string name="reset_message">Deletes all collected data, including visited significantPlaces, searched routes, and favourite places.</string>
+
 
     <string name="custom_permission_info">Allows the software to use information provided by Mobility Profile. Exact data collected by Mobility Profile won\'t be shared, only suggestions Mobility Profile is giving based on that data.</string>
     <string name="conflict_header">The following applications have defined conflicting permissions with Mobility Profile:\n</string>
