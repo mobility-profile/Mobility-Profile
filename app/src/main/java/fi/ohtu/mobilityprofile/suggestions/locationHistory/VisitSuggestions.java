@@ -74,19 +74,20 @@ public class VisitSuggestions implements SuggestionSource {
     private void calculateNextDestinations(String startLocation) {
 
         nextDestinations = new HashMap<>();
-        String previousLocation = visits.get(1).getLocation();
-        String beforePreviousLocation = visits.get(2).getLocation();
+        String previousLocation = visits.get(1).getAddress();
+        String beforePrevious = visits.get(2).getAddress();
 
         // first and two last items are ignored because they do not have either next or previous and before previous location
         for (int i = 1; i < visits.size() - 2; i++) {
 
             // checks if startLocation is the same as the location currently examined in the list
-            if (visits.get(i).getLocation().equals(startLocation)) {
+            if (visits.get(i).getAddress().equals(startLocation)) {
+
                 // checks if the previous location in the past is the same as previous location from the current location
                 // and before previous location in the past is the same as before previous location from the current location
-                if ((visits.get(i + 1).getLocation().equals(previousLocation))
-                        && (visits.get(i + 2).getLocation().equals(beforePreviousLocation))) {
-                    addToNextDestinations(visits.get(i - 1).getLocation());
+                if ((visits.get(i + 1).getAddress().equals(previousLocation))
+                        && (visits.get(i + 2).getAddress().equals(beforePrevious))) {
+                    addToNextDestinations(visits.get(i - 1).getAddress());
                 }
              }
         }

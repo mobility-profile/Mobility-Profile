@@ -7,9 +7,9 @@ import com.orm.SugarRecord;
  * time and not just points on the road).
  */
 public class SignificantPlace extends SugarRecord {
+    private String name;
     private String address;
-    private Float latitude;
-    private Float longitude;
+    private Coordinate coordinate;
 
     /**
      *
@@ -19,24 +19,40 @@ public class SignificantPlace extends SugarRecord {
 
     /**
      * Creates SignificantPlace.
-     * @param latitude latitude of the location
-     * @param longitude longitude of the location
+     * @param coordinate Coordinate object representing the coordinates of the place
      */
-    public SignificantPlace(String address, Float latitude, Float longitude) {
+    public SignificantPlace(String name, String address, Coordinate coordinate) {
+        this.name = name;
         this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.coordinate = coordinate;
     }
 
-    public Float getLongitude() {
-        return longitude;
-    }
-
-    public Float getLatitude() {
-        return latitude;
-    }
+    public Coordinate getCoordinate() { return this.coordinate; }
 
     public String getAddress() { return address; }
+
+    public String getName() { return name; }
+
+    public double distanceTo(SignificantPlace significantPlace) {
+        return this.coordinate.distanceTo(significantPlace.getCoordinate());
+    }
+
+    @Override
+    public long save() {
+        this.coordinate.save();
+        return super.save();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SignificantPlace that = (SignificantPlace) o;
+
+        return coordinate.equals(that.coordinate);
+
+    }
 
     public void setAddress(String address) {
         this.address = address;

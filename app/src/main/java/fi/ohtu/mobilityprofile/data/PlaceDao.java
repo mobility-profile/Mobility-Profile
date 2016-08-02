@@ -15,10 +15,8 @@ public class PlaceDao {
 
     /**
      * Creates PlaceDao.
-     * @param significantPlaceDao
      */
-    public PlaceDao(SignificantPlaceDao significantPlaceDao) {
-        this.significantPlaceDao = significantPlaceDao;
+    public PlaceDao() {
     }
 
     /**
@@ -88,7 +86,6 @@ public class PlaceDao {
      * Deletes all Place data from the database
      */
     public static void deleteAllData() {
-        SignificantPlaceDao.deleteAllData();
         Place.deleteAll(Place.class);
     }
 }

@@ -41,11 +41,18 @@ public class Visit extends SugarRecord {
         return significantPlace;
     }
 
-    public String getLocation() {
+    public String getAddress() {
         return significantPlace.getAddress();
     }
 
     public void setSignificantPlace(SignificantPlace place) {
         this.significantPlace = place;
     }
+
+    @Override
+    public long save() {
+        this.significantPlace.save();
+        return super.save();
+    }
+
 }

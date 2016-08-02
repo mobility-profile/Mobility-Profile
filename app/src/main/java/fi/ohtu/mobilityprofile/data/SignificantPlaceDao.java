@@ -5,12 +5,29 @@ import com.orm.query.Select;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
  * DAO used for clustering visited locations.
  */
 public class SignificantPlaceDao {
+
+    public SignificantPlace getSignificantPlaceClosestTo(Coordinate coordinate) {
+        List<SignificantPlace> significantPlaces = getAll();
+        SignificantPlace result = null;
+        double distance = Double.MAX_VALUE;
+        for(SignificantPlace sPlace : significantPlaces) {
+            if(sPlace.getCoordinate().distanceTo(coordinate) < distance){
+                result = sPlace;
+            }
+        }
+        return result;
+    }
+
+    public List<SignificantPlace> getAll() {
+        return SignificantPlace.listAll(SignificantPlace.class);
+    }
 
     /**
      * Returns the nearest known SignificantPlace from the searchLocation if it is within searchRadius.
@@ -49,6 +66,7 @@ public class SignificantPlaceDao {
      * @param significantPlace
      */
     public void insertSignificantPlace(SignificantPlace significantPlace) {
+        //significantPlace.getCoordinate().save();
         significantPlace.save();
     }
 
