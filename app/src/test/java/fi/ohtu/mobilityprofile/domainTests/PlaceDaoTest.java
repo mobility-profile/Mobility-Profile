@@ -24,7 +24,7 @@ public class PlaceDaoTest {
 
     @Before
     public void setUp() {
-        this.placeDao = new PlaceDao(new SignificantPlaceDao());
+        this.placeDao = new PlaceDao();
         Robolectric.setupActivity(MainActivityStub.class);
     }
 
