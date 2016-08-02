@@ -929,13 +929,13 @@ public class PlaceClusterizerTest {
     public void clusterizerFindsCorrectSignificantPlaces() {
         PlaceClusterizer placeClusterizer = new PlaceClusterizer(this.context);
         placeClusterizer.updateVisitHistory(this.places);
-        List<Visit> visits = this.visitDao.getAllVisitsToSignificantPlaces();
-        Collections.reverse(visits);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        List<Visit> visits = this.visitDao.getAllVisitsToSignificantPlaces();
+        Collections.reverse(visits);
         for(Visit visit : visits) {
             System.out.println("<trkpt lat=\"" + visit.getSignificantPlace().getCoordinate().getLatitude() + "\" lon=\"" + visit.getSignificantPlace().getCoordinate().getLongitude() + "\"><time>" + getTimeFormatted(visit.getTimestamp()) + "</time><src>network</src></trkpt>" + visit.getSignificantPlace().getAddress());
         }

@@ -74,7 +74,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
         setColorsForSuggestion(view);
         setVisibilitiesForSuggestion();
 
-        listItemText.setText(items.get(position).getLocation());
+        listItemText.setText(items.get(position).getAddress());
         setListeners(position);
 
         return view;
@@ -164,7 +164,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
 
                 editTextName.setText("");
-                editTextAddress.setText(sig.getLocation());
+                editTextAddress.setText(sig.getAddress());
 
                 AlertDialog dialog = builder.create();
                 dialog.show();

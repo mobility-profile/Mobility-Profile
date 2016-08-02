@@ -85,24 +85,12 @@ public class PlaceClusterizer {
         return false;
     }
 
-    public class MyRunnable implements Runnable {
-        private SignificantPlace significantPlace;
-        private Context context;
-        public MyRunnable(SignificantPlace significantPlace, Context context) {
-            this.significantPlace = significantPlace;
-            this.context = context;
-        }
-        public void run() {
-            AddressConverter.getAddressAndSave(significantPlace, context);
-        }
-    }
-
     private SignificantPlace createSignificantPlace(Coordinate coordinate) {
         SignificantPlace significantPlace = new SignificantPlace("name", "address", coordinate);
         significantPlaceDao.insertSignificantPlace(significantPlace);
-        MyRunnable myRunnable = new MyRunnable(significantPlace, this.context);
-        Thread thread = new Thread(myRunnable);
-        thread.start();
+        AddressConverter.getAddressAndSave(significantPlace, context);
+        significantPlace.setName(significantPlace.getAddress());
+        significantPlace.save();
         return significantPlace;
     }
 

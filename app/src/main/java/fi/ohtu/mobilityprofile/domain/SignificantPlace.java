@@ -40,6 +40,10 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
         return address;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -67,7 +71,6 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
 
     @Override
     public void updateAddress(String address) {
-        System.out.println(address);
         this.address = address;
         this.save();
     }

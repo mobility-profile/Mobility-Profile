@@ -4,15 +4,24 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.util.Log;
 
+import com.android.volley.ExecutorDelivery;
+import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ResponseDelivery;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.util.concurrent.Executors;
 
 import fi.ohtu.mobilityprofile.domain.HasAddress;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
@@ -23,21 +32,27 @@ import fi.ohtu.mobilityprofile.domain.Place;
  */
 public class AddressConverter {
 
+    public static RequestQueue newVolleyRequestQueueForTest(final Context context) {
+        File cacheDir = new File(context.getCacheDir(), "cache/volley");
+        Network network = new BasicNetwork(new HurlStack());
+        ResponseDelivery responseDelivery = new ExecutorDelivery(Executors.newSingleThreadExecutor());
+        RequestQueue queue = new RequestQueue(new DiskBasedCache(cacheDir), network, 4, responseDelivery);
+        queue.start();
+        return queue;
+    }
+
     public static void getAddressAndSave(final HasAddress object, Context context) {
         String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
                 + object.getCoordinate().getLatitude() + "&point.lon="
                 + object.getCoordinate().getLongitude() + "&layers=address&size=1&sources=osm";
 
-        System.out.println(url);
-
-        RequestQueue queue = Volley.newRequestQueue(context);
+        //RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = newVolleyRequestQueueForTest(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println("ennen trytä");
                         try {
-                            System.out.println("tryn jälkeen");
                             JSONObject json = new JSONObject(response);
                             JSONArray features = new JSONArray(json.get("features").toString());
                             if (features.length() > 0) {
@@ -48,7 +63,6 @@ public class AddressConverter {
                                 if (address == null) address = "";
 
                                 Log.i("AddressConverter", "Converted address is: " + address);
-                                System.out.println(address);
                                 object.updateAddress(address);
                             }
                         } catch (Exception e) {

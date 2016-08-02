@@ -71,7 +71,6 @@ public class SignificantPlaceDao {
      * @param significantPlace SignificantPlace to be saved
      */
     public void insertSignificantPlace(SignificantPlace significantPlace) {
-        //significantPlace.getCoordinate().save();
         significantPlace.save();
     }
 
