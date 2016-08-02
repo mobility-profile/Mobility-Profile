@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.SuggestionTests;
 
+import android.content.Context;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceClusterizer;
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class PlaceClusterizerTest {
 
+    private Context context;
     private SignificantPlaceDao significantPlaceDao;
     private VisitDao visitDao;
 
@@ -75,7 +78,7 @@ public class PlaceClusterizerTest {
     @Before
     public void setUp() {
 
-        Robolectric.setupActivity(MainActivityStub.class);
+        this.context = Robolectric.setupActivity(MainActivityStub.class);
 
         this.significantPlaceDao = new SignificantPlaceDao();
         this.visitDao = new VisitDao();
@@ -924,12 +927,17 @@ public class PlaceClusterizerTest {
 
     @Test
     public void clusterizerFindsCorrectSignificantPlaces() {
-        PlaceClusterizer placeClusterizer = new PlaceClusterizer();
+        PlaceClusterizer placeClusterizer = new PlaceClusterizer(this.context);
         placeClusterizer.updateVisitHistory(this.places);
         List<Visit> visits = this.visitDao.getAllVisitsToSignificantPlaces();
         Collections.reverse(visits);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         for(Visit visit : visits) {
-            System.out.println("<trkpt lat=\"" + visit.getSignificantPlace().getCoordinate().getLatitude() + "\" lon=\"" + visit.getSignificantPlace().getCoordinate().getLongitude() + "\"><time>" + getTimeFormatted(visit.getTimestamp()) + "</time><src>network</src></trkpt>");
+            System.out.println("<trkpt lat=\"" + visit.getSignificantPlace().getCoordinate().getLatitude() + "\" lon=\"" + visit.getSignificantPlace().getCoordinate().getLongitude() + "\"><time>" + getTimeFormatted(visit.getTimestamp()) + "</time><src>network</src></trkpt>" + visit.getSignificantPlace().getAddress());
         }
         assertTrue(true);
     }

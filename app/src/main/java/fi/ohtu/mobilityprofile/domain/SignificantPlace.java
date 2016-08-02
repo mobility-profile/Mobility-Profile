@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
  * Class is used to save places assumed significant to the user (ie. places where he/she spends some
  * time and not just points on the road).
  */
-public class SignificantPlace extends SugarRecord {
+public class SignificantPlace extends SugarRecord implements HasAddress {
     private String name;
     private String address;
     private Coordinate coordinate;
@@ -27,6 +27,7 @@ public class SignificantPlace extends SugarRecord {
         this.coordinate = coordinate;
     }
 
+    @Override
     public Coordinate getCoordinate() { return this.coordinate; }
 
     public String getAddress() { return address; }
@@ -54,4 +55,10 @@ public class SignificantPlace extends SugarRecord {
 
     }
 
+    @Override
+    public void updateAddress(String address) {
+        System.out.println(address);
+        this.address = address;
+        this.save();
+    }
 }

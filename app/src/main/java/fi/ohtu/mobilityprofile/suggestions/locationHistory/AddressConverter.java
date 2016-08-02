@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import fi.ohtu.mobilityprofile.domain.HasAddress;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.Place;
 
@@ -21,6 +22,50 @@ import fi.ohtu.mobilityprofile.domain.Place;
  * This class is used for converting GPS coordinates to an actual address and save that address to the database.
  */
 public class AddressConverter {
+
+    public static void getAddressAndSave(final HasAddress object, Context context) {
+        String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
+                + object.getCoordinate().getLatitude() + "&point.lon="
+                + object.getCoordinate().getLongitude() + "&layers=address&size=1&sources=osm";
+
+        System.out.println(url);
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("ennen trytä");
+                        try {
+                            System.out.println("tryn jälkeen");
+                            JSONObject json = new JSONObject(response);
+                            JSONArray features = new JSONArray(json.get("features").toString());
+                            if (features.length() > 0) {
+                                JSONObject zero = new JSONObject(features.get(0).toString());
+                                JSONObject properties = new JSONObject(zero.get("properties").toString());
+                                String address = (properties.get("label").toString());
+
+                                if (address == null) address = "";
+
+                                Log.i("AddressConverter", "Converted address is: " + address);
+                                System.out.println(address);
+                                object.updateAddress(address);
+                            }
+                        } catch (Exception e) {
+                            Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
+                error.printStackTrace();
+
+            }
+        });
+        queue.add(stringRequest);
+    }
 
     /**
      * Converts GPS coordinates to an address and saves it.
