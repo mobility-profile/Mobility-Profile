@@ -7,6 +7,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -62,5 +63,11 @@ public class RouteSuggestionsTest {
 
         List<Suggestion> suggestions = routeSuggestions.getSuggestions("Lauttasaari");
         assertEquals(2, suggestions.size());
+
+        List<String> destinations = new ArrayList<>();
+        destinations.add(suggestions.get(0).getDestination());
+        destinations.add(suggestions.get(1).getDestination());
+        assertTrue(destinations.contains("Ruoholahti"));
+        assertTrue(destinations.contains("Kamppi"));
     }
 }

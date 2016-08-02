@@ -71,10 +71,12 @@ public class SignificantPlaceDao {
     }
 
     /**
-     * Finds a SignificantPlace based on name
+     * Finds a SignificantPlace by name
+     * @param name name of the significantPlace
+     * @return SignificantPlace with the given name
      */
 
-    public SignificantPlace getSignificantPlaceBasedOnName(String name) {
+    public SignificantPlace getSignificantPlaceByName(String name) {
         List<SignificantPlace> places = Select.from(SignificantPlace.class)
                 .where(Condition.prop("name").eq(name))
                 .limit("1")
@@ -86,11 +88,27 @@ public class SignificantPlaceDao {
     }
 
     /**
-     * Deletes a SignificantPlace based on name
-     *
+     * Finds a significantPlace by name
+     * @param address address of the significantPlace
+     * @return SignificantPlace with the given address
      */
-    public void deleteSignificantPlaceBasedOnName(String name) {
-        SignificantPlace place = getSignificantPlaceBasedOnName(name);
+    public SignificantPlace getSignificantPlaceByAddress(String address) {
+        List<SignificantPlace> places = Select.from(SignificantPlace.class)
+                .where(Condition.prop("address").eq(address))
+                .limit("1")
+                .list();
+
+        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+
+        return  (places.size() == 1) ? places.get(0) : null;
+    }
+
+    /**
+     * Deletes a SignificantPlace by address
+     * @param address address of the significantPlace to be deleted
+     */
+    public void deleteSignificantPlaceByAddress(String address) {
+        SignificantPlace place = getSignificantPlaceByAddress(address);
         if (place != null) {
             place.delete();
         }
