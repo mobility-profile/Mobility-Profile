@@ -34,37 +34,6 @@ public class SignificantPlaceDao {
         return SignificantPlace.listAll(SignificantPlace.class);
     }
 
-    /**
-     * Returns the nearest known SignificantPlace from the searchLocation if it is within searchRadius.
-     * If no SignificantPlaces were found, new one will be created with the given searchLocation. The
-     * new SignificantPlace will then be saved to the database and returned.
-     *
-     * @param searchLocation Search nearestKnownLocation
-     * @param searchRadius Search radius in meters
-     * @return Nearest SignificantPlace
-     */
-    public SignificantPlace getNearestLocation(String searchLocation, int searchRadius) {
-        List<SignificantPlace> significantPlaces = SignificantPlace.listAll(SignificantPlace.class);
-
-        SignificantPlace nearestSignificantPlace = null;
-        for (SignificantPlace significantPlace : significantPlaces) {
-            if (significantPlace.getAddress().equals(searchLocation)) {
-                nearestSignificantPlace = significantPlace;
-                break;
-                // TODO: Check if significantPlace is within searchRadius from the searchLocation.
-                // Also check all significantPlaces to make sure we find the closest one.
-            }
-        }
-
-        if (nearestSignificantPlace == null) {
-            // There weren't any saved significantPlaces within searchRadius, so just create a new one and
-            // save it to the database.
-            nearestSignificantPlace = new SignificantPlace();
-            nearestSignificantPlace.save();
-        }
-
-        return nearestSignificantPlace;
-    }
 
     /**
      * Saves a SignificantPlace to the database.
