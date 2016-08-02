@@ -57,6 +57,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="15dp"
         android:text="@string/favourites_see_suggestions"
+        android:contentDescription="@string/favourites_see_suggestions"
         android:id="@+id/switchSuggestions"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/colorAccentOrange"/>
