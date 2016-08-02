@@ -44,7 +44,7 @@ public class RequestHandlerTest {
         this.mobilityProfile = mock(DestinationLogic.class);
         this.calendarTagDao = mock(CalendarTagDao.class);
         this.routeSearchDao = new RouteSearchDao();
-        this.placeDao = new PlaceDao(new SignificantPlaceDao());
+        this.placeDao = new PlaceDao();
         this.favouritePlaceDao = mock(FavouritePlaceDao.class);
 
         this.requestHandler = new RequestHandler(mobilityProfile, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao);

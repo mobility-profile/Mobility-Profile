@@ -14,6 +14,7 @@ import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
@@ -41,10 +42,10 @@ public class VisitSuggestionsTest {
         this.suggestions = new ArrayList<>();
         Robolectric.setupActivity(MainActivityStub.class);
 
-        kumpula = new SignificantPlace("Kumpula", new Float(1), new Float(2));
-        toolo = new SignificantPlace("Töölö", new Float(1), new Float(2));
-        lauttasaari = new SignificantPlace("Lauttasaari", new Float(1), new Float(2));
-        pitajanmaki = new SignificantPlace("Pitäjänmäki", new Float(1), new Float(2));
+        kumpula = new SignificantPlace("Kumpula", "Kumpula", new Coordinate(new Float(1), new Float(2)));
+        toolo = new SignificantPlace("Töölö", "Töölö", new Coordinate(new Float(1), new Float(2)));
+        lauttasaari = new SignificantPlace("Lauttasaari", "Lauttasaari", new Coordinate(new Float(1), new Float(2)));
+        pitajanmaki = new SignificantPlace("Pitäjänmäki", "Pitäjänmäki", new Coordinate(new Float(1), new Float(2)));
 
         significantPlaceDao.insertSignificantPlace(kumpula);
         significantPlaceDao.insertSignificantPlace(toolo);

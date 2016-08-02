@@ -37,7 +37,7 @@ public class DestinationLogicTest {
     @Before
     public void setUp() throws Exception {
         CalendarTagDao calendarTagDao = mock(CalendarTagDao.class);
-        placeDao = new PlaceDao(mock(SignificantPlaceDao.class));
+        placeDao = new PlaceDao();
         RouteSearchDao routeSearchDao = mock(RouteSearchDao.class);
         FavouritePlaceDao favouritePlaceDao = mock(FavouritePlaceDao.class);
 
