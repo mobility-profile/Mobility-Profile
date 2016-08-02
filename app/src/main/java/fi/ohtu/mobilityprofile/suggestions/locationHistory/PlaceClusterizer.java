@@ -3,93 +3,107 @@ package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
  * Class for clusterizing places into significant locations
  */
 public class PlaceClusterizer {
 
-    public static List<Place> clusterize(List<Place> places) {
+    private PlaceDao placeDao;
+    private SignificantPlaceDao significantPlaceDao;
+    private VisitDao visitDao;
 
-        List<Place> significantPlaces = new ArrayList<>();
-        List<Place> modifiedPlaces = new ArrayList<>(places);
+    private final double SPEED_LIMIT = 0.8;
+    private final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 600000; //10 minutes
+    private final double WANDERING_DISTANCE_LIMIT = 70;
+    private final double CLUSTER_RADIUS = 100;
 
-        double speedLimit = 0.8;
-        long timeSpentInClusterThreshold = 600000; //10 minutes
-        double wanderingDistanceLimit = 70;
-        double clusterRadius = 100;
+    public PlaceClusterizer() {
+        this.placeDao = new PlaceDao();
+        this.significantPlaceDao = new SignificantPlaceDao();
+        this.visitDao = new VisitDao();
+    }
 
-        for(int i = 0; i < places.size() - 1; i++) {
-            if(modifiedPlaces.contains(places.get(i)) && speedBetweenPlaces(places.get(i), places.get(i+1)) < speedLimit) {
+    public void updateVisitHistory(List<Place> places) {
+        List<List<Place>> clusters = formClusters(places);
+        for (List<Place> cluster : clusters) {
+            createVisit(cluster);
+        }
+    }
+
+    private long timeSpentIn(List<Place> cluster) {
+        return cluster.get(cluster.size() - 1).getTimestamp() - cluster.get(0).getTimestamp();
+    }
+
+    private List<List<Place>> formClusters(List<Place> places) {
+        List<List<Place>> clusters = new ArrayList<>();
+        List<Place> placesToCheck = new ArrayList<>(places);
+        for (int i = 0; i < places.size(); i++) {
+            if (placesToCheck.contains(places.get(i))) {
                 List<Place> cluster = new ArrayList<>();
-                int j = i;
                 long timeSpentInCluster = 0;
-                while (j < places.size() - 1 && speedBetweenPlaces(places.get(j), places.get(j+1)) < speedLimit) {
-                    cluster.add(places.get(j));
-                    timeSpentInCluster += places.get(j+1).getTimestamp() - places.get(j).getTimestamp();
-                    j++;
-                    if(timeSpentInCluster > timeSpentInClusterThreshold && distance(places.get(j), places.get(j+1)) > wanderingDistanceLimit){
+                while (i < places.size() - 1 && speedBetweenPlaces(places.get(i), places.get(i + 1)) < SPEED_LIMIT) {
+                    cluster.add(places.get(i));
+                    timeSpentInCluster += places.get(i + 1).getTimestamp() - places.get(i).getTimestamp();
+                    i++;
+                    if (timeSpentInCluster > TIME_SPENT_IN_CLUSTER_THRESHOLD && places.get(i).distanceTo(places.get(i + 1)) > WANDERING_DISTANCE_LIMIT) {
                         break;
                     }
                 }
-
-                cluster.add(places.get(j));
-                if(timeSpentInCluster > timeSpentInClusterThreshold && findPlacesWithinDistance(mean(cluster), significantPlaces, clusterRadius).isEmpty()) {
-                    significantPlaces.add(mean(cluster));
-                    modifiedPlaces.removeAll(findPlacesWithinDistance(mean(cluster), places, clusterRadius));
+                cluster.add(places.get(i));
+                if (timeSpentIn(cluster) > TIME_SPENT_IN_CLUSTER_THRESHOLD) {
+                    clusters.add(cluster);
+                    placesToCheck.removeAll(findPlacesWithinDistance(meanCoordinate(cluster), places, CLUSTER_RADIUS));
                 }
             }
         }
-        for(Place place : significantPlaces) {
-            //System.out.println("SIGNIFICANT PLACE lat: " + place.getLatitude() + " lon: " + place.getLongitude());
-            print(place, 0);
+        return clusters;
+    }
+
+    private boolean createVisit(List<Place> cluster) {
+        SignificantPlace closestSignificantPlace = significantPlaceDao.getSignificantPlaceClosestTo(meanCoordinate(cluster));
+        if (closestSignificantPlace == null || closestSignificantPlace.getCoordinate().distanceTo(meanCoordinate(cluster)) > CLUSTER_RADIUS) {
+            SignificantPlace significantPlace = new SignificantPlace("name", "address", meanCoordinate(cluster));
+            significantPlaceDao.insertSignificantPlace(significantPlace);
+            Visit visit = new Visit(cluster.get(0).getTimestamp(), significantPlace);
+            visitDao.insertVisit(visit);
+            return true;
+        } else if (!visitDao.getLastVisit().getSignificantPlace().equals(closestSignificantPlace)) {
+            Visit visit = new Visit(cluster.get(0).getTimestamp(), closestSignificantPlace);
+            visitDao.insertVisit(visit);
+            return true;
         }
-
-        return significantPlaces;
+        return false;
     }
 
-    private static double speedBetweenPlaces(Place place1, Place place2) {
-        double distance = distance(place1, place2);
-        return distance / ((place2.getTimestamp()/1000) - (place1.getTimestamp()/1000));
+    private double speedBetweenPlaces(Place place1, Place place2) {
+        double distance = place1.distanceTo(place2);
+        return distance / ((place2.getTimestamp() / 1000) - (place1.getTimestamp() / 1000));
     }
 
-    private static void print(Place place, int order){
-        System.out.println("<trkpt lat=\"" + place.getLatitude() + "\" lon=\"" + place.getLongitude() +"\"><time>2016-07-21T"+order+":00:00Z</time><src>network</src></trkpt>");
-    }
-
-    public static double distance(Place place1, Place place2) {
-        final int R = 6371; // Radius of the earth
-        Double latDistance = Math.toRadians(place2.getLatitude() - place1.getLatitude());
-        Double lonDistance = Math.toRadians(place2.getLongitude() - place1.getLongitude());
-        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(place1.getLatitude())) * Math.cos(Math.toRadians(place2.getLatitude()))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // convert to meters
-        distance = Math.pow(distance, 2);
-        return Math.sqrt(distance);
-    }
-
-    public static Place mean(List<Place> places) {
-        long time = 0;
+    private Coordinate meanCoordinate(List<Place> places) {
         float lat = 0;
         float lon = 0;
-        for(Place place : places) {
-            time += place.getTimestamp();
+        for (Place place : places) {
             lat += place.getLatitude();
             lon += place.getLongitude();
         }
-        time /= places.size();
         lat /= places.size();
         lon /= places.size();
-        return new Place(0, lat, lon);
+        return new Coordinate(lat, lon);
     }
 
-    private static List<Place> findPlacesWithinDistance(Place origin, List<Place> places, double distanceLimit) {
-        ArrayList<Place> placesWithinDistance = new ArrayList<Place>();
-        for(Place place : places) {
-            if((distance(origin, place) < distanceLimit)) {
+    private List<Place> findPlacesWithinDistance(Coordinate origin, List<Place> places, double distanceLimit) {
+        ArrayList<Place> placesWithinDistance = new ArrayList<>();
+        for (Place place : places) {
+            if (place.distanceTo(origin) < distanceLimit) {
                 placesWithinDistance.add(place);
             }
         }

@@ -29,27 +29,18 @@ public class VisitDaoTest {
 
     @Test
     public void testInsert() {
-        visitDao.insertVisit(new Visit(1223, new SignificantPlace("Kumpulan kampus", new Float(123), new Float(234))));
-        assertEquals("Kumpulan Kampus", visitDao.getAllVisitsToSignificantPlaces().get(0).getSignificantPlace().getLocation());
+
     }
 
     @Test
     public void testInsertMultiple() {
-        visitDao.insertVisit(new Visit(1223, new SignificantPlace("Kumpulan kampus", new Float(123), new Float(234))));
-        visitDao.insertVisit(new Visit(1223, new SignificantPlace("Linnanmäki", new Float(234), new Float(111))));
-        visitDao.insertVisit(new Visit(1223, new SignificantPlace("Tikkurila", new Float(1222), new Float(244))));
-        assertTrue(visitDao.getAllVisitsToSignificantPlaces().size() == 3);
+
     }
 
     @Test
     public void testDeleteAll() {
-        visitDao.insertVisit(new Visit(1223, new SignificantPlace("Kumpulan kampus", new Float(123), new Float(234))));
-        visitDao.insertVisit(new Visit(1223, new SignificantPlace("Linnanmäki", new Float(234), new Float(111))));
-        visitDao.insertVisit(new Visit(1223, new SignificantPlace("Tikkurila", new Float(1222), new Float(244))));
-        assertTrue(visitDao.getAllVisitsToSignificantPlaces().size() == 3);
 
-        visitDao.deleteAllData();
-        assertTrue(visitDao.getAllVisitsToSignificantPlaces().size() == 0);
+
     }
 
 }

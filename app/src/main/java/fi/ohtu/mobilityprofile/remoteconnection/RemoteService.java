@@ -39,7 +39,7 @@ public class RemoteService extends Service {
         synchronized (RemoteService.class) {
             if (messenger == null) {
                 CalendarTagDao calendarTagDao = new CalendarTagDao();
-                PlaceDao placeDao = new PlaceDao(new SignificantPlaceDao());
+                PlaceDao placeDao = new PlaceDao();
                 RouteSearchDao routeSearchDao = new RouteSearchDao();
                 FavouritePlaceDao favouritePlaceDao = new FavouritePlaceDao();
 
