@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import com.orm.SugarContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.remoteconnection.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 import fi.ohtu.mobilityprofile.ui.SecurityProblemActivity;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         checkSecurity();
+        createTransportModes();
     }
 
     /**
@@ -99,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 //TODO
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_backup:
                 //TODO
@@ -106,6 +111,31 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    private void createTransportModes() {
+        if (TransportMode.count(TransportMode.class) == 0) {
+            Log.i("MainActivity", "creating transport modes");
+
+            TransportMode walking = new TransportMode("walking");
+            walking.save();
+            TransportMode bike = new TransportMode("bike");
+            bike.save();
+            TransportMode car = new TransportMode("car");
+            car.save();
+            TransportMode bus = new TransportMode("bus");
+            bus.save();
+            TransportMode metro = new TransportMode("metro");
+            metro.save();
+            TransportMode tram = new TransportMode("tram");
+            tram.save();
+            TransportMode train = new TransportMode("train");
+            train.save();
+            TransportMode boat = new TransportMode("boat");
+            boat.save();
+            TransportMode plane = new TransportMode("plane");
+            plane.save();
         }
     }
 }

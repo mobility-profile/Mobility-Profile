@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -35,6 +37,7 @@ public class RequestHandler extends Handler {
     private PlaceDao placeDao;
     private RouteSearchDao routeSearchDao;
     private FavouritePlaceDao favouritePlaceDao;
+    private TransportModeDao transportModeDao;
 
     /**
      * Creates the RequestHandler.
@@ -44,14 +47,17 @@ public class RequestHandler extends Handler {
      * @param placeDao DAO for visits
      * @param routeSearchDao DAO for routeSearch
      * @param favouritePlaceDao DAO for favourite places
+     * @param transportModeDao DAO for transport modes
      */
     public RequestHandler(DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
-                          PlaceDao placeDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
+                          PlaceDao placeDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao,
+                          TransportModeDao transportModeDao) {
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;
         this.placeDao = placeDao;
         this.routeSearchDao = routeSearchDao;
         this.favouritePlaceDao = favouritePlaceDao;
+        this.transportModeDao = transportModeDao;
     }
 
     /**
@@ -63,15 +69,18 @@ public class RequestHandler extends Handler {
      * @param placeDao DAO for visits
      * @param routeSearchDao DAO for routeSearch
      * @param favouritePlaceDao DAO for favourite places
+     * @param transportModeDao DAO for transport modes
      */
     public RequestHandler(Context context, DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
-                          PlaceDao placeDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
+                          PlaceDao placeDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao,
+                          TransportModeDao transportModeDao) {
         this.context = context;
         this.mobilityProfile = mobilityProfile;
         this.calendarTagDao = calendarTagDao;
         this.placeDao = placeDao;
         this.routeSearchDao = routeSearchDao;
         this.favouritePlaceDao = favouritePlaceDao;
+        this.transportModeDao = transportModeDao;
     }
 
     @Override
@@ -88,6 +97,9 @@ public class RequestHandler extends Handler {
                 return;
             case RESPOND_FAVOURITE_PLACES:
                 message = getFavouritePlaces();
+                break;
+            case REQUEST_TRANSPORT_PREFERENCES:
+                message = getTransportPreferences();
                 break;
             default:
                 message = processErrorMessage(msg.what);
@@ -158,6 +170,11 @@ public class RequestHandler extends Handler {
         } else {
             return "Kumpula";
         }
+    }
+
+    private Message getTransportPreferences() {
+        System.out.println("hei");
+        return createMessage(RESPOND_TRANSPORT_PREFERENCES, transportModeDao.getNamesOfPreferredTransportModes());
     }
 
     /**
