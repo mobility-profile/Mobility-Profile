@@ -106,8 +106,6 @@ public class VisitSuggestions implements SuggestionSource {
      * Adds destinations to suggestions list that have the highest likelihood of visiting them next from current location.
      */
     private void calculateSuggestions() {
-        suggestions = new ArrayList<>();
-
         if (!nextDestinations.isEmpty()) {
             int maxValue = Collections.max(nextDestinations.values());
             for (Map.Entry<String, Integer> entry : nextDestinations.entrySet()) {
