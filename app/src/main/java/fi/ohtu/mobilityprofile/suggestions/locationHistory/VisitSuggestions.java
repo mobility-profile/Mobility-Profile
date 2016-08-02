@@ -26,6 +26,11 @@ public class VisitSuggestions implements SuggestionSource {
     private PlaceDao placeDao;
     List<Visit> visits;
 
+    /**
+     * Creates VisitSuggestions.
+     * @param dao SignificantPlaceDao
+     * @param visitdao VisitDao
+     */
     public VisitSuggestions(SignificantPlaceDao dao, VisitDao visitdao) {
         this.significantPlaceDao = dao;
         this.visitdao = visitdao;
@@ -89,7 +94,7 @@ public class VisitSuggestions implements SuggestionSource {
                         && (visits.get(i + 2).getAddress().equals(beforePrevious))) {
                     addToNextDestinations(visits.get(i - 1).getAddress());
                 }
-             }
+            }
         }
     }
 
