@@ -11,6 +11,11 @@ public class Coordinate extends SugarRecord {
 
     public Coordinate() {}
 
+    /**
+     * Creates Coordinate
+     * @param latitude
+     * @param longitude
+     */
     public Coordinate(float latitude, float longitude) {
         this.latitude = latitude;
         this.longitude = longitude;

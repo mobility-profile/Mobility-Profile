@@ -13,6 +13,11 @@ import fi.ohtu.mobilityprofile.domain.SignificantPlace;
  */
 public class SignificantPlaceDao {
 
+    /**
+     * Returns a SignificantPlace closest to given coordinates
+     * @param coordinate coordinates of the given location
+     * @return SignificantPlace
+     */
     public SignificantPlace getSignificantPlaceClosestTo(Coordinate coordinate) {
         List<SignificantPlace> significantPlaces = getAll();
         SignificantPlace result = null;
@@ -63,7 +68,7 @@ public class SignificantPlaceDao {
 
     /**
      * Saves a SignificantPlace to the database.
-     * @param significantPlace
+     * @param significantPlace SignificantPlace to be saved
      */
     public void insertSignificantPlace(SignificantPlace significantPlace) {
         //significantPlace.getCoordinate().save();

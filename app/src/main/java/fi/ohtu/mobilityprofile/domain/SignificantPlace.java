@@ -19,6 +19,8 @@ public class SignificantPlace extends SugarRecord {
 
     /**
      * Creates SignificantPlace.
+     * @param name Name of the SignificantPlace
+     * @param address Address of the SignificantPlace
      * @param coordinate Coordinate object representing the coordinates of the place
      */
     public SignificantPlace(String name, String address, Coordinate coordinate) {
@@ -27,11 +29,17 @@ public class SignificantPlace extends SugarRecord {
         this.coordinate = coordinate;
     }
 
-    public Coordinate getCoordinate() { return this.coordinate; }
+    public Coordinate getCoordinate() {
+        return this.coordinate;
+    }
 
-    public String getAddress() { return address; }
+    public String getAddress() {
+        return address;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     public double distanceTo(SignificantPlace significantPlace) {
         return this.coordinate.distanceTo(significantPlace.getCoordinate());
