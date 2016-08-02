@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import fi.ohtu.mobilityprofile.domain.Visit;
  */
 public class PlaceClusterizer {
 
+    private Context context;
     private PlaceDao placeDao;
     private SignificantPlaceDao significantPlaceDao;
     private VisitDao visitDao;
@@ -25,7 +28,8 @@ public class PlaceClusterizer {
     private final double WANDERING_DISTANCE_LIMIT = 70;
     private final double CLUSTER_RADIUS = 100;
 
-    public PlaceClusterizer() {
+    public PlaceClusterizer(Context context) {
+        this.context = context;
         this.placeDao = new PlaceDao();
         this.significantPlaceDao = new SignificantPlaceDao();
         this.visitDao = new VisitDao();
@@ -70,9 +74,7 @@ public class PlaceClusterizer {
     private boolean createVisit(List<Place> cluster) {
         SignificantPlace closestSignificantPlace = significantPlaceDao.getSignificantPlaceClosestTo(meanCoordinate(cluster));
         if (closestSignificantPlace == null || closestSignificantPlace.getCoordinate().distanceTo(meanCoordinate(cluster)) > CLUSTER_RADIUS) {
-            SignificantPlace significantPlace = new SignificantPlace("name", "address", meanCoordinate(cluster));
-            significantPlaceDao.insertSignificantPlace(significantPlace);
-            Visit visit = new Visit(cluster.get(0).getTimestamp(), significantPlace);
+            Visit visit = new Visit(cluster.get(0).getTimestamp(), createSignificantPlace(meanCoordinate(cluster)));
             visitDao.insertVisit(visit);
             return true;
         } else if (!visitDao.getLastVisit().getSignificantPlace().equals(closestSignificantPlace)) {
@@ -81,6 +83,15 @@ public class PlaceClusterizer {
             return true;
         }
         return false;
+    }
+
+    private SignificantPlace createSignificantPlace(Coordinate coordinate) {
+        SignificantPlace significantPlace = new SignificantPlace("name", "address", coordinate);
+        significantPlaceDao.insertSignificantPlace(significantPlace);
+        AddressConverter.getAddressAndSave(significantPlace, context);
+        significantPlace.setName(significantPlace.getAddress());
+        significantPlace.save();
+        return significantPlace;
     }
 
     private double speedBetweenPlaces(Place place1, Place place2) {
