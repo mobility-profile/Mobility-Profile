@@ -969,15 +969,20 @@ public class PlaceClusterizerTest {
     @Test
     public void clusterizerFindsCorrectSignificantPlaces() {
         PlaceClusterizer placeClusterizer = new PlaceClusterizer(this.context);
+        double distanceSum = 0;
+        long placeSum = 0;
         for(TestObject testObject : this.testObjects){
+            placeSum += testObject.getCorrectCoordinates().size();
             placeClusterizer.updateVisitHistory(testObject.getTestData());
             List<SignificantPlace> significantPlaces = this.significantPlaceDao.getAll();
             assertTrue(significantPlaces.size() == testObject.correctCoordinates.size());
             for(int i = 0; i < testObject.correctCoordinates.size(); i++) {
+                distanceSum+=testObject.getCorrectCoordinates().get(i).distanceTo(significantPlaces.get(i).getCoordinate());
                 assertTrue(testObject.getCorrectCoordinates().get(i).distanceTo(significantPlaces.get(i).getCoordinate()) < 100);
             }
             SignificantPlaceDao.deleteAllData();
         }
+        assertTrue(distanceSum/placeSum < 30);
     }
 
     private List<Place> createListOfPlaces(Place... places) {
