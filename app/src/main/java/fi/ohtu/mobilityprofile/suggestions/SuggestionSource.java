@@ -7,9 +7,10 @@ import java.util.List;
  */
 public interface SuggestionSource {
     int CALENDAR_SUGGESTION = 1;
-    int VISIT_SUGGESTION = 2;
+    int PLACE_SUGGESTIONS = 2;
     int ROUTE_SUGGESTION = 3;
     int FAVORITE_SUGGESTION = 4;
+    int VISIT_SUGGESTIONS = 5;
 
     /**
      * Returns a list of most probable destinations, based on the data the implementing class

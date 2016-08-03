@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.domainTests;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +11,8 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+import fi.ohtu.mobilityprofile.BuildConfig;
+import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 

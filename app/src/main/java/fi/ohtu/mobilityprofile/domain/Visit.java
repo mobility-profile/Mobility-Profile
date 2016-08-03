@@ -3,15 +3,12 @@ package fi.ohtu.mobilityprofile.domain;
 import com.orm.SugarRecord;
 
 /**
- * Class is used to save locations the user has visited.
+ * Class is used to save visits to SignificantPlaces.
  */
 public class Visit extends SugarRecord {
+    private long timestamp;
+    private SignificantPlace significantPlace;
 
-    long timestamp;
-    String originalLocation;             // Accurate point the user visited.
-    UserLocation nearestKnownLocation;   // Closest known nearestKnownLocation that is within 50 meters (value may change) from the actual nearestKnownLocation.
-    Float latitude;
-    Float longitude;
     /**
      *
      */
@@ -21,50 +18,41 @@ public class Visit extends SugarRecord {
     /**
      * Creates Visit.
      * @param timestamp timestamp of the visit
-     * @param originalLocation exact location of the visit
+     * @param place SignificantPlace to be referred to
      */
-    public Visit(long timestamp, String originalLocation) {
+    public Visit(long timestamp, SignificantPlace place) {
         this.timestamp = timestamp;
-        this.originalLocation = originalLocation;
-        this.nearestKnownLocation = null;
+        this.significantPlace = place;
     }
 
     /**
      * Creates Visit.
      * @param timestamp timestamp of the visit
-     * @param originalLocation exact location of the visit
-     * @param latitude latitude of the location
-     * @param longitude longitude of the location
      */
-    public Visit(long timestamp, String originalLocation, Float latitude, Float longitude) {
+    public Visit(long timestamp) {
         this.timestamp = timestamp;
-        this.originalLocation = originalLocation;
-        this.nearestKnownLocation = null;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public String getOriginalLocation() {
-        return originalLocation;
+    public SignificantPlace getSignificantPlace() {
+        return significantPlace;
     }
 
-    public UserLocation getNearestKnownLocation() {
-        return nearestKnownLocation;
+    public String getAddress() {
+        return significantPlace.getAddress();
     }
 
-    public void setNearestKnownLocation(UserLocation nearestKnownLocation) {
-        this.nearestKnownLocation = nearestKnownLocation;
+    public void setSignificantPlace(SignificantPlace place) {
+        this.significantPlace = place;
     }
 
-    public Float getLongitude() {
-        return longitude;
+    @Override
+    public long save() {
+        this.significantPlace.save();
+        return super.save();
     }
 
-    public Float getLatitude() {
-        return latitude;
-    }
 }

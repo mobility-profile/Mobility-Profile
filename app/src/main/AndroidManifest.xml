@@ -42,7 +42,7 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="16" />
+            android:value="52" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -60,10 +60,10 @@
             </intent-filter>
         </service>
         <service
-            android:name=".location.LocationService"
+            android:name=".suggestions.locationHistory.PlaceRecorder"
             android:process=":mobility_profile_location" />
         <service
-            android:name=".location.GoogleAPILocationService"
+            android:name=".suggestions.locationHistory.GoogleAPILocationService"
             android:process=":mobility_profile_google_location" />
 
         <activity android:name=".ui.SecurityProblemActivity"/>

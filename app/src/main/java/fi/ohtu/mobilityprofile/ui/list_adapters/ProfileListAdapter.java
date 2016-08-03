@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.ui;
+package fi.ohtu.mobilityprofile.ui.list_adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;

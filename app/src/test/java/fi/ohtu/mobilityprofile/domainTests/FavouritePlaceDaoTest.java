@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.domainTests;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +7,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import fi.ohtu.mobilityprofile.BuildConfig;
+import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 
@@ -68,7 +70,7 @@ public class FavouritePlaceDaoTest {
     public void getFavouritePlaceNamesTest() {
         favouriteDao.insertFavouritePlace(new FavouritePlace("koti", "Kotitie 10"));
         favouriteDao.insertFavouritePlace(new FavouritePlace("koulu", "Kumpula"));
-        
+
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().size(), 2);
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().get(0), "koti");
     }
@@ -96,14 +98,14 @@ public class FavouritePlaceDaoTest {
 
         assertEquals(favouriteDao.getNamesOfFavouritePlaces().size(), 0);
     }
-    
+
     @Test
     public void testFindAllOrderByCounter() {
         favouriteDao.insertFavouritePlace(fav);
         favouriteDao.insertFavouritePlace(new FavouritePlace("Koti", "kotitie 5"));
-        List<FavouritePlace> places = favouriteDao.FindAmountOrderByCounter(3);
-        
+        List<FavouritePlace> places = favouriteDao.FindAmountOrderByCounter(1);
+
         assertEquals("Kumpulan kampus", places.get(0).getName());
     }
-    
+
 }

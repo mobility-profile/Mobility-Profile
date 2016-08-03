@@ -1,13 +1,11 @@
-package fi.ohtu.mobilityprofile.ui;
+package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.orm.query.Select;
@@ -17,6 +15,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.ui.list_adapters.ProfileListAdapter;
 
 /**
  * The class creates a component called ProfileFragment.

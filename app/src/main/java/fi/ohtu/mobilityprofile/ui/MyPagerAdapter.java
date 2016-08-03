@@ -4,6 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import fi.ohtu.mobilityprofile.ui.fragments.FavouritesFragment;
+import fi.ohtu.mobilityprofile.ui.fragments.InfoFragment;
+import fi.ohtu.mobilityprofile.ui.fragments.PrivacyFragment;
+import fi.ohtu.mobilityprofile.ui.fragments.ProfileFragment;
+
 /**
  * This class manages all the fragments of the program.
  */

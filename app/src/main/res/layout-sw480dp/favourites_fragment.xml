@@ -52,10 +52,28 @@
 
     </GridLayout>
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/favourites_see_suggestions"
+        android:contentDescription="@string/favourites_see_suggestions"
+        android:id="@+id/switchSuggestions"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorAccentOrange"/>
+
+    <ListView
+        android:id="@+id/significants_listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
     <ListView
         android:id="@+id/favourites_listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" />
+
+
 
 </LinearLayout>

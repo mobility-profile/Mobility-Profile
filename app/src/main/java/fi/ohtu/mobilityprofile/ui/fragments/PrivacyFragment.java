@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.ui;
+package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.Manifest;
 import android.app.ActivityManager;
@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -26,15 +28,14 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import fi.ohtu.mobilityprofile.location.GoogleAPILocationService;
-import fi.ohtu.mobilityprofile.location.LocationService;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.UserLocationDao;
-import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 
 /**
  * The class creates a component called PrivacyFragment.
@@ -60,12 +61,15 @@ public class PrivacyFragment extends Fragment {
 
     private Button startButton;
     private Button stopButton;
-    private Button resetbutton;
+    private Button resetButton;
+    private AlphaAnimation animation;
 
     private ImageView compass;
 
     private Context context;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    private ResultReceiver resultReceiver;
 
     /**
      * Creates a new instance of PrivacyFragment.
@@ -81,14 +85,28 @@ public class PrivacyFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
+    public void onStart() {
+        super.onStart();
+
+        setupServiceReceiver();
+    }
+
+    public void setupServiceReceiver() {
+        resultReceiver = new ResultReceiver(new Handler()) {
+            @Override
+            public void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode == 100) {
+                    stoppedTracking();
+                }
+            }
+        };
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        this.context = context;
     }
 
     @Override
@@ -103,7 +121,7 @@ public class PrivacyFragment extends Fragment {
 
         startButton = (Button) view.findViewById(R.id.tracking_start);
         stopButton = (Button) view.findViewById(R.id.tracking_stop);
-        resetbutton = (Button) view.findViewById(R.id.resetbutton);
+        resetButton = (Button) view.findViewById(R.id.resetbutton);
         stopButton.setVisibility(View.GONE);
 
         compass = (ImageView) view.findViewById(R.id.tracking_on);
@@ -114,7 +132,7 @@ public class PrivacyFragment extends Fragment {
         setListenerForGPSCheckBox();
         setListenerForCheckBoxCalendar();
         setListenerForTrackingButtons();
-        resetbutton.setOnClickListener(onClickResetButton);
+        resetButton.setOnClickListener(onClickResetButton);
     }
 
     /**
@@ -131,12 +149,11 @@ public class PrivacyFragment extends Fragment {
                         getPermissionToAccessFineLocation();
                     } else {
                         GPSCheckedOn();
-                        Toast.makeText(context, "Location tracking is used again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "SignificantPlace tracking is used again", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     GPSCheckedOff();
-                    Toast.makeText(context, "Location tracking will not be used", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "SignificantPlace tracking will not be used", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -152,7 +169,7 @@ public class PrivacyFragment extends Fragment {
         stopButton.setVisibility(View.GONE);
         startButton.setVisibility(View.VISIBLE);
         startButton.setEnabled(false);
-        context.stopService(new Intent(context, LocationService.class));
+        context.stopService(new Intent(context, PlaceRecorder.class));
     }
 
     /**
@@ -179,15 +196,17 @@ public class PrivacyFragment extends Fragment {
      */
     private void setListenerForTrackingButtons() {
 
-        final AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+        animation = new AlphaAnimation(0.1f, 1.0f);
         animation.setDuration(750);
         animation.setStartOffset(500);
         animation.setRepeatCount(Animation.INFINITE);
 
         startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
-                context.startService(new Intent(context, LocationService.class));
+                Intent intent = new Intent(context, PlaceRecorder.class);
+                intent.putExtra("Receiver", resultReceiver);
+                context.startService(intent);
+
                 startButton.setVisibility(View.GONE);
                 stopButton.setVisibility(View.VISIBLE);
                 compass.setAlpha(1.0f);
@@ -199,15 +218,19 @@ public class PrivacyFragment extends Fragment {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.stopService(new Intent(context, LocationService.class));
-                startButton.setVisibility(View.VISIBLE);
-                stopButton.setVisibility(View.GONE);
-                animation.cancel();
-                animation.reset();
-                compass.setAlpha(0.5f);
-                compass.setContentDescription("continuous location tracking is off");
+                context.stopService(new Intent(context, PlaceRecorder.class));
+                stoppedTracking();
             }
         });
+    }
+
+    private void stoppedTracking() {
+        startButton.setVisibility(View.VISIBLE);
+        stopButton.setVisibility(View.GONE);
+        animation.cancel();
+        animation.reset();
+        compass.setAlpha(0.5f);
+        compass.setContentDescription("continuous location tracking is off");
     }
 
     /**
@@ -287,14 +310,14 @@ public class PrivacyFragment extends Fragment {
     }
 
     /**
-     * Checks if LocationService is running.
-     * @see LocationService
+     * Checks if PlaceRecorder is running.
+     * @see PlaceRecorder
      * @return true/false
      */
     private boolean isLocationServiceRunning() {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (LocationService.class.getName().equals(service.service.getClassName())) {
+            if (PlaceRecorder.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }
@@ -332,8 +355,8 @@ public class PrivacyFragment extends Fragment {
      * Deletes all data from the database.
      */
     private void deleteAllDataFromDatabase() {
-        VisitDao.deleteAllData();
-        UserLocationDao.deleteAllData();
+        PlaceDao.deleteAllData();
+        SignificantPlaceDao.deleteAllData();
         CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         FavouritePlaceDao.deleteAllData();
@@ -360,4 +383,3 @@ public class PrivacyFragment extends Fragment {
         return true;
     }
 }
-

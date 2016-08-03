@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.location;
+package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import android.app.Activity;
 import android.app.Service;
