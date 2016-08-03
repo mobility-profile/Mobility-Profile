@@ -1,8 +1,11 @@
 package fi.ohtu.mobilityprofile;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 /**
@@ -26,5 +29,14 @@ public class PermissionManager {
      */
     public static boolean permissionToReadCalendar(Context context) {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Gives the state of the write external storage permission.
+     * @param context context
+     * @return true/false
+     */
+    public static boolean permissionToWriteExternalStorage(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 }

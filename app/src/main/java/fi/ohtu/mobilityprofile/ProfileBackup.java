@@ -1,7 +1,13 @@
 package fi.ohtu.mobilityprofile;
 
+import android.*;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import java.io.File;
@@ -29,6 +35,10 @@ public class ProfileBackup {
      * @param procedure "back up" or "import" in String
      */
     public void handleBackup(String procedure) {
+        if (!checkPermissionToWriteAndRead()) {
+            return;
+        }
+
         Boolean sdAvailable = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         if (!sdAvailable) {
             Toast.makeText(context, "Failed to " + procedure + " data. There is no SD card available.", Toast.LENGTH_LONG).show();
@@ -65,9 +75,22 @@ public class ProfileBackup {
             Toast.makeText(context, "Succeeded to " + procedure + " data!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e);
             Toast.makeText(context, "Failed to " + procedure + " data.", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private Boolean checkPermissionToWriteAndRead() {
+        PermissionManager permissions = new PermissionManager();
+        if (!permissions.permissionToWriteExternalStorage(this.context)) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            if (permissions.permissionToWriteExternalStorage(this.context)) {
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 
 }
