@@ -33,6 +33,17 @@
             </intent-filter>
         </activity>
 
+        <!-- A child of the main activity -->
+        <activity
+            android:name=".BackUpActivity"
+            android:parentActivityName=".MainActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"
@@ -42,7 +53,7 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="55" />
+            android:value="56" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />

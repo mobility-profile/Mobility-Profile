@@ -3,12 +3,10 @@ package fi.ohtu.mobilityprofile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,8 +17,6 @@ import com.orm.SugarContext;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.remoteconnection.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 import fi.ohtu.mobilityprofile.ui.SecurityProblemActivity;
@@ -28,8 +24,6 @@ import fi.ohtu.mobilityprofile.ui.SecurityProblemActivity;
 public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
     public final static String CONFLICT_APPS = "conflictApps";
-
-    private ProfileBackup profileBackup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info);
 
         checkSecurity();
-
-        profileBackup = new ProfileBackup(this);
     }
 
     /**
@@ -106,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 //TODO
                 return true;
             case R.id.action_backup:
-                profileBackup.handleBackup("back up");
+                Intent intent = new Intent(this, BackUpActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

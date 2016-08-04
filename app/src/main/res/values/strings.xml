@@ -60,4 +60,7 @@
 
     <string name="backup">Backup your data</string>
     <string name="settings">Settings</string>
+
+    <string name="backup_title">Back Up</string>
+    <string name="backup_text">Back up your data TODO better explanation</string>
 </resources>
