@@ -14,7 +14,7 @@ import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
-import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 
 @RunWith(RobolectricTestRunner.class)

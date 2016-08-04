@@ -12,17 +12,17 @@ import fi.ohtu.mobilityprofile.CalendarConnection;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
-import fi.ohtu.mobilityprofile.suggestions.CalendarSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
-import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
-import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.VisitSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
 
 /**
  * Used to enable cross-app communication.

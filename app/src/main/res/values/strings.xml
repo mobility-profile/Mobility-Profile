@@ -58,9 +58,11 @@
     <string name="conflict_info">If two or more applications define the same permission, the application that is installed first is the one whose definition is used. Applications listed above were installed before Mobility Profile and have defined the same permission as Mobility Profile. To solve the problem, uninstall those applications, then run Mobility Profile and make sure this message is no longer shown. After that you can reinstall those applications.
         \n\nMore information about the problem can be found at https://datatheorem.github.io/2014/04/16/custom-permissions/</string>
 
-    <string name="backup">Backup your data</string>
-    <string name="settings">Settings</string>
 
+
+
+    <!--Settings-->
+    <string name="settings">Settings</string>
     <string name="settings_title">Settings</string>
     <string name="transport_modes_title">Transport mode preferences</string>
     <string name="walking">Walking</string>
@@ -73,4 +75,8 @@
     <string name="boat">Boat</string>
     <string name="plane">Plane</string>
 
+    <!--Back Up-->
+    <string name="backup">Backup your data</string>
+    <string name="backup_title">Back Up</string>
+    <string name="backup_text">Back up your data TODO better explanation</string>
 </resources>

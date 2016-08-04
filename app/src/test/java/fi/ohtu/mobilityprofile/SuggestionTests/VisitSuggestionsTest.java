@@ -18,7 +18,7 @@ import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.VisitSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)

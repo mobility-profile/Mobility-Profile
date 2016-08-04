@@ -53,10 +53,20 @@ public class Place extends SugarRecord {
         return super.save();
     }
 
+    /**
+     * Returns the distance between this place and a given place
+     * @param place Place to be compared
+     * @return distance
+     */
     public double distanceTo(Place place) {
         return this.coordinate.distanceTo(place.getCoordinate());
     }
 
+    /**
+     * Returns the distance between this place and a given coordinate
+     * @param coordinate coordinate to be compared
+     * @return distance
+     */
     public double distanceTo(Coordinate coordinate) {
         return this.coordinate.distanceTo(coordinate);
     }

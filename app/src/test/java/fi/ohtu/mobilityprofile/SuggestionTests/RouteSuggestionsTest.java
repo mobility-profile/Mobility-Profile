@@ -16,7 +16,7 @@ import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
-import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 
 @RunWith(RobolectricTestRunner.class)

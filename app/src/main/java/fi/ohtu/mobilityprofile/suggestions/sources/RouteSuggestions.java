@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.suggestions;
+package fi.ohtu.mobilityprofile.suggestions.sources;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -9,6 +9,9 @@ import java.util.Set;
 import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.suggestions.Suggestion;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
 /**
  * This class creates suggestions based on previous route searches user has made.
