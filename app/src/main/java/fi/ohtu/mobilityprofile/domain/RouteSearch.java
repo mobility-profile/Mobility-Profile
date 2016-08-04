@@ -11,11 +11,8 @@ public class RouteSearch extends SugarRecord {
     String startlocation;
     String destination;
     String nearestknownlocation;
-    
-    Float startlatitude;
-    Float startlongitude;
-    Float destinationlatitude;
-    Float destinationlongitude;
+    Coordinate startCoordinates;
+    Coordinate destinationCoordinates;
 
     /**
      *
@@ -42,21 +39,16 @@ public class RouteSearch extends SugarRecord {
      * @param timestamp timestamp of the routesearch
      * @param startlocation starting location of the routesearch
      * @param destination destination of the routesearch
-     * @param startlatitude latitude of startlocation
-     * @param startlongitude longitude of startlocation
-     * @param destinationlatitude latitude of destination
-     * @param destinationlongitude longitude of destination
+     * @param startCoordinates coordinates of the starting location
+     * @param destinationCoordinates coordinates of the destination
      */
-    public RouteSearch(long timestamp, String startlocation, String destination, Float startlatitude,
-                       Float startlongitude, Float destinationlatitude, Float destinationlongitude) {
+    public RouteSearch(long timestamp, String startlocation, String destination, Coordinate startCoordinates, Coordinate destinationCoordinates) {
         this.timestamp = timestamp;
         this.startlocation = startlocation;
         this.destination = destination;
         this.nearestknownlocation = null;
-        this.startlatitude = startlatitude;
-        this.startlongitude = startlongitude;
-        this.destinationlatitude = destinationlatitude;
-        this.destinationlongitude = destinationlongitude;
+        this.startCoordinates = startCoordinates;
+        this.destinationCoordinates = destinationCoordinates;
     }
 
     public long getTimestamp() {
@@ -75,20 +67,12 @@ public class RouteSearch extends SugarRecord {
         this.nearestknownlocation = nearestKnownLocation;
     }
 
-    public Float getStartlatitude() {
-        return startlatitude;
+    public Coordinate getStartCoordinates() {
+        return startCoordinates;
     }
 
-    public Float getStartlongitude() {
-        return startlongitude;
-    }
-
-    public Float getDestinationlatitude() {
-        return destinationlatitude;
-    }
-
-    public Float getDestinationlongitude() {
-        return destinationlongitude;
+    public Coordinate getDestinationCoordinates() {
+        return destinationCoordinates;
     }
 
     @Override
