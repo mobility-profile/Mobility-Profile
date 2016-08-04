@@ -62,5 +62,6 @@
     <string name="settings">Settings</string>
 
     <string name="backup_title">Back Up</string>
-    <string name="backup_text">Back up your data TODO better explanation</string>
+    <string name="backup_text">Back up your data. The database file,
+        called 'mobilityprofile.db', will be saved to your main folder of internal storage. </string>
 </resources>
