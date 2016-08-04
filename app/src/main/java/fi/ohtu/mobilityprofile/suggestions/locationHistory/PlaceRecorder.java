@@ -50,6 +50,10 @@ public class PlaceRecorder extends Service {
 
         resultReceiver = intent.getParcelableExtra("Receiver");
 
+        if (intent.getBooleanExtra("UPDATE", false)) {
+            return START_STICKY;
+        }
+
         // Create intent for the service
         Intent notificationIntent = new Intent(this, PlaceRecorder.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);

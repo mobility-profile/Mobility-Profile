@@ -87,6 +87,15 @@ public class PrivacyFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        setupServiceReceiver();
+        
+        if (isLocationServiceRunning()) {
+            Intent intent = new Intent(context, PlaceRecorder.class);
+            intent.putExtra("Receiver", resultReceiver);
+            intent.putExtra("UPDATE", true);
+            context.startService(intent);
+        }
     }
 
     public void setupServiceReceiver() {
@@ -123,7 +132,7 @@ public class PrivacyFragment extends Fragment {
         stopButton.setVisibility(View.GONE);
 
         compass = (ImageView) view.findViewById(R.id.tracking_on);
-        compass.setAlpha(0.1f);
+        compass.setAlpha(0.5f);
         compass.setContentDescription("continuous location tracking is off");
 
         setListenerForTrackingButtons();
@@ -201,8 +210,6 @@ public class PrivacyFragment extends Fragment {
 
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setupServiceReceiver();
-
                 Intent intent = new Intent(context, PlaceRecorder.class);
                 intent.putExtra("Receiver", resultReceiver);
                 context.startService(intent);
