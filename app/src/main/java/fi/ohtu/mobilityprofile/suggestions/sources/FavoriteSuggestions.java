@@ -1,10 +1,13 @@
-package fi.ohtu.mobilityprofile.suggestions;
+package fi.ohtu.mobilityprofile.suggestions.sources;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
+import fi.ohtu.mobilityprofile.suggestions.Suggestion;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
 /**
  * This class creates suggestions based on favorites the user has saved.

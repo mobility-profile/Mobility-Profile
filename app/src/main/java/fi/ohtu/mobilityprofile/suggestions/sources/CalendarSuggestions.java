@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.suggestions;
+package fi.ohtu.mobilityprofile.suggestions.sources;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.CalendarConnection;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
+import fi.ohtu.mobilityprofile.suggestions.Suggestion;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
 /**
  * This class creates suggestions based on data collected from the user's calendar.

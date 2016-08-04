@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.suggestions.locationHistory;
+package fi.ohtu.mobilityprofile.suggestions.sources;
 
 import java.util.ArrayList;
 import java.util.Collections;
