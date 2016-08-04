@@ -38,15 +38,6 @@ public class VisitSuggestions implements SuggestionSource {
     }
 
     /**
-     * Creates the VisitSuggestions.
-     *
-     * @param placeDao DAO for visits user has made
-     */
-    public VisitSuggestions(PlaceDao placeDao) {
-        this.placeDao = placeDao;
-    }
-
-    /**
      * Returns suggestions based on visits to SignificantPlaces.
      *
      * @param startLocation Starting location

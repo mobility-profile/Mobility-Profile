@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.PointF;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +23,6 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.AddressConverter;
 
 /**
  * This class adapts a list of SignificantPlace to ListView.
@@ -94,28 +91,43 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
         deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                final SignificantPlace sig = getSignificantPlace(position).get(0);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.favourite_suggestion_edit_dialog, null);
+
                 builder
+                        .setView(dialogView)
                         .setTitle(R.string.favourites_auto_generated_delete_title)
-                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.unfavourite, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
 
-                                SignificantPlace sig = getSignificantPlace(position).get(0);
-                                sig.setRemoved(true);
+                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
+
+                                if (!editTextAddress.equals("")) {
+                                    sig.setAddress(editTextAddress.getText().toString());
+                                }
+
+                                sig.setUnfavourited(true);
                                 sig.save();
                                 items.remove(position);
-                                notifyDataSetChanged();
+                                updateView();
 
                             }
                         })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.forget, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                                sig.delete();
+                                items.remove(position);
+                                notifyDataSetChanged();
                             }
                         });
+
+                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
+                editTextAddress.setText(sig.getAddress());
+
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
@@ -144,6 +156,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
                                 if (!editTextName.equals("") && !editTextAddress.equals("")) {
                                     FavouritePlace fav = new FavouritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
                                     fav.save();
+                                    sig.setAddress(editTextAddress.getText().toString());
                                     sig.setFavourite(true);
                                     sig.save();
                                     items.remove(position);
@@ -177,7 +190,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View dialogView = LayoutInflater.from(context).inflate(R.layout.favourite_auto_generated_dialog, null);
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.favourite_suggestion_dialog, null);
 
                 builder
                         .setView(dialogView)

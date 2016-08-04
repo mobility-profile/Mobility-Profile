@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.ResultReceiver;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -35,14 +36,19 @@ public class PlaceRecorder extends Service {
     private android.location.LocationManager mLocationManager;
     private LocationListener[] mLocationListeners = null;
 
+    private ResultReceiver resultReceiver;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
 
         if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
             stopSelf();
+            resultReceiver.send(100, new Bundle());
             return START_STICKY;
         }
+
+        resultReceiver = intent.getParcelableExtra("Receiver");
 
         // Create intent for the service
         Intent notificationIntent = new Intent(this, PlaceRecorder.class);

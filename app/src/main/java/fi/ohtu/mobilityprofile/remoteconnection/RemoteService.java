@@ -11,6 +11,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.CalendarConnection;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
+import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.suggestions.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.MainActivity;
@@ -41,13 +42,15 @@ public class RemoteService extends Service {
             if (messenger == null) {
                 CalendarTagDao calendarTagDao = new CalendarTagDao();
                 PlaceDao placeDao = new PlaceDao();
+                VisitDao visitDao = new VisitDao();
+                SignificantPlaceDao significantPlaceDao = new SignificantPlaceDao();
                 RouteSearchDao routeSearchDao = new RouteSearchDao();
                 FavouritePlaceDao favouritePlaceDao = new FavouritePlaceDao();
                 TransportModeDao transportModeDao = new TransportModeDao();
 
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
                 suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this), calendarTagDao));
-                suggestionSources.add(new VisitSuggestions(placeDao));
+                suggestionSources.add(new VisitSuggestions(significantPlaceDao, visitDao));
 
                 suggestionSources.add(new RouteSuggestions(routeSearchDao));
                 suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));

@@ -173,7 +173,6 @@ public class RequestHandler extends Handler {
     }
 
     private Message getTransportPreferences() {
-        System.out.println("hei");
         return createMessage(RESPOND_TRANSPORT_PREFERENCES, transportModeDao.getNamesOfPreferredTransportModes());
     }
 
