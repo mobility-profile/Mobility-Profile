@@ -2,7 +2,9 @@ package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -25,6 +27,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import fi.ohtu.mobilityprofile.data.CalendarTagDao;
+import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
+import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
@@ -320,6 +330,45 @@ public class PrivacyFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    /**
+     * Creates alert dialog to confirm resetting of the app when reset button is clicked.
+     */
+    View.OnClickListener onClickResetButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
+
+            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    deleteAllDataFromDatabase();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    // user clicked cancel button
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }};
+
+    /**
+     * Deletes all data from the database.
+     */
+    private void deleteAllDataFromDatabase() {
+        PlaceDao.deleteAllData();
+        GpsPointDao.deleteAllData();
+        CalendarTagDao.deleteAllData();
+        RouteSearchDao.deleteAllData();
+        FavouritePlaceDao.deleteAllData();
+        InterCitySearchDao.deleteAllData();
     }
 
     /**

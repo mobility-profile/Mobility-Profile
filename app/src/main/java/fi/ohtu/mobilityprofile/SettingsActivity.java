@@ -11,10 +11,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.GPSPointDao;
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
@@ -138,7 +137,7 @@ public class SettingsActivity extends AppCompatActivity {
      * Deletes all data from the database.
      */
     private void deleteAllDataFromDatabase() {
-        GPSPointDao.deleteAllData();
+        GpsPointDao.deleteAllData();
         PlaceDao.deleteAllData();
         CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();

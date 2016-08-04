@@ -16,13 +16,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.GPSPointDao;
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
@@ -93,7 +90,7 @@ public class PlaceRecorder extends Service {
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
-        private GPSPointClusterizer gpsPointClusterizer;
+        private GpsPointClusterizer gpsPointClusterizer;
 
         /**
          * Creates PlaceRecorder
@@ -104,7 +101,7 @@ public class PlaceRecorder extends Service {
          */
         public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
-            this.gpsPointClusterizer = new GPSPointClusterizer(context);
+            this.gpsPointClusterizer = new GpsPointClusterizer(context);
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
@@ -123,13 +120,13 @@ public class PlaceRecorder extends Service {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
             saveGPSPoint(location);
-            gpsPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
+            gpsPointClusterizer.updateVisitHistory(GpsPointDao.getAll());
         }
 
         private void saveGPSPoint(Location location) {
             System.out.println(System.currentTimeMillis());
             GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
-            GPSPointDao.insert(gpsPoint);
+            GpsPointDao.insert(gpsPoint);
         }
 
         @Override
