@@ -19,6 +19,7 @@ import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
@@ -52,7 +53,7 @@ public class RemoteService extends Service {
 
                 suggestionSources.add(new RouteSuggestions(routeSearchDao));
                 suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));
-                DestinationLogic destinationLogic = new DestinationLogic(suggestionSources);
+                DestinationLogic destinationLogic = new DestinationLogic(suggestionSources, new InterCitySuggestions());
 
                 messenger = new Messenger(new RequestHandler(this, destinationLogic, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao));
             }
