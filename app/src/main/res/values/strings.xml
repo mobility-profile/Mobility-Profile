@@ -3,7 +3,7 @@
 
     <!--Allow access-->
     <string name="allow_access">Allow Mobility Profile access to:</string>
-    <string name="checkbox_GPS">GPS</string>
+    <string name="checkbox_GPS">GPS (Fine and coarse)</string>
     <string name="checkbox_calendar">Read calendar</string>
     <!--Tracking-->
     <string name="tracking_title">Location tracking</string>
@@ -74,6 +74,7 @@
     <string name="train">Train</string>
     <string name="boat">Boat</string>
     <string name="plane">Plane</string>
+    <string name="settings_reset_title">Your data</string>
 
     <!--Back Up-->
     <string name="backup">Backup your data</string>
