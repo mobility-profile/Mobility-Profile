@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/setting_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/settings_title"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/transport_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18sp"
+        android:text="@string/transport_modes_title"
+        android:layout_gravity="start"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="10dp"/>
+
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:columnCount="3"
+        android:rowCount="3">
+
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/walking"
+            android:id="@+id/checkbox_walking"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bike"
+            android:id="@+id/checkbox_bike"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/car"
+            android:id="@+id/checkbox_car"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bus"
+            android:id="@+id/checkbox_bus"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/metro"
+            android:id="@+id/checkbox_metro"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tram"
+            android:id="@+id/checkbox_tram"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/train"
+            android:id="@+id/checkbox_train"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/boat"
+            android:id="@+id/checkbox_boat"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plane"
+            android:id="@+id/checkbox_plane"
+            android:layout_gravity="start"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/reset_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18sp"
+        android:text="@string/settings_reset_title"
+        android:layout_gravity="start"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"/>
+
+
+    <Button
+        android:id="@+id/resetbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_button_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:background="@color/colorAccentSand"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
