@@ -13,8 +13,8 @@ public class Coordinate extends SugarRecord {
 
     /**
      * Creates Coordinate
-     * @param latitude
-     * @param longitude
+     * @param latitude latitude of the coordinate
+     * @param longitude longitude of the coordinate
      */
     public Coordinate(float latitude, float longitude) {
         this.latitude = latitude;
@@ -29,6 +29,11 @@ public class Coordinate extends SugarRecord {
         return this.longitude;
     }
 
+    /**
+     * Calculates the distance between two coordinates.
+     * @param coordinate coordinate which is compared to this coordinate
+     * @return distance
+     */
     public double distanceTo(Coordinate coordinate) {
         final int R = 6371; // Radius of the earth
         Double latDistance = Math.toRadians(coordinate.getLatitude() - this.latitude);

@@ -34,7 +34,9 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
     }
 
     @Override
-    public Coordinate getCoordinate() { return this.coordinate; }
+    public Coordinate getCoordinate() {
+        return this.coordinate;
+    }
 
     public String getAddress() {
         return address;
@@ -48,6 +50,11 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
         return name;
     }
 
+    /**
+     * Returns the distance between this SignificantPlace and a given SignificantPlace
+     * @param significantPlace SignificantPlace to be compared
+     * @return distance
+     */
     public double distanceTo(SignificantPlace significantPlace) {
         return this.coordinate.distanceTo(significantPlace.getCoordinate());
     }
