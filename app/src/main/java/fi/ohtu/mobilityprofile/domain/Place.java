@@ -5,7 +5,7 @@ import com.orm.SugarRecord;
 /**
  * Class is used to save raw gps data.
  */
-public class Place extends SugarRecord {
+public class Place extends SugarRecord implements HasCoordinate {
     long timestamp;
     Coordinate coordinate;
 
@@ -30,6 +30,7 @@ public class Place extends SugarRecord {
         return timestamp;
     }
 
+    @Override
     public Coordinate getCoordinate() {
         return this.coordinate;
     }
@@ -53,11 +54,9 @@ public class Place extends SugarRecord {
         return super.save();
     }
 
-    public double distanceTo(Place place) {
-        return this.coordinate.distanceTo(place.getCoordinate());
+    @Override
+    public double distanceTo(HasCoordinate hasCoordinate) {
+        return this.coordinate.distanceTo(hasCoordinate.getCoordinate());
     }
 
-    public double distanceTo(Coordinate coordinate) {
-        return this.coordinate.distanceTo(coordinate);
-    }
 }

@@ -5,7 +5,7 @@ import com.orm.SugarRecord;
 /**
  * Class is used to save visits to SignificantPlaces.
  */
-public class Visit extends SugarRecord {
+public class Visit extends SugarRecord implements HasCoordinate {
     private long timestamp;
     private SignificantPlace significantPlace;
 
@@ -50,9 +50,19 @@ public class Visit extends SugarRecord {
     }
 
     @Override
+    public Coordinate getCoordinate() {
+        return this.getSignificantPlace().getCoordinate();
+    }
+
+    @Override
     public long save() {
         this.significantPlace.save();
         return super.save();
+    }
+
+    @Override
+    public double distanceTo(HasCoordinate hasCoordinate) {
+        return this.getSignificantPlace().getCoordinate().distanceTo(hasCoordinate.getCoordinate());
     }
 
 }
