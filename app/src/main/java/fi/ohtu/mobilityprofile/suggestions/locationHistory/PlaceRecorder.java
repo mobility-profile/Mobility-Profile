@@ -50,6 +50,10 @@ public class PlaceRecorder extends Service {
 
         resultReceiver = intent.getParcelableExtra("Receiver");
 
+        if (intent.getBooleanExtra("UPDATE", false)) {
+            return START_STICKY;
+        }
+
         // Create intent for the service
         Intent notificationIntent = new Intent(this, PlaceRecorder.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -58,7 +62,7 @@ public class PlaceRecorder extends Service {
         Notification.Builder notification = new Notification.Builder(this)
                 .setContentTitle("Location tracking")
                 .setContentText("Mobility Profile is tracking your location")
-                .setSmallIcon(R.mipmap.logo)
+                .setSmallIcon(R.drawable.ic_location_on_white_24dp)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
@@ -74,7 +78,7 @@ public class PlaceRecorder extends Service {
         Intent actionIntent = new Intent(this, PlaceRecorder.class);
         actionIntent.setAction(ACTION_STOP_SERVICE);
         PendingIntent actionPendingIntent = PendingIntent.getService(this, 0, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        notification.addAction(R.mipmap.logo, "Stop tracking", actionPendingIntent);
+        notification.addAction(R.drawable.ic_location_off_white_24dp, "Stop tracking", actionPendingIntent);
 
         // Start the service
         startForeground(NOTIFICATION_ID, notification.build());

@@ -88,6 +88,13 @@ public class PrivacyFragment extends Fragment {
         super.onStart();
 
         setupServiceReceiver();
+        
+        if (isLocationServiceRunning()) {
+            Intent intent = new Intent(context, PlaceRecorder.class);
+            intent.putExtra("Receiver", resultReceiver);
+            intent.putExtra("UPDATE", true);
+            context.startService(intent);
+        }
     }
 
     public void setupServiceReceiver() {
@@ -123,13 +130,13 @@ public class PrivacyFragment extends Fragment {
         stopButton.setVisibility(View.GONE);
 
         compass = (ImageView) view.findViewById(R.id.tracking_on);
-        compass.setAlpha(0.1f);
+        compass.setAlpha(0.5f);
         compass.setContentDescription("continuous location tracking is off");
 
+        setListenerForTrackingButtons();
         setChecked();
         setListenerForGPSCheckBox();
         setListenerForCheckBoxCalendar();
-        setListenerForTrackingButtons();
     }
 
     /**
@@ -204,11 +211,7 @@ public class PrivacyFragment extends Fragment {
                 intent.putExtra("Receiver", resultReceiver);
                 context.startService(intent);
 
-                startButton.setVisibility(View.GONE);
-                stopButton.setVisibility(View.VISIBLE);
-                compass.setAlpha(1.0f);
-                compass.startAnimation(animation);
-                compass.setContentDescription("continuous location tracking is on");
+                startedTracking();
             }
         });
 
@@ -219,6 +222,14 @@ public class PrivacyFragment extends Fragment {
                 stoppedTracking();
             }
         });
+    }
+
+    private void startedTracking() {
+        startButton.setVisibility(View.GONE);
+        stopButton.setVisibility(View.VISIBLE);
+        compass.setAlpha(1.0f);
+        compass.startAnimation(animation);
+        compass.setContentDescription("continuous location tracking is on");
     }
 
     private void stoppedTracking() {
@@ -298,11 +309,9 @@ public class PrivacyFragment extends Fragment {
         }
 
         if (isLocationServiceRunning()) {
-            stopButton.setVisibility(View.VISIBLE);
-            startButton.setVisibility(View.GONE);
+            startedTracking();
         } else {
-            stopButton.setVisibility(View.GONE);
-            startButton.setVisibility(View.VISIBLE);
+            stoppedTracking();
         }
     }
 
