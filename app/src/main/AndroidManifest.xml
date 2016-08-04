@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <permission
         android:name="fi.ohtu.permission.MOBILITY_PROFILE"
@@ -65,7 +66,7 @@
             android:name=".suggestions.locationHistory.GoogleAPILocationService"
             android:process=":mobility_profile_google_location" />
 
-        <activity android:name=".ui.SecurityProblemActivity"></activity>
+        <activity android:name=".ui.SecurityProblemActivity"/>
     </application>
 
 </manifest>

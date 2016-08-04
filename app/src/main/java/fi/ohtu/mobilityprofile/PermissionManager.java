@@ -27,4 +27,13 @@ public class PermissionManager {
     public static boolean permissionToReadCalendar(Context context) {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED;
     }
+
+    /**
+     * Gives the state of the write external storage permission.
+     * @param context context
+     * @return true/false
+     */
+    public static boolean permissionToWriteExternalStorage(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
 }
