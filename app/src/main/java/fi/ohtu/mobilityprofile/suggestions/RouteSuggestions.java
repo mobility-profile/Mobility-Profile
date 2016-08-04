@@ -8,6 +8,7 @@ import java.util.Set;
 
 import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 
 /**
@@ -35,7 +36,7 @@ public class RouteSuggestions implements SuggestionSource {
      *
      */
     @Override
-    public List<Suggestion> getSuggestions(String startLocation) {
+    public List<Suggestion> getSuggestions(Place startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
         Set<String> destinations = new HashSet<>();
 

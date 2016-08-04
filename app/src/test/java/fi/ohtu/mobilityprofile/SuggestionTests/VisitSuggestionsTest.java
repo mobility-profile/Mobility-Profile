@@ -15,6 +15,7 @@ import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
@@ -56,7 +57,7 @@ public class VisitSuggestionsTest {
     @Test
     public void testGetSuggestionsWhenVisitsSizeIsMoreThanFour() {
         createListOfVisits();
-        suggestions = visitSuggestions.getSuggestions("Kumpula");
+        suggestions = visitSuggestions.getSuggestions(new Place(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(1, suggestions.size());
         assertEquals("Töölö", suggestions.get(0).getDestination());
     }
@@ -64,7 +65,7 @@ public class VisitSuggestionsTest {
     @Test
     public void testGetSuggestionsWhenVisitSizeIsFour() {
         createShortListOfVisits();
-        suggestions = visitSuggestions.getSuggestions("Kumpula");
+        suggestions = visitSuggestions.getSuggestions(new Place(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(0, suggestions.size());
     }
 /*
@@ -76,7 +77,7 @@ public class VisitSuggestionsTest {
     @Test
     public void testGetTwoSuggestions() {
         createLongListOfVisits();
-        suggestions = visitSuggestions.getSuggestions("Kumpula");
+        suggestions = visitSuggestions.getSuggestions(new Place(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(2, suggestions.size());
         ArrayList<String> destinations = new ArrayList<>();
         destinations.add(suggestions.get(0).getDestination());
@@ -89,31 +90,31 @@ public class VisitSuggestionsTest {
     @Test
     public void testGetNoSuggestions() {
         createListOfVisits();
-        visitDao.insertVisit(new Visit(6000, lauttasaari));
-        suggestions = visitSuggestions.getSuggestions("Lauttasaari");
+        visitDao.insert(new Visit(6000, lauttasaari));
+        suggestions = visitSuggestions.getSuggestions(new Place(0, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
         assertEquals(0, suggestions.size());
     }
 
     private void createListOfVisits() {
 
-        visitDao.insertVisit(new Visit(100, kumpula));
+        visitDao.insert(new Visit(100, kumpula));
 
-        visitDao.insertVisit(new Visit(200, toolo));
-        visitDao.insertVisit(new Visit(300, lauttasaari));
-        visitDao.insertVisit(new Visit(400, pitajanmaki));
-        visitDao.insertVisit(new Visit(500, kumpula));
+        visitDao.insert(new Visit(200, toolo));
+        visitDao.insert(new Visit(300, lauttasaari));
+        visitDao.insert(new Visit(400, pitajanmaki));
+        visitDao.insert(new Visit(500, kumpula));
 
-        visitDao.insertVisit(new Visit(600, toolo));
-        visitDao.insertVisit(new Visit(700, kumpula));
-        visitDao.insertVisit(new Visit(800, toolo));
-        visitDao.insertVisit(new Visit(900, lauttasaari));
+        visitDao.insert(new Visit(600, toolo));
+        visitDao.insert(new Visit(700, kumpula));
+        visitDao.insert(new Visit(800, toolo));
+        visitDao.insert(new Visit(900, lauttasaari));
 
-        visitDao.insertVisit(new Visit(1000, toolo));
-        visitDao.insertVisit(new Visit(2000, kumpula));
-        visitDao.insertVisit(new Visit(3000, lauttasaari));
-        visitDao.insertVisit(new Visit(4000, pitajanmaki));
+        visitDao.insert(new Visit(1000, toolo));
+        visitDao.insert(new Visit(2000, kumpula));
+        visitDao.insert(new Visit(3000, lauttasaari));
+        visitDao.insert(new Visit(4000, pitajanmaki));
 
-        visitDao.insertVisit(new Visit(5000, kumpula));
+        visitDao.insert(new Visit(5000, kumpula));
     }
 
     private void createShortListOfVisits() {
@@ -123,39 +124,39 @@ public class VisitSuggestionsTest {
         significantPlaceDao.insertSignificantPlace(lauttasaari);
         significantPlaceDao.insertSignificantPlace(pitajanmaki);
 
-        visitDao.insertVisit(new Visit(100, kumpula));
+        visitDao.insert(new Visit(100, kumpula));
 
-        visitDao.insertVisit(new Visit(200, toolo));
-        visitDao.insertVisit(new Visit(300, lauttasaari));
-        visitDao.insertVisit(new Visit(400, pitajanmaki));
+        visitDao.insert(new Visit(200, toolo));
+        visitDao.insert(new Visit(300, lauttasaari));
+        visitDao.insert(new Visit(400, pitajanmaki));
     }
 
     public void createLongListOfVisits() {
 
-        visitDao.insertVisit(new Visit(100, kumpula));
+        visitDao.insert(new Visit(100, kumpula));
 
-        visitDao.insertVisit(new Visit(200, toolo));
-        visitDao.insertVisit(new Visit(300, lauttasaari));
-        visitDao.insertVisit(new Visit(400, pitajanmaki));
-        visitDao.insertVisit(new Visit(500, kumpula));
-        visitDao.insertVisit(new Visit(501, toolo));
+        visitDao.insert(new Visit(200, toolo));
+        visitDao.insert(new Visit(300, lauttasaari));
+        visitDao.insert(new Visit(400, pitajanmaki));
+        visitDao.insert(new Visit(500, kumpula));
+        visitDao.insert(new Visit(501, toolo));
 
-        visitDao.insertVisit(new Visit(510, lauttasaari));
-        visitDao.insertVisit(new Visit(512, pitajanmaki));
-        visitDao.insertVisit(new Visit(513, kumpula));
-        visitDao.insertVisit(new Visit(514, lauttasaari));
+        visitDao.insert(new Visit(510, lauttasaari));
+        visitDao.insert(new Visit(512, pitajanmaki));
+        visitDao.insert(new Visit(513, kumpula));
+        visitDao.insert(new Visit(514, lauttasaari));
 
-        visitDao.insertVisit(new Visit(600, toolo));
-        visitDao.insertVisit(new Visit(700, kumpula));
-        visitDao.insertVisit(new Visit(800, toolo));
-        visitDao.insertVisit(new Visit(900, lauttasaari));
+        visitDao.insert(new Visit(600, toolo));
+        visitDao.insert(new Visit(700, kumpula));
+        visitDao.insert(new Visit(800, toolo));
+        visitDao.insert(new Visit(900, lauttasaari));
 
-        visitDao.insertVisit(new Visit(1000, toolo));
-        visitDao.insertVisit(new Visit(2000, kumpula));
-        visitDao.insertVisit(new Visit(3000, lauttasaari));
-        visitDao.insertVisit(new Visit(4000, pitajanmaki));
+        visitDao.insert(new Visit(1000, toolo));
+        visitDao.insert(new Visit(2000, kumpula));
+        visitDao.insert(new Visit(3000, lauttasaari));
+        visitDao.insert(new Visit(4000, pitajanmaki));
 
-        visitDao.insertVisit(new Visit(5000, kumpula));
+        visitDao.insert(new Visit(5000, kumpula));
 
     }
 

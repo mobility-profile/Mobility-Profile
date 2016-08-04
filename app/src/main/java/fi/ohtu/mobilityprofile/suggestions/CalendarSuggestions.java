@@ -6,6 +6,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.CalendarConnection;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
+import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
  * This class creates suggestions based on data collected from the user's calendar.
@@ -32,7 +33,7 @@ public class CalendarSuggestions implements SuggestionSource {
      * @return List of destinations from the calendar
      */
     @Override
-    public List<Suggestion> getSuggestions(String startLocation) {
+    public List<Suggestion> getSuggestions(Place startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
         // Loop through normal events first

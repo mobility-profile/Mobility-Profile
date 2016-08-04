@@ -75,11 +75,11 @@ public class PlaceClusterizer {
         SignificantPlace closestSignificantPlace = significantPlaceDao.getSignificantPlaceClosestTo(meanCoordinate(cluster));
         if (closestSignificantPlace == null || closestSignificantPlace.getCoordinate().distanceTo(meanCoordinate(cluster)) > CLUSTER_RADIUS) {
             Visit visit = new Visit(cluster.get(0).getTimestamp(), createSignificantPlace(meanCoordinate(cluster)));
-            visitDao.insertVisit(visit);
+            visitDao.insert(visit);
             return true;
-        } else if (!visitDao.getLastVisit().getSignificantPlace().equals(closestSignificantPlace)) {
+        } else if (!visitDao.getLast().getSignificantPlace().equals(closestSignificantPlace)) {
             Visit visit = new Visit(cluster.get(0).getTimestamp(), closestSignificantPlace);
-            visitDao.insertVisit(visit);
+            visitDao.insert(visit);
             return true;
         }
         return false;

@@ -150,13 +150,13 @@ public class RequestHandler extends Handler {
      *
      * @return Start location address
      */
-    private String getStartLocation() {
-        Place lastKnownPlace = placeDao.getLatestVisit();
+    private Place getStartLocation() {
+        Place lastKnownPlace = placeDao.getLatest();
         if (lastKnownPlace == null) {
             // TODO something better
-            return "None";
+            return null;
         } else {
-            return "Kumpula";
+            return lastKnownPlace;
         }
     }
 

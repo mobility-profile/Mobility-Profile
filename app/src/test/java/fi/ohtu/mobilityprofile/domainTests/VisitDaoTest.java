@@ -29,28 +29,28 @@ public class VisitDaoTest {
 
     @Test
     public void testInsert() {
-        visitDao.insertVisit(new Visit(123, new SignificantPlace("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
-        assertEquals("Kumpula", visitDao.getAllVisitsToSignificantPlaces().get(0).getAddress());
+        visitDao.insert(new Visit(123, new SignificantPlace("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
+        assertEquals("Kumpula", visitDao.getAll().get(0).getAddress());
     }
 
     @Test
     public void testInsertMultiple() {
-        visitDao.insertVisit(new Visit(123, new SignificantPlace("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
-        visitDao.insertVisit(new Visit(345, new SignificantPlace("Kauppa", "Kauppakatu", new Coordinate(new Float(1), new Float(1)))));
-        visitDao.insertVisit(new Visit(567, new SignificantPlace("Toimisto", "Töölö", new Coordinate(new Float(1), new Float(1)))));
+        visitDao.insert(new Visit(123, new SignificantPlace("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
+        visitDao.insert(new Visit(345, new SignificantPlace("Kauppa", "Kauppakatu", new Coordinate(new Float(1), new Float(1)))));
+        visitDao.insert(new Visit(567, new SignificantPlace("Toimisto", "Töölö", new Coordinate(new Float(1), new Float(1)))));
 
-        assertEquals("Töölö", visitDao.getLastVisit().getAddress());
-        assertEquals(3, visitDao.getAllVisitsToSignificantPlaces().size());
+        assertEquals("Töölö", visitDao.getLast().getAddress());
+        assertEquals(3, visitDao.getAll().size());
     }
 
     @Test
     public void testDeleteAll() {
-        visitDao.insertVisit(new Visit(123, new SignificantPlace("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
-        visitDao.insertVisit(new Visit(345, new SignificantPlace("Kauppa", "Kauppakatu", new Coordinate(new Float(1), new Float(1)))));
-        visitDao.insertVisit(new Visit(567, new SignificantPlace("Toimisto", "Töölö", new Coordinate(new Float(1), new Float(1)))));
-        assertEquals(3, visitDao.getAllVisitsToSignificantPlaces().size());
-        visitDao.deleteAllData();
-        assertEquals(0, visitDao.getAllVisitsToSignificantPlaces().size());
+        visitDao.insert(new Visit(123, new SignificantPlace("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
+        visitDao.insert(new Visit(345, new SignificantPlace("Kauppa", "Kauppakatu", new Coordinate(new Float(1), new Float(1)))));
+        visitDao.insert(new Visit(567, new SignificantPlace("Toimisto", "Töölö", new Coordinate(new Float(1), new Float(1)))));
+        assertEquals(3, visitDao.getAll().size());
+        visitDao.deleteAll();
+        assertEquals(0, visitDao.getAll().size());
 
     }
 

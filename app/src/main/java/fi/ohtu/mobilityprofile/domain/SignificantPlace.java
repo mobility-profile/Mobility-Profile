@@ -52,6 +52,10 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
         return this.coordinate.distanceTo(significantPlace.getCoordinate());
     }
 
+    public double distanceTo(Coordinate coordinate) {
+        return this.coordinate.distanceTo(coordinate);
+    }
+
     @Override
     public long save() {
         this.coordinate.save();
