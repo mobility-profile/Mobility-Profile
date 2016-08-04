@@ -6,7 +6,8 @@ import com.orm.SugarRecord;
  * Class is used to save visits to SignificantPlaces.
  */
 public class Visit extends SugarRecord implements HasCoordinate {
-    private long timestamp;
+    private long enterTime;
+    private long exitTime;
     private SignificantPlace significantPlace;
 
     /**
@@ -17,24 +18,21 @@ public class Visit extends SugarRecord implements HasCoordinate {
 
     /**
      * Creates Visit.
-     * @param timestamp timestamp of the visit
+     * @param enterTime enterTime of the visit
      * @param place SignificantPlace to be referred to
      */
-    public Visit(long timestamp, SignificantPlace place) {
-        this.timestamp = timestamp;
+    public Visit(long enterTime, long exitTime, SignificantPlace place) {
+        this.enterTime = enterTime;
+        this.exitTime = exitTime;
         this.significantPlace = place;
     }
 
-    /**
-     * Creates Visit.
-     * @param timestamp timestamp of the visit
-     */
-    public Visit(long timestamp) {
-        this.timestamp = timestamp;
+    public long getEnterTime() {
+        return enterTime;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public long getExitTime() {
+        return this.exitTime;
     }
 
     public SignificantPlace getSignificantPlace() {

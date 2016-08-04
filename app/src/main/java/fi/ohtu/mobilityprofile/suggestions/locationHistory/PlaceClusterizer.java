@@ -23,10 +23,10 @@ public class PlaceClusterizer {
     private SignificantPlaceDao significantPlaceDao;
     private VisitDao visitDao;
 
-    private final double SPEED_LIMIT = 0.8;
-    private final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 600000; //10 minutes
-    private final double WANDERING_DISTANCE_LIMIT = 70;
-    private final double CLUSTER_RADIUS = 100;
+    static final double SPEED_LIMIT = 0.8;
+    static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 600000; //10 minutes
+    static final double WANDERING_DISTANCE_LIMIT = 70;
+    static final double CLUSTER_RADIUS = 100;
 
     public PlaceClusterizer(Context context) {
         this.context = context;
@@ -74,11 +74,11 @@ public class PlaceClusterizer {
     private boolean createVisit(List<Place> cluster) {
         SignificantPlace closestSignificantPlace = significantPlaceDao.getSignificantPlaceClosestTo(meanCoordinate(cluster));
         if (closestSignificantPlace == null || closestSignificantPlace.getCoordinate().distanceTo(meanCoordinate(cluster)) > CLUSTER_RADIUS) {
-            Visit visit = new Visit(cluster.get(0).getTimestamp(), createSignificantPlace(meanCoordinate(cluster)));
+            Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), createSignificantPlace(meanCoordinate(cluster)));
             visitDao.insert(visit);
             return true;
         } else if (!visitDao.getLast().getSignificantPlace().equals(closestSignificantPlace)) {
-            Visit visit = new Visit(cluster.get(0).getTimestamp(), closestSignificantPlace);
+            Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), closestSignificantPlace);
             visitDao.insert(visit);
             return true;
         }
@@ -87,7 +87,7 @@ public class PlaceClusterizer {
 
     private SignificantPlace createSignificantPlace(Coordinate coordinate) {
         SignificantPlace significantPlace = new SignificantPlace("name", "address", coordinate);
-        significantPlaceDao.insertSignificantPlace(significantPlace);
+        SignificantPlaceDao.insertSignificantPlace(significantPlace);
         AddressConverter.getAddressAndSave(significantPlace, context);
         significantPlace.setName(significantPlace.getAddress());
         significantPlace.save();

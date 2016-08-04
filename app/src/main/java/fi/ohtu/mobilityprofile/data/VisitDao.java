@@ -18,13 +18,13 @@ public class VisitDao {
      */
     public static List<Visit> getAll() {
         return Select.from(Visit.class)
-                .orderBy("timestamp DESC")
+                .orderBy("enter_time DESC")
                 .list();
     }
 
     public static Visit getLast() {
         return Select.from(Visit.class)
-                .orderBy("timestamp DESC")
+                .orderBy("enter_time DESC")
                 .first();
     }
 
