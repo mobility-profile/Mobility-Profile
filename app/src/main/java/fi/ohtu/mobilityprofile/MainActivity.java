@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
     public final static String CONFLICT_APPS = "conflictApps";
 
+    private ProfileBackup profileBackup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +47,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info);
 
-
         checkSecurity();
+
+        profileBackup = new ProfileBackup(this);
     }
 
     /**
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 //TODO
                 return true;
             case R.id.action_backup:
-                new ProfileBackup(this).handleBackup("back up");
+                profileBackup.handleBackup("back up");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
