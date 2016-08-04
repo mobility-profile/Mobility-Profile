@@ -48,7 +48,12 @@
     <string name="forget">Forget</string>
     <string name="unfavourite">Unfavourite</string>
 
-    <string name="reset_button_text">Reset app and delete all data</string>
+    <string name="reset_searches_button_text">Delete all last searches</string>
+    <string name="reset_searches_title">Delete all searches?</string>
+    <string name="reset_searches_message">Deletes all route searches you\&apos;ve made.</string>
+
+
+    <string name="reset_all_button_text">Reset app and delete all data</string>
     <string name="reset_title">Delete all collected data?</string>
     <string name="reset_message">Deletes all collected data, including visited significantPlaces, searched routes, and favourite places.</string>
 
