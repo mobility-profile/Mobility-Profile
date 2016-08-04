@@ -10,7 +10,7 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
     private String name;
     private String address;
     private boolean favourite;
-    private boolean removed;
+    private boolean unfavourited;
     private Coordinate coordinate;
 
     /**
@@ -29,7 +29,7 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
         this.name = name;
         this.address = address;
         this.favourite = false;
-        this.removed = false;
+        this.unfavourited = false;
         this.coordinate = coordinate;
     }
 
@@ -83,12 +83,12 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
         this.favourite = favourite;
     }
 
-    public boolean isRemoved() {
-        return removed;
+    public boolean isUnfavourited() {
+        return unfavourited;
     }
 
-    public void setRemoved(boolean removed) {
-        this.removed = removed;
+    public void setUnfavourited(boolean unfavourited) {
+        this.unfavourited = unfavourited;
     }
 
     public void setAddress(String address) {

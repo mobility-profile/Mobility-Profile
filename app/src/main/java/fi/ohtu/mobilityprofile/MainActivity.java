@@ -19,6 +19,8 @@ import com.orm.SugarContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.remoteconnection.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 import fi.ohtu.mobilityprofile.ui.SecurityProblemActivity;
