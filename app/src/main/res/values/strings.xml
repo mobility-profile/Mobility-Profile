@@ -74,6 +74,7 @@
     <string name="train">Train</string>
     <string name="boat">Boat</string>
     <string name="plane">Plane</string>
+    <string name="settings_reset_title">Your data</string>
 
     <!--Back Up-->
     <string name="backup">Backup your data</string>

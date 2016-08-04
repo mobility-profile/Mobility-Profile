@@ -70,13 +70,4 @@
         android:layout_gravity="start"
         android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/resetbutton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/reset_button_text"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/colorAccentSand"
-        android:layout_marginTop="20dp"/>
-
 </LinearLayout>

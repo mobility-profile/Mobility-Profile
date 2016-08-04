@@ -61,7 +61,6 @@ public class PrivacyFragment extends Fragment {
 
     private Button startButton;
     private Button stopButton;
-    private Button resetButton;
     private AlphaAnimation animation;
 
     private ImageView compass;
@@ -121,7 +120,6 @@ public class PrivacyFragment extends Fragment {
 
         startButton = (Button) view.findViewById(R.id.tracking_start);
         stopButton = (Button) view.findViewById(R.id.tracking_stop);
-        resetButton = (Button) view.findViewById(R.id.resetbutton);
         stopButton.setVisibility(View.GONE);
 
         compass = (ImageView) view.findViewById(R.id.tracking_on);
@@ -132,7 +130,6 @@ public class PrivacyFragment extends Fragment {
         setListenerForGPSCheckBox();
         setListenerForCheckBoxCalendar();
         setListenerForTrackingButtons();
-        resetButton.setOnClickListener(onClickResetButton);
     }
 
     /**
@@ -322,44 +319,6 @@ public class PrivacyFragment extends Fragment {
             }
         }
         return false;
-    }
-
-    /**
-     * Creates alert dialog to confirm resetting of the app when reset button is clicked.
-     */
-    View.OnClickListener onClickResetButton = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
-
-            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    deleteAllDataFromDatabase();
-                }
-            });
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    // user clicked cancel button
-                    dialog.cancel();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }};
-
-    /**
-     * Deletes all data from the database.
-     */
-    private void deleteAllDataFromDatabase() {
-        PlaceDao.deleteAllData();
-        SignificantPlaceDao.deleteAllData();
-        CalendarTagDao.deleteAllData();
-        RouteSearchDao.deleteAllData();
-        FavouritePlaceDao.deleteAllData();
     }
 
     /**

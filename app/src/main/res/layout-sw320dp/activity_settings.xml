@@ -115,4 +115,27 @@
             android:padding="10dp"/>
     </GridLayout>
 
+    <TextView
+        android:id="@+id/reset_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18sp"
+        android:text="@string/settings_reset_title"
+        android:layout_gravity="start"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"/>
+
+
+    <Button
+        android:id="@+id/resetbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_button_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:background="@color/colorAccentSand"
+        android:layout_marginTop="20dp"/>
+
 </LinearLayout>
