@@ -11,28 +11,28 @@ import fi.ohtu.mobilityprofile.domain.GPSPoint;
  *
  */
 public class Cluster {
-    private List<GPSPoint> GPSPoints;
+    private List<GPSPoint> gpsPoints;
     private boolean insufficientData;
 
     public Cluster() {
-        GPSPoints = new ArrayList<>();
+        gpsPoints = new ArrayList<>();
         insufficientData = false;
     }
 
     public List<GPSPoint> getGPSPoints() {
-        return GPSPoints;
+        return gpsPoints;
     }
 
-    public void add(GPSPoint GPSPoint) {
-        GPSPoints.add(GPSPoint);
+    public void add(GPSPoint gpsPoint) {
+        gpsPoints.add(gpsPoint);
     }
 
     public GPSPoint get(int index) {
-        return GPSPoints.get(index);
+        return gpsPoints.get(index);
     }
 
     public int size() {
-        return GPSPoints.size();
+        return gpsPoints.size();
     }
 
     public void setInsufficientData(boolean value) {
@@ -44,19 +44,19 @@ public class Cluster {
     }
 
     public long timeSpent() {
-        Collections.sort(GPSPoints);
-        return GPSPoints.size() > 0 ? GPSPoints.get(GPSPoints.size() - 1).getTimestamp() - GPSPoints.get(0).getTimestamp() : 0;
+        Collections.sort(gpsPoints);
+        return gpsPoints.size() > 0 ? gpsPoints.get(gpsPoints.size() - 1).getTimestamp() - gpsPoints.get(0).getTimestamp() : 0;
     }
 
     public Coordinate centerCoordinate() {
         float lat = 0;
         float lon = 0;
-        for (GPSPoint GPSPoint : GPSPoints) {
+        for (GPSPoint GPSPoint : gpsPoints) {
             lat += GPSPoint.getLatitude();
             lon += GPSPoint.getLongitude();
         }
-        lat /= GPSPoints.size();
-        lon /= GPSPoints.size();
+        lat /= gpsPoints.size();
+        lon /= gpsPoints.size();
         return new Coordinate(lat, lon);
     }
 }

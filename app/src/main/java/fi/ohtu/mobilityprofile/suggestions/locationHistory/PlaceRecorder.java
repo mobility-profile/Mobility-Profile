@@ -88,7 +88,7 @@ public class PlaceRecorder extends Service {
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
-        private GPSPointClusterizer GPSPointClusterizer;
+        private GPSPointClusterizer gpsPointClusterizer;
 
         /**
          * Creates PlaceRecorder
@@ -99,7 +99,7 @@ public class PlaceRecorder extends Service {
          */
         public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
-            this.GPSPointClusterizer = new GPSPointClusterizer(context);
+            this.gpsPointClusterizer = new GPSPointClusterizer(context);
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
@@ -118,13 +118,13 @@ public class PlaceRecorder extends Service {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
             saveGPSPoint(location);
-            GPSPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
+            gpsPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
         }
 
         private void saveGPSPoint(Location location) {
             System.out.println(System.currentTimeMillis());
-            GPSPoint GPSPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
-            GPSPoint.save();
+            GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+            gpsPoint.save();
         }
 
         @Override

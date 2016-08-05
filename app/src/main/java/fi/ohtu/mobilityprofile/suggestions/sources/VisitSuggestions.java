@@ -20,7 +20,7 @@ import fi.ohtu.mobilityprofile.suggestions.locationHistory.GPSPointClusterizer;
  */
 public class VisitSuggestions implements SuggestionSource {
 
-    private GPSPointClusterizer GPSPointClusterizer;
+    private GPSPointClusterizer gpsPointClusterizer;
 
     /**
      * Creates VisitSuggestions.
@@ -84,7 +84,7 @@ public class VisitSuggestions implements SuggestionSource {
     }
 
     private boolean userStillAtLastVisitLocation(GPSPoint startLocation, Visit lastVisit) {
-        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < GPSPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD && startLocation.distanceTo(lastVisit) < GPSPointClusterizer.CLUSTER_RADIUS;
+        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < gpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD && startLocation.distanceTo(lastVisit) < gpsPointClusterizer.CLUSTER_RADIUS;
     }
 
     /**

@@ -34,7 +34,7 @@ public class RequestHandlerTest {
     private Context context;
     private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
-    private GPSPointDao GPSPointDao;
+    private GPSPointDao gpsPointDao;
     private RouteSearchDao routeSearchDao;
     private FavouritePlaceDao favouritePlaceDao;
     private TransportModeDao transportDao;
@@ -45,7 +45,7 @@ public class RequestHandlerTest {
         this.mobilityProfile = mock(DestinationLogic.class);
         this.calendarTagDao = mock(CalendarTagDao.class);
         this.routeSearchDao = new RouteSearchDao();
-        this.GPSPointDao = new GPSPointDao();
+        this.gpsPointDao = new GPSPointDao();
         this.favouritePlaceDao = mock(FavouritePlaceDao.class);
         this.transportDao = mock(TransportModeDao.class);
 

@@ -29,13 +29,13 @@ public class GPSPointClusterizer {
         this.context = context;
     }
 
-    public void updateVisitHistory(List<GPSPoint> GPSPoints) {
-        List<Cluster> clusters = formClusters(GPSPoints);
+    public void updateVisitHistory(List<GPSPoint> gpsPoints) {
+        List<Cluster> clusters = formClusters(gpsPoints);
         GPSPointDao.deleteAllData();
         for (Cluster cluster : clusters) {
             if (cluster.hasInsufficientData()) {
-                for(GPSPoint GPSPoint : cluster.getGPSPoints()) {
-                    GPSPointDao.insert(GPSPoint);
+                for(GPSPoint gpsPoint : cluster.getGPSPoints()) {
+                    GPSPointDao.insert(gpsPoint);
                 }
             } else {
                 createVisit(cluster);
@@ -43,26 +43,26 @@ public class GPSPointClusterizer {
         }
     }
 
-    private List<Cluster> formClusters(List<GPSPoint> GPSPoints) {
+    private List<Cluster> formClusters(List<GPSPoint> gpsPoints) {
         List<Cluster> clusters = new ArrayList<>();
-        List<GPSPoint> pointsToCheck = new ArrayList<>(GPSPoints);
-        for (int i = 0; i < GPSPoints.size(); i++) {
-            if (pointsToCheck.contains(GPSPoints.get(i))) {
+        List<GPSPoint> pointsToCheck = new ArrayList<>(gpsPoints);
+        for (int i = 0; i < gpsPoints.size(); i++) {
+            if (pointsToCheck.contains(gpsPoints.get(i))) {
                 Cluster cluster = new Cluster();
-                while (i < GPSPoints.size() - 1 && speedBetweenPlaces(GPSPoints.get(i), GPSPoints.get(i + 1)) < SPEED_LIMIT) {
-                    cluster.add(GPSPoints.get(i));
+                while (i < gpsPoints.size() - 1 && speedBetweenPlaces(gpsPoints.get(i), gpsPoints.get(i + 1)) < SPEED_LIMIT) {
+                    cluster.add(gpsPoints.get(i));
                     i++;
-                    if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD && GPSPoints.get(i).distanceTo(GPSPoints.get(i + 1)) > WANDERING_DISTANCE_LIMIT) {
+                    if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD && gpsPoints.get(i).distanceTo(gpsPoints.get(i + 1)) > WANDERING_DISTANCE_LIMIT) {
                         break;
                     }
                 }
-                cluster.add(GPSPoints.get(i));
-                if (i == GPSPoints.size() - 1) {
+                cluster.add(gpsPoints.get(i));
+                if (i == gpsPoints.size() - 1) {
                     cluster.setInsufficientData(true);
                 }
                 if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD) {
                     clusters.add(cluster);
-                    pointsToCheck.removeAll(findPlacesWithinDistance(cluster.centerCoordinate(), GPSPoints, CLUSTER_RADIUS));
+                    pointsToCheck.removeAll(findPlacesWithinDistance(cluster.centerCoordinate(), gpsPoints, CLUSTER_RADIUS));
                 }
             }
         }
@@ -92,16 +92,16 @@ public class GPSPointClusterizer {
         return significantPlace;
     }
 
-    private double speedBetweenPlaces(GPSPoint GPSPoint1, GPSPoint GPSPoint2) {
-        double distance = GPSPoint1.distanceTo(GPSPoint2);
-        return distance / ((GPSPoint2.getTimestamp() / 1000) - (GPSPoint1.getTimestamp() / 1000));
+    private double speedBetweenPlaces(GPSPoint gpsPoint1, GPSPoint gpsPoint2) {
+        double distance = gpsPoint1.distanceTo(gpsPoint2);
+        return distance / ((gpsPoint2.getTimestamp() / 1000) - (gpsPoint1.getTimestamp() / 1000));
     }
 
-    private List<GPSPoint> findPlacesWithinDistance(Coordinate origin, List<GPSPoint> GPSPoints, double distanceLimit) {
+    private List<GPSPoint> findPlacesWithinDistance(Coordinate origin, List<GPSPoint> gpsPoints, double distanceLimit) {
         ArrayList<GPSPoint> placesWithinDistance = new ArrayList<>();
-        for (GPSPoint GPSPoint : GPSPoints) {
-            if (GPSPoint.distanceTo(origin) < distanceLimit) {
-                placesWithinDistance.add(GPSPoint);
+        for (GPSPoint gpsPoint : gpsPoints) {
+            if (gpsPoint.distanceTo(origin) < distanceLimit) {
+                placesWithinDistance.add(gpsPoint);
             }
         }
         return placesWithinDistance;

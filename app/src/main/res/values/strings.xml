@@ -24,21 +24,21 @@
     <string name="profile_item_delete_title">Delete this route search?</string>
 
     <!--Favourite GPSPoints page-->
-    <string name="favourites_title">Your favourite GPSPoints</string>
-    <string name="favourites_edit_title">Edit this favourite GPSPoint</string>
-    <string name="favourites_delete_title">Delete this favourite GPSPoint?</string>
-    <string name="favourites_verify_title">Verify this suggested GPSPoint</string>
-    <string name="favourites_auto_generated_delete_title">Forget this GPSPoint for good or unfavourite? </string>
+    <string name="favourites_title">Your favourite places</string>
+    <string name="favourites_edit_title">Edit this favourite place</string>
+    <string name="favourites_delete_title">Delete this favourite place?</string>
+    <string name="favourites_verify_title">Verify this suggested place</string>
+    <string name="favourites_auto_generated_delete_title">Forget this place for good or unfavourite? </string>
     <string name="favourites_name_hint">Name</string>
     <string name="favourites_address_hint">Address</string>
     <string name="favourites_suggestion_address_hint">You can fix the address here</string>
     <string name="favourites_add_button">Add</string>
     <string name="favourites_delete_button">Delete</string>
-    <string name="favourites_see_suggestions">See new favourite GPSPoint suggestions</string>
-    <string name="favourite_auto_generated_hint">This is auto generated suggestion of a favourite GPSPoint</string>
+    <string name="favourites_see_suggestions">See new favourite place suggestions</string>
+    <string name="favourite_auto_generated_hint">This is auto generated suggestion of a favourite place</string>
 
     <string name="favourite_auto_generated_title">Auto generated suggestion</string>
-    <string name="favourite_auto_generated_text">This is a suggestion of a new favourite GPSPoint based on your location data. You can verify this as a new favourite, only edit the address or discard it for good.</string>
+    <string name="favourite_auto_generated_text">This is a suggestion of a new favourite place based on your location data. You can verify this as a new favourite, only edit the address or discard it for good.</string>
 
     <string name="save">Save</string>
     <string name="edit">Edit</string>
@@ -55,7 +55,7 @@
 
     <string name="reset_all_button_text">Reset app and delete all data</string>
     <string name="reset_title">Delete all collected data?</string>
-    <string name="reset_message">Deletes all collected data, including visited significantPlaces, searched routes, and favourite GPSPoints.</string>
+    <string name="reset_message">Deletes all collected data, including visited places, searched routes, and favourite places.</string>
 
 
     <string name="custom_permission_info">Allows the software to use information provided by Mobility Profile. Exact data collected by Mobility Profile won\'t be shared, only suggestions Mobility Profile is giving based on that data.</string>
