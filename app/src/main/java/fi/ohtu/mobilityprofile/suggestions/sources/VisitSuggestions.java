@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -60,20 +60,20 @@ public class VisitSuggestions implements SuggestionSource {
         Map<String, Integer> nextDestinations = new HashMap<>();
         if (visits.size() > 3) {
 
-            SignificantPlace currentSignificantPlace = VisitDao.getLast().getSignificantPlace();
-            SignificantPlace previousLocation = visits.get(1).getSignificantPlace();
-            SignificantPlace beforePrevious = visits.get(2).getSignificantPlace();
+            Place currentPlace = VisitDao.getLast().getPlace();
+            Place previousLocation = visits.get(1).getPlace();
+            Place beforePrevious = visits.get(2).getPlace();
 
             // first and two last items are ignored because they do not have either next or previous and before previous location
             for (int i = 1; i < visits.size() - 2; i++) {
 
                 // checks if startLocation is the same as the location currently examined in the list
-                if (visits.get(i).getSignificantPlace().equals(currentSignificantPlace)) {
+                if (visits.get(i).getPlace().equals(currentPlace)) {
 
                     // checks if the previous location in the past is the same as previous location from the current location
                     // and before previous location in the past is the same as before previous location from the current location
-                    if ((visits.get(i + 1).getSignificantPlace().equals(previousLocation))
-                            && (visits.get(i + 2).getSignificantPlace().equals(beforePrevious))) {
+                    if ((visits.get(i + 1).getPlace().equals(previousLocation))
+                            && (visits.get(i + 2).getPlace().equals(beforePrevious))) {
 
                         addToNextDestinations(visits.get(i - 1).getAddress(), nextDestinations);
                     }

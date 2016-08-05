@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.GPSPointDao;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
@@ -70,26 +70,26 @@ public class GPSPointClusterizer {
     }
 
     private boolean createVisit(Cluster cluster) {
-        SignificantPlace closestSignificantPlace = SignificantPlaceDao.getSignificantPlaceClosestTo(cluster.centerCoordinate());
-        if (closestSignificantPlace == null || closestSignificantPlace.getCoordinate().distanceTo(cluster.centerCoordinate()) > CLUSTER_RADIUS) {
-            Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), createSignificantPlace(cluster.centerCoordinate()));
+        Place closestPlace = PlaceDao.getPlaceClosestTo(cluster.centerCoordinate());
+        if (closestPlace == null || closestPlace.getCoordinate().distanceTo(cluster.centerCoordinate()) > CLUSTER_RADIUS) {
+            Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), createPlace(cluster.centerCoordinate()));
             VisitDao.insert(visit);
             return true;
-        } else if (!VisitDao.getLast().getSignificantPlace().equals(closestSignificantPlace)) {
-            Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), closestSignificantPlace);
+        } else if (!VisitDao.getLast().getPlace().equals(closestPlace)) {
+            Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), closestPlace);
             VisitDao.insert(visit);
             return true;
         }
         return false;
     }
 
-    private SignificantPlace createSignificantPlace(Coordinate coordinate) {
-        SignificantPlace significantPlace = new SignificantPlace("name", "address", coordinate);
-        SignificantPlaceDao.insertSignificantPlace(significantPlace);
-        AddressConverter.getAddressAndSave(significantPlace, context);
-        significantPlace.setName(significantPlace.getAddress());
-        significantPlace.save();
-        return significantPlace;
+    private Place createPlace(Coordinate coordinate) {
+        Place place = new Place("name", "address", coordinate);
+        PlaceDao.insertPlace(place);
+        AddressConverter.getAddressAndSave(place, context);
+        place.setName(place.getAddress());
+        place.save();
+        return place;
     }
 
     private double speedBetweenPlaces(GPSPoint gpsPoint1, GPSPoint gpsPoint2) {

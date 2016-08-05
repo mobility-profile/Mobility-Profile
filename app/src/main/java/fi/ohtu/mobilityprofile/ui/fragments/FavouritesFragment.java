@@ -19,9 +19,9 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.FavouritesListAdapter;
-import fi.ohtu.mobilityprofile.ui.list_adapters.SignificantsListAdapter;
+import fi.ohtu.mobilityprofile.ui.list_adapters.PlacesListAdapter;
 
 /**
  * The class creates a component called FavouritesFragment.
@@ -94,34 +94,34 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void setSuggestionsListView(View view) {
-        List<SignificantPlace> significantPlaces = getSignificantPlaces();
+        List<Place> places = getPlaces();
 
-        final SignificantsListAdapter adapter = new SignificantsListAdapter(context, R.layout.favourites_list_item, significantPlaces, this);
-        ListView listView = (ListView) view.findViewById(R.id.significants_listView);
+        final PlacesListAdapter adapter = new PlacesListAdapter(context, R.layout.favourites_list_item, places, this);
+        ListView listView = (ListView) view.findViewById(R.id.places_listView);
         listView.setAdapter(adapter);
         listView.setVisibility(View.GONE);
 
         switchListener(view, listView);
     }
 
-    private List<SignificantPlace> getSignificantPlaces() {
-        List<SignificantPlace> significantPlaces = new ArrayList<>();
+    private List<Place> getPlaces() {
+        List<Place> places = new ArrayList<>();
         try {
-            significantPlaces = SignificantPlace.listAll(SignificantPlace.class);
-            List<SignificantPlace> remove = new ArrayList<>();
+            places = Place.listAll(Place.class);
+            List<Place> remove = new ArrayList<>();
 
-            for (SignificantPlace s : significantPlaces) {
-                if (s.isFavourite() || s.isUnfavourited()) {
-                    remove.add(s);
+            for (Place place : places) {
+                if (place.isFavourite() || place.isUnfavourited()) {
+                    remove.add(place);
                 }
             }
 
-            significantPlaces.removeAll(remove);
+            places.removeAll(remove);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return significantPlaces;
+        return places;
     }
 
     private List<FavouritePlace> getFavouritePlaces() {

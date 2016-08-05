@@ -25,7 +25,7 @@ public class DestinationLogic {
     /**
      * Returns a list of most probable destinations, when the user is in startLocation.
      *
-     * @param startLocation SignificantPlace where the user is starting
+     * @param startLocation Place where the user is starting
      * @return List of most probable destinations
      */
     public ArrayList<String> getListOfMostLikelyDestinations(GPSPoint startLocation) {

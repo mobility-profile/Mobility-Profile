@@ -146,11 +146,11 @@ public class PrivacyFragment extends Fragment {
                         getPermissionToAccessFineLocation();
                     } else {
                         GPSCheckedOn();
-                        Toast.makeText(context, "SignificantPlace tracking is used again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Place tracking is used again", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     GPSCheckedOff();
-                    Toast.makeText(context, "SignificantPlace tracking will not be used", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Place tracking will not be used", Toast.LENGTH_SHORT).show();
                 }
             }
         });

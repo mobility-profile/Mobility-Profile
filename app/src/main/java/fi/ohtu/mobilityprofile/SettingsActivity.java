@@ -15,12 +15,12 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -138,12 +138,12 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private void deleteAllDataFromDatabase() {
         GPSPointDao.deleteAllData();
-        SignificantPlaceDao.deleteAllData();
+        PlaceDao.deleteAllData();
         CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         FavouritePlaceDao.deleteAllData();
 
-        if (GPSPoint.count(GPSPoint.class) == 0 && SignificantPlace.count(SignificantPlace.class)  == 0
+        if (GPSPoint.count(GPSPoint.class) == 0 && Place.count(Place.class)  == 0
                 && CalendarTag.count(CalendarTag.class) == 0 && RouteSearch.count(RouteSearch.class) == 0
                 && FavouritePlace.count(FavouritePlace.class) == 0) {
             Toast.makeText(this, "Successfully deleted", Toast.LENGTH_SHORT).show();

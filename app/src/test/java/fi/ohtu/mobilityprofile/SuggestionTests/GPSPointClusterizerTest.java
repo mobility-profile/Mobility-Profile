@@ -23,11 +23,11 @@ import static org.junit.Assert.*;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.GPSPointClusterizer;
 
 /**
@@ -67,7 +67,7 @@ public class GPSPointClusterizerTest {
 
     private Context context;
     private VisitDao visitDao;
-    private SignificantPlaceDao significantPlaceDao;
+    private PlaceDao placeDao;
 
     private List<TestObject> testObjects;
 
@@ -76,7 +76,7 @@ public class GPSPointClusterizerTest {
 
         this.context = Robolectric.setupActivity(MainActivityStub.class);
         this.visitDao = new VisitDao();
-        this.significantPlaceDao = new SignificantPlaceDao();
+        this.placeDao = new PlaceDao();
         this.testObjects = new ArrayList<TestObject>() {{
             add(
                     new TestObject(
@@ -970,13 +970,13 @@ public class GPSPointClusterizerTest {
         for(TestObject testObject : this.testObjects){
             placeSum += testObject.getCorrectCoordinates().size();
             GPSPointClusterizer.updateVisitHistory(testObject.getTestData());
-            List<SignificantPlace> significantPlaces = SignificantPlaceDao.getAll();
-            assertTrue(significantPlaces.size() == testObject.correctCoordinates.size());
+            List<Place> places = PlaceDao.getAll();
+            assertTrue(places.size() == testObject.correctCoordinates.size());
             for(int i = 0; i < testObject.correctCoordinates.size(); i++) {
-                distanceSum+=testObject.getCorrectCoordinates().get(i).distanceTo(significantPlaces.get(i).getCoordinate());
-                assertTrue(testObject.getCorrectCoordinates().get(i).distanceTo(significantPlaces.get(i).getCoordinate()) < 100);
+                distanceSum+=testObject.getCorrectCoordinates().get(i).distanceTo(places.get(i).getCoordinate());
+                assertTrue(testObject.getCorrectCoordinates().get(i).distanceTo(places.get(i).getCoordinate()) < 100);
             }
-            SignificantPlaceDao.deleteAllData();
+            PlaceDao.deleteAllData();
         }
         assertTrue(distanceSum/placeSum < 30);
     }

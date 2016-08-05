@@ -60,7 +60,7 @@ Tietokantataulut:
 
 **Visit**
 * enterTime(datetime)
-* significantPlace(fk)
+* place(fk)
 * next GPSPoint(fk)
 
 **Skenaario: Ohjelma rakentaa käyttäjän sijantihistoriaa**

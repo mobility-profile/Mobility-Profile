@@ -4,7 +4,6 @@ import com.orm.query.Select;
 
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**

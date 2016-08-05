@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
  * Class is used to save places assumed significant to the user (ie. places where he/she spends some
  * time and not just points on the road).
  */
-public class SignificantPlace extends SugarRecord implements HasAddress, HasCoordinate {
+public class Place extends SugarRecord implements HasAddress, HasCoordinate {
     private String name;
     private String address;
     private boolean favourite;
@@ -16,16 +16,16 @@ public class SignificantPlace extends SugarRecord implements HasAddress, HasCoor
     /**
      *
      */
-    public SignificantPlace() {
+    public Place() {
     }
 
     /**
-     * Creates SignificantPlace.
-     * @param name Name of the SignificantPlace
-     * @param address Address of the SignificantPlace
+     * Creates Place.
+     * @param name Name of the Place
+     * @param address Address of the Place
      * @param coordinate Coordinate object representing the coordinates of the place
      */
-    public SignificantPlace(String name, String address, Coordinate coordinate) {
+    public Place(String name, String address, Coordinate coordinate) {
         this.name = name;
         this.address = address;
         this.favourite = false;
@@ -51,12 +51,12 @@ public class SignificantPlace extends SugarRecord implements HasAddress, HasCoor
     }
 
     /**
-     * Returns the distance between this SignificantPlace and a given SignificantPlace
-     * @param significantPlace SignificantPlace to be compared
+     * Returns the distance between this Place and a given Place
+     * @param place Place to be compared
      * @return distance
      */
-    public double distanceTo(SignificantPlace significantPlace) {
-        return this.coordinate.distanceTo(significantPlace.getCoordinate());
+    public double distanceTo(Place place) {
+        return this.coordinate.distanceTo(place.getCoordinate());
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SignificantPlace extends SugarRecord implements HasAddress, HasCoor
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SignificantPlace that = (SignificantPlace) o;
+        Place that = (Place) o;
 
         return coordinate.equals(that.coordinate);
 

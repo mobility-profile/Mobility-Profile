@@ -12,11 +12,11 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
@@ -28,10 +28,10 @@ public class VisitSuggestionsTest {
     private VisitSuggestions visitSuggestions;
     private List<Suggestion> suggestions;
 
-    private SignificantPlace kumpula;
-    private SignificantPlace toolo;
-    private SignificantPlace lauttasaari;
-    private SignificantPlace pitajanmaki;
+    private Place kumpula;
+    private Place toolo;
+    private Place lauttasaari;
+    private Place pitajanmaki;
 
     @Before
     public void setUp() {
@@ -39,15 +39,15 @@ public class VisitSuggestionsTest {
         this.suggestions = new ArrayList<>();
         Robolectric.setupActivity(MainActivityStub.class);
 
-        kumpula = new SignificantPlace("Kumpula", "Kumpula", new Coordinate(new Float(1), new Float(2)));
-        toolo = new SignificantPlace("Töölö", "Töölö", new Coordinate(new Float(3), new Float(4)));
-        lauttasaari = new SignificantPlace("Lauttasaari", "Lauttasaari", new Coordinate(new Float(5), new Float(6)));
-        pitajanmaki = new SignificantPlace("Pitäjänmäki", "Pitäjänmäki", new Coordinate(new Float(7), new Float(8)));
+        kumpula = new Place("Kumpula", "Kumpula", new Coordinate(new Float(1), new Float(2)));
+        toolo = new Place("Töölö", "Töölö", new Coordinate(new Float(3), new Float(4)));
+        lauttasaari = new Place("Lauttasaari", "Lauttasaari", new Coordinate(new Float(5), new Float(6)));
+        pitajanmaki = new Place("Pitäjänmäki", "Pitäjänmäki", new Coordinate(new Float(7), new Float(8)));
 
-        SignificantPlaceDao.insertSignificantPlace(kumpula);
-        SignificantPlaceDao.insertSignificantPlace(toolo);
-        SignificantPlaceDao.insertSignificantPlace(lauttasaari);
-        SignificantPlaceDao.insertSignificantPlace(pitajanmaki);
+        PlaceDao.insertPlace(kumpula);
+        PlaceDao.insertPlace(toolo);
+        PlaceDao.insertPlace(lauttasaari);
+        PlaceDao.insertPlace(pitajanmaki);
     }
 
     @Test
@@ -119,10 +119,10 @@ public class VisitSuggestionsTest {
 
     private void createShortListOfVisits() {
 
-        SignificantPlaceDao.insertSignificantPlace(kumpula);
-        SignificantPlaceDao.insertSignificantPlace(toolo);
-        SignificantPlaceDao.insertSignificantPlace(lauttasaari);
-        SignificantPlaceDao.insertSignificantPlace(pitajanmaki);
+        PlaceDao.insertPlace(kumpula);
+        PlaceDao.insertPlace(toolo);
+        PlaceDao.insertPlace(lauttasaari);
+        PlaceDao.insertPlace(pitajanmaki);
 
         VisitDao.insert(new Visit(100, 101, kumpula));
 
