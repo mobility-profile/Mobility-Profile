@@ -51,7 +51,8 @@ public class RequestHandlerTest {
         this.favouritePlaceDao = mock(FavouritePlaceDao.class);
         this.transportDao = mock(TransportModeDao.class);
 
-        this.requestHandler = new RequestHandler(mobilityProfile, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao, transportDao);
+        this.requestHandler = new RequestHandler(mobilityProfile);
+
 
         Robolectric.setupActivity(MainActivityStub.class);
     }
@@ -66,6 +67,6 @@ public class RequestHandlerTest {
         msg.setData(bundle);
 
         requestHandler.handleMessage(msg);
-        assertTrue(routeSearchDao.getLatestRouteSearch().getDestination().equals("Naantali"));
+        assertTrue(RouteSearchDao.getLatestRouteSearch().getDestination().equals("Naantali"));
     }
 }

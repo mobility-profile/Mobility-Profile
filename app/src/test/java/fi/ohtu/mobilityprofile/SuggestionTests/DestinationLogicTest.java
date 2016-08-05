@@ -32,21 +32,17 @@ import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
 public class DestinationLogicTest {
 
     private DestinationLogic mp;
-    private PlaceDao placeDao;
-    private CalendarTagDao calendarTagDao;
 
     @Before
     public void setUp() throws Exception {
         CalendarTagDao calendarTagDao = mock(CalendarTagDao.class);
-        placeDao = new PlaceDao();
-        RouteSearchDao routeSearchDao = mock(RouteSearchDao.class);
-        FavouritePlaceDao favouritePlaceDao = mock(FavouritePlaceDao.class);
 
         List<SuggestionSource> suggestionSources = new ArrayList<>();
-        suggestionSources.add(new CalendarSuggestions(new CalendarConnection(Robolectric.setupActivity(MainActivityStub.class)), calendarTagDao));
-        suggestionSources.add(new VisitSuggestions(new SignificantPlaceDao(), new VisitDao()));
-        suggestionSources.add(new RouteSuggestions(routeSearchDao));
-        suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));
+
+        suggestionSources.add(new CalendarSuggestions(new CalendarConnection(Robolectric.setupActivity(MainActivityStub.class))));
+        suggestionSources.add(new VisitSuggestions());
+        suggestionSources.add(new RouteSuggestions());
+        suggestionSources.add(new FavoriteSuggestions());
 
         mp = new DestinationLogic(suggestionSources);
 

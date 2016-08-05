@@ -18,7 +18,7 @@ public class SignificantPlaceDao {
      * @param coordinate coordinates of the given location
      * @return SignificantPlace
      */
-    public SignificantPlace getSignificantPlaceClosestTo(Coordinate coordinate) {
+    public static SignificantPlace getSignificantPlaceClosestTo(Coordinate coordinate) {
         List<SignificantPlace> significantPlaces = getAll();
         SignificantPlace result = null;
         double distance = Double.MAX_VALUE;
@@ -30,47 +30,16 @@ public class SignificantPlaceDao {
         return result;
     }
 
-    public List<SignificantPlace> getAll() {
+    public static List<SignificantPlace> getAll() {
         return SignificantPlace.listAll(SignificantPlace.class);
     }
 
-    /**
-     * Returns the nearest known SignificantPlace from the searchLocation if it is within searchRadius.
-     * If no SignificantPlaces were found, new one will be created with the given searchLocation. The
-     * new SignificantPlace will then be saved to the database and returned.
-     *
-     * @param searchLocation Search nearestKnownLocation
-     * @param searchRadius Search radius in meters
-     * @return Nearest SignificantPlace
-     */
-    public SignificantPlace getNearestLocation(String searchLocation, int searchRadius) {
-        List<SignificantPlace> significantPlaces = SignificantPlace.listAll(SignificantPlace.class);
-
-        SignificantPlace nearestSignificantPlace = null;
-        for (SignificantPlace significantPlace : significantPlaces) {
-            if (significantPlace.getAddress().equals(searchLocation)) {
-                nearestSignificantPlace = significantPlace;
-                break;
-                // TODO: Check if significantPlace is within searchRadius from the searchLocation.
-                // Also check all significantPlaces to make sure we find the closest one.
-            }
-        }
-
-        if (nearestSignificantPlace == null) {
-            // There weren't any saved significantPlaces within searchRadius, so just create a new one and
-            // save it to the database.
-            nearestSignificantPlace = new SignificantPlace();
-            nearestSignificantPlace.save();
-        }
-
-        return nearestSignificantPlace;
-    }
 
     /**
      * Saves a SignificantPlace to the database.
      * @param significantPlace SignificantPlace to be saved
      */
-    public void insertSignificantPlace(SignificantPlace significantPlace) {
+    public static void insertSignificantPlace(SignificantPlace significantPlace) {
         significantPlace.save();
     }
 
@@ -80,7 +49,7 @@ public class SignificantPlaceDao {
      * @return SignificantPlace with the given name
      */
 
-    public SignificantPlace getSignificantPlaceByName(String name) {
+    public static SignificantPlace getSignificantPlaceByName(String name) {
         List<SignificantPlace> places = Select.from(SignificantPlace.class)
                 .where(Condition.prop("name").eq(name))
                 .limit("1")
@@ -96,7 +65,7 @@ public class SignificantPlaceDao {
      * @param address address of the significantPlace
      * @return SignificantPlace with the given address
      */
-    public SignificantPlace getSignificantPlaceByAddress(String address) {
+    public static SignificantPlace getSignificantPlaceByAddress(String address) {
         List<SignificantPlace> places = Select.from(SignificantPlace.class)
                 .where(Condition.prop("address").eq(address))
                 .limit("1")
@@ -111,7 +80,7 @@ public class SignificantPlaceDao {
      * Deletes a SignificantPlace by address
      * @param address address of the significantPlace to be deleted
      */
-    public void deleteSignificantPlaceByAddress(String address) {
+    public static void deleteSignificantPlaceByAddress(String address) {
         SignificantPlace place = getSignificantPlaceByAddress(address);
         if (place != null) {
             place.delete();

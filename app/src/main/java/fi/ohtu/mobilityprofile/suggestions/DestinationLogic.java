@@ -3,11 +3,13 @@ package fi.ohtu.mobilityprofile.suggestions;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.Place;
+
 /**
  * This class is used for calculating the most likely trips the user is going to make.
  */
 public class DestinationLogic {
-    private String latestStartLocation;
+    private Place latestStartLocation;
     private List<Suggestion> latestSuggestions;
     private List<SuggestionSource> suggestionSources;
 
@@ -26,7 +28,7 @@ public class DestinationLogic {
      * @param startLocation SignificantPlace where the user is starting
      * @return List of most probable destinations
      */
-    public ArrayList<String> getListOfMostLikelyDestinations(String startLocation) {
+    public ArrayList<String> getListOfMostLikelyDestinations(Place startLocation) {
         this.latestStartLocation = startLocation;
 
         List<Suggestion> suggestions = new ArrayList<>();
@@ -58,7 +60,7 @@ public class DestinationLogic {
      *
      * @return Latest start location
      */
-    public String getLatestStartLocation() {
+    public Place getLatestStartLocation() {
         return latestStartLocation;
     }
 }

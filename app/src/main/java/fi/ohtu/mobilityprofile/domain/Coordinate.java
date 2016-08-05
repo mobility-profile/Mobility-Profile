@@ -5,7 +5,7 @@ import com.orm.SugarRecord;
 /**
  * Class for saving coordinates to be used by any class needing them
  */
-public class Coordinate extends SugarRecord {
+public class Coordinate extends SugarRecord implements HasCoordinate {
     Float latitude;
     Float longitude;
 
@@ -56,6 +56,16 @@ public class Coordinate extends SugarRecord {
 
         return latitude.equals(that.latitude) && longitude.equals(that.longitude);
 
+    }
+
+    @Override
+    public Coordinate getCoordinate() {
+        return this;
+    }
+
+    @Override
+    public double distanceTo(HasCoordinate hasCoordinate) {
+        return this.distanceTo(hasCoordinate.getCoordinate());
     }
 
 }
