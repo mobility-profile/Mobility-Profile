@@ -32,6 +32,7 @@ import fi.ohtu.mobilityprofile.domain.Place;
  */
 public class AddressConverter {
 
+    //use this RequestQueue instead of Vollew.newRequestQueue(context) in unit tests
     public static RequestQueue newVolleyRequestQueueForTest(final Context context) {
         File cacheDir = new File(context.getCacheDir(), "cache/volley");
         Network network = new BasicNetwork(new HurlStack());
@@ -46,8 +47,8 @@ public class AddressConverter {
                 + object.getCoordinate().getLatitude() + "&point.lon="
                 + object.getCoordinate().getLongitude() + "&layers=address&size=1&sources=osm";
 
-        //RequestQueue queue = Volley.newRequestQueue(context);
-        RequestQueue queue = newVolleyRequestQueueForTest(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        //RequestQueue queue = newVolleyRequestQueueForTest(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
