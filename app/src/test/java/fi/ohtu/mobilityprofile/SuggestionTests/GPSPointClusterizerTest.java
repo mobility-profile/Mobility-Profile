@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
+import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
@@ -962,21 +963,36 @@ public class GPSPointClusterizerTest {
 
     }
 
+    private static void print(Place place, int order){
+        System.out.println("<trkpt lat=\"" + place.getCoordinate().getLatitude() + "\" lon=\"" + place.getCoordinate().getLongitude() +"\"><time>2016-07-21T"+order+":00:00Z</time><src>network</src></trkpt>");
+    }
+
     @Test
-    public void clusterizerFindsCorrectSignificantPlaces() {
+    public void clusterizerFindsCorrectPlaces() {
         GPSPointClusterizer GPSPointClusterizer = new GPSPointClusterizer(this.context);
         double distanceSum = 0;
         long placeSum = 0;
         for(TestObject testObject : this.testObjects){
+
             placeSum += testObject.getCorrectCoordinates().size();
-            GPSPointClusterizer.updateVisitHistory(testObject.getTestData());
+
+            for(int i = 0; i < testObject.getTestData().size(); i++) {
+                GPSPointDao.insert(testObject.getTestData().get(i));
+                GPSPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
+            }
+
             List<Place> places = PlaceDao.getAll();
+            for(Place place : places) {
+                print(place, 0);
+            }
+
             assertTrue(places.size() == testObject.correctCoordinates.size());
             for(int i = 0; i < testObject.correctCoordinates.size(); i++) {
                 distanceSum+=testObject.getCorrectCoordinates().get(i).distanceTo(places.get(i).getCoordinate());
                 assertTrue(testObject.getCorrectCoordinates().get(i).distanceTo(places.get(i).getCoordinate()) < 100);
             }
             PlaceDao.deleteAllData();
+            GPSPointDao.deleteAllData();
         }
         assertTrue(distanceSum/placeSum < 30);
     }

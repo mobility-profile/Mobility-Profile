@@ -51,16 +51,17 @@ public class GPSPointClusterizer {
                 Cluster cluster = new Cluster();
                 while (i < gpsPoints.size() - 1 && speedBetweenPlaces(gpsPoints.get(i), gpsPoints.get(i + 1)) < SPEED_LIMIT) {
                     cluster.add(gpsPoints.get(i));
-                    i++;
                     if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD && gpsPoints.get(i).distanceTo(gpsPoints.get(i + 1)) > WANDERING_DISTANCE_LIMIT) {
                         break;
                     }
+                    i++;
                 }
                 cluster.add(gpsPoints.get(i));
                 if (i == gpsPoints.size() - 1) {
                     cluster.setInsufficientData(true);
+                    clusters.add(cluster);
                 }
-                if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD) {
+                else if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD) {
                     clusters.add(cluster);
                     pointsToCheck.removeAll(findPlacesWithinDistance(cluster.centerCoordinate(), gpsPoints, CLUSTER_RADIUS));
                 }
@@ -71,11 +72,11 @@ public class GPSPointClusterizer {
 
     private boolean createVisit(Cluster cluster) {
         Place closestPlace = PlaceDao.getPlaceClosestTo(cluster.centerCoordinate());
-        if (closestPlace == null || closestPlace.getCoordinate().distanceTo(cluster.centerCoordinate()) > CLUSTER_RADIUS) {
+        if (closestPlace == null || closestPlace.distanceTo(cluster.centerCoordinate()) > CLUSTER_RADIUS) {
             Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), createPlace(cluster.centerCoordinate()));
             VisitDao.insert(visit);
             return true;
-        } else if (!VisitDao.getLast().getPlace().equals(closestPlace)) {
+        } else if (VisitDao.getLast().getPlace() != null && !VisitDao.getLast().getPlace().equals(closestPlace)) {
             Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), closestPlace);
             VisitDao.insert(visit);
             return true;

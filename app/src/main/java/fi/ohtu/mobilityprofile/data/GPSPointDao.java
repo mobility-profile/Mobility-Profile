@@ -31,16 +31,16 @@ public class GPSPointDao {
      * @return list of GPSPoints
      */
     public static List<GPSPoint> getAll() {
-        return Select.from(GPSPoint.class).orderBy("timestamp DESC").list();
+        return Select.from(GPSPoint.class).orderBy("timestamp ASC").list();
     }
 
     /**
      * Saves a GPSPoint to the database.
      *
-     * @param GPSPoint GPSPoint to be saved
+     * @param gpsPoint GPSPoint to be saved
      */
-    public static void insert(GPSPoint GPSPoint) {
-        GPSPoint.save();
+    public static void insert(GPSPoint gpsPoint) {
+        gpsPoint.save();
     }
 
     /**
