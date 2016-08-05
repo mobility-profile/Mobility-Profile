@@ -19,9 +19,6 @@ import fi.ohtu.mobilityprofile.domain.Visit;
 public class PlaceClusterizer {
 
     private Context context;
-    private PlaceDao placeDao;
-    private SignificantPlaceDao significantPlaceDao;
-    private VisitDao visitDao;
 
     static final double SPEED_LIMIT = 0.8;
     static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 600000; //10 minutes
@@ -30,56 +27,57 @@ public class PlaceClusterizer {
 
     public PlaceClusterizer(Context context) {
         this.context = context;
-        this.placeDao = new PlaceDao();
-        this.significantPlaceDao = new SignificantPlaceDao();
-        this.visitDao = new VisitDao();
     }
 
     public void updateVisitHistory(List<Place> places) {
-        List<List<Place>> clusters = formClusters(places);
-        for (List<Place> cluster : clusters) {
-            createVisit(cluster);
+        List<Cluster> clusters = formClusters(places);
+        PlaceDao.deleteAllData();
+        for (Cluster cluster : clusters) {
+            if (cluster.hasInsufficientData()) {
+                for(Place place : cluster.getPlaces()) {
+                    PlaceDao.insert(place);
+                }
+            } else {
+                createVisit(cluster);
+            }
         }
     }
 
-    private long timeSpentIn(List<Place> cluster) {
-        return cluster.get(cluster.size() - 1).getTimestamp() - cluster.get(0).getTimestamp();
-    }
-
-    private List<List<Place>> formClusters(List<Place> places) {
-        List<List<Place>> clusters = new ArrayList<>();
+    private List<Cluster> formClusters(List<Place> places) {
+        List<Cluster> clusters = new ArrayList<>();
         List<Place> placesToCheck = new ArrayList<>(places);
         for (int i = 0; i < places.size(); i++) {
             if (placesToCheck.contains(places.get(i))) {
-                List<Place> cluster = new ArrayList<>();
-                long timeSpentInCluster = 0;
+                Cluster cluster = new Cluster();
                 while (i < places.size() - 1 && speedBetweenPlaces(places.get(i), places.get(i + 1)) < SPEED_LIMIT) {
                     cluster.add(places.get(i));
-                    timeSpentInCluster += places.get(i + 1).getTimestamp() - places.get(i).getTimestamp();
                     i++;
-                    if (timeSpentInCluster > TIME_SPENT_IN_CLUSTER_THRESHOLD && places.get(i).distanceTo(places.get(i + 1)) > WANDERING_DISTANCE_LIMIT) {
+                    if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD && places.get(i).distanceTo(places.get(i + 1)) > WANDERING_DISTANCE_LIMIT) {
                         break;
                     }
                 }
                 cluster.add(places.get(i));
-                if (timeSpentIn(cluster) > TIME_SPENT_IN_CLUSTER_THRESHOLD) {
+                if (i == places.size() - 1) {
+                    cluster.setInsufficientData(true);
+                }
+                if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD) {
                     clusters.add(cluster);
-                    placesToCheck.removeAll(findPlacesWithinDistance(meanCoordinate(cluster), places, CLUSTER_RADIUS));
+                    placesToCheck.removeAll(findPlacesWithinDistance(cluster.centerCoordinate(), places, CLUSTER_RADIUS));
                 }
             }
         }
         return clusters;
     }
 
-    private boolean createVisit(List<Place> cluster) {
-        SignificantPlace closestSignificantPlace = significantPlaceDao.getSignificantPlaceClosestTo(meanCoordinate(cluster));
-        if (closestSignificantPlace == null || closestSignificantPlace.getCoordinate().distanceTo(meanCoordinate(cluster)) > CLUSTER_RADIUS) {
-            Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), createSignificantPlace(meanCoordinate(cluster)));
-            visitDao.insert(visit);
+    private boolean createVisit(Cluster cluster) {
+        SignificantPlace closestSignificantPlace = SignificantPlaceDao.getSignificantPlaceClosestTo(cluster.centerCoordinate());
+        if (closestSignificantPlace == null || closestSignificantPlace.getCoordinate().distanceTo(cluster.centerCoordinate()) > CLUSTER_RADIUS) {
+            Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), createSignificantPlace(cluster.centerCoordinate()));
+            VisitDao.insert(visit);
             return true;
-        } else if (!visitDao.getLast().getSignificantPlace().equals(closestSignificantPlace)) {
+        } else if (!VisitDao.getLast().getSignificantPlace().equals(closestSignificantPlace)) {
             Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), closestSignificantPlace);
-            visitDao.insert(visit);
+            VisitDao.insert(visit);
             return true;
         }
         return false;
@@ -97,18 +95,6 @@ public class PlaceClusterizer {
     private double speedBetweenPlaces(Place place1, Place place2) {
         double distance = place1.distanceTo(place2);
         return distance / ((place2.getTimestamp() / 1000) - (place1.getTimestamp() / 1000));
-    }
-
-    private Coordinate meanCoordinate(List<Place> places) {
-        float lat = 0;
-        float lon = 0;
-        for (Place place : places) {
-            lat += place.getLatitude();
-            lon += place.getLongitude();
-        }
-        lat /= places.size();
-        lon /= places.size();
-        return new Coordinate(lat, lon);
     }
 
     private List<Place> findPlacesWithinDistance(Coordinate origin, List<Place> places, double distanceLimit) {

@@ -2,10 +2,12 @@ package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
 
+import java.util.Comparator;
+
 /**
  * Class is used to save raw gps data.
  */
-public class Place extends SugarRecord implements HasCoordinate {
+public class Place extends SugarRecord implements HasCoordinate, Comparable<Place> {
     long timestamp;
     Coordinate coordinate;
 
@@ -59,4 +61,15 @@ public class Place extends SugarRecord implements HasCoordinate {
         return this.coordinate.distanceTo(hasCoordinate.getCoordinate());
     }
 
+    @Override
+    public int compareTo(Place another) {
+        long difference = timestamp - another.getTimestamp();
+        if(difference < 0) {
+            return -1;
+        }
+        if(difference > 0) {
+            return 1;
+        }
+        return 0;
+    }
 }

@@ -37,10 +37,6 @@ public class VisitSuggestions implements SuggestionSource {
     public List<Suggestion> getSuggestions(Place startLocation) {
         Map<String, Integer> nextDestinations = calculateNextDestinations(startLocation);
         List<Suggestion> suggestions = new ArrayList<>();
-        for(String key : nextDestinations.keySet()) {
-            System.out.println(key + " " + nextDestinations.get(key));
-        }
-
         if (!nextDestinations.isEmpty() && userStillAtLastVisitLocation(startLocation, VisitDao.getLast())) {
             int maxValue = Collections.max(nextDestinations.values());
             for (Map.Entry<String, Integer> entry : nextDestinations.entrySet()) {

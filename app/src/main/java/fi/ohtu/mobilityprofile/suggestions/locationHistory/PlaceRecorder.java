@@ -78,6 +78,7 @@ public class PlaceRecorder extends Service {
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
+        private PlaceClusterizer placeClusterizer;
 
         /**
          * Creates PlaceRecorder
@@ -88,6 +89,7 @@ public class PlaceRecorder extends Service {
          */
         public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
+            this.placeClusterizer = new PlaceClusterizer(context);
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
@@ -106,9 +108,7 @@ public class PlaceRecorder extends Service {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
             savePlace(location);
-            if (PlaceDao.getAll().size() == (10000 / LOCATION_INTERVAL)) { //24 hour interval
-                //PlaceClusterizer.updateVisitHistory(PlaceDao.getAll());
-            }
+            placeClusterizer.updateVisitHistory(PlaceDao.getAll());
         }
 
         private void savePlace(Location location) {
