@@ -71,6 +71,12 @@ public class SignificantPlace extends SugarRecord implements HasAddress, HasCoor
     }
 
     @Override
+    public boolean delete() {
+        this.coordinate.delete();
+        return super.delete();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

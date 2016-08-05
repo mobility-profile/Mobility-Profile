@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class FavouritesFragment extends Fragment {
      */
     private static final int page = 2;
     private Context context;
+    private Switch seeSuggestions;
 
     /**
      * Creates a new instance of FavouritesFragment.
@@ -67,9 +69,18 @@ public class FavouritesFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
+        Log.i(title, "onViewCreated");
+        seeSuggestions = (Switch) view.findViewById(R.id.switchSuggestions);
+        seeSuggestions.setChecked(false);
 
         setFavouritesListView(view);
         setSuggestionsListView(view);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        seeSuggestions.setChecked(false);
     }
 
     private void setFavouritesListView(View view) {
@@ -130,7 +141,6 @@ public class FavouritesFragment extends Fragment {
      * @param listView the list of suggestions
      */
     private void switchListener(View view, final ListView listView) {
-        Switch seeSuggestions = (Switch) view.findViewById(R.id.switchSuggestions);
 
         seeSuggestions.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
