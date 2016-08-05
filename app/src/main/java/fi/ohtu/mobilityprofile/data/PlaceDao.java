@@ -23,7 +23,8 @@ public class PlaceDao {
         Place result = null;
         double distance = Double.MAX_VALUE;
         for(Place place : places) {
-            if(place.getCoordinate().distanceTo(coordinate) < distance){
+            if(place.distanceTo(coordinate) < distance){
+                distance = place.distanceTo(coordinate);
                 result = place;
             }
         }
