@@ -106,7 +106,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
                                 EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
 
                                 if (!editTextAddress.equals("")) {
-                                    sig.setAddress(editTextAddress.getText().toString());
+                                    sig.updateAddress(editTextAddress.getText().toString());
                                 }
 
                                 sig.setUnfavourited(true);
@@ -156,6 +156,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
                                 if (!editTextName.equals("") && !editTextAddress.equals("")) {
                                     FavouritePlace fav = new FavouritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
                                     fav.save();
+                                    sig.setName(editTextName.getText().toString());
                                     sig.setAddress(editTextAddress.getText().toString());
                                     sig.setFavourite(true);
                                     sig.save();
