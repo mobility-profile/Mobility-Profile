@@ -3,12 +3,10 @@ package fi.ohtu.mobilityprofile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info);
-
 
         checkSecurity();
         createTransportModes();
@@ -102,11 +99,12 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 //TODO
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+                Intent intentSettings = new Intent(this, SettingsActivity.class);
+                startActivity(intentSettings);
                 return true;
             case R.id.action_backup:
-                //TODO
+                Intent intentBackup = new Intent(this, BackUpActivity.class);
+                startActivity(intentBackup);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

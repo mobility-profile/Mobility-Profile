@@ -6,11 +6,11 @@ import com.orm.SugarRecord;
  * Class is used to save places assumed significant to the user (ie. places where he/she spends some
  * time and not just points on the road).
  */
-public class SignificantPlace extends SugarRecord implements HasAddress {
+public class SignificantPlace extends SugarRecord implements HasAddress, HasCoordinate {
     private String name;
     private String address;
     private boolean favourite;
-    private boolean removed;
+    private boolean unfavourited;
     private Coordinate coordinate;
 
     /**
@@ -29,12 +29,14 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
         this.name = name;
         this.address = address;
         this.favourite = false;
-        this.removed = false;
+        this.unfavourited = false;
         this.coordinate = coordinate;
     }
 
     @Override
-    public Coordinate getCoordinate() { return this.coordinate; }
+    public Coordinate getCoordinate() {
+        return this.coordinate;
+    }
 
     public String getAddress() {
         return address;
@@ -48,8 +50,18 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
         return name;
     }
 
+    /**
+     * Returns the distance between this SignificantPlace and a given SignificantPlace
+     * @param significantPlace SignificantPlace to be compared
+     * @return distance
+     */
     public double distanceTo(SignificantPlace significantPlace) {
         return this.coordinate.distanceTo(significantPlace.getCoordinate());
+    }
+
+    @Override
+    public double distanceTo(HasCoordinate hasCoordinate) {
+        return this.coordinate.distanceTo(hasCoordinate.getCoordinate());
     }
 
     @Override
@@ -83,12 +95,12 @@ public class SignificantPlace extends SugarRecord implements HasAddress {
         this.favourite = favourite;
     }
 
-    public boolean isRemoved() {
-        return removed;
+    public boolean isUnfavourited() {
+        return unfavourited;
     }
 
-    public void setRemoved(boolean removed) {
-        this.removed = removed;
+    public void setUnfavourited(boolean unfavourited) {
+        this.unfavourited = unfavourited;
     }
 
     public void setAddress(String address) {

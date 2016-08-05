@@ -11,17 +11,19 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.CalendarConnection;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
-import fi.ohtu.mobilityprofile.suggestions.CalendarSuggestions;
+import fi.ohtu.mobilityprofile.data.VisitDao;
+import fi.ohtu.mobilityprofile.suggestions.sources.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
-import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
-import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.VisitSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
+
 
 /**
  * Used to enable cross-app communication.
@@ -39,21 +41,17 @@ public class RemoteService extends Service {
 
         synchronized (RemoteService.class) {
             if (messenger == null) {
-                CalendarTagDao calendarTagDao = new CalendarTagDao();
-                PlaceDao placeDao = new PlaceDao();
-                RouteSearchDao routeSearchDao = new RouteSearchDao();
-                FavouritePlaceDao favouritePlaceDao = new FavouritePlaceDao();
-                TransportModeDao transportModeDao = new TransportModeDao();
 
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
-                suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this), calendarTagDao));
-                suggestionSources.add(new VisitSuggestions(placeDao));
+                suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this)));
 
-                suggestionSources.add(new RouteSuggestions(routeSearchDao));
-                suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));
+                suggestionSources.add(new VisitSuggestions());
+
+                suggestionSources.add(new RouteSuggestions());
+                suggestionSources.add(new FavoriteSuggestions());
                 DestinationLogic destinationLogic = new DestinationLogic(suggestionSources);
 
-                messenger = new Messenger(new RequestHandler(this, destinationLogic, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao, transportModeDao));
+                messenger = new Messenger(new RequestHandler(this, destinationLogic));
             }
         }
 

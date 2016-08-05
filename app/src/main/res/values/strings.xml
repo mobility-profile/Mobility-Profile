@@ -3,7 +3,7 @@
 
     <!--Allow access-->
     <string name="allow_access">Allow Mobility Profile access to:</string>
-    <string name="checkbox_GPS">GPS</string>
+    <string name="checkbox_GPS">GPS (Fine and coarse)</string>
     <string name="checkbox_calendar">Read calendar</string>
     <!--Tracking-->
     <string name="tracking_title">Location tracking</string>
@@ -28,25 +28,32 @@
     <string name="favourites_edit_title">Edit this favourite place</string>
     <string name="favourites_delete_title">Delete this favourite place?</string>
     <string name="favourites_verify_title">Verify this suggested place</string>
-    <string name="favourites_auto_generated_delete_title">Delete this suggestion?</string>
+    <string name="favourites_auto_generated_delete_title">Forget this place for good or unfavourite? </string>
     <string name="favourites_name_hint">Name</string>
     <string name="favourites_address_hint">Address</string>
+    <string name="favourites_suggestion_address_hint">You can fix the address here</string>
     <string name="favourites_add_button">Add</string>
     <string name="favourites_delete_button">Delete</string>
     <string name="favourites_see_suggestions">See new favourite place suggestions</string>
     <string name="favourite_auto_generated_hint">This is auto generated suggestion of a favourite place</string>
 
     <string name="favourite_auto_generated_title">Auto generated suggestion</string>
-    <string name="favourite_auto_generated_text">This is a suggestion of a new favourite place based on your location data. You can verify this as a new favourite
-    or discard it.</string>
+    <string name="favourite_auto_generated_text">This is a suggestion of a new favourite place based on your location data. You can verify this as a new favourite, only edit the address or discard it for good.</string>
 
     <string name="save">Save</string>
     <string name="edit">Edit</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="forget">Forget</string>
+    <string name="unfavourite">Unfavourite</string>
 
-    <string name="reset_button_text">Reset app and delete all data</string>
+    <string name="reset_searches_button_text">Delete all last searches</string>
+    <string name="reset_searches_title">Delete all searches?</string>
+    <string name="reset_searches_message">Deletes all route searches you\&apos;ve made.</string>
+
+
+    <string name="reset_all_button_text">Reset app and delete all data</string>
     <string name="reset_title">Delete all collected data?</string>
     <string name="reset_message">Deletes all collected data, including visited significantPlaces, searched routes, and favourite places.</string>
 
@@ -56,9 +63,11 @@
     <string name="conflict_info">If two or more applications define the same permission, the application that is installed first is the one whose definition is used. Applications listed above were installed before Mobility Profile and have defined the same permission as Mobility Profile. To solve the problem, uninstall those applications, then run Mobility Profile and make sure this message is no longer shown. After that you can reinstall those applications.
         \n\nMore information about the problem can be found at https://datatheorem.github.io/2014/04/16/custom-permissions/</string>
 
-    <string name="backup">Backup your data</string>
-    <string name="settings">Settings</string>
 
+
+
+    <!--Settings-->
+    <string name="settings">Settings</string>
     <string name="settings_title">Settings</string>
     <string name="transport_modes_title">Transport mode preferences</string>
     <string name="walking">Walking</string>
@@ -70,5 +79,11 @@
     <string name="train">Train</string>
     <string name="boat">Boat</string>
     <string name="plane">Plane</string>
+    <string name="settings_reset_title">Your data</string>
 
+    <!--Back Up-->
+    <string name="backup">Backup your data</string>
+    <string name="backup_title">Back Up</string>
+    <string name="backup_text">Back up your data. The database file,
+        called mobilityprofile.db, will be saved to your main folder of internal storage. </string>
 </resources>

@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <permission
         android:name="fi.ohtu.permission.MOBILITY_PROFILE"
@@ -45,6 +46,19 @@
                 android:value=".MainActivity" />
         </activity>
 
+        <!-- A child of the main activity -->
+        <activity
+            android:name=".BackUpActivity"
+            android:parentActivityName=".MainActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"
@@ -54,7 +68,7 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="54" />
+            android:value="59" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -78,7 +92,7 @@
             android:name=".suggestions.locationHistory.GoogleAPILocationService"
             android:process=":mobility_profile_google_location" />
 
-        <activity android:name=".ui.SecurityProblemActivity"></activity>
+        <activity android:name=".ui.SecurityProblemActivity"/>
     </application>
 
 </manifest>

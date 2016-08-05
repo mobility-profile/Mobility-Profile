@@ -18,34 +18,28 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
-import fi.ohtu.mobilityprofile.suggestions.CalendarSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
-import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
-import fi.ohtu.mobilityprofile.suggestions.RouteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.VisitSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class DestinationLogicTest {
 
     private DestinationLogic mp;
-    private PlaceDao placeDao;
-    private CalendarTagDao calendarTagDao;
 
     @Before
     public void setUp() throws Exception {
         CalendarTagDao calendarTagDao = mock(CalendarTagDao.class);
-        placeDao = new PlaceDao();
-        RouteSearchDao routeSearchDao = mock(RouteSearchDao.class);
-        FavouritePlaceDao favouritePlaceDao = mock(FavouritePlaceDao.class);
 
         List<SuggestionSource> suggestionSources = new ArrayList<>();
-        suggestionSources.add(new CalendarSuggestions(new CalendarConnection(Robolectric.setupActivity(MainActivityStub.class)), calendarTagDao));
-        suggestionSources.add(new VisitSuggestions(placeDao));
-        suggestionSources.add(new RouteSuggestions(routeSearchDao));
-        suggestionSources.add(new FavoriteSuggestions(favouritePlaceDao));
+        suggestionSources.add(new CalendarSuggestions(new CalendarConnection(Robolectric.setupActivity(MainActivityStub.class))));
+        suggestionSources.add(new VisitSuggestions());
+        suggestionSources.add(new RouteSuggestions());
+        suggestionSources.add(new FavoriteSuggestions());
 
         mp = new DestinationLogic(suggestionSources);
 

@@ -5,7 +5,7 @@ import com.orm.SugarRecord;
 /**
  * Class for saving coordinates to be used by any class needing them
  */
-public class Coordinate extends SugarRecord {
+public class Coordinate extends SugarRecord implements HasCoordinate {
     Float latitude;
     Float longitude;
 
@@ -13,8 +13,8 @@ public class Coordinate extends SugarRecord {
 
     /**
      * Creates Coordinate
-     * @param latitude
-     * @param longitude
+     * @param latitude latitude of the coordinate
+     * @param longitude longitude of the coordinate
      */
     public Coordinate(float latitude, float longitude) {
         this.latitude = latitude;
@@ -29,6 +29,11 @@ public class Coordinate extends SugarRecord {
         return this.longitude;
     }
 
+    /**
+     * Calculates the distance between two coordinates.
+     * @param coordinate coordinate which is compared to this coordinate
+     * @return distance
+     */
     public double distanceTo(Coordinate coordinate) {
         final int R = 6371; // Radius of the earth
         Double latDistance = Math.toRadians(coordinate.getLatitude() - this.latitude);
@@ -49,9 +54,18 @@ public class Coordinate extends SugarRecord {
 
         Coordinate that = (Coordinate) o;
 
-        if (!latitude.equals(that.latitude)) return false;
-        return longitude.equals(that.longitude);
+        return latitude.equals(that.latitude) && longitude.equals(that.longitude);
 
+    }
+
+    @Override
+    public Coordinate getCoordinate() {
+        return this;
+    }
+
+    @Override
+    public double distanceTo(HasCoordinate hasCoordinate) {
+        return this.distanceTo(hasCoordinate.getCoordinate());
     }
 
 }

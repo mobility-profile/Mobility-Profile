@@ -19,7 +19,7 @@ public class CalendarTagDao {
      * @param key Key of the calendar tag
      * @return Calendar tag with the highest counter
      */
-    public CalendarTag findTheMostUsedTag(String key) {
+    public static CalendarTag findTheMostUsedTag(String key) {
         List<CalendarTag> calendarTags = Select.from(CalendarTag.class)
                 .where(Condition.prop("key").eq(key))
                 .orderBy("counter DESC")
@@ -42,7 +42,7 @@ public class CalendarTagDao {
      *
      * @param tag Tag to be saved
      */
-    public void insertCalendarTag(CalendarTag tag) {
+    public static void insertCalendarTag(CalendarTag tag) {
         List<CalendarTag> calendarTags = CalendarTag.find(CalendarTag.class,
                 "key = ? AND value = ?", tag.getKey(), tag.getValue());
 

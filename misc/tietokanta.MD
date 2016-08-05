@@ -59,7 +59,7 @@ Tietokantataulut:
 * address(String?)
 
 **Visit**
-* timestamp(datetime)
+* enterTime(datetime)
 * significantPlace(fk)
 * next place(fk)
 
@@ -68,7 +68,7 @@ Tietokantataulut:
 - Reverse geocoodataan koordinaatit Pelias API:n kautta lähimmäksi osoitteeksi
 - Jos osoitetta ei ole jo tietokannassa luodaan Location tauluun rivi, missä address=“peliaksen kautta haettu osoite”
 - Haetaan Visit taulusta uusin rivi tai luodaan sellainen jos ei ole vielä olemassa
-- Päivitetään haettua riviä niin että timestamp=now location-sarakkeeseen tulee viite aluksi haettuun Location-taulun riviin, ja next place sarakkeeseen laitetaan viite uuteen Visit riviin jossa taas timestamp(now) (Tästä tulee siis seuraavan kerran “uusin rivi”)
+- Päivitetään haettua riviä niin että enterTime=now location-sarakkeeseen tulee viite aluksi haettuun Location-taulun riviin, ja next place sarakkeeseen laitetaan viite uuteen Visit riviin jossa taas enterTime(now) (Tästä tulee siis seuraavan kerran “uusin rivi”)
 
 **Skenaario: Ennustetaan seuraava määränpää jos ei ole kalenterimerkintää (seuraavan kahden tunnin sisällä...?)**
 - Haetaan Visit-taulusta kaikki rivit joissa location on sama kuin se osoite minkä Pelias antaa nykyisillä GPS-koordinaateilla
@@ -78,7 +78,7 @@ Tietokantataulut:
 CalendarTag taulua ei tarvitse päivittää, koska kaikki Location-taulusta haetut osoitteet lähtökohtaisesti ovat valideja osoitteita. 
 Jos käyttäjä ei hyväksykään ehdotusta niin ei tarvitse tehdä mitään korjaavia toimenpiteitä, koska jonkin ajan päästä käyttäjä tuottaa uuden Visit-rivin sinne minne oli oikeasti menossa, jolloin kyseinen rivi vaikuttaa seuraaviin ennusteisiin. 
 
-Visit-taulun next place sarakkeen idea on siinä, että vaikka saman toiminnallisuuden saisi aikaan pelkillä timestamp ja location sarakkeilla, niin oletettavasti on helpompi tuotaa tehokkaat tietokantakyselyt jos on suoraan viite next visitiin. Ehkä turhaa.
+Visit-taulun next place sarakkeen idea on siinä, että vaikka saman toiminnallisuuden saisi aikaan pelkillä enterTime ja location sarakkeilla, niin oletettavasti on helpompi tuotaa tehokkaat tietokantakyselyt jos on suoraan viite next visitiin. Ehkä turhaa.
 
 Myöhemmin ennustetta voi tarkentaa esim. niin, että “Haetaan Visit-taulusta kaikki rivit joissa location on sama kuin se osoite minkä Pelias antaa nykyisillä GPS-koordinaateilla” + “ja joissa kellonaika = nyt +/- 2h”, tai vastaavalla tyylillä.
 

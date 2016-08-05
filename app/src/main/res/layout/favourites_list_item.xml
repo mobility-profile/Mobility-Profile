@@ -36,6 +36,16 @@
     </ImageButton>
 
     <ImageButton
+        android:id="@+id/favourites_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_tick"
+        android:contentDescription="@string/favourites_verify_title"
+        android:padding="5dp"
+        android:layout_gravity="end">
+    </ImageButton>
+
+    <ImageButton
         android:id="@+id/favourites_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

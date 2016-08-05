@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_tick"
-        android:contentDescription="@string/favourites_edit_title"
+        android:contentDescription="@string/favourites_verify_title"
         android:padding="5dp"
         android:layout_gravity="end">
     </ImageButton>
@@ -48,7 +48,7 @@
         android:id="@+id/favourites_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_trash"
+        android:src="@drawable/ic_action_heart_broken"
         android:contentDescription="@string/favourites_delete_title"
         android:padding="5dp"
         android:layout_gravity="end">

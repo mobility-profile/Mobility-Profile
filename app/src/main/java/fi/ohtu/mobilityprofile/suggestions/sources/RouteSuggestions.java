@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.suggestions;
+package fi.ohtu.mobilityprofile.suggestions.sources;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -8,21 +8,22 @@ import java.util.Set;
 
 import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.suggestions.Suggestion;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
 /**
  * This class creates suggestions based on previous route searches user has made.
  */
 public class RouteSuggestions implements SuggestionSource {
-    private RouteSearchDao routeSearchDao;
 
     /**
      * Creates the RouteSuggestions.
      *
-     * @param routeSearchDao DAO for saved route searches
      */
-    public RouteSuggestions(RouteSearchDao routeSearchDao) {
-        this.routeSearchDao = routeSearchDao;
+    public RouteSuggestions() {
     }
 
     /**
@@ -35,12 +36,12 @@ public class RouteSuggestions implements SuggestionSource {
      *
      */
     @Override
-    public List<Suggestion> getSuggestions(String startLocation) {
+    public List<Suggestion> getSuggestions(Place startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
         Set<String> destinations = new HashSet<>();
 
         int counter = 0;
-        for (RouteSearch route : routeSearchDao.getAllRouteSearches()) {
+        for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
             if (Util.aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
                 if (destinations.contains(route.getDestination())) continue; // Don't add the same suggestion more than once.
 

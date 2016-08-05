@@ -2,13 +2,12 @@ package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.Manifest;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -27,15 +26,9 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.AddressConverter;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 
 /**
  * The class creates a component called PrivacyFragment.
@@ -61,12 +54,14 @@ public class PrivacyFragment extends Fragment {
 
     private Button startButton;
     private Button stopButton;
-    private Button resetbutton;
+    private AlphaAnimation animation;
 
     private ImageView compass;
 
     private Context context;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    private ResultReceiver resultReceiver;
 
     /**
      * Creates a new instance of PrivacyFragment.
@@ -82,8 +77,34 @@ public class PrivacyFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        setupServiceReceiver();
+        
+        if (isLocationServiceRunning()) {
+            Intent intent = new Intent(context, PlaceRecorder.class);
+            intent.putExtra("Receiver", resultReceiver);
+            intent.putExtra("UPDATE", true);
+            context.startService(intent);
+        }
+    }
+
+    public void setupServiceReceiver() {
+        resultReceiver = new ResultReceiver(new Handler()) {
+            @Override
+            public void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode == 100) {
+                    stoppedTracking();
+                }
+            }
+        };
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         this.context = context;
     }
 
@@ -99,18 +120,16 @@ public class PrivacyFragment extends Fragment {
 
         startButton = (Button) view.findViewById(R.id.tracking_start);
         stopButton = (Button) view.findViewById(R.id.tracking_stop);
-        resetbutton = (Button) view.findViewById(R.id.resetbutton);
         stopButton.setVisibility(View.GONE);
 
         compass = (ImageView) view.findViewById(R.id.tracking_on);
-        compass.setAlpha(0.1f);
+        compass.setAlpha(0.5f);
         compass.setContentDescription("continuous location tracking is off");
 
+        setListenerForTrackingButtons();
         setChecked();
         setListenerForGPSCheckBox();
         setListenerForCheckBoxCalendar();
-        setListenerForTrackingButtons();
-        resetbutton.setOnClickListener(onClickResetButton);
     }
 
     /**
@@ -174,19 +193,18 @@ public class PrivacyFragment extends Fragment {
      */
     private void setListenerForTrackingButtons() {
 
-        final AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+        animation = new AlphaAnimation(0.1f, 1.0f);
         animation.setDuration(750);
         animation.setStartOffset(500);
         animation.setRepeatCount(Animation.INFINITE);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                context.startService(new Intent(context, PlaceRecorder.class));
-                startButton.setVisibility(View.GONE);
-                stopButton.setVisibility(View.VISIBLE);
-                compass.setAlpha(1.0f);
-                compass.startAnimation(animation);
-                compass.setContentDescription("continuous location tracking is on");
+                Intent intent = new Intent(context, PlaceRecorder.class);
+                intent.putExtra("Receiver", resultReceiver);
+                context.startService(intent);
+
+                startedTracking();
             }
         });
 
@@ -194,14 +212,26 @@ public class PrivacyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 context.stopService(new Intent(context, PlaceRecorder.class));
-                startButton.setVisibility(View.VISIBLE);
-                stopButton.setVisibility(View.GONE);
-                animation.cancel();
-                animation.reset();
-                compass.setAlpha(0.5f);
-                compass.setContentDescription("continuous location tracking is off");
+                stoppedTracking();
             }
         });
+    }
+
+    private void startedTracking() {
+        startButton.setVisibility(View.GONE);
+        stopButton.setVisibility(View.VISIBLE);
+        compass.setAlpha(1.0f);
+        compass.startAnimation(animation);
+        compass.setContentDescription("continuous location tracking is on");
+    }
+
+    private void stoppedTracking() {
+        startButton.setVisibility(View.VISIBLE);
+        stopButton.setVisibility(View.GONE);
+        animation.cancel();
+        animation.reset();
+        compass.setAlpha(0.5f);
+        compass.setContentDescription("continuous location tracking is off");
     }
 
     /**
@@ -272,11 +302,9 @@ public class PrivacyFragment extends Fragment {
         }
 
         if (isLocationServiceRunning()) {
-            stopButton.setVisibility(View.VISIBLE);
-            startButton.setVisibility(View.GONE);
+            startedTracking();
         } else {
-            stopButton.setVisibility(View.GONE);
-            startButton.setVisibility(View.VISIBLE);
+            stoppedTracking();
         }
     }
 
@@ -293,44 +321,6 @@ public class PrivacyFragment extends Fragment {
             }
         }
         return false;
-    }
-
-    /**
-     * Creates alert dialog to confirm resetting of the app when reset button is clicked.
-     */
-    View.OnClickListener onClickResetButton = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(R.string.reset_title).setMessage(R.string.reset_message);
-
-            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    deleteAllDataFromDatabase();
-                }
-            });
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    // user clicked cancel button
-                    dialog.cancel();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }};
-
-    /**
-     * Deletes all data from the database.
-     */
-    private void deleteAllDataFromDatabase() {
-        PlaceDao.deleteAllData();
-        SignificantPlaceDao.deleteAllData();
-        CalendarTagDao.deleteAllData();
-        RouteSearchDao.deleteAllData();
-        FavouritePlaceDao.deleteAllData();
     }
 
     /**
