@@ -2,28 +2,26 @@ package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
 
-import java.util.Comparator;
-
 /**
  * Class is used to save raw gps data.
  */
-public class Place extends SugarRecord implements HasCoordinate, Comparable<Place> {
+public class GPSPoint extends SugarRecord implements HasCoordinate, Comparable<GPSPoint> {
     long timestamp;
     Coordinate coordinate;
 
     /**
      *
      */
-    public Place() {
+    public GPSPoint() {
     }
 
     /**
-     * Creates Place.
+     * Creates GPSPoint.
      * @param timestamp timestamp of the visit
      * @param latitude latitude
      * @param longitude longitude
      */
-    public Place(long timestamp, Float latitude, Float longitude) {
+    public GPSPoint(long timestamp, Float latitude, Float longitude) {
         this.timestamp = timestamp;
         this.coordinate = new Coordinate(latitude, longitude);
     }
@@ -62,7 +60,7 @@ public class Place extends SugarRecord implements HasCoordinate, Comparable<Plac
     }
 
     @Override
-    public int compareTo(Place another) {
+    public int compareTo(GPSPoint another) {
         long difference = timestamp - another.getTimestamp();
         if (difference < 0) {
             return -1;

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.CalendarConnection;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.domain.CalendarTag;
-import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.domain.GPSPoint;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
@@ -33,7 +31,7 @@ public class CalendarSuggestions implements SuggestionSource {
      * @return List of destinations from the calendar
      */
     @Override
-    public List<Suggestion> getSuggestions(Place startLocation) {
+    public List<Suggestion> getSuggestions(GPSPoint startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
         // Loop through normal events first

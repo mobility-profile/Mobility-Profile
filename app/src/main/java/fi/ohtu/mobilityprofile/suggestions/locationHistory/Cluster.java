@@ -5,34 +5,34 @@ import java.util.Collections;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
  *
  */
 public class Cluster {
-    private List<Place> places;
+    private List<GPSPoint> GPSPoints;
     private boolean insufficientData;
 
     public Cluster() {
-        places = new ArrayList<>();
+        GPSPoints = new ArrayList<>();
         insufficientData = false;
     }
 
-    public List<Place> getPlaces() {
-        return places;
+    public List<GPSPoint> getGPSPoints() {
+        return GPSPoints;
     }
 
-    public void add(Place place) {
-        places.add(place);
+    public void add(GPSPoint GPSPoint) {
+        GPSPoints.add(GPSPoint);
     }
 
-    public Place get(int index) {
-        return places.get(index);
+    public GPSPoint get(int index) {
+        return GPSPoints.get(index);
     }
 
     public int size() {
-        return places.size();
+        return GPSPoints.size();
     }
 
     public void setInsufficientData(boolean value) {
@@ -44,19 +44,19 @@ public class Cluster {
     }
 
     public long timeSpent() {
-        Collections.sort(places);
-        return places.size() > 0 ? places.get(places.size() - 1).getTimestamp() - places.get(0).getTimestamp() : 0;
+        Collections.sort(GPSPoints);
+        return GPSPoints.size() > 0 ? GPSPoints.get(GPSPoints.size() - 1).getTimestamp() - GPSPoints.get(0).getTimestamp() : 0;
     }
 
     public Coordinate centerCoordinate() {
         float lat = 0;
         float lon = 0;
-        for (Place place : places) {
-            lat += place.getLatitude();
-            lon += place.getLongitude();
+        for (GPSPoint GPSPoint : GPSPoints) {
+            lat += GPSPoint.getLatitude();
+            lon += GPSPoint.getLongitude();
         }
-        lat /= places.size();
-        lon /= places.size();
+        lat /= GPSPoints.size();
+        lon /= GPSPoints.size();
         return new Coordinate(lat, lon);
     }
 }

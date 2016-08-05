@@ -11,17 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
+import fi.ohtu.mobilityprofile.domain.GPSPoint;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
-import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
@@ -133,13 +132,13 @@ public class RequestHandler extends Handler {
      *
      * @return Start location address
      */
-    private Place getStartLocation() {
-        Place lastKnownPlace = PlaceDao.getLatest();
-        if (lastKnownPlace == null) {
+    private GPSPoint getStartLocation() {
+        GPSPoint lastKnownGPSPoint = GPSPointDao.getLatest();
+        if (lastKnownGPSPoint == null) {
             // TODO something better
             return null;
         } else {
-            return lastKnownPlace;
+            return lastKnownGPSPoint;
         }
     }
 
