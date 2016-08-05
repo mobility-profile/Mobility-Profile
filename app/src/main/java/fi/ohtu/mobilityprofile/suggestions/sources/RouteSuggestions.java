@@ -41,17 +41,24 @@ public class RouteSuggestions implements SuggestionSource {
         Set<String> destinations = new HashSet<>();
 
         int counter = 0;
+
         for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
-            if (Util.aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
-                if (destinations.contains(route.getDestination())) continue; // Don't add the same suggestion more than once.
+            if (route.getStartlocation().equals(startLocation)) {
+                if (Util.aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
+                    if (destinations.contains(route.getDestination())) continue; // Don't add the same suggestion more than once.
 
-                Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
-                suggestions.add(suggestion);
+                    if (Util.aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
+                        if (destinations.contains(route.getDestination())) continue; // Don't add the same suggestion more than once.
 
-                destinations.add(route.getDestination());
+                        Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
+                        suggestions.add(suggestion);
 
-                counter++;
-                if (counter >= 3) break; // Only suggest 3 most recent searches at most.
+                        destinations.add(route.getDestination());
+
+                        counter++;
+                        if (counter >= 3) break; // Only suggest 3 most recent searches at most.
+                    }
+                }
             }
         }
 

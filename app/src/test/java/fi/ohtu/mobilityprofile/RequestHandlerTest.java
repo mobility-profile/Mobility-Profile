@@ -20,6 +20,8 @@ import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 
+import fi.ohtu.mobilityprofile.data.TransportModeDao;
+import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.remoteconnection.RequestHandler;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 
@@ -33,13 +35,24 @@ public class RequestHandlerTest {
     private RequestHandler requestHandler;
     private Context context;
     private DestinationLogic mobilityProfile;
+    private CalendarTagDao calendarTagDao;
+    private PlaceDao placeDao;
+    private RouteSearchDao routeSearchDao;
+    private FavouritePlaceDao favouritePlaceDao;
+    private TransportModeDao transportDao;
 
     @Before
     public void setUp() {
         this.context = null;
         this.mobilityProfile = mock(DestinationLogic.class);
+        this.calendarTagDao = mock(CalendarTagDao.class);
+        this.routeSearchDao = new RouteSearchDao();
+        this.placeDao = new PlaceDao();
+        this.favouritePlaceDao = mock(FavouritePlaceDao.class);
+        this.transportDao = mock(TransportModeDao.class);
 
         this.requestHandler = new RequestHandler(mobilityProfile);
+
 
         Robolectric.setupActivity(MainActivityStub.class);
     }

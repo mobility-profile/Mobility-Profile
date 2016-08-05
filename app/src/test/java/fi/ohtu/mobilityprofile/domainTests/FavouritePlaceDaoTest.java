@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class FavouritePlaceDaoTest {
-    private FavouritePlaceDao favouriteDao;
+    private static FavouritePlaceDao favouriteDao;
     private FavouritePlace fav;
 
     @Before

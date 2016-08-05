@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class PlaceDaoTest {
-    private PlaceDao placeDao;
+    private static PlaceDao placeDao;
 
     @Before
     public void setUp() {
