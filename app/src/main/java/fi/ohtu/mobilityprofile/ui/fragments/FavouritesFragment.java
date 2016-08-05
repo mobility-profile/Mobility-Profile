@@ -100,7 +100,7 @@ public class FavouritesFragment extends Fragment {
             List<SignificantPlace> remove = new ArrayList<>();
 
             for (SignificantPlace s : significantPlaces) {
-                if (s.isFavourite() || s.isRemoved()) {
+                if (s.isFavourite() || s.isUnfavourited()) {
                     remove.add(s);
                 }
             }

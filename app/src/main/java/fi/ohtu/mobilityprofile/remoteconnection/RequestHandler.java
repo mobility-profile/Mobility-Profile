@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -31,27 +33,14 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
 public class RequestHandler extends Handler {
     private Context context;
     private DestinationLogic mobilityProfile;
-    private CalendarTagDao calendarTagDao;
-    private PlaceDao placeDao;
-    private RouteSearchDao routeSearchDao;
-    private FavouritePlaceDao favouritePlaceDao;
 
     /**
      * Creates the RequestHandler.
      *
      * @param mobilityProfile Journey planner that provides the logic for our app
-     * @param calendarTagDao DAO for calendar tags
-     * @param placeDao DAO for visits
-     * @param routeSearchDao DAO for routeSearch
-     * @param favouritePlaceDao DAO for favourite places
      */
-    public RequestHandler(DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
-                          PlaceDao placeDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
+    public RequestHandler(DestinationLogic mobilityProfile) {
         this.mobilityProfile = mobilityProfile;
-        this.calendarTagDao = calendarTagDao;
-        this.placeDao = placeDao;
-        this.routeSearchDao = routeSearchDao;
-        this.favouritePlaceDao = favouritePlaceDao;
     }
 
     /**
@@ -59,19 +48,10 @@ public class RequestHandler extends Handler {
      *
      * @param context for AddressConverter
      * @param mobilityProfile Journey planner that provides the logic for our app
-     * @param calendarTagDao DAO for calendar tags
-     * @param placeDao DAO for visits
-     * @param routeSearchDao DAO for routeSearch
-     * @param favouritePlaceDao DAO for favourite places
      */
-    public RequestHandler(Context context, DestinationLogic mobilityProfile, CalendarTagDao calendarTagDao,
-                          PlaceDao placeDao, RouteSearchDao routeSearchDao, FavouritePlaceDao favouritePlaceDao) {
+    public RequestHandler(Context context, DestinationLogic mobilityProfile) {
         this.context = context;
         this.mobilityProfile = mobilityProfile;
-        this.calendarTagDao = calendarTagDao;
-        this.placeDao = placeDao;
-        this.routeSearchDao = routeSearchDao;
-        this.favouritePlaceDao = favouritePlaceDao;
     }
 
     @Override
@@ -88,6 +68,9 @@ public class RequestHandler extends Handler {
                 return;
             case RESPOND_FAVOURITE_PLACES:
                 message = getFavouritePlaces();
+                break;
+            case REQUEST_TRANSPORT_PREFERENCES:
+                message = getTransportPreferences();
                 break;
             default:
                 message = processErrorMessage(msg.what);
@@ -132,14 +115,14 @@ public class RequestHandler extends Handler {
         for (Suggestion suggestion : suggestions) {
             if (suggestion.getSource() == SuggestionSource.CALENDAR_SUGGESTION) {
                 CalendarTag calendarTag = new CalendarTag(suggestion.getDestination(), destination);
-                calendarTagDao.insertCalendarTag(calendarTag);
+                CalendarTagDao.insertCalendarTag(calendarTag);
             }
         }
 
         RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
-        routeSearchDao.insertRouteSearch(routeSearch);
+        RouteSearchDao.insertRouteSearch(routeSearch);
         
-        FavouritePlace fav = favouritePlaceDao.findFavouritePlaceByAddress(destination);
+        FavouritePlace fav = FavouritePlaceDao.findFavouritePlaceByAddress(destination);
         if (fav != null) {
             fav.increaseCounter();
         }
@@ -151,13 +134,17 @@ public class RequestHandler extends Handler {
      * @return Start location address
      */
     private Place getStartLocation() {
-        Place lastKnownPlace = placeDao.getLatest();
+        Place lastKnownPlace = PlaceDao.getLatest();
         if (lastKnownPlace == null) {
             // TODO something better
             return null;
         } else {
             return lastKnownPlace;
         }
+    }
+
+    private Message getTransportPreferences() {
+        return createMessage(RESPOND_TRANSPORT_PREFERENCES, TransportModeDao.getNamesOfPreferredTransportModes());
     }
 
     /**
@@ -209,6 +196,6 @@ public class RequestHandler extends Handler {
      * @return User's favourite places as message
      */
     private Message getFavouritePlaces() {
-        return createMessage(RESPOND_FAVOURITE_PLACES, favouritePlaceDao.getNamesOfFavouritePlaces());
+        return createMessage(RESPOND_FAVOURITE_PLACES, FavouritePlaceDao.getNamesOfFavouritePlaces());
     }
 }

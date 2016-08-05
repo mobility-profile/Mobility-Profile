@@ -33,21 +33,13 @@ public class RequestHandlerTest {
     private RequestHandler requestHandler;
     private Context context;
     private DestinationLogic mobilityProfile;
-    private CalendarTagDao calendarTagDao;
-    private PlaceDao placeDao;
-    private RouteSearchDao routeSearchDao;
-    private FavouritePlaceDao favouritePlaceDao;
 
     @Before
     public void setUp() {
         this.context = null;
         this.mobilityProfile = mock(DestinationLogic.class);
-        this.calendarTagDao = mock(CalendarTagDao.class);
-        this.routeSearchDao = new RouteSearchDao();
-        this.placeDao = new PlaceDao();
-        this.favouritePlaceDao = mock(FavouritePlaceDao.class);
 
-        this.requestHandler = new RequestHandler(mobilityProfile, calendarTagDao, placeDao, routeSearchDao, favouritePlaceDao);
+        this.requestHandler = new RequestHandler(mobilityProfile);
 
         Robolectric.setupActivity(MainActivityStub.class);
     }
@@ -62,6 +54,6 @@ public class RequestHandlerTest {
         msg.setData(bundle);
 
         requestHandler.handleMessage(msg);
-        assertTrue(routeSearchDao.getLatestRouteSearch().getDestination().equals("Naantali"));
+        assertTrue(RouteSearchDao.getLatestRouteSearch().getDestination().equals("Naantali"));
     }
 }

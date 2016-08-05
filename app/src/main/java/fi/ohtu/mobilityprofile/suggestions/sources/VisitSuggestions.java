@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.suggestions.locationHistory;
+package fi.ohtu.mobilityprofile.suggestions.sources;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +13,7 @@ import fi.ohtu.mobilityprofile.domain.Visit;
 
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.suggestions.*;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceClusterizer;
 
 /**
  * This class creates suggestions based on the user's visits to places he has visited frequently in the past.

@@ -14,30 +14,29 @@ import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
-import fi.ohtu.mobilityprofile.suggestions.FavoriteSuggestions;
+import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class FavoriteSuggestionsTest {
     private FavoriteSuggestions favoriteSuggestions;
-    private FavouritePlaceDao favouritePlaceDao;
 
     @Before
     public void setUp() {
-        this.favouritePlaceDao = new FavouritePlaceDao();
-        this.favoriteSuggestions = new FavoriteSuggestions(this.favouritePlaceDao);
+        this.favoriteSuggestions = new FavoriteSuggestions();
         Robolectric.setupActivity(MainActivityStub.class);
     }
 
     @Test
     public void testGetSuggestionsIsLimitedToThree() {
-        favouritePlaceDao.insertFavouritePlace(new FavouritePlace("Koulu", "Kumpulan kampus"));
-        favouritePlaceDao.insertFavouritePlace(new FavouritePlace("Sali", "Urheilijankatu"));
-        favouritePlaceDao.insertFavouritePlace(new FavouritePlace("Repe", "Sorsankatu"));
-        favouritePlaceDao.insertFavouritePlace(new FavouritePlace("Kauppa", "Kauppakatu"));
+        FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Koulu", "Kumpulan kampus"));
+        FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Sali", "Urheilijankatu"));
+        FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Repe", "Sorsankatu"));
+        FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Kauppa", "Kauppakatu"));
 
-        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions("Rautatientori");
+        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new Place(0, 0f, 0f));
         assertEquals(3, suggestions.size());
     }
 
@@ -48,19 +47,19 @@ public class FavoriteSuggestionsTest {
         koulu.increaseCounter();
         koulu.increaseCounter();
         kauppa.increaseCounter();
-        favouritePlaceDao.insertFavouritePlace(kauppa);
-        favouritePlaceDao.insertFavouritePlace(koulu);
-        favouritePlaceDao.insertFavouritePlace(new FavouritePlace("Sali", "Urheilijankatu"));
-        favouritePlaceDao.insertFavouritePlace(new FavouritePlace("Repe", "Sorsankatu"));
+        FavouritePlaceDao.insertFavouritePlace(kauppa);
+        FavouritePlaceDao.insertFavouritePlace(koulu);
+        FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Sali", "Urheilijankatu"));
+        FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Repe", "Sorsankatu"));
 
-        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions("Rautatientori");
+        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new Place(0, 0f, 0f));
 
         assertEquals("Kumpulan kampus", suggestions.get(0).getDestination());
     }
 
     @Test
     public void testGetZeroSuggestions() {
-        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions("Rautatientori");
+        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new Place(0, 0f, 0f));
 
         assertEquals(0, suggestions.size());
     }

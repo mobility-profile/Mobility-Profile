@@ -23,17 +23,6 @@ public class DestinationLogic {
     }
 
     /**
-     * Returns the most probable destination, when the user is in startLocation.
-     *
-     * @param startLocation SignificantPlace where the user is starting
-     * @return Most probable destination
-     */
-    public String getMostLikelyDestination(Place startLocation) {
-        List<String> destinations = getListOfMostLikelyDestinations(startLocation);
-        return destinations.isEmpty() ? "Home" : destinations.get(0);
-    }
-
-    /**
      * Returns a list of most probable destinations, when the user is in startLocation.
      *
      * @param startLocation SignificantPlace where the user is starting

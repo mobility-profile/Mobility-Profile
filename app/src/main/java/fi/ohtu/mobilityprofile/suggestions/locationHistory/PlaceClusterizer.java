@@ -20,10 +20,10 @@ public class PlaceClusterizer {
 
     private Context context;
 
-    static final double SPEED_LIMIT = 0.8;
-    static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 600000; //10 minutes
-    static final double WANDERING_DISTANCE_LIMIT = 70;
-    static final double CLUSTER_RADIUS = 100;
+    public static final double SPEED_LIMIT = 0.8;
+    public static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 600000; //10 minutes
+    public static final double WANDERING_DISTANCE_LIMIT = 70;
+    public static final double CLUSTER_RADIUS = 100;
 
     public PlaceClusterizer(Context context) {
         this.context = context;

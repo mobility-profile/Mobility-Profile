@@ -64,10 +64,10 @@ public class Place extends SugarRecord implements HasCoordinate, Comparable<Plac
     @Override
     public int compareTo(Place another) {
         long difference = timestamp - another.getTimestamp();
-        if(difference < 0) {
+        if (difference < 0) {
             return -1;
         }
-        if(difference > 0) {
+        if (difference > 0) {
             return 1;
         }
         return 0;

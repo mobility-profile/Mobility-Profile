@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.ResultReceiver;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -35,12 +36,21 @@ public class PlaceRecorder extends Service {
     private android.location.LocationManager mLocationManager;
     private LocationListener[] mLocationListeners = null;
 
+    private ResultReceiver resultReceiver;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
 
         if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
             stopSelf();
+            resultReceiver.send(100, new Bundle());
+            return START_STICKY;
+        }
+
+        resultReceiver = intent.getParcelableExtra("Receiver");
+
+        if (intent.getBooleanExtra("UPDATE", false)) {
             return START_STICKY;
         }
 
@@ -52,7 +62,7 @@ public class PlaceRecorder extends Service {
         Notification.Builder notification = new Notification.Builder(this)
                 .setContentTitle("Location tracking")
                 .setContentText("Mobility Profile is tracking your location")
-                .setSmallIcon(R.mipmap.logo)
+                .setSmallIcon(R.drawable.ic_location_on_white_24dp)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
@@ -68,7 +78,7 @@ public class PlaceRecorder extends Service {
         Intent actionIntent = new Intent(this, PlaceRecorder.class);
         actionIntent.setAction(ACTION_STOP_SERVICE);
         PendingIntent actionPendingIntent = PendingIntent.getService(this, 0, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        notification.addAction(R.mipmap.logo, "Stop tracking", actionPendingIntent);
+        notification.addAction(R.drawable.ic_location_off_white_24dp, "Stop tracking", actionPendingIntent);
 
         // Start the service
         startForeground(NOTIFICATION_ID, notification.build());
