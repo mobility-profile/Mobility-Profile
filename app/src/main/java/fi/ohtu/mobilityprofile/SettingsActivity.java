@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
     private CheckBox boat;
     private CheckBox plane;
 
-    private Button resetButton;
+    private Button resetAllButton;
     private Button resetSearcesButton;
 
     @Override
@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
         train = (CheckBox) findViewById(R.id.checkbox_train);
         boat = (CheckBox) findViewById(R.id.checkbox_boat);
         plane = (CheckBox) findViewById(R.id.checkbox_plane);
-        resetButton = (Button) findViewById(R.id.resetAllButton);
+        resetAllButton = (Button) findViewById(R.id.resetAllButton);
         resetSearcesButton = (Button) findViewById(R.id.resetSearchesButton);
 
         setChecked();
@@ -109,7 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
      * Creates alert dialog to confirm resetting of the app when reset button is clicked.
      */
     private void setListenerForResetAllButton(final Context context) {
-        resetButton.setOnClickListener(new View.OnClickListener() {
+        resetAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);

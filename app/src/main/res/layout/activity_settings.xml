@@ -138,7 +138,7 @@
         android:layout_marginTop="20dp"/>
 
     <Button
-        android:id="@+id/resetbutton"
+        android:id="@+id/resetAllButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/reset_all_button_text"

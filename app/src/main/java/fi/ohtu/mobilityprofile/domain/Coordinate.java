@@ -54,8 +54,7 @@ public class Coordinate extends SugarRecord {
 
         Coordinate that = (Coordinate) o;
 
-        if (!latitude.equals(that.latitude)) return false;
-        return longitude.equals(that.longitude);
+        return latitude.equals(that.latitude) && longitude.equals(that.longitude);
 
     }
 
