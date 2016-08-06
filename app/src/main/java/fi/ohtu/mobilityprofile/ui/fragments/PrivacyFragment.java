@@ -27,7 +27,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
-import fi.ohtu.mobilityprofile.PermissionManager;
+import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 
 /**

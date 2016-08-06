@@ -2,11 +2,11 @@ package fi.ohtu.mobilityprofile.suggestions.sources;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import fi.ohtu.mobilityprofile.Util;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
@@ -21,7 +21,6 @@ public class RouteSuggestions implements SuggestionSource {
 
     /**
      * Creates the RouteSuggestions.
-     *
      */
     public RouteSuggestions() {
     }
@@ -33,7 +32,6 @@ public class RouteSuggestions implements SuggestionSource {
      *
      * @param startLocation Starting location
      * @return List of probable destinations
-     *
      */
     @Override
     public List<Suggestion> getSuggestions(GPSPoint startLocation) {
@@ -43,25 +41,48 @@ public class RouteSuggestions implements SuggestionSource {
         int counter = 0;
 
         for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
-            if (route.getStartlocation().equals(startLocation)) {
-                if (Util.aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
-                    if (destinations.contains(route.getDestination())) continue; // Don't add the same suggestion more than once.
+            // TODO: Check starting location.
 
-                    if (Util.aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
-                        if (destinations.contains(route.getDestination())) continue; // Don't add the same suggestion more than once.
+            if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
+                if (destinations.contains(route.getDestination()))
+                    continue; // Don't add the same suggestion more than once.
 
-                        Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
-                        suggestions.add(suggestion);
+                if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
+                    if (destinations.contains(route.getDestination()))
+                        continue; // Don't add the same suggestion more than once.
 
-                        destinations.add(route.getDestination());
+                    Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
+                    suggestions.add(suggestion);
 
-                        counter++;
-                        if (counter >= 3) break; // Only suggest 3 most recent searches at most.
-                    }
+                    destinations.add(route.getDestination());
+
+                    counter++;
+                    if (counter >= 3) break; // Only suggest 3 most recent searches at most.
                 }
             }
         }
 
         return suggestions;
+    }
+
+    /**
+     * Checks if the selected location was visited or set as destination around the same time in the past,
+     * max x hours earlier or max y hours later than current time.
+     *
+     * @param visitTime    timestamp of the location
+     * @param hoursEarlier hours earlier than current time
+     * @param hoursLater   hours later than current time
+     * @return true if location was visited within the time frame, false if not.
+     */
+    public static boolean aroundTheSameTime(Time visitTime, int hoursEarlier, int hoursLater) {
+        Date currentTime = new Date(System.currentTimeMillis());
+
+        int visitHour = visitTime.getHours();
+        int visitMin = visitTime.getMinutes();
+        int currentHour = currentTime.getHours();
+        int currentMin = currentTime.getMinutes();
+
+        return (visitHour > currentHour - hoursEarlier || (visitHour == currentHour - hoursEarlier && visitMin >= currentMin))
+                && (visitHour < currentHour + hoursLater || (visitHour == currentHour + hoursLater && visitMin <= currentMin));
     }
 }

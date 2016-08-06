@@ -3,7 +3,7 @@ package fi.ohtu.mobilityprofile.suggestions.sources;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.CalendarConnection;
+import fi.ohtu.mobilityprofile.util.CalendarConnection;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;

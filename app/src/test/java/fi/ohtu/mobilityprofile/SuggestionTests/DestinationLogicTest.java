@@ -12,7 +12,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
-import fi.ohtu.mobilityprofile.CalendarConnection;
+import fi.ohtu.mobilityprofile.util.CalendarConnection;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.suggestions.sources.CalendarSuggestions;
