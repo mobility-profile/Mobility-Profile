@@ -40,6 +40,7 @@ public class GPSPointDao {
      * @param gpsPoint GPSPoint to be saved
      */
     public static void insert(GPSPoint gpsPoint) {
+        gpsPoint.getCoordinate().save();
         gpsPoint.save();
     }
 

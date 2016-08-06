@@ -49,12 +49,6 @@ public class GPSPoint extends SugarRecord implements HasCoordinate, Comparable<G
     }
 
     @Override
-    public long save() {
-        this.coordinate.save();
-        return super.save();
-    }
-
-    @Override
     public double distanceTo(HasCoordinate hasCoordinate) {
         return this.coordinate.distanceTo(hasCoordinate.getCoordinate());
     }
