@@ -1,6 +1,5 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.util;
 
-import android.*;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;

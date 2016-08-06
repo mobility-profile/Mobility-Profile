@@ -9,17 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
-import java.util.List;
-
+import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.CalendarTag;
+import fi.ohtu.mobilityprofile.domain.FavouritePlace;
+import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -34,7 +36,8 @@ public class SettingsActivity extends AppCompatActivity {
     private CheckBox boat;
     private CheckBox plane;
 
-    private Button resetButton;
+    private Button resetAllButton;
+    private Button resetSearcesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
         train = (CheckBox) findViewById(R.id.checkbox_train);
         boat = (CheckBox) findViewById(R.id.checkbox_boat);
         plane = (CheckBox) findViewById(R.id.checkbox_plane);
-        resetButton = (Button) findViewById(R.id.resetbutton);
+        resetAllButton = (Button) findViewById(R.id.resetAllButton);
+        resetSearcesButton = (Button) findViewById(R.id.resetSearchesButton);
 
         setChecked();
         setListeners();
@@ -78,9 +82,9 @@ public class SettingsActivity extends AppCompatActivity {
         setListenerForCheckBox(train);
         setListenerForCheckBox(boat);
         setListenerForCheckBox(plane);
-        setListenerForResetButton(this);
+        setListenerForResetAllButton(this);
+        setListenerForResetSearchesButton(this);
     }
-
 
     private void setListenerForCheckBox(final CheckBox box) {
         box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -105,8 +109,8 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * Creates alert dialog to confirm resetting of the app when reset button is clicked.
      */
-    private void setListenerForResetButton(final Context context) {
-        resetButton.setOnClickListener(new View.OnClickListener() {
+    private void setListenerForResetAllButton(final Context context) {
+        resetAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -134,10 +138,49 @@ public class SettingsActivity extends AppCompatActivity {
      * Deletes all data from the database.
      */
     private void deleteAllDataFromDatabase() {
+        GPSPointDao.deleteAllData();
         PlaceDao.deleteAllData();
-        SignificantPlaceDao.deleteAllData();
         CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         FavouritePlaceDao.deleteAllData();
+
+        if (GPSPoint.count(GPSPoint.class) == 0 && Place.count(Place.class)  == 0
+                && CalendarTag.count(CalendarTag.class) == 0 && RouteSearch.count(RouteSearch.class) == 0
+                && FavouritePlace.count(FavouritePlace.class) == 0) {
+            Toast.makeText(this, "Successfully deleted", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed to delete", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setListenerForResetSearchesButton(final Context context) {
+        resetSearcesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.reset_searches_title).setMessage(R.string.reset_searches_message);
+
+                builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        RouteSearchDao.deleteAllData();
+
+                        if (RouteSearch.count(RouteSearch.class) == 0) {
+                            Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 }

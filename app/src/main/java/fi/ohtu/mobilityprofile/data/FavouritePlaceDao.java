@@ -18,7 +18,7 @@ public class FavouritePlaceDao {
      *
      * @return list of all favourite places
      */
-    public List<FavouritePlace> getAllFavouritePlaces() {
+    public static List<FavouritePlace> getAllFavouritePlaces() {
         return FavouritePlace.listAll(FavouritePlace.class);
     }
 
@@ -27,7 +27,7 @@ public class FavouritePlaceDao {
      * @param limit the maximum number of favourite places to search for
      * @return List of all favourite places, the biggest counter is first.
      */
-    public List<FavouritePlace> FindAmountOrderByCounter(int limit) {
+    public static List<FavouritePlace> FindAmountOrderByCounter(int limit) {
         List<FavouritePlace> favouritePlaces = Select.from(FavouritePlace.class)
                 .orderBy("counter DESC")
                 .limit(limit + "")
@@ -41,7 +41,7 @@ public class FavouritePlaceDao {
      *
      * @return string array list
      */
-    public ArrayList<String> getNamesOfFavouritePlaces() {
+    public static ArrayList<String> getNamesOfFavouritePlaces() {
         List<FavouritePlace> places = FavouritePlace.listAll(FavouritePlace.class);
         ArrayList<String> names = new ArrayList<String>();
 
@@ -58,7 +58,7 @@ public class FavouritePlaceDao {
      * @param name name of the favourite place
      * @return Favourite place
      */
-    public FavouritePlace getFavouritePlaceByName(String name) {
+    public static FavouritePlace getFavouritePlaceByName(String name) {
         List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
                 .where(Condition.prop("name").eq(name))
                 .limit("1")
@@ -78,7 +78,7 @@ public class FavouritePlaceDao {
      * @param address address of the favourite place
      * @return favourite place
      */
-    public FavouritePlace findFavouritePlaceByAddress(String address) {
+    public static FavouritePlace findFavouritePlaceByAddress(String address) {
         List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
                 .where(Condition.prop("address").eq(address))
                 .limit("1")
@@ -98,7 +98,7 @@ public class FavouritePlaceDao {
      *
      * @param favourite Favourite place to be saved
      */
-    public void insertFavouritePlace(FavouritePlace favourite) {
+    public static void insertFavouritePlace(FavouritePlace favourite) {
         favourite.save();
     }
 
@@ -107,7 +107,7 @@ public class FavouritePlaceDao {
      *
      * @param name name of the favourite place
      */
-    public void deleteFavouritePlace(String name) {
+    public static void deleteFavouritePlace(String name) {
         FavouritePlace.deleteAll(FavouritePlace.class, "name = ?", name);
     }
 
@@ -116,7 +116,7 @@ public class FavouritePlaceDao {
      *
      * @param id id of the favourite place
      */
-    public void deleteFavouritePlaceById(Long id) {
+    public static void deleteFavouritePlaceById(Long id) {
         List<FavouritePlace> favourites = Select.from(FavouritePlace.class)
                 .where(Condition.prop("id").eq(id))
                 .limit("1")

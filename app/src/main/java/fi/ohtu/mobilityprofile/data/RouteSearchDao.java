@@ -17,7 +17,7 @@ public class RouteSearchDao {
      *
      * @return Latest routesearch
      */
-    public RouteSearch getLatestRouteSearch() {
+    public static RouteSearch getLatestRouteSearch() {
         return getLatestRouteSearch(Select.from(RouteSearch.class)
                 .orderBy("timestamp DESC")
                 .limit("1"));
@@ -29,7 +29,7 @@ public class RouteSearchDao {
      * @param query custom query
      * @return result of the query
      */
-    private RouteSearch getLatestRouteSearch(Select<RouteSearch> query) {
+    private static RouteSearch getLatestRouteSearch(Select<RouteSearch> query) {
         List<RouteSearch> routesearches = query.list();
 
         assert routesearches.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
@@ -47,7 +47,7 @@ public class RouteSearchDao {
      * @param startLocation StartLocation of the routesearches
      * @return List of routesearches
      */
-    public List<RouteSearch> getRouteSearchesByStartlocation(String startLocation) {
+    public static List<RouteSearch> getRouteSearchesByStartlocation(String startLocation) {
         List<RouteSearch> searches = Select.from(RouteSearch.class)
                 .where(Condition.prop("startlocation").eq(startLocation))
                 .orderBy("timestamp DESC")
@@ -62,7 +62,7 @@ public class RouteSearchDao {
      * @param destination destination of the routesearches
      * @return List of routesearches
      */
-    public List<RouteSearch> getRouteSearchesByDestination(String destination) {
+    public static List<RouteSearch> getRouteSearchesByDestination(String destination) {
         List<RouteSearch> searches = Select.from(RouteSearch.class)
                 .where(Condition.prop("destination").eq(destination))
                 .orderBy("timestamp DESC")
@@ -78,7 +78,7 @@ public class RouteSearchDao {
      * @param destination Destination of the routesearch
      * @return List of routesearches
      */
-    public List<RouteSearch> getRouteSearchesByStartlocationAndDestination(String startLocation, String destination) {
+    public static List<RouteSearch> getRouteSearchesByStartlocationAndDestination(String startLocation, String destination) {
         List<RouteSearch> searches = Select.from(RouteSearch.class)
                 .where(Condition.prop("startlocation").eq(startLocation))
                 .where(Condition.prop("destination").eq(destination))
@@ -93,7 +93,7 @@ public class RouteSearchDao {
      *
      * @return List of routesearches
      */
-    public List<RouteSearch> getAllRouteSearches() {
+    public static List<RouteSearch> getAllRouteSearches() {
         List<RouteSearch> searches = Select.from(RouteSearch.class)
                 .orderBy("timestamp DESC")
                 .list();
@@ -106,7 +106,7 @@ public class RouteSearchDao {
      *
      * @param routeSearch routesearch to be saved
      */
-    public void insertRouteSearch(RouteSearch routeSearch) {
+    public static void insertRouteSearch(RouteSearch routeSearch) {
         routeSearch.save();
     }
 

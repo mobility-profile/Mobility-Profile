@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.ui;
+package fi.ohtu.mobilityprofile;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

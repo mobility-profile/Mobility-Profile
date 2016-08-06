@@ -3,11 +3,15 @@ package fi.ohtu.mobilityprofile.domain;
 import com.orm.SugarRecord;
 
 /**
- * Class is used to save raw gps data.
+ * Class is used to save places assumed significant to the user (ie. places where he/she spends some
+ * time and not just points on the road).
  */
-public class Place extends SugarRecord {
-    long timestamp;
-    Coordinate coordinate;
+public class Place extends SugarRecord implements HasAddress, HasCoordinate {
+    private String name;
+    private String address;
+    private boolean favourite;
+    private boolean unfavourited;
+    private Coordinate coordinate;
 
     /**
      *
@@ -17,44 +21,37 @@ public class Place extends SugarRecord {
 
     /**
      * Creates Place.
-     * @param timestamp timestamp of the visit
-     * @param latitude latitude
-     * @param longitude longitude
+     * @param name Name of the Place
+     * @param address Address of the Place
+     * @param coordinate Coordinate object representing the coordinates of the place
      */
-    public Place(long timestamp, Float latitude, Float longitude) {
-        this.timestamp = timestamp;
-        this.coordinate = new Coordinate(latitude, longitude);
+    public Place(String name, String address, Coordinate coordinate) {
+        this.name = name;
+        this.address = address;
+        this.favourite = false;
+        this.unfavourited = false;
+        this.coordinate = coordinate;
     }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
-
+    @Override
     public Coordinate getCoordinate() {
         return this.coordinate;
     }
 
-    public Float getLatitude() {
-        return this.coordinate.getLatitude();
+    public String getAddress() {
+        return address;
     }
 
-    public Float getLongitude() {
-        return this.coordinate.getLongitude();
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "lat=" + " lon=";
-    }
-
-    @Override
-    public long save() {
-        this.coordinate.save();
-        return super.save();
+    public String getName() {
+        return name;
     }
 
     /**
-     * Returns the distance between this place and a given place
+     * Returns the distance between this Place and a given Place
      * @param place Place to be compared
      * @return distance
      */
@@ -62,12 +59,51 @@ public class Place extends SugarRecord {
         return this.coordinate.distanceTo(place.getCoordinate());
     }
 
-    /**
-     * Returns the distance between this place and a given coordinate
-     * @param coordinate coordinate to be compared
-     * @return distance
-     */
-    public double distanceTo(Coordinate coordinate) {
-        return this.coordinate.distanceTo(coordinate);
+    @Override
+    public double distanceTo(HasCoordinate hasCoordinate) {
+        return this.coordinate.distanceTo(hasCoordinate.getCoordinate());
+    }
+
+    @Override
+    public boolean delete() {
+        this.coordinate.delete();
+        return super.delete();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Place that = (Place) o;
+
+        return coordinate.equals(that.coordinate);
+
+    }
+
+    @Override
+    public void updateAddress(String address) {
+        this.address = address;
+        this.save();
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public boolean isUnfavourited() {
+        return unfavourited;
+    }
+
+    public void setUnfavourited(boolean unfavourited) {
+        this.unfavourited = unfavourited;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

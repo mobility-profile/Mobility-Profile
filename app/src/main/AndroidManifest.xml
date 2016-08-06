@@ -68,7 +68,7 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="57" />
+            android:value="60" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -85,14 +85,12 @@
                 <action android:name="fi.ohtu.mobilityprofile.remoteconnection.RemoteService" />
             </intent-filter>
         </service>
+
         <service
             android:name=".suggestions.locationHistory.PlaceRecorder"
             android:process=":mobility_profile_location" />
-        <service
-            android:name=".suggestions.locationHistory.GoogleAPILocationService"
-            android:process=":mobility_profile_google_location" />
 
-        <activity android:name=".ui.SecurityProblemActivity"/>
+        <activity android:name=".SecurityProblemActivity"/>
     </application>
 
 </manifest>

@@ -127,12 +127,21 @@
         android:layout_marginBottom="10dp"
         android:layout_marginStart="10dp"/>
 
-
     <Button
-        android:id="@+id/resetbutton"
+        android:id="@+id/resetSearchesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/reset_button_text"
+        android:text="@string/reset_searches_button_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:background="@color/colorAccentSand"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/resetAllButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_all_button_text"
         android:layout_gravity="center_horizontal"
         android:layout_margin="15dp"
         android:background="@color/colorAccentSand"

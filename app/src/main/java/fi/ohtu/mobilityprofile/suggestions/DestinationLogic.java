@@ -3,11 +3,13 @@ package fi.ohtu.mobilityprofile.suggestions;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.GPSPoint;
+
 /**
  * This class is used for calculating the most likely trips the user is going to make.
  */
 public class DestinationLogic {
-    private String latestStartLocation;
+    private GPSPoint latestStartLocation;
     private List<Suggestion> latestSuggestions;
     private List<SuggestionSource> suggestionSources;
 
@@ -21,23 +23,12 @@ public class DestinationLogic {
     }
 
     /**
-     * Returns the most probable destination, when the user is in startLocation.
-     *
-     * @param startLocation SignificantPlace where the user is starting
-     * @return Most probable destination
-     */
-    public String getMostLikelyDestination(String startLocation) {
-        List<String> destinations = getListOfMostLikelyDestinations(startLocation);
-        return destinations.isEmpty() ? "Home" : destinations.get(0);
-    }
-
-    /**
      * Returns a list of most probable destinations, when the user is in startLocation.
      *
-     * @param startLocation SignificantPlace where the user is starting
+     * @param startLocation Place where the user is starting
      * @return List of most probable destinations
      */
-    public ArrayList<String> getListOfMostLikelyDestinations(String startLocation) {
+    public ArrayList<String> getListOfMostLikelyDestinations(GPSPoint startLocation) {
         this.latestStartLocation = startLocation;
 
         List<Suggestion> suggestions = new ArrayList<>();
@@ -69,7 +60,7 @@ public class DestinationLogic {
      *
      * @return Latest start location
      */
-    public String getLatestStartLocation() {
+    public GPSPoint getLatestStartLocation() {
         return latestStartLocation;
     }
 }

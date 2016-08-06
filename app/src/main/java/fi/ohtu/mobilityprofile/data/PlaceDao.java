@@ -5,81 +5,88 @@ import com.orm.query.Select;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
- * DAO used for saving and reading Visits to/from the database.
+ * DAO used for clustering visited locations.
  */
 public class PlaceDao {
-    private SignificantPlaceDao significantPlaceDao;
 
     /**
-     * Creates PlaceDao.
+     * Returns a Place closest to given coordinates
+     * @param coordinate coordinates of the given location
+     * @return Place
      */
-    public PlaceDao() {
+    public static Place getPlaceClosestTo(Coordinate coordinate) {
+        List<Place> places = getAll();
+        Place result = null;
+        double distance = Double.MAX_VALUE;
+        for(Place place : places) {
+            if(place.distanceTo(coordinate) < distance){
+                distance = place.distanceTo(coordinate);
+                result = place;
+            }
+        }
+        return result;
+    }
+
+    public static List<Place> getAll() {
+        return Place.listAll(Place.class);
+    }
+
+
+    /**
+     * Saves a Place to the database.
+     * @param place Place to be saved
+     */
+    public static void insertPlace(Place place) {
+        place.getCoordinate().save();
+        place.save();
     }
 
     /**
-     * Returns the latest visit from the database, or null if there is none.
-     *
-     * @return Latest visit
+     * Finds a Place by name
+     * @param name name of the Place
+     * @return Place with the given name
      */
-    public Place getLatestVisit() {
-        return getLatestVisit(Select.from(Place.class)
-                .orderBy("timestamp DESC")
-                .limit("1"));
-    }
 
-    /**
-     * Returns the latest visit from the database based on custom query,
-     * or null if there is none.
-     * @param query custom query
-     * @return latest visit
-     */
-    private Place getLatestVisit(Select<Place> query) {
-        List<Place> places = query.list();
+    public static Place getPlaceByName(String name) {
+        List<Place> places = Select.from(Place.class)
+                .where(Condition.prop("name").eq(name))
+                .limit("1")
+                .list();
 
         assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
 
-        if (places.size() == 0) {
-            return null;
-        }
-
-        return places.get(0);
+        return  (places.size() == 1) ? places.get(0) : null;
     }
 
     /**
-     * Returns a list of visits where the nearestKnownLocation matches the given one.
-     *
-     * @param location SignificantPlace of the visits
-     * @return List of visits
+     * Finds a Place by name
+     * @param address address of the Place
+     * @return Place with the given address
      */
-    public List<Place> getVisitsByLocation(String location) {
+    public static Place getPlaceByAddress(String address) {
         List<Place> places = Select.from(Place.class)
-                .where(Condition.prop("original_location").eq(location))
-                .orderBy("timestamp DESC")
+                .where(Condition.prop("address").eq(address))
+                .limit("1")
                 .list();
 
-        return places;
+        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+
+        return  (places.size() == 1) ? places.get(0) : null;
     }
 
     /**
-     * Returns a list of all visits.
-     * @return list of visits
+     * Deletes a Place by address
+     * @param address address of the Place to be deleted
      */
-    public static List<Place> getAll() {
-        return Select.from(Place.class)
-                .orderBy("timestamp DESC")
-                .list();
-    }
-
-    /**
-     * Saves a place to the database.
-     *
-     * @param place Place to be saved
-     */
-    public void insertVisit(Place place) {
-        place.save();
+    public static void deletePlaceByAddress(String address) {
+        Place place = getPlaceByAddress(address);
+        if (place != null) {
+            place.delete();
+        }
     }
 
     /**

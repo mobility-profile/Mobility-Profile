@@ -17,10 +17,10 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import fi.ohtu.mobilityprofile.MainActivity;
-import fi.ohtu.mobilityprofile.PermissionManager;
+import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.data.GPSPointDao;
+import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
  * PlaceRecorder listens to location changes.
@@ -50,6 +50,10 @@ public class PlaceRecorder extends Service {
 
         resultReceiver = intent.getParcelableExtra("Receiver");
 
+        if (intent.getBooleanExtra("UPDATE", false)) {
+            return START_STICKY;
+        }
+
         // Create intent for the service
         Intent notificationIntent = new Intent(this, PlaceRecorder.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -58,7 +62,7 @@ public class PlaceRecorder extends Service {
         Notification.Builder notification = new Notification.Builder(this)
                 .setContentTitle("Location tracking")
                 .setContentText("Mobility Profile is tracking your location")
-                .setSmallIcon(R.mipmap.logo)
+                .setSmallIcon(R.drawable.ic_location_on_white_24dp)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
@@ -74,7 +78,7 @@ public class PlaceRecorder extends Service {
         Intent actionIntent = new Intent(this, PlaceRecorder.class);
         actionIntent.setAction(ACTION_STOP_SERVICE);
         PendingIntent actionPendingIntent = PendingIntent.getService(this, 0, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        notification.addAction(R.mipmap.logo, "Stop tracking", actionPendingIntent);
+        notification.addAction(R.drawable.ic_location_off_white_24dp, "Stop tracking", actionPendingIntent);
 
         // Start the service
         startForeground(NOTIFICATION_ID, notification.build());
@@ -84,6 +88,7 @@ public class PlaceRecorder extends Service {
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
+        private GPSPointClusterizer gpsPointClusterizer;
 
         /**
          * Creates PlaceRecorder
@@ -94,13 +99,14 @@ public class PlaceRecorder extends Service {
          */
         public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
+            this.gpsPointClusterizer = new GPSPointClusterizer(context);
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
-                    savePlace(location);
+                    saveGPSPoint(location);
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -111,16 +117,14 @@ public class PlaceRecorder extends Service {
         public void onLocationChanged(Location location) {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
-            savePlace(location);
-            if (PlaceDao.getAll().size() == (10000 / LOCATION_INTERVAL)) { //24 hour interval
-                //PlaceClusterizer.updateVisitHistory(PlaceDao.getAll());
-            }
+            saveGPSPoint(location);
+            gpsPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
         }
 
-        private void savePlace(Location location) {
+        private void saveGPSPoint(Location location) {
             System.out.println(System.currentTimeMillis());
-            Place place = new Place(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
-            place.save();
+            GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+            GPSPointDao.insert(gpsPoint);
         }
 
         @Override

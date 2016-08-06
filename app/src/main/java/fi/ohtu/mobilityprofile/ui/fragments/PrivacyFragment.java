@@ -2,9 +2,7 @@ package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.Manifest;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -28,14 +26,9 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
-import fi.ohtu.mobilityprofile.PermissionManager;
+import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.data.SignificantPlaceDao;
 
 /**
  * The class creates a component called PrivacyFragment.
@@ -88,6 +81,13 @@ public class PrivacyFragment extends Fragment {
         super.onStart();
 
         setupServiceReceiver();
+        
+        if (isLocationServiceRunning()) {
+            Intent intent = new Intent(context, PlaceRecorder.class);
+            intent.putExtra("Receiver", resultReceiver);
+            intent.putExtra("UPDATE", true);
+            context.startService(intent);
+        }
     }
 
     public void setupServiceReceiver() {
@@ -123,13 +123,13 @@ public class PrivacyFragment extends Fragment {
         stopButton.setVisibility(View.GONE);
 
         compass = (ImageView) view.findViewById(R.id.tracking_on);
-        compass.setAlpha(0.1f);
+        compass.setAlpha(0.5f);
         compass.setContentDescription("continuous location tracking is off");
 
+        setListenerForTrackingButtons();
         setChecked();
         setListenerForGPSCheckBox();
         setListenerForCheckBoxCalendar();
-        setListenerForTrackingButtons();
     }
 
     /**
@@ -146,11 +146,11 @@ public class PrivacyFragment extends Fragment {
                         getPermissionToAccessFineLocation();
                     } else {
                         GPSCheckedOn();
-                        Toast.makeText(context, "SignificantPlace tracking is used again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Place tracking is used again", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     GPSCheckedOff();
-                    Toast.makeText(context, "SignificantPlace tracking will not be used", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Place tracking will not be used", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -204,11 +204,7 @@ public class PrivacyFragment extends Fragment {
                 intent.putExtra("Receiver", resultReceiver);
                 context.startService(intent);
 
-                startButton.setVisibility(View.GONE);
-                stopButton.setVisibility(View.VISIBLE);
-                compass.setAlpha(1.0f);
-                compass.startAnimation(animation);
-                compass.setContentDescription("continuous location tracking is on");
+                startedTracking();
             }
         });
 
@@ -219,6 +215,14 @@ public class PrivacyFragment extends Fragment {
                 stoppedTracking();
             }
         });
+    }
+
+    private void startedTracking() {
+        startButton.setVisibility(View.GONE);
+        stopButton.setVisibility(View.VISIBLE);
+        compass.setAlpha(1.0f);
+        compass.startAnimation(animation);
+        compass.setContentDescription("continuous location tracking is on");
     }
 
     private void stoppedTracking() {
@@ -298,11 +302,9 @@ public class PrivacyFragment extends Fragment {
         }
 
         if (isLocationServiceRunning()) {
-            stopButton.setVisibility(View.VISIBLE);
-            startButton.setVisibility(View.GONE);
+            startedTracking();
         } else {
-            stopButton.setVisibility(View.GONE);
-            startButton.setVisibility(View.VISIBLE);
+            stoppedTracking();
         }
     }
 
