@@ -8,7 +8,7 @@ import android.os.Messenger;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.CalendarConnection;
+import fi.ohtu.mobilityprofile.util.CalendarConnection;
 import fi.ohtu.mobilityprofile.suggestions.sources.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.MainActivity;

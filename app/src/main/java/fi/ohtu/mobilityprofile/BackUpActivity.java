@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import fi.ohtu.mobilityprofile.util.ProfileBackup;
+
 public class BackUpActivity extends AppCompatActivity {
 
     private ProfileBackup profileBackup;

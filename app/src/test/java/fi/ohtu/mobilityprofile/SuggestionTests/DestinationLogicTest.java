@@ -12,7 +12,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
-import fi.ohtu.mobilityprofile.CalendarConnection;
+import fi.ohtu.mobilityprofile.util.CalendarConnection;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.suggestions.sources.CalendarSuggestions;
@@ -33,7 +33,6 @@ public class DestinationLogicTest {
         CalendarTagDao calendarTagDao = mock(CalendarTagDao.class);
 
         List<SuggestionSource> suggestionSources = new ArrayList<>();
-
         suggestionSources.add(new CalendarSuggestions(new CalendarConnection(Robolectric.setupActivity(MainActivityStub.class))));
         suggestionSources.add(new VisitSuggestions());
         suggestionSources.add(new RouteSuggestions());
@@ -41,6 +40,6 @@ public class DestinationLogicTest {
 
         mp = new DestinationLogic(suggestionSources);
 
-        when(calendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
+        when(CalendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
     }
 }

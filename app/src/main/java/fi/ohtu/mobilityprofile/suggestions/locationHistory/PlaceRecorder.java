@@ -17,7 +17,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import fi.ohtu.mobilityprofile.MainActivity;
-import fi.ohtu.mobilityprofile.PermissionManager;
+import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;

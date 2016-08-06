@@ -21,7 +21,6 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.remoteconnection.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
-import fi.ohtu.mobilityprofile.ui.SecurityProblemActivity;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";

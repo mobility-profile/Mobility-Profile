@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.util;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

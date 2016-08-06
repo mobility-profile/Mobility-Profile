@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile;
+package fi.ohtu.mobilityprofile.util;
 
 import android.Manifest;
 import android.content.Context;
