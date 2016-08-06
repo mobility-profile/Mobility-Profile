@@ -19,8 +19,8 @@ import android.util.Log;
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.data.GPSPointDao;
+import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
  * PlaceRecorder listens to location changes.
@@ -88,6 +88,7 @@ public class PlaceRecorder extends Service {
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
+        private GPSPointClusterizer gpsPointClusterizer;
 
         /**
          * Creates PlaceRecorder
@@ -98,13 +99,14 @@ public class PlaceRecorder extends Service {
          */
         public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
+            this.gpsPointClusterizer = new GPSPointClusterizer(context);
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
-                    savePlace(location);
+                    saveGPSPoint(location);
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -115,16 +117,14 @@ public class PlaceRecorder extends Service {
         public void onLocationChanged(Location location) {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
-            savePlace(location);
-            if (PlaceDao.getAll().size() == (10000 / LOCATION_INTERVAL)) { //24 hour interval
-                //PlaceClusterizer.updateVisitHistory(PlaceDao.getAll());
-            }
+            saveGPSPoint(location);
+            gpsPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
         }
 
-        private void savePlace(Location location) {
+        private void saveGPSPoint(Location location) {
             System.out.println(System.currentTimeMillis());
-            Place place = new Place(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
-            place.save();
+            GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+            gpsPoint.save();
         }
 
         @Override

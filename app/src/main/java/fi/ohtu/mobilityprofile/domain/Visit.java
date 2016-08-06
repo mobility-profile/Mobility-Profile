@@ -3,11 +3,12 @@ package fi.ohtu.mobilityprofile.domain;
 import com.orm.SugarRecord;
 
 /**
- * Class is used to save visits to SignificantPlaces.
+ * Class is used to save visits to Places.
  */
-public class Visit extends SugarRecord {
-    private long timestamp;
-    private SignificantPlace significantPlace;
+public class Visit extends SugarRecord implements HasCoordinate {
+    private long enterTime;
+    private long exitTime;
+    private Place place;
 
     /**
      *
@@ -17,42 +18,49 @@ public class Visit extends SugarRecord {
 
     /**
      * Creates Visit.
-     * @param timestamp timestamp of the visit
-     * @param place SignificantPlace to be referred to
+     * @param enterTime enterTime of the visit
+     * @param place Place to be referred to
      */
-    public Visit(long timestamp, SignificantPlace place) {
-        this.timestamp = timestamp;
-        this.significantPlace = place;
+    public Visit(long enterTime, long exitTime, Place place) {
+        this.enterTime = enterTime;
+        this.exitTime = exitTime;
+        this.place = place;
     }
 
-    /**
-     * Creates Visit.
-     * @param timestamp timestamp of the visit
-     */
-    public Visit(long timestamp) {
-        this.timestamp = timestamp;
+    public long getEnterTime() {
+        return enterTime;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public long getExitTime() {
+        return this.exitTime;
     }
 
-    public SignificantPlace getSignificantPlace() {
-        return significantPlace;
+    public Place getPlace() {
+        return place;
     }
 
     public String getAddress() {
-        return significantPlace.getAddress();
+        return place.getAddress();
     }
 
-    public void setSignificantPlace(SignificantPlace place) {
-        this.significantPlace = place;
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+
+    @Override
+    public Coordinate getCoordinate() {
+        return this.getPlace().getCoordinate();
     }
 
     @Override
     public long save() {
-        this.significantPlace.save();
+        this.place.save();
         return super.save();
+    }
+
+    @Override
+    public double distanceTo(HasCoordinate hasCoordinate) {
+        return this.getPlace().getCoordinate().distanceTo(hasCoordinate.getCoordinate());
     }
 
 }

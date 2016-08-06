@@ -23,7 +23,7 @@
     <string name="last_searches">Your last searches</string>
     <string name="profile_item_delete_title">Delete this route search?</string>
 
-    <!--Favourite places page-->
+    <!--Favourite GPSPoints page-->
     <string name="favourites_title">Your favourite places</string>
     <string name="favourites_edit_title">Edit this favourite place</string>
     <string name="favourites_delete_title">Delete this favourite place?</string>
@@ -55,7 +55,7 @@
 
     <string name="reset_all_button_text">Reset app and delete all data</string>
     <string name="reset_title">Delete all collected data?</string>
-    <string name="reset_message">Deletes all collected data, including visited significantPlaces, searched routes, and favourite places.</string>
+    <string name="reset_message">Deletes all collected data, including visited places, searched routes, and favourite places.</string>
 
 
     <string name="custom_permission_info">Allows the software to use information provided by Mobility Profile. Exact data collected by Mobility Profile won\'t be shared, only suggestions Mobility Profile is giving based on that data.</string>

@@ -22,7 +22,6 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 
 /**
  * This class adapts a list of FavouritePlace to ListView.

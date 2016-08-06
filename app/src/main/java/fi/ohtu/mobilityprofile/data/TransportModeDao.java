@@ -15,7 +15,7 @@ public class TransportModeDao {
     public TransportModeDao() {
     }
 
-    public List<TransportMode> getPreferredTransportModes() {
+    public static List<TransportMode> getPreferredTransportModes() {
         List<TransportMode> modes = TransportMode.listAll(TransportMode.class);
         List<TransportMode> remove = new ArrayList<>();
 
@@ -30,7 +30,7 @@ public class TransportModeDao {
         return modes;
     }
 
-    public ArrayList<String> getNamesOfPreferredTransportModes() {
+    public static ArrayList<String> getNamesOfPreferredTransportModes() {
         ArrayList<String> modes = new ArrayList<>();
         for (TransportMode m : getPreferredTransportModes()) {
             modes.add(m.getName());
