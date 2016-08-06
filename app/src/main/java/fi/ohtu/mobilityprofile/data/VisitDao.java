@@ -32,6 +32,8 @@ public class VisitDao {
      * @param visit Visit to be saved
      */
     public static void insert(Visit visit) {
+        visit.getPlace().getCoordinate().save();
+        visit.getPlace().save();
         visit.save();
     }
 

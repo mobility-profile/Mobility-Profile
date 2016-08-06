@@ -27,6 +27,13 @@ public class PlaceDaoTest {
     }
 
     @Test
+    public void coordinateIsSavedIntoDatabase() {
+        placeDao.insertPlace(new Place("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(2))));
+        Place place = placeDao.getPlaceByAddress("Kumpula");
+        assertTrue(place.getCoordinate() != null);
+    }
+
+    @Test
     public void testInsertandFindByAddress() {
         placeDao.insertPlace(new Place("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(2))));
         Place place = placeDao.getPlaceByAddress("Kumpula");

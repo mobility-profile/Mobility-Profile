@@ -53,12 +53,6 @@ public class Visit extends SugarRecord implements HasCoordinate {
     }
 
     @Override
-    public long save() {
-        this.place.save();
-        return super.save();
-    }
-
-    @Override
     public double distanceTo(HasCoordinate hasCoordinate) {
         return this.getPlace().getCoordinate().distanceTo(hasCoordinate.getCoordinate());
     }

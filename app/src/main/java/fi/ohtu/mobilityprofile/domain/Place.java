@@ -65,12 +65,6 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
     }
 
     @Override
-    public long save() {
-        this.coordinate.save();
-        return super.save();
-    }
-
-    @Override
     public boolean delete() {
         this.coordinate.delete();
         return super.delete();
