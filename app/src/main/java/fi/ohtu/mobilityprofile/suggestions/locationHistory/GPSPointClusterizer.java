@@ -89,7 +89,7 @@ public class GPSPointClusterizer {
         PlaceDao.insertPlace(place);
         AddressConverter.getAddressAndSave(place, context);
         place.setName(place.getAddress());
-        place.save();
+        PlaceDao.insertPlace(place);
         return place;
     }
 

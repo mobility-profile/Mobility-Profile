@@ -124,7 +124,7 @@ public class PlaceRecorder extends Service {
         private void saveGPSPoint(Location location) {
             System.out.println(System.currentTimeMillis());
             GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
-            gpsPoint.save();
+            GPSPointDao.insert(gpsPoint);
         }
 
         @Override
