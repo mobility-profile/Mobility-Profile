@@ -63,6 +63,7 @@ public class DestinationLogicTest {
         routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Kumpulan kampus", "Töölö",
                 new Coordinate(new Float(60.203978), new Float(24.965546)),
                 new Coordinate(new Float(60.174892), new Float(24.921637))));
+
         JSONArray suggestions = mp.getListOfMostLikelyDestinationsJSON(new GPSPoint(System.currentTimeMillis(), new Float(60.203978), new Float(24.965546)));
 
         GeoJSONObject geo = null;
