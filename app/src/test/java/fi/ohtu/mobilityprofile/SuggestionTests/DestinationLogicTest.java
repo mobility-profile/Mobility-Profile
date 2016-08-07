@@ -4,8 +4,10 @@ import com.cocoahero.android.geojson.Feature;
 import com.cocoahero.android.geojson.GeoJSON;
 import com.cocoahero.android.geojson.GeoJSONObject;
 import com.google.api.client.json.Json;
+import com.google.api.client.json.JsonParser;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,14 +67,14 @@ public class DestinationLogicTest {
                 new Coordinate(new Float(60.174892), new Float(24.921637))));
 
         JSONArray suggestions = mp.getListOfMostLikelyDestinationsJSON(new GPSPoint(System.currentTimeMillis(), new Float(60.203978), new Float(24.965546)));
-
-        GeoJSONObject geo = null;
-        if (suggestions.length() > 0) {
-            try {
-                geo = GeoJSON.parse(suggestions.getJSONObject(0));
-            } catch (Exception e) {
-            }
+        
+        String result = "";
+        try {
+            result = suggestions.getJSONObject(0).getJSONObject("properties").get("destination").toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        System.out.println(geo);
+
+        assertEquals("Töölö", result);
     }
 }

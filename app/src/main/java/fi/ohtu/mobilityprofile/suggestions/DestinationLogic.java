@@ -1,12 +1,10 @@
 package fi.ohtu.mobilityprofile.suggestions;
 
 import com.cocoahero.android.geojson.Feature;
-import com.cocoahero.android.geojson.GeoJSON;
-import com.cocoahero.android.geojson.GeoJSONObject;
-import com.cocoahero.android.geojson.Geometry;
 import com.cocoahero.android.geojson.Point;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -56,7 +54,12 @@ public class DestinationLogic {
         return destinations;
     }
 
-
+    /**
+     * Returns a list of most probable destinations, when the user is in startLocation.
+     *
+     * @param startLocation Place where the user is starting
+     * @return List of most probable destinations
+     */
     public JSONArray getListOfMostLikelyDestinationsJSON(GPSPoint startLocation) {
         this.latestStartLocation = startLocation;
 
@@ -93,20 +96,29 @@ public class DestinationLogic {
         return latestStartLocation;
     }
 
-    private Feature convertToGeojson(Suggestion suggestion) {
+    /**
+     * Converts the suggestion to a GeoJSON object and then to a JSONObject.
+     * @param suggestion suggestion to be converted
+     * @return jsonObject
+     */
+    private JSONObject convertToGeojson(Suggestion suggestion) {
+
+        JSONObject destination = new JSONObject();
+
         Feature feature = new Feature();
-
-        Coordinate coordinate = suggestion.getCoordinate();
-
-        if (coordinate != null) {
-            feature.setGeometry(new Point(coordinate.getLatitude(), coordinate.getLongitude()));
+        if (suggestion.getCoordinate() != null) {
+            feature.setGeometry(new Point(suggestion.getCoordinate().getLongitude(), suggestion.getCoordinate().getLatitude()));
         }
-
         try {
             feature.setProperties(new JSONObject().put("destination", suggestion.getDestination()));
-        } catch (Exception e) {
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return feature;
+        try {
+            destination = feature.toJSON();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return destination;
     }
 }
