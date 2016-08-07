@@ -1,8 +1,18 @@
 package fi.ohtu.mobilityprofile.suggestions;
 
+import com.cocoahero.android.geojson.Feature;
+import com.cocoahero.android.geojson.GeoJSON;
+import com.cocoahero.android.geojson.GeoJSONObject;
+import com.cocoahero.android.geojson.Geometry;
+import com.cocoahero.android.geojson.Point;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
@@ -46,6 +56,25 @@ public class DestinationLogic {
         return destinations;
     }
 
+
+    public JSONArray getListOfMostLikelyDestinationsJSON(GPSPoint startLocation) {
+        this.latestStartLocation = startLocation;
+
+        List<Suggestion> suggestions = new ArrayList<>();
+        for (SuggestionSource suggestionSource : suggestionSources) {
+            suggestions.addAll(suggestionSource.getSuggestions(startLocation));
+        }
+
+        latestSuggestions = suggestions;
+
+        JSONArray destinations = new JSONArray();
+        for (Suggestion suggestion : suggestions) {
+            destinations.put(convertToGeojson(suggestion));
+        }
+
+        return destinations;
+    }
+
     /**
      * Returns a list of the latest destinations that were sent to the client.
      *
@@ -62,5 +91,22 @@ public class DestinationLogic {
      */
     public GPSPoint getLatestStartLocation() {
         return latestStartLocation;
+    }
+
+    private Feature convertToGeojson(Suggestion suggestion) {
+        Feature feature = new Feature();
+
+        Coordinate coordinate = suggestion.getCoordinate();
+
+        if (coordinate != null) {
+            feature.setGeometry(new Point(coordinate.getLatitude(), coordinate.getLongitude()));
+        }
+
+        try {
+            feature.setProperties(new JSONObject().put("destination", suggestion.getDestination()));
+        } catch (Exception e) {
+        }
+
+        return feature;
     }
 }

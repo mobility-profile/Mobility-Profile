@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.concurrent.Executors;
 
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.HasAddress;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
@@ -162,11 +163,11 @@ public class AddressConverter {
 
                                 if (latest != null) {
                                     route = new RouteSearch(System.currentTimeMillis(),
-                                            "Kumpula", destination, latest.getLatitude(),
-                                            latest.getLongitude(), lat, lon);
+                                            "Kumpula", destination, new Coordinate(latest.getLatitude(),
+                                            latest.getLongitude()), new Coordinate(lat, lon));
                                 } else {
                                     route = new RouteSearch(System.currentTimeMillis(),
-                                            "None", destination, null, null, lat, lon);
+                                            "None", destination, null, new Coordinate(lat, lon));
 
                                 }
                                 route.save();

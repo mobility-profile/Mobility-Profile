@@ -72,6 +72,6 @@ public class CalendarSuggestions implements SuggestionSource {
         }
         */
 
-        return new Suggestion(eventLocation, SuggestionAccuracy.VERY_HIGH, CALENDAR_SUGGESTION);
+        return new Suggestion(eventLocation, null, SuggestionAccuracy.VERY_HIGH, CALENDAR_SUGGESTION);
     }
 }

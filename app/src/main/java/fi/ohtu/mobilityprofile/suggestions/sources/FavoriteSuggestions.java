@@ -32,7 +32,7 @@ public class FavoriteSuggestions implements SuggestionSource {
         List<Suggestion> suggestions = new ArrayList<>();
 
         for (FavouritePlace favouritePlace : FavouritePlaceDao.FindAmountOrderByCounter(3)) {
-            Suggestion suggestion = new Suggestion(favouritePlace.getAddress(), SuggestionAccuracy.MODERATE, FAVORITE_SUGGESTION);
+            Suggestion suggestion = new Suggestion(favouritePlace.getAddress(), favouritePlace.getCoordinate(), SuggestionAccuracy.MODERATE, FAVORITE_SUGGESTION);
             suggestions.add(suggestion);
         }
 

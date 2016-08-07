@@ -15,17 +15,10 @@ public class Suggestion {
      * Creates the suggestion.
      *
      * @param destination Destination the user will be suggested to go
+     * @param coordinate Coordinates of the suggested destination
      * @param accuracy Estimated accuracy of the suggestion
      * @param source Source of the suggestion
      */
-
-    public Suggestion(String destination, SuggestionAccuracy accuracy, int source) {
-        this.destination = destination;
-        this.coordinate = null;
-        this.accuracy = accuracy;
-        this.source = source;
-    }
-
     public Suggestion(String destination, Coordinate coordinate, SuggestionAccuracy accuracy, int source) {
         this.destination = destination;
         this.coordinate = coordinate;
