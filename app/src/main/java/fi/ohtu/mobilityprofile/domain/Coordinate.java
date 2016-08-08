@@ -9,7 +9,10 @@ public class Coordinate extends SugarRecord implements HasCoordinate {
     Float latitude;
     Float longitude;
 
-    public Coordinate() {}
+    public Coordinate() {
+        this.latitude = 0f;
+        this.longitude = 0f;
+    }
 
     /**
      * Creates Coordinate

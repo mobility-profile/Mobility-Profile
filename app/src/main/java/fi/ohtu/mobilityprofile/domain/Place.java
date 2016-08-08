@@ -19,6 +19,11 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
      *
      */
     public Place() {
+        this.name = "name";
+        this.address = "address";
+        this.favourite = false;
+        this.unfavourited = false;
+        this.coordinate = new Coordinate(0f, 0f);
     }
 
     /**
@@ -50,15 +55,6 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
 
     public String getName() {
         return name;
-    }
-
-    /**
-     * Returns the distance between this Place and a given Place
-     * @param place Place to be compared
-     * @return distance
-     */
-    public double distanceTo(Place place) {
-        return this.coordinate.distanceTo(place.getCoordinate());
     }
 
     @Override
