@@ -52,6 +52,9 @@ public class GPSPointDao {
      * Deletes all GPSPoint data from the database
      */
     public static void deleteAllData() {
-        GPSPoint.deleteAll(GPSPoint.class);
+        for(GPSPoint gpsPoint : getAll()) {
+            gpsPoint.getCoordinate().delete();
+            gpsPoint.delete();
+        }
     }
 }
