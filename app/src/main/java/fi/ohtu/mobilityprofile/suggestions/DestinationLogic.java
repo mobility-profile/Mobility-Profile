@@ -110,7 +110,7 @@ public class DestinationLogic {
             feature.setGeometry(new Point(suggestion.getCoordinate().getLongitude(), suggestion.getCoordinate().getLatitude()));
         }
         try {
-            feature.setProperties(new JSONObject().put("destination", suggestion.getDestination()));
+            feature.setProperties(new JSONObject().put("label", suggestion.getDestination()).put("layer", "mobilityprofile"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
