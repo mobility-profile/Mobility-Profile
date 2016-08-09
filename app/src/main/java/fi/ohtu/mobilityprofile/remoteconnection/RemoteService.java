@@ -45,7 +45,7 @@ public class RemoteService extends Service {
                 suggestionSources.add(new FavoriteSuggestions());
                 DestinationLogic destinationLogic = new DestinationLogic(suggestionSources, new InterCitySuggestions());
 
-                messenger = new Messenger(new RequestHandler(this, destinationLogic));
+                messenger = new Messenger(new RequestHandler(destinationLogic));
             }
         }
 
