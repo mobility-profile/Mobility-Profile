@@ -96,6 +96,11 @@ public class RequestHandler extends Handler {
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
         StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_SEARCHED_ROUTE + ""), "|");
+        if (tokenizer.countTokens() != 2) {
+            Log.d("Request Handler", "Invalid parameters when processing used route");
+            return;
+        }
+
         String startLocation = tokenizer.nextToken();
         String destination = tokenizer.nextToken();
 
