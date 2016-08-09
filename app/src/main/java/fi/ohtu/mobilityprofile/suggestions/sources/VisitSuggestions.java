@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
@@ -20,8 +19,6 @@ import fi.ohtu.mobilityprofile.suggestions.locationHistory.GPSPointClusterizer;
  * This class creates suggestions based on the user's visits to places he has visited frequently in the past.
  */
 public class VisitSuggestions implements SuggestionSource {
-
-    private GPSPointClusterizer gpsPointClusterizer;
 
     /**
      * Creates VisitSuggestions.
@@ -37,14 +34,13 @@ public class VisitSuggestions implements SuggestionSource {
      */
     @Override
     public List<Suggestion> getSuggestions(GPSPoint startLocation) {
-        Map<Place, Integer> nextDestinations = calculateNextDestinations(startLocation);
+        Map<String, Integer> nextDestinations = calculateNextDestinations(startLocation);
         List<Suggestion> suggestions = new ArrayList<>();
-
         if (!nextDestinations.isEmpty() && userStillAtLastVisitLocation(startLocation, VisitDao.getLast())) {
             int maxValue = Collections.max(nextDestinations.values());
-            for (Map.Entry<Place, Integer> entry : nextDestinations.entrySet()) {
+            for (Map.Entry<String, Integer> entry : nextDestinations.entrySet()) {
                 if (entry.getValue() == maxValue) {
-                    suggestions.add(new Suggestion(entry.getKey().getAddress(), entry.getKey().getCoordinate(), SuggestionAccuracy.HIGH, VISIT_SUGGESTIONS));
+                    suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION));
                 }
             }
         }
@@ -56,10 +52,10 @@ public class VisitSuggestions implements SuggestionSource {
      *
      * @param startLocation starting location
      */
-    private Map<Place, Integer> calculateNextDestinations(GPSPoint startLocation) {
+    private Map<String, Integer> calculateNextDestinations(GPSPoint startLocation) {
 
         List<Visit> visits = VisitDao.getAll();
-        Map<Place, Integer> nextDestinations = new HashMap<>();
+        Map<String, Integer> nextDestinations = new HashMap<>();
         if (visits.size() > 3) {
 
             Place currentPlace = VisitDao.getLast().getPlace();
@@ -77,7 +73,7 @@ public class VisitSuggestions implements SuggestionSource {
                     if ((visits.get(i + 1).getPlace().equals(previousLocation))
                             && (visits.get(i + 2).getPlace().equals(beforePrevious))) {
 
-                        addToNextDestinations(visits.get(i - 1).getPlace(), nextDestinations);
+                        addToNextDestinations(visits.get(i - 1).getAddress(), nextDestinations);
                     }
                 }
             }
@@ -86,7 +82,8 @@ public class VisitSuggestions implements SuggestionSource {
     }
 
     private boolean userStillAtLastVisitLocation(GPSPoint startLocation, Visit lastVisit) {
-        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < gpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD && startLocation.distanceTo(lastVisit) < gpsPointClusterizer.CLUSTER_RADIUS;
+        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < GPSPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD
+                && startLocation.distanceTo(lastVisit) < GPSPointClusterizer.CLUSTER_RADIUS;
     }
 
     /**
@@ -95,9 +92,8 @@ public class VisitSuggestions implements SuggestionSource {
      *
      * @param nextDestination possible next destination
      */
-    private void addToNextDestinations(Place nextDestination, Map<Place, Integer> nextDestinations) {
+    private void addToNextDestinations(String nextDestination, Map<String, Integer> nextDestinations) {
         int count = nextDestinations.containsKey(nextDestination) ? nextDestinations.get(nextDestination) : 0;
         nextDestinations.put(nextDestination, count + 1);
     }
-
 }

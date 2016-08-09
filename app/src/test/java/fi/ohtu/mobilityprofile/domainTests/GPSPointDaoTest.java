@@ -12,12 +12,12 @@ import fi.ohtu.mobilityprofile.data.GPSPointDao;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
-public class GPSPointDaoTest {
-    private static GPSPointDao GPSPointDao;
+public class GpsPointDaoTest {
+    private static GPSPointDao GpsPointDao;
 
     @Before
     public void setUp() {
-        this.GPSPointDao = new GPSPointDao();
+        this.GpsPointDao = new GPSPointDao();
         Robolectric.setupActivity(MainActivityStub.class);
     }
 

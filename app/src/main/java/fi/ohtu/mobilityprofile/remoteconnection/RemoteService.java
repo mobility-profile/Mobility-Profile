@@ -13,6 +13,7 @@ import fi.ohtu.mobilityprofile.suggestions.sources.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
+import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
@@ -36,15 +37,15 @@ public class RemoteService extends Service {
             if (messenger == null) {
 
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
+
                 suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this)));
-
                 suggestionSources.add(new VisitSuggestions());
-
                 suggestionSources.add(new RouteSuggestions());
                 suggestionSources.add(new FavoriteSuggestions());
-                DestinationLogic destinationLogic = new DestinationLogic(suggestionSources);
 
-                messenger = new Messenger(new RequestHandler(this, destinationLogic));
+                DestinationLogic destinationLogic = new DestinationLogic(suggestionSources, new InterCitySuggestions());
+
+                messenger = new Messenger(new RequestHandler(destinationLogic));
             }
         }
 

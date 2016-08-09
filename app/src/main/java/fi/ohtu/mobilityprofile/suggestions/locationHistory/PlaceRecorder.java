@@ -16,13 +16,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fi.ohtu.mobilityprofile.MainActivity;
+import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
@@ -45,16 +42,18 @@ public class PlaceRecorder extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
 
-        if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
-            stopSelf();
-            resultReceiver.send(100, new Bundle());
-            return START_STICKY;
-        }
+        if (intent != null) {
+            if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
+                stopSelf();
+                resultReceiver.send(100, new Bundle());
+                return START_STICKY;
+            }
 
-        resultReceiver = intent.getParcelableExtra("Receiver");
+            resultReceiver = intent.getParcelableExtra("Receiver");
 
-        if (intent.getBooleanExtra("UPDATE", false)) {
-            return START_STICKY;
+            if (intent.getBooleanExtra("UPDATE", false)) {
+                return START_STICKY;
+            }
         }
 
         // Create intent for the service
@@ -96,7 +95,7 @@ public class PlaceRecorder extends Service {
         /**
          * Creates PlaceRecorder
          *
-         * @param provider GPS or Network
+         * @param provider        GPS or Network
          * @param context
          * @param locationManager
          */
@@ -161,8 +160,8 @@ public class PlaceRecorder extends Service {
      */
     private void initializeLocationListeners() {
         mLocationListeners = new LocationListener[]{
-            new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
-            new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
+                new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
+                new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
         };
     }
 

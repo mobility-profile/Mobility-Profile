@@ -28,7 +28,6 @@ import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
-import fi.ohtu.mobilityprofile.domain.HasCoordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.GPSPointClusterizer;
 
@@ -47,7 +46,7 @@ import fi.ohtu.mobilityprofile.suggestions.locationHistory.GPSPointClusterizer;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
-public class GPSPointClusterizerTest {
+public class GpsPointClusterizerTest {
 
     private class TestObject {
         private List<Coordinate> correctCoordinates;
@@ -970,7 +969,7 @@ public class GPSPointClusterizerTest {
 
     @Test
     public void clusterizerFindsCorrectPlaces() {
-        GPSPointClusterizer GPSPointClusterizer = new GPSPointClusterizer(this.context);
+        GPSPointClusterizer GpsPointClusterizer = new GPSPointClusterizer(this.context);
         double distanceSum = 0;
         long placeSum = 0;
         for(TestObject testObject : this.testObjects){
@@ -979,7 +978,7 @@ public class GPSPointClusterizerTest {
 
             for(int i = 0; i < testObject.getTestData().size(); i++) {
                 GPSPointDao.insert(testObject.getTestData().get(i));
-                GPSPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
+                GpsPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
             }
 
             List<Place> places = PlaceDao.getAll();
