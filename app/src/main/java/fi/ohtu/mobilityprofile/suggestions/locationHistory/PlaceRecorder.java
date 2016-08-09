@@ -48,12 +48,12 @@ public class PlaceRecorder extends Service {
                 resultReceiver.send(100, new Bundle());
                 return START_STICKY;
             }
-        }
 
-        resultReceiver = intent.getParcelableExtra("Receiver");
+            resultReceiver = intent.getParcelableExtra("Receiver");
 
-        if (intent.getBooleanExtra("UPDATE", false)) {
-            return START_STICKY;
+            if (intent.getBooleanExtra("UPDATE", false)) {
+                return START_STICKY;
+            }
         }
 
         // Create intent for the service
@@ -95,7 +95,7 @@ public class PlaceRecorder extends Service {
         /**
          * Creates PlaceRecorder
          *
-         * @param provider GPS or Network
+         * @param provider        GPS or Network
          * @param context
          * @param locationManager
          */
@@ -160,8 +160,8 @@ public class PlaceRecorder extends Service {
      */
     private void initializeLocationListeners() {
         mLocationListeners = new LocationListener[]{
-            new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
-            new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
+                new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
+                new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
         };
     }
 
