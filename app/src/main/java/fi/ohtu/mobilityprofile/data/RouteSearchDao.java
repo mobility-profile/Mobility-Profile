@@ -107,6 +107,8 @@ public class RouteSearchDao {
      * @param routeSearch routesearch to be saved
      */
     public static void insertRouteSearch(RouteSearch routeSearch) {
+        routeSearch.getStartCoordinates().save();
+        routeSearch.getDestinationCoordinates().save();
         routeSearch.save();
     }
 

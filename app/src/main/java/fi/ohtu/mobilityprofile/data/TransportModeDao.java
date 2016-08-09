@@ -2,6 +2,8 @@ package fi.ohtu.mobilityprofile.data;
 
 import com.orm.query.Select;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +32,11 @@ public class TransportModeDao {
         return modes;
     }
 
-    public static ArrayList<String> getNamesOfPreferredTransportModes() {
-        ArrayList<String> modes = new ArrayList<>();
+    public static JSONArray getNamesOfPreferredTransportModes() {
+        JSONArray modes = new JSONArray();
         for (TransportMode m : getPreferredTransportModes()) {
-            modes.add(m.getName());
+            modes.put(m.getName());
         }
-
         return modes;
     }
 }

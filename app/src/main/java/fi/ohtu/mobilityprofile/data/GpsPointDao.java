@@ -4,7 +4,7 @@ import com.orm.query.Select;
 
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 
 /**
  * DAO used for saving and reading GPSPoints to/from the database.
@@ -12,17 +12,17 @@ import fi.ohtu.mobilityprofile.domain.GPSPoint;
 public class GpsPointDao {
 
     /**
-     * Returns the latest GPSPoint from the database, or null if there is none.
+     * Returns the latest GpsPoint from the database, or null if there is none.
      *
-     * @return Latest GPSPoint
+     * @return Latest GpsPoint
      */
-    public static GPSPoint getLatest() {
-        List<GPSPoint> GPSPoints = Select.from(GPSPoint.class).orderBy("timestamp DESC").limit("1").list();
-        assert GPSPoints.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-        if (GPSPoints.size() == 0) {
+    public static GpsPoint getLatest() {
+        List<GpsPoint> GpsPoints = Select.from(GpsPoint.class).orderBy("timestamp DESC").limit("1").list();
+        assert GpsPoints.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+        if (GpsPoints.size() == 0) {
             return null;
         }
-        return GPSPoints.get(0);
+        return GpsPoints.get(0);
     }
 
     /**
@@ -30,29 +30,29 @@ public class GpsPointDao {
      *
      * @return list of GPSPoints
      */
-    public static List<GPSPoint> getAll() {
-        return Select.from(GPSPoint.class).orderBy("timestamp ASC").list();
+    public static List<GpsPoint> getAll() {
+        return Select.from(GpsPoint.class).orderBy("timestamp ASC").list();
     }
 
     /**
-     * Saves a GPSPoint to the database.
+     * Saves a GpsPoint to the database.
      *
-     * @param gpsPoint GPSPoint to be saved
+     * @param gpsPoint GpsPoint to be saved
      */
-    public static void insert(GPSPoint gpsPoint) {
+    public static void insert(GpsPoint gpsPoint) {
         gpsPoint.getCoordinate().save();
         gpsPoint.save();
     }
 
-    public static void delete(GPSPoint gpsPoint) {
+    public static void delete(GpsPoint gpsPoint) {
         gpsPoint.delete();
     }
 
     /**
-     * Deletes all GPSPoint data from the database
+     * Deletes all GpsPoint data from the database
      */
     public static void deleteAllData() {
-        for(GPSPoint gpsPoint : getAll()) {
+        for(GpsPoint gpsPoint : getAll()) {
             gpsPoint.getCoordinate().delete();
             gpsPoint.delete();
         }

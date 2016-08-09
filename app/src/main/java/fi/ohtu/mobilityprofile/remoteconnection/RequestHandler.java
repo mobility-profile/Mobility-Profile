@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
@@ -142,18 +142,18 @@ public class RequestHandler extends Handler {
      *
      * @return Start location address
      */
-    private GPSPoint getStartLocation() {
-        GPSPoint lastKnownGPSPoint = GpsPointDao.getLatest();
-        if (lastKnownGPSPoint == null) {
+    private GpsPoint getStartLocation() {
+        GpsPoint lastKnownGpsPoint = GpsPointDao.getLatest();
+        if (lastKnownGpsPoint == null) {
             // TODO something better
             return null;
         } else {
-            return lastKnownGPSPoint;
+            return lastKnownGpsPoint;
         }
     }
 
     private Message getTransportPreferences() {
-        return createMessage(RESPOND_TRANSPORT_PREFERENCES, TransportModeDao.getNamesOfPreferredTransportModes());
+        return createMessage(RESPOND_TRANSPORT_PREFERENCES, TransportModeDao.getNamesOfPreferredTransportModes().toString());
     }
 
     /**
