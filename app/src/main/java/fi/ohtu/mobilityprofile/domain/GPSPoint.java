@@ -7,6 +7,7 @@ import com.orm.SugarRecord;
  */
 public class GPSPoint extends SugarRecord implements HasCoordinate, Comparable<GPSPoint> {
     long timestamp;
+    float accuracy;
     Coordinate coordinate;
 
     /**
@@ -14,6 +15,7 @@ public class GPSPoint extends SugarRecord implements HasCoordinate, Comparable<G
      */
     public GPSPoint() {
         this.timestamp = 0;
+        this.accuracy = 0;
         this.coordinate = new Coordinate(0f, 0f);
     }
 
@@ -23,13 +25,18 @@ public class GPSPoint extends SugarRecord implements HasCoordinate, Comparable<G
      * @param latitude latitude
      * @param longitude longitude
      */
-    public GPSPoint(long timestamp, Float latitude, Float longitude) {
+    public GPSPoint(long timestamp, float accuracy, Float latitude, Float longitude) {
         this.timestamp = timestamp;
+        this.accuracy = accuracy;
         this.coordinate = new Coordinate(latitude, longitude);
     }
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public float getAccuracy() {
+        return accuracy;
     }
 
     @Override

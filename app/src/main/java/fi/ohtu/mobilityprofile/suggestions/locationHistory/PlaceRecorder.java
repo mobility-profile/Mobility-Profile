@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.MainActivity;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.TestLocationDao;
+import fi.ohtu.mobilityprofile.domain.TestLocation;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.GPSPointDao;
@@ -109,7 +112,9 @@ public class PlaceRecorder extends Service {
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
-                    saveGPSPoint(location);
+                    if(location.getAccuracy() < 50) {
+                        saveGPSPoint(location);
+                    }
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -118,15 +123,18 @@ public class PlaceRecorder extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
+            //uncomment this to save TestLocation objects to database useful for getting test data etc
+            //TestLocationDao.insert(new TestLocation(location));
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
-            saveGPSPoint(location);
-            gpsPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
+            if(location.getAccuracy() < 50) {
+                saveGPSPoint(location);
+                gpsPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
+            }
         }
 
         private void saveGPSPoint(Location location) {
-            System.out.println(System.currentTimeMillis());
-            GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+            GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), location.getAccuracy(), new Float(location.getLatitude()), new Float(location.getLongitude()));
             GPSPointDao.insert(gpsPoint);
         }
 

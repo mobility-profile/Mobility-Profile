@@ -22,7 +22,6 @@ public class GPSPointClusterizer {
 
     public static final double SPEED_LIMIT = 0.8;
     public static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 600000; //10 minutes
-    public static final double WANDERING_DISTANCE_LIMIT = 70;
     public static final double CLUSTER_RADIUS = 100;
 
     public GPSPointClusterizer(Context context) {
@@ -51,7 +50,7 @@ public class GPSPointClusterizer {
                 Cluster cluster = new Cluster();
                 while (i < gpsPoints.size() - 1 && speedBetweenPlaces(gpsPoints.get(i), gpsPoints.get(i + 1)) < SPEED_LIMIT) {
                     cluster.add(gpsPoints.get(i));
-                    if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD && gpsPoints.get(i).distanceTo(gpsPoints.get(i + 1)) > WANDERING_DISTANCE_LIMIT) {
+                    if (cluster.timeSpent() > TIME_SPENT_IN_CLUSTER_THRESHOLD) {
                         break;
                     }
                     i++;
@@ -94,7 +93,7 @@ public class GPSPointClusterizer {
     }
 
     private double speedBetweenPlaces(GPSPoint gpsPoint1, GPSPoint gpsPoint2) {
-        double distance = gpsPoint1.distanceTo(gpsPoint2);
+        double distance = Math.max(gpsPoint1.distanceTo(gpsPoint2) - gpsPoint1.getAccuracy() - gpsPoint2.getAccuracy(), 0);
         return distance / ((gpsPoint2.getTimestamp() / 1000) - (gpsPoint1.getTimestamp() / 1000));
     }
 

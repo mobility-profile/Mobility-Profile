@@ -112,7 +112,7 @@ public class AddressConverter {
 
                                 Log.i("AddressConverter", "Converted address is: " + address);
 
-                                GPSPoint lastLocation = new GPSPoint(System.currentTimeMillis(), location.x, location.y);
+                                GPSPoint lastLocation = new GPSPoint(System.currentTimeMillis(), 0, location.x, location.y);
                                 GPSPointDao.insert(lastLocation);
                             }
                         } catch (Exception e) {
