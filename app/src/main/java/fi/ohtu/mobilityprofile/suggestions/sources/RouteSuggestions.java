@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
@@ -34,7 +34,7 @@ public class RouteSuggestions implements SuggestionSource {
      * @return List of probable destinations
      */
     @Override
-    public List<Suggestion> getSuggestions(GPSPoint startLocation) {
+    public List<Suggestion> getSuggestions(GpsPoint startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
         Set<String> destinations = new HashSet<>();
 
@@ -44,23 +44,19 @@ public class RouteSuggestions implements SuggestionSource {
             // TODO: Check starting location.
 
             if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
-                if (destinations.contains(route.getDestination()))
+                if (destinations.contains(route.getDestination())) {
                     continue; // Don't add the same suggestion more than once.
+                }
 
-                if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
-                    if (destinations.contains(route.getDestination()))
-                        continue; // Don't add the same suggestion more than once.
+                Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION, route.getDestinationCoordinates());
+                suggestions.add(suggestion);
 
-                    Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
-                    suggestions.add(suggestion);
+                destinations.add(route.getDestination());
 
-                    destinations.add(route.getDestination());
-
-                    counter++;
-                    if (counter >= 3) break; // Only suggest 3 most recent searches at most.
+                counter++;
+                if (counter >= 3) break; // Only suggest 3 most recent searches at most.
                 }
             }
-        }
 
         return suggestions;
     }

@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 
 /**
  *
  */
 public class Cluster {
-    private List<GPSPoint> gpsPoints;
+    private List<GpsPoint> gpsPoints;
     private boolean insufficientData;
 
     public Cluster() {
@@ -19,15 +19,15 @@ public class Cluster {
         insufficientData = false;
     }
 
-    public List<GPSPoint> getGPSPoints() {
+    public List<GpsPoint> getGpsPoints() {
         return gpsPoints;
     }
 
-    public void add(GPSPoint gpsPoint) {
+    public void add(GpsPoint gpsPoint) {
         gpsPoints.add(gpsPoint);
     }
 
-    public GPSPoint get(int index) {
+    public GpsPoint get(int index) {
         return gpsPoints.get(index);
     }
 
@@ -51,9 +51,9 @@ public class Cluster {
     public Coordinate centerCoordinate() {
         float lat = 0;
         float lon = 0;
-        for (GPSPoint GPSPoint : gpsPoints) {
-            lat += GPSPoint.getLatitude();
-            lon += GPSPoint.getLongitude();
+        for (GpsPoint GpsPoint : gpsPoints) {
+            lat += GpsPoint.getLatitude();
+            lon += GpsPoint.getLongitude();
         }
         lat /= gpsPoints.size();
         lon /= gpsPoints.size();

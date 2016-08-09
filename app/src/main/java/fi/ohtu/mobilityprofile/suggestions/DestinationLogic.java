@@ -1,9 +1,16 @@
 package fi.ohtu.mobilityprofile.suggestions;
 
+import com.cocoahero.android.geojson.Feature;
+import com.cocoahero.android.geojson.Point;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 
 /**
@@ -13,7 +20,7 @@ public class DestinationLogic {
     public static final int INTRA_CITY_SUGGESTION = 1;
     public static final int INTER_CITY_SUGGESTION = 2;
 
-    private GPSPoint latestStartLocation;
+    private GpsPoint latestStartLocation;
     private List<Suggestion> latestSuggestions;
     private List<SuggestionSource> suggestionSources;
 
@@ -38,7 +45,7 @@ public class DestinationLogic {
      * @param startLocation Place where the user is starting
      * @return List of most probable destinations
      */
-    public ArrayList<String> getListOfIntraCitySuggestions(GPSPoint startLocation) {
+    public String getListOfIntraCitySuggestions(GpsPoint startLocation) {
         this.latestStartLocation = startLocation;
         this.latestSuggestionType = INTRA_CITY_SUGGESTION;
 
@@ -57,7 +64,7 @@ public class DestinationLogic {
      * @param startLocation Location where the user is starting
      * @return List of most probable destinations
      */
-    public ArrayList<String> getListOfInterCitySuggestions(GPSPoint startLocation) {
+    public String getListOfInterCitySuggestions(GpsPoint startLocation) {
         this.latestStartLocation = startLocation;
         this.latestSuggestionType = INTER_CITY_SUGGESTION;
 
@@ -67,15 +74,15 @@ public class DestinationLogic {
         return getDestinations(suggestions);
     }
 
-    private ArrayList<String> getDestinations(List<Suggestion> suggestions) {
+    private String getDestinations(List<Suggestion> suggestions) {
         latestSuggestions = suggestions;
 
-        ArrayList<String> destinations = new ArrayList<>();
+        JSONArray destinations = new JSONArray();
         for (Suggestion suggestion : suggestions) {
-            destinations.add(suggestion.getDestination());
+            destinations.put(convertToGeojson(suggestion));
         }
 
-        return destinations;
+        return destinations.toString();
     }
 
     /**
@@ -92,15 +99,41 @@ public class DestinationLogic {
      *
      * @return Latest start location
      */
-    public GPSPoint getLatestStartLocation() {
+    public GpsPoint getLatestStartLocation() {
         return latestStartLocation;
     }
 
     /**
-     * Returns the type of the latest suggestion.
-     *
-     * @return Type of the latest suggestion
+     * Converts the suggestion to a GeoJSON object and then to a JSONObject.
+     * @param suggestion suggestion to be converted
+     * @return jsonObject
      */
+    private JSONObject convertToGeojson(Suggestion suggestion) {
+
+        JSONObject destination = new JSONObject();
+
+        Feature feature = new Feature();
+        if (suggestion.getCoordinate() != null) {
+            feature.setGeometry(new Point(suggestion.getCoordinate().getLongitude(), suggestion.getCoordinate().getLatitude()));
+        }
+        try {
+            feature.setProperties(new JSONObject().put("label", suggestion.getDestination()).put("layer", "mobilityprofile"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            destination = feature.toJSON();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return destination;
+    }
+
+    /*
+ * Returns the type of the latest suggestion.
+ *
+ * @return Type of the latest suggestion
+ */
     public int getLatestSuggestionType() {
         return latestSuggestionType;
     }

@@ -88,7 +88,9 @@ dependencies {
     }
     compile 'com.android.volley:volley:1.0.0'
 
-    testCompile 'org.mockito:mockito-core:1.9.+'
+    compile 'com.cocoahero.android:geojson:1.0.1@jar'
+
+    testCompile 'org.mockito:mockito-core:1.9.0'
     compile 'com.android.support:design:23.0.1'
     androidTestCompile 'com.android.support.test:runner:0.4'
     // Set this dependency to use JUnit 4 rules

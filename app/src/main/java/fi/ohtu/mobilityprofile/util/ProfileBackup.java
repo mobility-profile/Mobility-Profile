@@ -78,13 +78,9 @@ public class ProfileBackup {
     }
 
     private Boolean checkPermissionToWriteAndRead() {
-        PermissionManager permissions = new PermissionManager();
-        if (!permissions.permissionToWriteExternalStorage(this.context)) {
+        if (!PermissionManager.permissionToWriteExternalStorage(this.context)) {
             ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            if (permissions.permissionToWriteExternalStorage(this.context)) {
-                return true;
-            }
-            return false;
+            return PermissionManager.permissionToWriteExternalStorage(this.context);
         }
         return true;
     }

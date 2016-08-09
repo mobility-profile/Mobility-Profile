@@ -9,7 +9,7 @@ import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
@@ -29,12 +29,12 @@ public class GpsPointClusterizer {
         this.context = context;
     }
 
-    public void updateVisitHistory(List<GPSPoint> gpsPoints) {
+    public void updateVisitHistory(List<GpsPoint> gpsPoints) {
         List<Cluster> clusters = formClusters(gpsPoints);
         GpsPointDao.deleteAllData();
         for (Cluster cluster : clusters) {
             if (cluster.hasInsufficientData()) {
-                for(GPSPoint gpsPoint : cluster.getGPSPoints()) {
+                for(GpsPoint gpsPoint : cluster.getGpsPoints()) {
                     GpsPointDao.insert(gpsPoint);
                 }
             } else {
@@ -43,9 +43,9 @@ public class GpsPointClusterizer {
         }
     }
 
-    private List<Cluster> formClusters(List<GPSPoint> gpsPoints) {
+    private List<Cluster> formClusters(List<GpsPoint> gpsPoints) {
         List<Cluster> clusters = new ArrayList<>();
-        List<GPSPoint> pointsToCheck = new ArrayList<>(gpsPoints);
+        List<GpsPoint> pointsToCheck = new ArrayList<>(gpsPoints);
         for (int i = 0; i < gpsPoints.size(); i++) {
             if (pointsToCheck.contains(gpsPoints.get(i))) {
                 Cluster cluster = new Cluster();
@@ -93,14 +93,14 @@ public class GpsPointClusterizer {
         return place;
     }
 
-    private double speedBetweenPlaces(GPSPoint gpsPoint1, GPSPoint gpsPoint2) {
+    private double speedBetweenPlaces(GpsPoint gpsPoint1, GpsPoint gpsPoint2) {
         double distance = gpsPoint1.distanceTo(gpsPoint2);
         return distance / ((gpsPoint2.getTimestamp() / 1000) - (gpsPoint1.getTimestamp() / 1000));
     }
 
-    private List<GPSPoint> findPlacesWithinDistance(Coordinate origin, List<GPSPoint> gpsPoints, double distanceLimit) {
-        ArrayList<GPSPoint> placesWithinDistance = new ArrayList<>();
-        for (GPSPoint gpsPoint : gpsPoints) {
+    private List<GpsPoint> findPlacesWithinDistance(Coordinate origin, List<GpsPoint> gpsPoints, double distanceLimit) {
+        ArrayList<GpsPoint> placesWithinDistance = new ArrayList<>();
+        for (GpsPoint gpsPoint : gpsPoints) {
             if (gpsPoint.distanceTo(origin) < distanceLimit) {
                 placesWithinDistance.add(gpsPoint);
             }

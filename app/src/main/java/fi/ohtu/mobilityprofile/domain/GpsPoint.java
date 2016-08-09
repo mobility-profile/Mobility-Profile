@@ -5,25 +5,25 @@ import com.orm.SugarRecord;
 /**
  * Class is used to save raw gps data.
  */
-public class GPSPoint extends SugarRecord implements HasCoordinate, Comparable<GPSPoint> {
+public class GpsPoint extends SugarRecord implements HasCoordinate, Comparable<GpsPoint> {
     long timestamp;
     Coordinate coordinate;
 
     /**
      *
      */
-    public GPSPoint() {
+    public GpsPoint() {
         this.timestamp = 0;
         this.coordinate = new Coordinate(0f, 0f);
     }
 
     /**
-     * Creates GPSPoint.
+     * Creates GpsPoint.
      * @param timestamp timestamp of the visit
      * @param latitude latitude
      * @param longitude longitude
      */
-    public GPSPoint(long timestamp, Float latitude, Float longitude) {
+    public GpsPoint(long timestamp, Float latitude, Float longitude) {
         this.timestamp = timestamp;
         this.coordinate = new Coordinate(latitude, longitude);
     }
@@ -56,7 +56,7 @@ public class GPSPoint extends SugarRecord implements HasCoordinate, Comparable<G
     }
 
     @Override
-    public int compareTo(GPSPoint another) {
+    public int compareTo(GpsPoint another) {
         long difference = timestamp - another.getTimestamp();
         if (difference < 0) {
             return -1;

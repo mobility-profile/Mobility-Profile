@@ -1,12 +1,10 @@
 package fi.ohtu.mobilityprofile.suggestions.sources;
 
-import android.graphics.PointF;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.util.CalendarConnection;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
@@ -33,7 +31,7 @@ public class CalendarSuggestions implements SuggestionSource {
      * @return List of destinations from the calendar
      */
     @Override
-    public List<Suggestion> getSuggestions(GPSPoint startLocation) {
+    public List<Suggestion> getSuggestions(GpsPoint startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
         // Loop through normal events first
@@ -74,6 +72,6 @@ public class CalendarSuggestions implements SuggestionSource {
         }
         */
 
-        return new Suggestion(eventLocation, SuggestionAccuracy.VERY_HIGH, CALENDAR_SUGGESTION);
+        return new Suggestion(eventLocation, SuggestionAccuracy.VERY_HIGH, CALENDAR_SUGGESTION, null);
     }
 }

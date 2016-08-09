@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.remoteconnection;
+package fi.ohtu.mobilityprofile.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

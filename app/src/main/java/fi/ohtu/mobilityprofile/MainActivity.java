@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.TransportMode;
-import fi.ohtu.mobilityprofile.remoteconnection.SecurityCheck;
+import fi.ohtu.mobilityprofile.util.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {

@@ -27,7 +27,7 @@ import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
 
@@ -50,9 +50,9 @@ public class GpsPointClusterizerTest {
 
     private class TestObject {
         private List<Coordinate> correctCoordinates;
-        private List<GPSPoint> testData;
+        private List<GpsPoint> testData;
 
-        public TestObject(List<Coordinate> correctCoordinates, List<GPSPoint> testData) {
+        public TestObject(List<Coordinate> correctCoordinates, List<GpsPoint> testData) {
             this.correctCoordinates = correctCoordinates;
             this.testData = testData;
         }
@@ -61,7 +61,7 @@ public class GpsPointClusterizerTest {
             return this.correctCoordinates;
         }
 
-        public List<GPSPoint> getTestData() {
+        public List<GpsPoint> getTestData() {
             return this.testData;
         }
     }

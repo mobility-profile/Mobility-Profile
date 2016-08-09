@@ -17,10 +17,10 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import fi.ohtu.mobilityprofile.MainActivity;
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.GpsPointDao;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
  * PlaceRecorder listens to location changes.
@@ -108,7 +108,7 @@ public class PlaceRecorder extends Service {
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
-                    saveGPSPoint(location);
+                    saveGpsPoint(location);
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -119,13 +119,13 @@ public class PlaceRecorder extends Service {
         public void onLocationChanged(Location location) {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
-            saveGPSPoint(location);
+            saveGpsPoint(location);
             gpsPointClusterizer.updateVisitHistory(GpsPointDao.getAll());
         }
 
-        private void saveGPSPoint(Location location) {
+        private void saveGpsPoint(Location location) {
             System.out.println(System.currentTimeMillis());
-            GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+            GpsPoint gpsPoint = new GpsPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
             GpsPointDao.insert(gpsPoint);
         }
 

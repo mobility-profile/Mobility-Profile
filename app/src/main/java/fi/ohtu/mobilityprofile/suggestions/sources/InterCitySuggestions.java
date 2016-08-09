@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
@@ -21,12 +21,12 @@ public class InterCitySuggestions implements SuggestionSource {
      *
      */
     @Override
-    public List<Suggestion> getSuggestions(GPSPoint startLocation) {
+    public List<Suggestion> getSuggestions(GpsPoint startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
         int counter = 0;
         for (InterCitySearch search : InterCitySearchDao.getAllSearches()) {
-            suggestions.add(new Suggestion(search.getDestination(), SuggestionAccuracy.MODERATE, INTER_CITY_SUGGESTION));
+            suggestions.add(new Suggestion(search.getDestination(), SuggestionAccuracy.MODERATE, INTER_CITY_SUGGESTION, null));
             counter++;
             if (counter == 5) break;
         }
