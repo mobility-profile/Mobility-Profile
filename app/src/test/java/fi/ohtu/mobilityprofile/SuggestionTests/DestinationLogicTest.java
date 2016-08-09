@@ -12,6 +12,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
+import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 import fi.ohtu.mobilityprofile.util.CalendarConnection;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -38,7 +39,7 @@ public class DestinationLogicTest {
         suggestionSources.add(new RouteSuggestions());
         suggestionSources.add(new FavoriteSuggestions());
 
-        mp = new DestinationLogic(suggestionSources);
+        mp = new DestinationLogic(suggestionSources, new InterCitySuggestions());
 
         when(CalendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
     }

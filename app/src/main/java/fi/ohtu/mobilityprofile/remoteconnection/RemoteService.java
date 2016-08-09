@@ -37,12 +37,12 @@ public class RemoteService extends Service {
             if (messenger == null) {
 
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
+
                 suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this)));
-
                 suggestionSources.add(new VisitSuggestions());
-
                 suggestionSources.add(new RouteSuggestions());
                 suggestionSources.add(new FavoriteSuggestions());
+
                 DestinationLogic destinationLogic = new DestinationLogic(suggestionSources, new InterCitySuggestions());
 
                 messenger = new Messenger(new RequestHandler(destinationLogic));
