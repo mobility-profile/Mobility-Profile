@@ -36,31 +36,7 @@ public class DestinationLogic {
      * @param startLocation Place where the user is starting
      * @return List of most probable destinations
      */
-    public ArrayList<String> getListOfMostLikelyDestinations(GPSPoint startLocation) {
-        this.latestStartLocation = startLocation;
-
-        List<Suggestion> suggestions = new ArrayList<>();
-        for (SuggestionSource suggestionSource : suggestionSources) {
-            suggestions.addAll(suggestionSource.getSuggestions(startLocation));
-        }
-
-        latestSuggestions = suggestions;
-
-        ArrayList<String> destinations = new ArrayList<>();
-        for (Suggestion suggestion : suggestions) {
-            destinations.add(suggestion.getDestination());
-        }
-
-        return destinations;
-    }
-
-    /**
-     * Returns a list of most probable destinations, when the user is in startLocation.
-     *
-     * @param startLocation Place where the user is starting
-     * @return List of most probable destinations
-     */
-    public JSONArray getListOfMostLikelyDestinationsJSON(GPSPoint startLocation) {
+    public String getMostLikelyDestinations(GPSPoint startLocation) {
         this.latestStartLocation = startLocation;
 
         List<Suggestion> suggestions = new ArrayList<>();
@@ -75,7 +51,7 @@ public class DestinationLogic {
             destinations.put(convertToGeojson(suggestion));
         }
 
-        return destinations;
+        return destinations.toString();
     }
 
     /**
