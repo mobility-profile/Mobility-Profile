@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
@@ -38,7 +38,7 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() + 3 * HOUR, "Lauttasaari",  "Kamppi"));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Pitäjänmäki",  "Sörnäinen"));
 
-        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GPSPoint(0, 0f, 0f));
+        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GpsPoint(0, 0f, 0f));
         assertEquals(1, suggestions.size());
         assertEquals("Ruoholahti", suggestions.get(0).getDestination());
     }
@@ -50,7 +50,7 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Pitäjänmäki",  "Sörnäinen"));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() + 3 * HOUR, "Ruoholahti", "Lauttasaari"));
 
-        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GPSPoint(0, 0f, 0f));
+        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GpsPoint(0, 0f, 0f));
         assertEquals(0, suggestions.size());
     }
 
@@ -60,7 +60,7 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() - HOUR, "Lauttasaari",  "Kamppi"));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Pitäjänmäki",  "Sörnäinen"));
 
-        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GPSPoint(0, 0f, 0f));
+        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GpsPoint(0, 0f, 0f));
         assertEquals(2, suggestions.size());
 
         List<String> destinations = new ArrayList<>();

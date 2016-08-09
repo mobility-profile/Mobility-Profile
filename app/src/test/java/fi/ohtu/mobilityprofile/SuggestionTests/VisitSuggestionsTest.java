@@ -15,7 +15,7 @@ import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
@@ -54,7 +54,7 @@ public class VisitSuggestionsTest {
     public void testGetSuggestionsWhenVisitsSizeIsMoreThanFour() {
         System.out.println("testGetSuggestionsWhenVisitsSizeIsMoreThanFoure");
         createListOfVisits();
-        suggestions = visitSuggestions.getSuggestions(new GPSPoint(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
+        suggestions = visitSuggestions.getSuggestions(new GpsPoint(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(1, suggestions.size());
         assertEquals("Töölö", suggestions.get(0).getDestination());
     }
@@ -63,7 +63,7 @@ public class VisitSuggestionsTest {
     public void testGetSuggestionsWhenVisitSizeIsFour() {
         System.out.println("testGetSuggestionsWhenVisitSizeIsFour");
         createShortListOfVisits();
-        suggestions = visitSuggestions.getSuggestions(new GPSPoint(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
+        suggestions = visitSuggestions.getSuggestions(new GpsPoint(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(0, suggestions.size());
     }
 /*
@@ -76,7 +76,7 @@ public class VisitSuggestionsTest {
     public void testGetTwoSuggestions() {
         System.out.println("testGetTwoSuggestions");
         createLongListOfVisits();
-        suggestions = visitSuggestions.getSuggestions(new GPSPoint(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
+        suggestions = visitSuggestions.getSuggestions(new GpsPoint(0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(2, suggestions.size());
         ArrayList<String> destinations = new ArrayList<>();
         destinations.add(suggestions.get(0).getDestination());
@@ -91,7 +91,7 @@ public class VisitSuggestionsTest {
         System.out.println("testGetNoSuggestions");
         createListOfVisits();
         VisitDao.insert(new Visit(6000, 6001, lauttasaari));
-        suggestions = visitSuggestions.getSuggestions(new GPSPoint(0, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
+        suggestions = visitSuggestions.getSuggestions(new GpsPoint(0, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
         assertEquals(0, suggestions.size());
     }
 

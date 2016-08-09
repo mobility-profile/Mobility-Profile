@@ -23,11 +23,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.concurrent.Executors;
 
-import fi.ohtu.mobilityprofile.data.GPSPointDao;
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.HasAddress;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
  * This class is used for converting GPS coordinates to an actual address and save that address to the database.
@@ -113,8 +113,8 @@ public class AddressConverter {
 
                                 Log.i("AddressConverter", "Converted address is: " + address);
 
-                                GPSPoint lastLocation = new GPSPoint(System.currentTimeMillis(), location.x, location.y);
-                                GPSPointDao.insert(lastLocation);
+                                GpsPoint lastLocation = new GpsPoint(System.currentTimeMillis(), location.x, location.y);
+                                GpsPointDao.insert(lastLocation);
                             }
                         } catch (Exception e) {
                             Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");
@@ -139,7 +139,7 @@ public class AddressConverter {
      * @param latest latest visit
      * @param context for new request queue
      */
-    public static void convertToCoordinatesAndSave(final String destination, final GPSPoint latest, Context context) {
+    public static void convertToCoordinatesAndSave(final String destination, final GpsPoint latest, Context context) {
 
         String url = "https://search.mapzen.com/v1/search?api_key=search-xPjnrpR&text="
                 + destination + "&layers=address&size=1&sources=osm&boundary.country=FIN";

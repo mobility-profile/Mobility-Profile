@@ -28,13 +28,13 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 
@@ -364,7 +364,7 @@ public class PrivacyFragment extends Fragment {
      */
     private void deleteAllDataFromDatabase() {
         PlaceDao.deleteAllData();
-        GPSPointDao.deleteAllData();
+        GpsPointDao.deleteAllData();
         CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         FavouritePlaceDao.deleteAllData();

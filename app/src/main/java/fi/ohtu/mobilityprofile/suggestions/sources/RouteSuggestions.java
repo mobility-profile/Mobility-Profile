@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
@@ -35,7 +34,7 @@ public class RouteSuggestions implements SuggestionSource {
      * @return List of probable destinations
      */
     @Override
-    public List<Suggestion> getSuggestions(GPSPoint startLocation) {
+    public List<Suggestion> getSuggestions(GpsPoint startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
         Set<String> destinations = new HashSet<>();
 

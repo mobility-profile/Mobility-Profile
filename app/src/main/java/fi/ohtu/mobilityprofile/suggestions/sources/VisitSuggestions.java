@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.suggestions.*;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.GPSPointClusterizer;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
 
 /**
  * This class creates suggestions based on the user's visits to places he has visited frequently in the past.
@@ -33,7 +33,7 @@ public class VisitSuggestions implements SuggestionSource {
      * @return List of probable destinations
      */
     @Override
-    public List<Suggestion> getSuggestions(GPSPoint startLocation) {
+    public List<Suggestion> getSuggestions(GpsPoint startLocation) {
         Map<String, Integer> nextDestinations = calculateNextDestinations(startLocation);
         List<Suggestion> suggestions = new ArrayList<>();
         if (!nextDestinations.isEmpty() && userStillAtLastVisitLocation(startLocation, VisitDao.getLast())) {
@@ -52,7 +52,7 @@ public class VisitSuggestions implements SuggestionSource {
      *
      * @param startLocation starting location
      */
-    private Map<String, Integer> calculateNextDestinations(GPSPoint startLocation) {
+    private Map<String, Integer> calculateNextDestinations(GpsPoint startLocation) {
 
         List<Visit> visits = VisitDao.getAll();
         Map<String, Integer> nextDestinations = new HashMap<>();
@@ -81,9 +81,9 @@ public class VisitSuggestions implements SuggestionSource {
         return nextDestinations;
     }
 
-    private boolean userStillAtLastVisitLocation(GPSPoint startLocation, Visit lastVisit) {
-        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < GPSPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD
-                && startLocation.distanceTo(lastVisit) < GPSPointClusterizer.CLUSTER_RADIUS;
+    private boolean userStillAtLastVisitLocation(GpsPoint startLocation, Visit lastVisit) {
+        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < GpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD
+                && startLocation.distanceTo(lastVisit) < GpsPointClusterizer.CLUSTER_RADIUS;
     }
 
     /**

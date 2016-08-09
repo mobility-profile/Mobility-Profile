@@ -1,16 +1,10 @@
 package fi.ohtu.mobilityprofile.SuggestionTests;
 
-import android.util.JsonReader;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONStringer;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +12,6 @@ import static org.mockito.Mockito.*;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
-import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
@@ -56,7 +47,7 @@ public class DestinationLogicTest {
 //                new Coordinate(new Float(60.203978), new Float(24.965546)),
 //                new Coordinate(new Float(60.174892), new Float(24.921637))));
 //
-//        String suggestionString = mp.getMostLikelyDestinations(new GPSPoint(System.currentTimeMillis(), new Float(60.203978), new Float(24.965546)));
+//        String suggestionString = mp.getMostLikelyDestinations(new GpsPoint(System.currentTimeMillis(), new Float(60.203978), new Float(24.965546)));
 //        JSONArray suggestions = null;
 //        String result = "";
 //
