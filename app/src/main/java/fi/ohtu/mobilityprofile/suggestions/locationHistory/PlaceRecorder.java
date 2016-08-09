@@ -16,17 +16,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.TestLocationDao;
 import fi.ohtu.mobilityprofile.domain.TestLocation;
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
+import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.GPSPointDao;
-import fi.ohtu.mobilityprofile.domain.GPSPoint;
 
 /**
  * PlaceRecorder listens to location changes.
@@ -48,16 +45,18 @@ public class PlaceRecorder extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
 
-        if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
-            stopSelf();
-            resultReceiver.send(100, new Bundle());
-            return START_STICKY;
-        }
+        if (intent != null) {
+            if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
+                stopSelf();
+                resultReceiver.send(100, new Bundle());
+                return START_STICKY;
+            }
 
-        resultReceiver = intent.getParcelableExtra("Receiver");
+            resultReceiver = intent.getParcelableExtra("Receiver");
 
-        if (intent.getBooleanExtra("UPDATE", false)) {
-            return START_STICKY;
+            if (intent.getBooleanExtra("UPDATE", false)) {
+                return START_STICKY;
+            }
         }
 
         // Create intent for the service
@@ -94,27 +93,29 @@ public class PlaceRecorder extends Service {
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
-        private GPSPointClusterizer gpsPointClusterizer;
+        private GpsPointClusterizer gpsPointClusterizer;
 
         /**
          * Creates PlaceRecorder
          *
-         * @param provider GPS or Network
+         * @param provider        GPS or Network
          * @param context
          * @param locationManager
          */
         public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
-            this.gpsPointClusterizer = new GPSPointClusterizer(context);
+            this.gpsPointClusterizer = new GpsPointClusterizer(context);
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
+
                     if(location.getAccuracy() < 50) {
                         saveGPSPoint(location);
                     }
+
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -123,19 +124,20 @@ public class PlaceRecorder extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
-            //uncomment this to save TestLocation objects to database useful for getting test data etc
+            //uncomment this to save TestLocation objects to database, useful for getting test data etc
             //TestLocationDao.insert(new TestLocation(location));
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
+
             if(location.getAccuracy() < 50) {
                 saveGPSPoint(location);
-                gpsPointClusterizer.updateVisitHistory(GPSPointDao.getAll());
+                gpsPointClusterizer.updateVisitHistory(GpsPointDao.getAll());
             }
         }
 
         private void saveGPSPoint(Location location) {
-            GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), location.getAccuracy(), new Float(location.getLatitude()), new Float(location.getLongitude()));
-            GPSPointDao.insert(gpsPoint);
+            GpsPoint gpsPoint = new GpsPoint(System.currentTimeMillis(), location.getAccuracy(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+            GpsPointDao.insert(gpsPoint);
         }
 
         @Override
@@ -169,8 +171,8 @@ public class PlaceRecorder extends Service {
      */
     private void initializeLocationListeners() {
         mLocationListeners = new LocationListener[]{
-            new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
-            new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
+                new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
+                new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
         };
     }
 

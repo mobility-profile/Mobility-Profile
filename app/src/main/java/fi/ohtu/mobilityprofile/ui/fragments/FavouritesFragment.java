@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.FavouritesListAdapter;
@@ -74,7 +76,7 @@ public class FavouritesFragment extends Fragment {
         seeSuggestions.setChecked(false);
 
         setFavouritesListView(view);
-        setSuggestionsListView(view);
+        switchListener(view);
     }
 
     @Override
@@ -93,15 +95,12 @@ public class FavouritesFragment extends Fragment {
         addButtonListener(view, adapter);
     }
 
-    private void setSuggestionsListView(View view) {
+    private void setSuggestionsListView(ListView listView) {
         List<Place> places = getPlaces();
 
         final PlacesListAdapter adapter = new PlacesListAdapter(context, R.layout.favourites_list_item, places, this);
-        ListView listView = (ListView) view.findViewById(R.id.places_listView);
         listView.setAdapter(adapter);
         listView.setVisibility(View.GONE);
-
-        switchListener(view, listView);
     }
 
     private List<Place> getPlaces() {
@@ -138,14 +137,15 @@ public class FavouritesFragment extends Fragment {
     /**
      * Listener for see suggestions switch
      * @param view view inside the fragment
-     * @param listView the list of suggestions
      */
-    private void switchListener(View view, final ListView listView) {
+    private void switchListener(final View view) {
 
         seeSuggestions.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ListView listView = (ListView) view.findViewById(R.id.places_listView);
                 if (isChecked) {
+                    setSuggestionsListView(listView);
                     listView.setVisibility(View.VISIBLE);
                 } else {
                     listView.setVisibility(View.GONE);

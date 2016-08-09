@@ -99,6 +99,7 @@ public class FavouritePlaceDao {
      * @param favourite Favourite place to be saved
      */
     public static void insertFavouritePlace(FavouritePlace favourite) {
+        favourite.getCoordinate().save();
         favourite.save();
     }
 

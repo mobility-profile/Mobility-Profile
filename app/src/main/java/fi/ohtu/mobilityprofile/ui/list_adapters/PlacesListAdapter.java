@@ -41,7 +41,7 @@ public class PlacesListAdapter extends ArrayAdapter<Place> {
     private ImageButton wizard;
 
     /**
-     * Creates favouritesListAdapter
+     * Creates placesListAdapter
      * @param context context of the app
      * @param resourceId resourceId
      * @param items list of significant places

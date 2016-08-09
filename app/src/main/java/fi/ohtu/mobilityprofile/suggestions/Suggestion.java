@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.suggestions;
 
+import fi.ohtu.mobilityprofile.domain.Coordinate;
+
 /**
  * This class represents a route suggestion that can be made to the user.
  */
@@ -7,6 +9,7 @@ public class Suggestion {
     private String destination;
     private SuggestionAccuracy accuracy;
     private int source;
+    private Coordinate coordinate;
 
     /**
      * Creates the suggestion.
@@ -15,10 +18,11 @@ public class Suggestion {
      * @param accuracy Estimated accuracy of the suggestion
      * @param source Source of the suggestion
      */
-    public Suggestion(String destination, SuggestionAccuracy accuracy, int source) {
+    public Suggestion(String destination, SuggestionAccuracy accuracy, int source, Coordinate coordinate) {
         this.destination = destination;
         this.accuracy = accuracy;
         this.source = source;
+        this.coordinate = coordinate;
     }
 
     /**
@@ -46,5 +50,9 @@ public class Suggestion {
      */
     public int getSource() {
         return source;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 }
