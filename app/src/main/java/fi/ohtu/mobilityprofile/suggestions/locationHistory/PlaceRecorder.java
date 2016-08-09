@@ -108,7 +108,7 @@ public class PlaceRecorder extends Service {
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
-                    saveGPSPoint(location);
+                    saveGpsPoint(location);
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -119,11 +119,11 @@ public class PlaceRecorder extends Service {
         public void onLocationChanged(Location location) {
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
-            saveGPSPoint(location);
+            saveGpsPoint(location);
             gpsPointClusterizer.updateVisitHistory(GpsPointDao.getAll());
         }
 
-        private void saveGPSPoint(Location location) {
+        private void saveGpsPoint(Location location) {
             System.out.println(System.currentTimeMillis());
             GpsPoint gpsPoint = new GpsPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
             GpsPointDao.insert(gpsPoint);

@@ -144,12 +144,12 @@ public class RequestHandler extends Handler {
      * @return Start location address
      */
     private GpsPoint getStartLocation() {
-        GpsPoint lastKnownGPSPoint = GpsPointDao.getLatest();
-        if (lastKnownGPSPoint == null) {
+        GpsPoint lastKnownGpsPoint = GpsPointDao.getLatest();
+        if (lastKnownGpsPoint == null) {
             // TODO something better
             return null;
         } else {
-            return lastKnownGPSPoint;
+            return lastKnownGpsPoint;
         }
     }
 

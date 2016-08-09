@@ -19,7 +19,7 @@ public class Cluster {
         insufficientData = false;
     }
 
-    public List<GpsPoint> getGPSPoints() {
+    public List<GpsPoint> getGpsPoints() {
         return gpsPoints;
     }
 
@@ -51,9 +51,9 @@ public class Cluster {
     public Coordinate centerCoordinate() {
         float lat = 0;
         float lon = 0;
-        for (GpsPoint GPSPoint : gpsPoints) {
-            lat += GPSPoint.getLatitude();
-            lon += GPSPoint.getLongitude();
+        for (GpsPoint GpsPoint : gpsPoints) {
+            lat += GpsPoint.getLatitude();
+            lon += GpsPoint.getLongitude();
         }
         lat /= gpsPoints.size();
         lon /= gpsPoints.size();

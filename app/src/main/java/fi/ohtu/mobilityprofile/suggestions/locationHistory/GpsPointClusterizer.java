@@ -34,7 +34,7 @@ public class GpsPointClusterizer {
         GpsPointDao.deleteAllData();
         for (Cluster cluster : clusters) {
             if (cluster.hasInsufficientData()) {
-                for(GpsPoint gpsPoint : cluster.getGPSPoints()) {
+                for(GpsPoint gpsPoint : cluster.getGpsPoints()) {
                     GpsPointDao.insert(gpsPoint);
                 }
             } else {
