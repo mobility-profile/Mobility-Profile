@@ -84,14 +84,6 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Returns a message with data that tells the most likely destination calculated in Mobility Profile.
-     * @return Response message
-     */
-  /*  private Message processDestinationRequest() {
-        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestination(getStartLocation()));
-    }
-*/
-    /**
      * Returns a message with data that tells the most likely destinations calculated in Mobility Profile.
      * @return Response message
      */
@@ -144,7 +136,7 @@ public class RequestHandler extends Handler {
     }
 
     private Message getTransportPreferences() {
-        return createMessage(RESPOND_TRANSPORT_PREFERENCES, TransportModeDao.getNamesOfPreferredTransportModes());
+        return createMessage(RESPOND_TRANSPORT_PREFERENCES, TransportModeDao.getNamesOfPreferredTransportModes().toString());
     }
 
     /**
