@@ -5,7 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.GPSPointDao;
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
@@ -16,7 +16,7 @@ import fi.ohtu.mobilityprofile.domain.Visit;
 /**
  * Class for clusterizing places into significant locations
  */
-public class GPSPointClusterizer {
+public class GpsPointClusterizer {
 
     private Context context;
 
@@ -25,17 +25,17 @@ public class GPSPointClusterizer {
     public static final double WANDERING_DISTANCE_LIMIT = 70;
     public static final double CLUSTER_RADIUS = 100;
 
-    public GPSPointClusterizer(Context context) {
+    public GpsPointClusterizer(Context context) {
         this.context = context;
     }
 
     public void updateVisitHistory(List<GPSPoint> gpsPoints) {
         List<Cluster> clusters = formClusters(gpsPoints);
-        GPSPointDao.deleteAllData();
+        GpsPointDao.deleteAllData();
         for (Cluster cluster : clusters) {
             if (cluster.hasInsufficientData()) {
                 for(GPSPoint gpsPoint : cluster.getGPSPoints()) {
-                    GPSPointDao.insert(gpsPoint);
+                    GpsPointDao.insert(gpsPoint);
                 }
             } else {
                 createVisit(cluster);

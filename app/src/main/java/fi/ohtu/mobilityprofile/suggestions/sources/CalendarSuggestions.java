@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.suggestions.sources;
 
+import android.graphics.PointF;
+
 import java.util.ArrayList;
 import java.util.List;
 

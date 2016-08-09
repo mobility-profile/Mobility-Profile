@@ -3,6 +3,6 @@ package fi.ohtu.mobilityprofile.data;
 /**
  *
  */
-public class CoordinateDAO {
+public class CoordinateDao {
 
 }

@@ -13,14 +13,12 @@ import fi.ohtu.mobilityprofile.domain.Visit;
 
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.suggestions.*;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.GPSPointClusterizer;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
 
 /**
  * This class creates suggestions based on the user's visits to places he has visited frequently in the past.
  */
 public class VisitSuggestions implements SuggestionSource {
-
-    private GPSPointClusterizer gpsPointClusterizer;
 
     /**
      * Creates VisitSuggestions.
@@ -42,7 +40,7 @@ public class VisitSuggestions implements SuggestionSource {
             int maxValue = Collections.max(nextDestinations.values());
             for (Map.Entry<String, Integer> entry : nextDestinations.entrySet()) {
                 if (entry.getValue() == maxValue) {
-                    suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.HIGH, VISIT_SUGGESTIONS));
+                    suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION));
                 }
             }
         }
@@ -84,7 +82,8 @@ public class VisitSuggestions implements SuggestionSource {
     }
 
     private boolean userStillAtLastVisitLocation(GPSPoint startLocation, Visit lastVisit) {
-        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < gpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD && startLocation.distanceTo(lastVisit) < gpsPointClusterizer.CLUSTER_RADIUS;
+        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < GpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD
+                && startLocation.distanceTo(lastVisit) < GpsPointClusterizer.CLUSTER_RADIUS;
     }
 
     /**
@@ -97,5 +96,4 @@ public class VisitSuggestions implements SuggestionSource {
         int count = nextDestinations.containsKey(nextDestination) ? nextDestinations.get(nextDestination) : 0;
         nextDestinations.put(nextDestination, count + 1);
     }
-
 }

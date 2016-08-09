@@ -9,7 +9,7 @@ import fi.ohtu.mobilityprofile.domain.GPSPoint;
 /**
  * DAO used for saving and reading GPSPoints to/from the database.
  */
-public class GPSPointDao {
+public class GpsPointDao {
 
     /**
      * Returns the latest GPSPoint from the database, or null if there is none.

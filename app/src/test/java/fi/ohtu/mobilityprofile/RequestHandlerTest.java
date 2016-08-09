@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.data.GPSPointDao;
+import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
@@ -34,7 +34,7 @@ public class RequestHandlerTest {
     private Context context;
     private DestinationLogic mobilityProfile;
     private CalendarTagDao calendarTagDao;
-    private GPSPointDao gpsPointDao;
+    private GpsPointDao gpsPointDao;
     private RouteSearchDao routeSearchDao;
     private FavouritePlaceDao favouritePlaceDao;
     private TransportModeDao transportDao;
@@ -45,7 +45,7 @@ public class RequestHandlerTest {
         this.mobilityProfile = mock(DestinationLogic.class);
         this.calendarTagDao = mock(CalendarTagDao.class);
         this.routeSearchDao = new RouteSearchDao();
-        this.gpsPointDao = new GPSPointDao();
+        this.gpsPointDao = new GpsPointDao();
         this.favouritePlaceDao = mock(FavouritePlaceDao.class);
         this.transportDao = mock(TransportModeDao.class);
 
