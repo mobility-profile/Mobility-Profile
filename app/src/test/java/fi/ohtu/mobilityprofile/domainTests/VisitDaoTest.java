@@ -26,6 +26,12 @@ public class VisitDaoTest {
     }
 
     @Test
+    public void placeAndCoordinateAreSaveIntoDatabase() {
+        VisitDao.insert(new Visit(123, 124, new Place("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
+        assertTrue(VisitDao.getLast().getPlace() != null && VisitDao.getLast().getPlace().getCoordinate() != null);
+    }
+
+    @Test
     public void testInsert() {
         VisitDao.insert(new Visit(123, 124, new Place("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
         assertEquals("Kumpula", VisitDao.getAll().get(0).getAddress());

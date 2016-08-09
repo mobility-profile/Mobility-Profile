@@ -40,13 +40,21 @@ public class GPSPointDao {
      * @param gpsPoint GPSPoint to be saved
      */
     public static void insert(GPSPoint gpsPoint) {
+        gpsPoint.getCoordinate().save();
         gpsPoint.save();
+    }
+
+    public static void delete(GPSPoint gpsPoint) {
+        gpsPoint.delete();
     }
 
     /**
      * Deletes all GPSPoint data from the database
      */
     public static void deleteAllData() {
-        GPSPoint.deleteAll(GPSPoint.class);
+        for(GPSPoint gpsPoint : getAll()) {
+            gpsPoint.getCoordinate().delete();
+            gpsPoint.delete();
+        }
     }
 }

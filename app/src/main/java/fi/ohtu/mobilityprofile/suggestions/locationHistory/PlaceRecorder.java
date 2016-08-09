@@ -16,6 +16,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.R;
@@ -126,7 +129,7 @@ public class PlaceRecorder extends Service {
         private void saveGPSPoint(Location location) {
             System.out.println(System.currentTimeMillis());
             GPSPoint gpsPoint = new GPSPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
-            gpsPoint.save();
+            GPSPointDao.insert(gpsPoint);
         }
 
         @Override

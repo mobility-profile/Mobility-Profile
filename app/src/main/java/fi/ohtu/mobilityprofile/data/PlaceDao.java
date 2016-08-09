@@ -41,6 +41,7 @@ public class PlaceDao {
      * @param place Place to be saved
      */
     public static void insertPlace(Place place) {
+        place.getCoordinate().save();
         place.save();
     }
 

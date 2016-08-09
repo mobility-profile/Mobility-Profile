@@ -14,6 +14,9 @@ public class Visit extends SugarRecord implements HasCoordinate {
      *
      */
     public Visit() {
+        this.enterTime = 0;
+        this.exitTime = 0;
+        this.place = new Place();
     }
 
     /**
@@ -50,12 +53,6 @@ public class Visit extends SugarRecord implements HasCoordinate {
     @Override
     public Coordinate getCoordinate() {
         return this.getPlace().getCoordinate();
-    }
-
-    @Override
-    public long save() {
-        this.place.save();
-        return super.save();
     }
 
     @Override

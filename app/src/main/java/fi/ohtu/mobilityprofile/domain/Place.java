@@ -2,6 +2,8 @@ package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
 
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+
 /**
  * Class is used to save places assumed significant to the user (ie. places where he/she spends some
  * time and not just points on the road).
@@ -17,6 +19,11 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
      *
      */
     public Place() {
+        this.name = "name";
+        this.address = "address";
+        this.favourite = false;
+        this.unfavourited = false;
+        this.coordinate = new Coordinate(0f, 0f);
     }
 
     /**
@@ -50,24 +57,9 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
         return name;
     }
 
-    /**
-     * Returns the distance between this Place and a given Place
-     * @param place Place to be compared
-     * @return distance
-     */
-    public double distanceTo(Place place) {
-        return this.coordinate.distanceTo(place.getCoordinate());
-    }
-
     @Override
     public double distanceTo(HasCoordinate hasCoordinate) {
         return this.coordinate.distanceTo(hasCoordinate.getCoordinate());
-    }
-
-    @Override
-    public long save() {
-        this.coordinate.save();
-        return super.save();
     }
 
     @Override
@@ -90,7 +82,7 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
     @Override
     public void updateAddress(String address) {
         this.address = address;
-        this.save();
+        PlaceDao.insertPlace(this);
     }
 
     public boolean isFavourite() {
