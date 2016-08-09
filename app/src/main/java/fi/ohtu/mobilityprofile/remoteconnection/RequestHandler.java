@@ -123,6 +123,7 @@ public class RequestHandler extends Handler {
             }
         }
 
+        System.out.println("AAA " + startLocation + "   " + destination);
         RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
         RouteSearchDao.insertRouteSearch(routeSearch);
         
