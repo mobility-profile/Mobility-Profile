@@ -21,7 +21,7 @@ public class GPSPointClusterizer {
     private Context context;
 
     public static final double SPEED_LIMIT = 0.8;
-    public static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 600000; //10 minutes
+    public static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 10 * 60 * 1000; // 10 minutes
     public static final double WANDERING_DISTANCE_LIMIT = 70;
     public static final double CLUSTER_RADIUS = 100;
 

@@ -42,10 +42,12 @@ public class PlaceRecorder extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
 
-        if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
-            stopSelf();
-            resultReceiver.send(100, new Bundle());
-            return START_STICKY;
+        if (intent != null) {
+            if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
+                stopSelf();
+                resultReceiver.send(100, new Bundle());
+                return START_STICKY;
+            }
         }
 
         resultReceiver = intent.getParcelableExtra("Receiver");
