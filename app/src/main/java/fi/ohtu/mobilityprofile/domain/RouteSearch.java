@@ -18,7 +18,6 @@ public class RouteSearch extends SugarRecord {
      *
      */
     public RouteSearch() {
-
     }
 
     /**

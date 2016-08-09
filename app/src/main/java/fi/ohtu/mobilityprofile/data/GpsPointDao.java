@@ -17,12 +17,12 @@ public class GpsPointDao {
      * @return Latest GpsPoint
      */
     public static GpsPoint getLatest() {
-        List<GpsPoint> GpsPoints = Select.from(GpsPoint.class).orderBy("timestamp DESC").limit("1").list();
-        assert GpsPoints.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-        if (GpsPoints.size() == 0) {
+        List<GpsPoint> gpsPoints = Select.from(GpsPoint.class).orderBy("timestamp DESC").limit("1").list();
+        assert gpsPoints.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+        if (gpsPoints.size() == 0) {
             return null;
         }
-        return GpsPoints.get(0);
+        return gpsPoints.get(0);
     }
 
     /**
