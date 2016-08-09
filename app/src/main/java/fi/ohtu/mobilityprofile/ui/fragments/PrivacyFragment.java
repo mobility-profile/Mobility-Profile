@@ -163,6 +163,7 @@ public class PrivacyFragment extends Fragment {
     }
 
     private void GPSCheckedOff() {
+        stoppedTracking();
         stopButton.setVisibility(View.GONE);
         startButton.setVisibility(View.VISIBLE);
         startButton.setEnabled(false);

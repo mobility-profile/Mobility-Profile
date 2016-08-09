@@ -21,6 +21,7 @@ import com.orm.query.Select;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.Place;
 
@@ -110,7 +111,7 @@ public class PlacesListAdapter extends ArrayAdapter<Place> {
                                 }
 
                                 place.setUnfavourited(true);
-                                place.save();
+                                PlaceDao.insertPlace(place);
                                 items.remove(position);
                                 updateView();
 

@@ -13,6 +13,8 @@ public class GPSPoint extends SugarRecord implements HasCoordinate, Comparable<G
      *
      */
     public GPSPoint() {
+        this.timestamp = 0;
+        this.coordinate = new Coordinate(0f, 0f);
     }
 
     /**

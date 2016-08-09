@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.concurrent.Executors;
 
+import fi.ohtu.mobilityprofile.data.GPSPointDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.HasAddress;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
@@ -113,7 +114,7 @@ public class AddressConverter {
                                 Log.i("AddressConverter", "Converted address is: " + address);
 
                                 GPSPoint lastLocation = new GPSPoint(System.currentTimeMillis(), location.x, location.y);
-                                lastLocation.save();
+                                GPSPointDao.insert(lastLocation);
                             }
                         } catch (Exception e) {
                             Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");

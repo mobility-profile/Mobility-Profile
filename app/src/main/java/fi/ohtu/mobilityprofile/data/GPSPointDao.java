@@ -44,6 +44,10 @@ public class GPSPointDao {
         gpsPoint.save();
     }
 
+    public static void delete(GPSPoint gpsPoint) {
+        gpsPoint.delete();
+    }
+
     /**
      * Deletes all GPSPoint data from the database
      */
