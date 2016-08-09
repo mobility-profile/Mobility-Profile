@@ -96,7 +96,7 @@ public class RequestHandler extends Handler {
      * @return Response message
      */
     private Message processDestinationRequest() {
-        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getListOfMostLikelyDestinations(getStartLocation()));
+        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, mobilityProfile.getMostLikelyDestinations(getStartLocation()));
     }
 
     /**

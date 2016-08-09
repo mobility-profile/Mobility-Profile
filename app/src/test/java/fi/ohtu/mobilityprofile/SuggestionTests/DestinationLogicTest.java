@@ -1,18 +1,13 @@
 package fi.ohtu.mobilityprofile.SuggestionTests;
 
-import com.cocoahero.android.geojson.Feature;
-import com.cocoahero.android.geojson.GeoJSON;
-import com.cocoahero.android.geojson.GeoJSONObject;
-import com.google.api.client.json.Json;
-import com.google.api.client.json.JsonParser;
+import android.util.JsonReader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.JSONStringer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import static org.junit.Assert.*;
@@ -26,16 +21,10 @@ import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GPSPoint;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
-import fi.ohtu.mobilityprofile.suggestions.Suggestion;
-import fi.ohtu.mobilityprofile.util.CalendarConnection;
-import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.suggestions.sources.CalendarSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
-import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
@@ -66,10 +55,12 @@ public class DestinationLogicTest {
                 new Coordinate(new Float(60.203978), new Float(24.965546)),
                 new Coordinate(new Float(60.174892), new Float(24.921637))));
 
-        JSONArray suggestions = mp.getListOfMostLikelyDestinationsJSON(new GPSPoint(System.currentTimeMillis(), new Float(60.203978), new Float(24.965546)));
-        
+        String suggestionString = mp.getMostLikelyDestinations(new GPSPoint(System.currentTimeMillis(), new Float(60.203978), new Float(24.965546)));
+        JSONArray suggestions = null;
         String result = "";
+
         try {
+            suggestions = new JSONArray(suggestionString);
             result = suggestions.getJSONObject(0).getJSONObject("properties").get("destination").toString();
         } catch (JSONException e) {
             e.printStackTrace();
