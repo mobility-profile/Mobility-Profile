@@ -120,9 +120,6 @@ public class FavouritesFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Place place = new Place("moi", "Moikatu 1", new Coordinate(60.1234f, 24.1234f));
-        PlaceDao.insertPlace(place);
-        places.add(place);
         return places;
     }
 
