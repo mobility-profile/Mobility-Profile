@@ -17,6 +17,7 @@ import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
+import fi.ohtu.mobilityprofile.util.SecurityCheck;
 
 
 /**
