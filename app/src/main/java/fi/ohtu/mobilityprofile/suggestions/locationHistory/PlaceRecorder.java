@@ -83,7 +83,7 @@ public class PlaceRecorder extends Service {
         Intent actionIntent = new Intent(this, PlaceRecorder.class);
         actionIntent.setAction(ACTION_STOP_SERVICE);
         PendingIntent actionPendingIntent = PendingIntent.getService(this, 0, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        notification.addAction(R.drawable.ic_location_off_white_24dp, "Stop tracking", actionPendingIntent);
+        notification.addAction(R.drawable.ic_location_off_white_24dp, getString(R.string.stop_location_tracking), actionPendingIntent);
 
         // Start the service
         startForeground(NOTIFICATION_ID, notification.build());

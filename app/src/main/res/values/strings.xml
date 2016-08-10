@@ -88,4 +88,5 @@
         called mobilityprofile.db, will be saved to your main folder of internal storage. </string>
     <string name="location_tracking_title">Gathering data</string>
     <string name="location_tracking_description">Mobility Profile is tracking your location</string>
+    <string name="stop_location_tracking">Stop tracking</string>
 </resources>
