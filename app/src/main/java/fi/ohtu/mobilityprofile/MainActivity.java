@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.TransportMode;
+import fi.ohtu.mobilityprofile.util.ProfileBackup;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         checkSecurity();
         createTransportModes();
+        new ProfileBackup(this).handleBackup("import");
     }
 
     /**
