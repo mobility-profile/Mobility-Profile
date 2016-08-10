@@ -67,7 +67,7 @@ public class PlaceRecorder extends Service {
         Notification.Builder notification = new Notification.Builder(this)
                 .setContentTitle("Location tracking")
                 .setContentText("Mobility Profile is tracking your location")
-                .setSmallIcon(R.drawable.ic_location_on_white_24dp)
+                .setSmallIcon(R.drawable.ic_perm_identity_white_24dp)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
