@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10);
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home).setText("Privacy");
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setText("Last searches");
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10).setText("Favourite places");
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setText("Info");
 
         checkSecurity();
         createTransportModes();
