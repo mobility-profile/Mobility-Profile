@@ -38,6 +38,10 @@ public class Visit extends SugarRecord implements HasCoordinate {
         return this.exitTime;
     }
 
+    public void setExitTime(long time) {
+        this.exitTime = time;
+    }
+
     public Place getPlace() {
         return place;
     }
