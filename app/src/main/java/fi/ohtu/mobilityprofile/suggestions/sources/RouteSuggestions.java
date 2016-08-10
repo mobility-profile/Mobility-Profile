@@ -13,6 +13,7 @@ import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
 
 /**
  * This class creates suggestions based on previous route searches user has made.
@@ -41,22 +42,23 @@ public class RouteSuggestions implements SuggestionSource {
         int counter = 0;
 
         for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
-            // TODO: Check starting location.
+            if (route.getStartCoordinates().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
+                if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
+                    if (destinations.contains(route.getDestination())) {
+                        continue; // Don't add the same suggestion more than once.
+                    }
 
-            if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
-                if (destinations.contains(route.getDestination())) {
-                    continue; // Don't add the same suggestion more than once.
-                }
+                    Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION, route.getDestinationCoordinates());
+                    suggestions.add(suggestion);
 
-                Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION, route.getDestinationCoordinates());
-                suggestions.add(suggestion);
+                    destinations.add(route.getDestination());
 
-                destinations.add(route.getDestination());
-
-                counter++;
-                if (counter >= 3) break; // Only suggest 3 most recent searches at most.
+                    counter++;
+                    if (counter >= 3) break; // Only suggest 3 most recent searches at most.
                 }
             }
+        }
+
 
         return suggestions;
     }
