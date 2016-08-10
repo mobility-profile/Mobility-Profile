@@ -30,9 +30,7 @@ public class GpsPointClusterizer {
 
     public void updateVisitHistory(List<GpsPoint> gpsPoints) {
         List<Cluster> clusters = formClusters(gpsPoints);
-        GpsPoint lastKnownLocation = GpsPointDao.getLatest();
         GpsPointDao.deleteAllData();
-        GpsPointDao.insert(lastKnownLocation);
         for (Cluster cluster : clusters) {
             if (cluster.hasInsufficientData()) {
                 for(GpsPoint gpsPoint : cluster.getGpsPoints()) {
