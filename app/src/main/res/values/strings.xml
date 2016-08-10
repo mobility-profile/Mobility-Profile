@@ -86,4 +86,6 @@
     <string name="backup_title">Back Up</string>
     <string name="backup_text">Back up your data. The database file,
         called mobilityprofile.db, will be saved to your main folder of internal storage. </string>
+    <string name="location_tracking_title">Gathering data</string>
+    <string name="location_tracking_description">Mobility Profile is tracking your location</string>
 </resources>
