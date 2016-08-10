@@ -59,6 +59,10 @@ public class ProfileBackup {
                 backupDBPath = "/data/" + context.getPackageName() + "/databases/" + DB_NAME;
                 currentDB = new File(sd, currentDBPath);
                 backupDB = new File(data, backupDBPath);
+                if (!currentDB.exists()) {
+                    Toast.makeText(context, "No database backup file was found.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 break;
         }
 
