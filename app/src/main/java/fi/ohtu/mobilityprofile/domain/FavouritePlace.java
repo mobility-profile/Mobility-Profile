@@ -29,6 +29,7 @@ public class FavouritePlace extends SugarRecord implements SignificantPlace{
         this.name = name;
         this.address = address;
         this.counter = 1;
+        this.coordinate = null;
     }
 
     /**
