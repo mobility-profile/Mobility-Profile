@@ -9,21 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.ui.list_adapters.FavouritesListAdapter;
-import fi.ohtu.mobilityprofile.ui.list_adapters.PlacesListAdapter;
+import fi.ohtu.mobilityprofile.domain.SignificantPlace;
+import fi.ohtu.mobilityprofile.ui.list_adapters.SignificantsListAdapter;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 /**
  * The class creates a component called FavouritesFragment.
@@ -42,7 +39,6 @@ public class FavouritesFragment extends Fragment {
      */
     private static final int page = 2;
     private Context context;
-    private Switch seeSuggestions;
 
     /**
      * Creates a new instance of FavouritesFragment.
@@ -72,50 +68,36 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
         Log.i(title, "onViewCreated");
-        seeSuggestions = (Switch) view.findViewById(R.id.switchSuggestions);
-        seeSuggestions.setChecked(false);
 
         setFavouritesListView(view);
-        switchListener(view);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        seeSuggestions.setChecked(false);
     }
 
     private void setFavouritesListView(View view) {
-        List<FavouritePlace> favouritePlaces = getFavouritePlaces();
+        List<SignificantPlace> significantPlaces = new ArrayList<>();
+        significantPlaces.addAll(getPlaces());
+        significantPlaces.addAll(getFavouritePlaces());
 
-        final FavouritesListAdapter adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
+        final SignificantsListAdapter adapter = new SignificantsListAdapter(context, R.layout.favourites_list_item, significantPlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
         listView.setAdapter(adapter);
 
         addButtonListener(view, adapter);
     }
 
-    private void setSuggestionsListView(ListView listView) {
-        List<Place> places = getPlaces();
-
-        final PlacesListAdapter adapter = new PlacesListAdapter(context, R.layout.favourites_list_item, places, this);
-        listView.setAdapter(adapter);
-        listView.setVisibility(View.GONE);
-    }
-
-    private List<Place> getPlaces() {
-        List<Place> places = new ArrayList<>();
+    private List<SignificantPlace> getPlaces() {
+        List<SignificantPlace> places = new ArrayList<>();
         try {
-            places = Place.listAll(Place.class);
+            List<Place> allPlaces = Place.listAll(Place.class);
             List<Place> remove = new ArrayList<>();
 
-            for (Place place : places) {
+            for (Place place : allPlaces) {
                 if (place.isFavourite() || place.isUnfavourited()) {
                     remove.add(place);
                 }
             }
 
-            places.removeAll(remove);
+            allPlaces.removeAll(remove);
+            places.addAll(allPlaces);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,35 +105,14 @@ public class FavouritesFragment extends Fragment {
         return places;
     }
 
-    private List<FavouritePlace> getFavouritePlaces() {
-        List<FavouritePlace> favouritePlaces = new ArrayList<>();
+    private List<SignificantPlace> getFavouritePlaces() {
+        List<SignificantPlace> favouritePlaces = new ArrayList<>();
         try {
-            favouritePlaces = FavouritePlace.listAll(FavouritePlace.class);
+            favouritePlaces.addAll(FavouritePlace.listAll(FavouritePlace.class));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return favouritePlaces;
-    }
-
-
-    /**
-     * Listener for see suggestions switch
-     * @param view view inside the fragment
-     */
-    private void switchListener(final View view) {
-
-        seeSuggestions.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ListView listView = (ListView) view.findViewById(R.id.places_listView);
-                if (isChecked) {
-                    setSuggestionsListView(listView);
-                    listView.setVisibility(View.VISIBLE);
-                } else {
-                    listView.setVisibility(View.GONE);
-                }
-            }
-        });
     }
 
     @Override
@@ -163,9 +124,9 @@ public class FavouritesFragment extends Fragment {
     /**
      * Listener to add favourite place button
      * @param view view inside the fragment
-     * @param adapter FavouritesListAdapter
+     * @param adapter SignificantsListAdapter
      */
-    private void addButtonListener(final View view, final FavouritesListAdapter adapter) {
+    private void addButtonListener(final View view, final SignificantsListAdapter adapter) {
 
         Button button = (Button) view.findViewById(R.id.add_favourite_button);
         final EditText addFavouriteName = (EditText) view.findViewById(R.id.add_favourite_name);
@@ -179,6 +140,7 @@ public class FavouritesFragment extends Fragment {
                 if (!addFavouriteName.getText().toString().equals("") && !addFavouriteAddress.getText().toString().equals("")) {
                     FavouritePlace fav = new FavouritePlace(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
                     fav.save();
+                    AddressConverter.convertFavouriteAddressToCoordinatesAndSave(fav, context);
                     updateView(adapter);
                     addFavouriteName.setText("");
                     addFavouriteAddress.setText("");
@@ -191,9 +153,9 @@ public class FavouritesFragment extends Fragment {
 
     /**
      * Updates the favourites fragment view
-     * @param adapter FavouritesListAdapter
+     * @param adapter SignificantsListAdapter
      */
-    private void updateView(FavouritesListAdapter adapter) {
+    private void updateView(SignificantsListAdapter adapter) {
         FragmentTransaction tr = getFragmentManager().beginTransaction();
         tr.detach(this);
         tr.attach(this);

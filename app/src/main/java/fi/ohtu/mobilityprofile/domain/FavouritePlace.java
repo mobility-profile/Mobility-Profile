@@ -2,10 +2,12 @@ package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
 
+import org.json.JSONObject;
+
 /**
  * Class is used to save the user's favourite places.
  */
-public class FavouritePlace extends SugarRecord {
+public class FavouritePlace extends SugarRecord implements SignificantPlace{
     String name;
     String address;
     Coordinate coordinate;
@@ -81,5 +83,10 @@ public class FavouritePlace extends SugarRecord {
     @Override
     public String toString() {
         return this.name + ": " + this.address;
+    }
+
+    @Override
+    public Long getID() {
+        return this.getId();
     }
 }

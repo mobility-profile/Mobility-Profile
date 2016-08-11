@@ -32,21 +32,22 @@
     <string name="favourites_name_hint">Name</string>
     <string name="favourites_address_hint">Address</string>
     <string name="favourites_suggestion_address_hint">You can fix the address here</string>
-    <string name="favourites_add_button">Add</string>
-    <string name="favourites_delete_button">Delete</string>
     <string name="favourites_see_suggestions">See new favourite place suggestions</string>
     <string name="favourite_auto_generated_hint">This is auto generated suggestion of a favourite place</string>
 
     <string name="favourite_auto_generated_title">Auto generated suggestion</string>
     <string name="favourite_auto_generated_text">This is a suggestion of a new favourite place based on your location data. You can verify this as a new favourite, only edit the address or discard it for good.</string>
+    <string name="favourite_set_favourite_title">Save this suggestion as a favourite?</string>
 
     <string name="save">Save</string>
     <string name="edit">Edit</string>
     <string name="ok">OK</string>
+    <string name="add">Add</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="forget">Forget</string>
     <string name="unfavourite">Unfavourite</string>
+    <string name="set_favourite">Set Favourite</string>
 
     <string name="reset_searches_button_text">Delete all last searches</string>
     <string name="reset_searches_title">Delete all searches?</string>

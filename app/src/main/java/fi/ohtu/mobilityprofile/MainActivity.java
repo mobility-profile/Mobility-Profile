@@ -19,6 +19,9 @@ import com.orm.SugarContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.util.ProfileBackup;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
@@ -41,11 +44,14 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home).setText("Privacy");
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setText("Last searches");
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10).setText("Favourite places");
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setText("Info");
 
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home).setContentDescription("Privacy");
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setContentDescription("Last searches");
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10).setContentDescription("Favourite places");
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setContentDescription("Info");
+
+
+        //testData();
         checkSecurity();
         createTransportModes();
         new ProfileBackup(this).handleBackup("import");
@@ -110,6 +116,23 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    private void testData() {
+        if (Place.count(Place.class) == 0) {
+
+
+
+            Place place = new Place("","Liisankatu 1", new Coordinate(60.174287f, 24.960481f));
+            Place place2 = new Place("","Kanavamäki 9", new Coordinate(60.186572f, 25.057416f));
+            Place place3 = new Place("","Leppäsuonkatu 9", new Coordinate(60.169143f, 24.923136f));
+            Place place4 = new Place("","Porarinkatu 6", new Coordinate(60.225002f, 24.818110f));
+
+            PlaceDao.insertPlace(place);
+            PlaceDao.insertPlace(place2);
+            PlaceDao.insertPlace(place3);
+            PlaceDao.insertPlace(place4);
         }
     }
 
