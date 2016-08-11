@@ -16,7 +16,6 @@ public class Visit extends SugarRecord implements HasCoordinate {
     public Visit() {
         this.enterTime = 0;
         this.exitTime = 0;
-        this.place = new Place();
     }
 
     /**

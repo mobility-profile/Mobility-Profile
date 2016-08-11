@@ -1,4 +1,4 @@
-package fi.ohtu.mobilityprofile.suggestions.locationHistory;
+package fi.ohtu.mobilityprofile.util.geocoding;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -26,7 +27,6 @@ import java.util.concurrent.Executors;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
-import fi.ohtu.mobilityprofile.domain.HasAddress;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 
 /**
@@ -34,7 +34,7 @@ import fi.ohtu.mobilityprofile.domain.RouteSearch;
  */
 public class AddressConverter {
 
-    //use this RequestQueue instead of Vollew.newRequestQueue(context) in unit tests
+    //use this RequestQueue instead of Volley.newRequestQueue(context) in unit tests
     public static RequestQueue newVolleyRequestQueueForTest(final Context context) {
         File cacheDir = new File(context.getCacheDir(), "cache/volley");
         Network network = new BasicNetwork(new HurlStack());
@@ -44,10 +44,19 @@ public class AddressConverter {
         return queue;
     }
 
-    public static void getAddressAndSave(final HasAddress object, Context context) {
+    /**
+     * Converts coordinates to an adress. This is an asynchronous process,
+     * {@link AddressConvertListener#addressConverted(String, Coordinate)} will be called after it
+     * has completed.
+     *
+     * @param context Context for creating the request queue
+     * @param coordinate Coordinates to be converted
+     * @param listener Listener for the callback after coordinates have been converted
+     */
+    public static void convertToAddress(Context context, final Coordinate coordinate, final AddressConvertListener listener) {
         String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
-                + object.getCoordinate().getLatitude() + "&point.lon="
-                + object.getCoordinate().getLongitude() + "&layers=address&size=1&sources=osm";
+                + coordinate.getLatitude() + "&point.lon="
+                + coordinate.getLongitude() + "&layers=address&size=1&sources=osm";
 
         RequestQueue queue = Volley.newRequestQueue(context);
         //RequestQueue queue = newVolleyRequestQueueForTest(context);
@@ -66,7 +75,8 @@ public class AddressConverter {
                                 if (address == null) address = "";
 
                                 Log.i("AddressConverter", "Converted address is: " + address);
-                                object.updateAddress(address);
+
+                                listener.addressConverted(address, coordinate);
                             }
                         } catch (Exception e) {
                             Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");
@@ -74,76 +84,29 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
-                        error.printStackTrace();
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
+                error.printStackTrace();
 
-                    }
-                });
+            }
+        });
         queue.add(stringRequest);
     }
 
     /**
-     * Converts GPS coordinates to an address and saves it.
+     * Converts an address to coordinates. This is an asynchronous process,
+     * {@link AddressConvertListener#addressConverted(String, Coordinate)} will be called after it
+     * has completed.
      *
-     * @param location coordinates of the location
-     * @param context for new request queue
+     * @param context Context for creating the request queue
+     * @param address Address to be converted
+     * @param listener Listener for the callback after address has been converted
      */
-    public static void convertToAddressAndSave(final PointF location, Context context) {
-
-        String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
-                + location.x + "&point.lon="
-                + location.y + "&layers=address&size=1&sources=osm";
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject json = new JSONObject(response);
-                            JSONArray features = new JSONArray(json.get("features").toString());
-                            if (features.length() > 0) {
-                                JSONObject zero = new JSONObject(features.get(0).toString());
-                                JSONObject properties = new JSONObject(zero.get("properties").toString());
-                                String address = (properties.get("label").toString());
-
-                                if (address == null) address = "";
-
-                                Log.i("AddressConverter", "Converted address is: " + address);
-
-                                GpsPoint lastLocation = new GpsPoint(System.currentTimeMillis(), 0, location.x, location.y);
-                                GpsPointDao.insert(lastLocation);
-
-                            }
-                        } catch (Exception e) {
-                            Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
-                            error.printStackTrace();
-
-                        }
-                });
-        queue.add(stringRequest);
-    }
-
-    /**
-     * Converts an address to coordinates and saves it.
-     *
-     * @param destination the address
-     * @param latest latest visit
-     * @param context for new request queue
-     */
-    public static void convertToCoordinatesAndSave(final String destination, final GpsPoint latest, Context context) {
+    public static void convertToCoordinates(Context context, final String address, final AddressConvertListener listener) {
 
         String url = "https://search.mapzen.com/v1/search?api_key=search-xPjnrpR&text="
-                + destination + "&layers=address&size=1&sources=osm&boundary.country=FIN";
+                + address + "&layers=address&size=1&sources=osm&boundary.country=FIN";
 
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -161,18 +124,9 @@ public class AddressConverter {
                                 Float lat = Float.parseFloat(coordinates.get(1).toString());
                                 Float lon = Float.parseFloat((coordinates.get(0).toString()));
 
-                                RouteSearch route;
+                                Coordinate coordinate = new Coordinate(lat, lon);
 
-                                if (latest != null) {
-                                    route = new RouteSearch(System.currentTimeMillis(),
-                                            "Kumpula", destination, new Coordinate(latest.getLatitude(),
-                                            latest.getLongitude()), new Coordinate(lat, lon));
-                                } else {
-                                    route = new RouteSearch(System.currentTimeMillis(),
-                                            "None", destination, null, new Coordinate(lat, lon));
-
-                                }
-                                route.save();
+                                listener.addressConverted(address, coordinate);
 
                                 Log.i("AddressConverter", "Converted coordinates are: " + lat + "," + lon);
                             }
@@ -182,13 +136,13 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
-                        error.printStackTrace();
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
+                error.printStackTrace();
 
-                    }
-                });
+            }
+        });
         queue.add(stringRequest);
     }
 }

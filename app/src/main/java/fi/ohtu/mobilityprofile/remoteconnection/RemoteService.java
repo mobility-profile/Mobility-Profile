@@ -49,7 +49,7 @@ public class RemoteService extends Service {
 
                 DestinationLogic destinationLogic = new DestinationLogic(suggestionSources, new InterCitySuggestions());
 
-                messenger = new Messenger(new RequestHandler(destinationLogic));
+                messenger = new Messenger(new RequestHandler(this, destinationLogic));
             }
         }
 
