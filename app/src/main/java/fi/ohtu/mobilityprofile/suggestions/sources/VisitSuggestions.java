@@ -76,7 +76,7 @@ public class VisitSuggestions implements SuggestionSource {
         if (visits.size() > 3) {
 
             Place currentPlace = VisitDao.getLast().getPlace();
-            if (currentPlace.getCoordinate().distanceTo(startLocation.getCoordinate()) < 50) {
+            if (currentPlace.getCoordinate().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
 
                 Place previousLocation = visits.get(1).getPlace();
                 Place beforePrevious = visits.get(2).getPlace();
