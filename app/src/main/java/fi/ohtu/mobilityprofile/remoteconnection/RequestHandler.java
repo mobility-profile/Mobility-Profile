@@ -1,5 +1,6 @@
 package fi.ohtu.mobilityprofile.remoteconnection;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,7 @@ import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
@@ -24,6 +26,8 @@ import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.AddressConvertCallback;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.AddressConverter;
 
 import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
 
@@ -31,6 +35,7 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
+    private Context context;
     private DestinationLogic destinationLogic;
 
     /**
@@ -38,7 +43,8 @@ public class RequestHandler extends Handler {
      *
      * @param destinationLogic Journey planner that provides the logic for our app
      */
-    public RequestHandler(DestinationLogic destinationLogic) {
+    public RequestHandler(Context context, DestinationLogic destinationLogic) {
+        this.context = context;
         this.destinationLogic = destinationLogic;
     }
 
@@ -123,12 +129,34 @@ public class RequestHandler extends Handler {
             }
         }
 
-        RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
-        RouteSearchDao.insertRouteSearch(routeSearch);
+        final RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
+
+        AddressConverter.convertToCoordinates(context, startLocation, new AddressConvertCallback() {
+            @Override
+            public void addressConverted(String address, Coordinate coordinate) {
+                processRouteSearch(routeSearch, coordinate, null);
+            }
+        });
+        AddressConverter.convertToCoordinates(context, destination, new AddressConvertCallback() {
+            @Override
+            public void addressConverted(String address, Coordinate coordinate) {
+                processRouteSearch(routeSearch, null, coordinate);
+            }
+        });
         
         FavouritePlace fav = FavouritePlaceDao.findFavouritePlaceByAddress(destination);
         if (fav != null) {
             fav.increaseCounter();
+        }
+    }
+
+    private void processRouteSearch(RouteSearch routeSearch, Coordinate start, Coordinate destination) {
+        if (start != null) routeSearch.setStartCoordinates(start);
+        if (destination != null) routeSearch.setDestinationCoordinates(destination);
+
+        if (routeSearch.getStartCoordinates() != null && routeSearch.getDestinationCoordinates() != null) {
+            RouteSearchDao.insertRouteSearch(routeSearch);
+            System.out.println("AAA " + routeSearch.getStartCoordinates() + " " + routeSearch.getDestinationCoordinates());
         }
     }
 

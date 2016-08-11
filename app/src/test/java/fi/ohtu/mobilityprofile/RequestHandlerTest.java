@@ -41,7 +41,7 @@ public class RequestHandlerTest {
 
     @Before
     public void setUp() {
-        this.context = null;
+        this.context = Robolectric.setupActivity(MainActivityStub.class);;
         this.mobilityProfile = mock(DestinationLogic.class);
         this.calendarTagDao = mock(CalendarTagDao.class);
         this.routeSearchDao = new RouteSearchDao();
@@ -49,10 +49,7 @@ public class RequestHandlerTest {
         this.favouritePlaceDao = mock(FavouritePlaceDao.class);
         this.transportDao = mock(TransportModeDao.class);
 
-        this.requestHandler = new RequestHandler(mobilityProfile);
-
-
-        Robolectric.setupActivity(MainActivityStub.class);
+        this.requestHandler = new RequestHandler(context, mobilityProfile);
     }
 
     @Test
