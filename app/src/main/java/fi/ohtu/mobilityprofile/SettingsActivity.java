@@ -14,14 +14,19 @@ import android.widget.Toast;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
+import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
+import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
+import fi.ohtu.mobilityprofile.domain.Visit;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -142,10 +147,18 @@ public class SettingsActivity extends AppCompatActivity {
         CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         FavouritePlaceDao.deleteAllData();
+        Coordinate.deleteAll(Coordinate.class);
+        InterCitySearchDao.deleteAllData();
+        VisitDao.deleteAllData();
 
-        if (GpsPoint.count(GpsPoint.class) == 0 && Place.count(Place.class)  == 0
-                && CalendarTag.count(CalendarTag.class) == 0 && RouteSearch.count(RouteSearch.class) == 0
-                && FavouritePlace.count(FavouritePlace.class) == 0) {
+        if (GpsPoint.count(GpsPoint.class) == 0
+                && Place.count(Place.class)  == 0
+                && CalendarTag.count(CalendarTag.class) == 0
+                && RouteSearch.count(RouteSearch.class) == 0
+                && FavouritePlace.count(FavouritePlace.class) == 0
+                && Coordinate.count(Coordinate.class) == 0
+                && InterCitySearch.count(InterCitySearch.class) == 0
+                && Visit.count(Visit.class) == 0) {
             Toast.makeText(this, "Successfully deleted", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Failed to delete", Toast.LENGTH_SHORT).show();

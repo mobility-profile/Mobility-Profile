@@ -23,7 +23,7 @@ public class VisitDao {
 
     /**
      * Returns the latest Visit from the database
-     * @return
+     * @return Visit
      */
     public static Visit getLast() {
         return Select.from(Visit.class)
@@ -44,7 +44,7 @@ public class VisitDao {
     /**
      * Deletes all Visits from the database
      */
-    public static void deleteAll() {
+    public static void deleteAllData() {
         Visit.deleteAll(Visit.class);
     }
 }
