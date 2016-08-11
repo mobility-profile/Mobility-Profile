@@ -57,7 +57,7 @@ public class RouteSearchDao {
     }
 
     /**
-     * Returns a list of routesearches where the startlocation matches the given one.
+     * Returns a list of routesearches where the destination matches the given one.
      *
      * @param destination destination of the routesearches
      * @return List of routesearches
@@ -72,7 +72,7 @@ public class RouteSearchDao {
     }
 
     /**
-     * Returns a list of routesearches where the startlocation matches the given one.
+     * Returns a list of routesearches where the startlocation and destination matches the given ones.
      *
      * @param startLocation Start location of the routesearche
      * @param destination Destination of the routesearch
@@ -107,8 +107,8 @@ public class RouteSearchDao {
      * @param routeSearch routesearch to be saved
      */
     public static void insertRouteSearch(RouteSearch routeSearch) {
-        routeSearch.getStartCoordinates().save();
-        routeSearch.getDestinationCoordinates().save();
+        if (routeSearch.getStartCoordinates() != null) routeSearch.getStartCoordinates().save();
+        if (routeSearch.getDestinationCoordinates() != null) routeSearch.getDestinationCoordinates().save();
         routeSearch.save();
     }
 

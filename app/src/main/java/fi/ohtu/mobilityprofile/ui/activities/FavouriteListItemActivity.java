@@ -24,8 +24,8 @@ import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.AddressConverter;
 import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 public class FavouriteListItemActivity extends AppCompatActivity {
 

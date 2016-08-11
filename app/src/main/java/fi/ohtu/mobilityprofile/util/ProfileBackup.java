@@ -59,6 +59,10 @@ public class ProfileBackup {
                 backupDBPath = "/data/" + context.getPackageName() + "/databases/" + DB_NAME;
                 currentDB = new File(sd, currentDBPath);
                 backupDB = new File(data, backupDBPath);
+                if (!currentDB.exists()) {
+                    Toast.makeText(context, "No database backup file was found.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 break;
         }
 
@@ -77,6 +81,10 @@ public class ProfileBackup {
 
     }
 
+    /**
+     * Checks if the app has permission to write and read to/from external storage.
+     * @return true if permission is granted, false if not
+     */
     private Boolean checkPermissionToWriteAndRead() {
         if (!PermissionManager.permissionToWriteExternalStorage(this.context)) {
             ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);

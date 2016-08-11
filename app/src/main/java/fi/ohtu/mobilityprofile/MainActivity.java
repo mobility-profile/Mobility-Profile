@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -22,6 +23,7 @@ import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
+import fi.ohtu.mobilityprofile.util.ProfileBackup;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
@@ -42,14 +44,17 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home).setContentDescription("HOME");
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setContentDescription("LAST SEARCHES");
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10).setContentDescription("FAVOURITES");
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setContentDescription("INFO");
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home).setContentDescription("Privacy");
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setContentDescription("Last searches");
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10).setContentDescription("Favourite places");
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setContentDescription("Info");
+
 
         //testData();
         checkSecurity();
         createTransportModes();
+        new ProfileBackup(this).handleBackup("import");
     }
 
     /**

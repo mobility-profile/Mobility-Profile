@@ -76,8 +76,6 @@
                 android:value=".MainActivity" />
         </activity>
 
-
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"
@@ -87,7 +85,7 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="61" />
+            android:value="68" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />

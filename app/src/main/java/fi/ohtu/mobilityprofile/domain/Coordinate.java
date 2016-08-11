@@ -35,7 +35,7 @@ public class Coordinate extends SugarRecord implements HasCoordinate {
     /**
      * Calculates the distance between two coordinates.
      * @param coordinate coordinate which is compared to this coordinate
-     * @return distance
+     * @return distance in meters
      */
     public double distanceTo(Coordinate coordinate) {
         final int R = 6371; // Radius of the earth

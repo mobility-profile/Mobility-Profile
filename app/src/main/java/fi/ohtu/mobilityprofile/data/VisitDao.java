@@ -21,6 +21,10 @@ public class VisitDao {
                 .list();
     }
 
+    /**
+     * Returns the latest Visit from the database
+     * @return
+     */
     public static Visit getLast() {
         return Select.from(Visit.class)
                 .orderBy("enter_time DESC")

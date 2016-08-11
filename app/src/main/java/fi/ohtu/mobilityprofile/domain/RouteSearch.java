@@ -10,7 +10,6 @@ public class RouteSearch extends SugarRecord {
     long timestamp;
     String startlocation;
     String destination;
-    String nearestknownlocation;
     Coordinate startCoordinates;
     Coordinate destinationCoordinates;
 
@@ -18,35 +17,34 @@ public class RouteSearch extends SugarRecord {
      *
      */
     public RouteSearch() {
-
     }
 
     /**
      * Creates Routesearch.
-     * @param timestamp timestamp of the routesearch
+     *
+     * @param timestamp     timestamp of the routesearch
      * @param startlocation starting location of the routesearch
-     * @param destination destination of the routesearch
+     * @param destination   destination of the routesearch
      */
     public RouteSearch(long timestamp, String startlocation, String destination) {
         this.timestamp = timestamp;
         this.startlocation = startlocation;
         this.destination = destination;
-        this.nearestknownlocation = null;
     }
 
     /**
      * Creates Routesearch.
-     * @param timestamp timestamp of the routesearch
-     * @param startlocation starting location of the routesearch
-     * @param destination destination of the routesearch
-     * @param startCoordinates coordinates of the starting location
+     *
+     * @param timestamp              timestamp of the routesearch
+     * @param startlocation          starting location of the routesearch
+     * @param destination            destination of the routesearch
+     * @param startCoordinates       coordinates of the starting location
      * @param destinationCoordinates coordinates of the destination
      */
     public RouteSearch(long timestamp, String startlocation, String destination, Coordinate startCoordinates, Coordinate destinationCoordinates) {
         this.timestamp = timestamp;
         this.startlocation = startlocation;
         this.destination = destination;
-        this.nearestknownlocation = null;
         this.startCoordinates = startCoordinates;
         this.destinationCoordinates = destinationCoordinates;
     }
@@ -63,12 +61,16 @@ public class RouteSearch extends SugarRecord {
         return destination;
     }
 
-    public void setNearestKnownLocation(String nearestKnownLocation) {
-        this.nearestknownlocation = nearestKnownLocation;
-    }
-
     public Coordinate getStartCoordinates() {
         return startCoordinates;
+    }
+
+    public void setStartCoordinates(Coordinate startCoordinates) {
+        this.startCoordinates = startCoordinates;
+    }
+
+    public void setDestinationCoordinates(Coordinate destinationCoordinates) {
+        this.destinationCoordinates = destinationCoordinates;
     }
 
     public Coordinate getDestinationCoordinates() {

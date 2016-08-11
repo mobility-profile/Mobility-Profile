@@ -17,6 +17,9 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import fi.ohtu.mobilityprofile.MainActivity;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.TestLocationDao;
+import fi.ohtu.mobilityprofile.domain.TestLocation;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
@@ -62,9 +65,9 @@ public class PlaceRecorder extends Service {
 
         // Create the notification
         Notification.Builder notification = new Notification.Builder(this)
-                .setContentTitle("Location tracking")
-                .setContentText("Mobility Profile is tracking your location")
-                .setSmallIcon(R.drawable.ic_location_on_white_24dp)
+                .setContentTitle(getString(R.string.location_tracking_title))
+                .setContentText(getString(R.string.location_tracking_description))
+                .setSmallIcon(R.drawable.ic_perm_identity_white_24dp)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
@@ -80,7 +83,7 @@ public class PlaceRecorder extends Service {
         Intent actionIntent = new Intent(this, PlaceRecorder.class);
         actionIntent.setAction(ACTION_STOP_SERVICE);
         PendingIntent actionPendingIntent = PendingIntent.getService(this, 0, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        notification.addAction(R.drawable.ic_location_off_white_24dp, "Stop tracking", actionPendingIntent);
+        notification.addAction(R.drawable.ic_location_off_white_24dp, getString(R.string.stop_location_tracking), actionPendingIntent);
 
         // Start the service
         startForeground(NOTIFICATION_ID, notification.build());
@@ -95,9 +98,9 @@ public class PlaceRecorder extends Service {
         /**
          * Creates PlaceRecorder
          *
-         * @param provider        GPS or Network
-         * @param context
-         * @param locationManager
+         * @param provider GPS or Network
+         * @param context context used for creating GpsPointClusterizer
+         * @param locationManager LocationManager
          */
         public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
@@ -108,7 +111,11 @@ public class PlaceRecorder extends Service {
                 if (location != null) {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
-                    saveGpsPoint(location);
+
+                    if(location.getAccuracy() < 50) {
+                        saveGPSPoint(location);
+                    }
+
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -117,15 +124,23 @@ public class PlaceRecorder extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
+            //uncomment this to save TestLocation objects to database, useful for getting test data etc
+            //TestLocationDao.insert(new TestLocation(location));
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
-            saveGpsPoint(location);
-            gpsPointClusterizer.updateVisitHistory(GpsPointDao.getAll());
+
+            if(location.getAccuracy() < 50) {
+                saveGPSPoint(location);
+                gpsPointClusterizer.updateVisitHistory(GpsPointDao.getAll());
+            }
         }
 
-        private void saveGpsPoint(Location location) {
-            System.out.println(System.currentTimeMillis());
-            GpsPoint gpsPoint = new GpsPoint(System.currentTimeMillis(), new Float(location.getLatitude()), new Float(location.getLongitude()));
+        /**
+         * Creates new GpsPoint from the given location and inserts it to the database.
+         * @param location location
+         */
+        private void saveGPSPoint(Location location) {
+            GpsPoint gpsPoint = new GpsPoint(System.currentTimeMillis(), location.getAccuracy(), new Float(location.getLatitude()), new Float(location.getLongitude()));
             GpsPointDao.insert(gpsPoint);
         }
 
@@ -160,8 +175,8 @@ public class PlaceRecorder extends Service {
      */
     private void initializeLocationListeners() {
         mLocationListeners = new LocationListener[]{
-                new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
-                new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
+            new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
+            new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
         };
     }
 

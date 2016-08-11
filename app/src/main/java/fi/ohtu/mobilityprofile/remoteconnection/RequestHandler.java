@@ -1,5 +1,6 @@
 package fi.ohtu.mobilityprofile.remoteconnection;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,7 @@ import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
@@ -24,6 +26,8 @@ import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConvertListener;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
 
@@ -31,6 +35,7 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
+    private Context context;
     private DestinationLogic destinationLogic;
 
     /**
@@ -38,7 +43,8 @@ public class RequestHandler extends Handler {
      *
      * @param destinationLogic Journey planner that provides the logic for our app
      */
-    public RequestHandler(DestinationLogic destinationLogic) {
+    public RequestHandler(Context context, DestinationLogic destinationLogic) {
+        this.context = context;
         this.destinationLogic = destinationLogic;
     }
 
@@ -76,7 +82,7 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Returns a message with data that tells the most likely destinations calculated in Mobility Profile.
+     * Returns a message with data that contains the most likely destinations within cities.
      *
      * @return Response message
      */
@@ -84,6 +90,10 @@ public class RequestHandler extends Handler {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfIntraCitySuggestions(getStartLocation()));
     }
 
+    /**
+     * Returns a message with data that contains the most likely destinations between cities.
+     * @return response message
+     */
     private Message processInterCitySuggestionsRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfInterCitySuggestions(getStartLocation()));
     }
@@ -114,6 +124,11 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     * Processes used intraCityRoutes by inserting them to the database.
+     * @param startLocation startig location of the route
+     * @param destination destination of the route
+     */
     private void processIntraCityRoute(String startLocation, String destination) {
         List<Suggestion> suggestions = destinationLogic.getLatestSuggestions();
         for (Suggestion suggestion : suggestions) {
@@ -123,8 +138,20 @@ public class RequestHandler extends Handler {
             }
         }
 
-        RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
-        RouteSearchDao.insertRouteSearch(routeSearch);
+        final RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
+
+        AddressConverter.convertToCoordinates(context, startLocation, new AddressConvertListener() {
+            @Override
+            public void addressConverted(String address, Coordinate coordinate) {
+                processRouteSearch(routeSearch, coordinate, null);
+            }
+        });
+        AddressConverter.convertToCoordinates(context, destination, new AddressConvertListener() {
+            @Override
+            public void addressConverted(String address, Coordinate coordinate) {
+                processRouteSearch(routeSearch, null, coordinate);
+            }
+        });
         
         FavouritePlace fav = FavouritePlaceDao.findFavouritePlaceByAddress(destination);
         if (fav != null) {
@@ -132,6 +159,26 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     * Processes RouteSearches by inserting them to the database.
+     * @param routeSearch Routesearch
+     * @param start starting coordinates
+     * @param destination destination coordinates
+     */
+    private void processRouteSearch(RouteSearch routeSearch, Coordinate start, Coordinate destination) {
+        if (start != null) routeSearch.setStartCoordinates(start);
+        if (destination != null) routeSearch.setDestinationCoordinates(destination);
+
+        if (routeSearch.getStartCoordinates() != null && routeSearch.getDestinationCoordinates() != null) {
+            RouteSearchDao.insertRouteSearch(routeSearch);
+        }
+    }
+
+    /**
+     * Processes used interCityRoutes by inserting them to the database.
+     * @param startLocation starting location of the route
+     * @param destination destination of the route
+     */
     private void processInterCityRoute(String startLocation, String destination) {
         InterCitySearch interCitySearch = new InterCitySearch(startLocation, destination, System.currentTimeMillis());
         InterCitySearchDao.insertInterCitySearch(interCitySearch);

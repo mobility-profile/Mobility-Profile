@@ -7,7 +7,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 
 /**
- * DAO used for saving and reading GPSPoints to/from the database.
+ * DAO used for saving and reading GpsPoints to/from the database.
  */
 public class GpsPointDao {
 
@@ -17,16 +17,16 @@ public class GpsPointDao {
      * @return Latest GpsPoint
      */
     public static GpsPoint getLatest() {
-        List<GpsPoint> GpsPoints = Select.from(GpsPoint.class).orderBy("timestamp DESC").limit("1").list();
-        assert GpsPoints.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-        if (GpsPoints.size() == 0) {
+        List<GpsPoint> gpsPoints = Select.from(GpsPoint.class).orderBy("timestamp DESC").limit("1").list();
+        assert gpsPoints.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
+        if (gpsPoints.size() == 0) {
             return null;
         }
-        return GpsPoints.get(0);
+        return gpsPoints.get(0);
     }
 
     /**
-     * Returns a list of all GPSPoints.
+     * Returns a list of all GpsPoints.
      *
      * @return list of GPSPoints
      */
@@ -44,6 +44,10 @@ public class GpsPointDao {
         gpsPoint.save();
     }
 
+    /**
+     * Deletes given GpsPoint.
+     * @param gpsPoint gpsPoint to be deleted
+     */
     public static void delete(GpsPoint gpsPoint) {
         gpsPoint.delete();
     }
