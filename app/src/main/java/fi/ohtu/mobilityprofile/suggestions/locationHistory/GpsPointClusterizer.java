@@ -98,12 +98,11 @@ public class GpsPointClusterizer {
             @Override
             public void addressConverted(String address, Coordinate coordinate) {
                 place.setAddress(address);
+                place.setName(address);
                 PlaceDao.insertPlace(place);
             }
         });
 
-        place.setName(place.getAddress());
-        PlaceDao.insertPlace(place);
         return place;
     }
 
