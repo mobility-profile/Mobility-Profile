@@ -8,12 +8,15 @@ import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 
 /**
- *
+ * This class is used to store groups of GpsPoints that create clusters.
  */
 public class Cluster {
     private List<GpsPoint> gpsPoints;
     private boolean insufficientData;
 
+    /**
+     * Creates Cluster.
+     */
     public Cluster() {
         gpsPoints = new ArrayList<>();
         insufficientData = false;
@@ -43,11 +46,19 @@ public class Cluster {
         return insufficientData;
     }
 
+    /**
+     * Calculates the time spent within the cluster.
+     * @return time in milliseconds
+     */
     public long timeSpent() {
         Collections.sort(gpsPoints);
         return gpsPoints.size() > 0 ? gpsPoints.get(gpsPoints.size() - 1).getTimestamp() - gpsPoints.get(0).getTimestamp() : 0;
     }
 
+    /**
+     * Calculates the center coordinate of the cluster
+     * @return center coordinate
+     */
     public Coordinate centerCoordinate() {
         float lat = 0;
         float lon = 0;

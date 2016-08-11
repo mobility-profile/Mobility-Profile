@@ -14,9 +14,16 @@ import fi.ohtu.mobilityprofile.domain.TransportMode;
  */
 public class TransportModeDao {
 
+    /**
+     * Creates TransportModeDao.
+     */
     public TransportModeDao() {
     }
 
+    /**
+     * Returns a list of preferred transport modes.
+     * @return list of transport modes
+     */
     public static List<TransportMode> getPreferredTransportModes() {
         List<TransportMode> modes = TransportMode.listAll(TransportMode.class);
         List<TransportMode> remove = new ArrayList<>();
@@ -32,6 +39,10 @@ public class TransportModeDao {
         return modes;
     }
 
+    /**
+     * Returns names of the preferred transport modes in JsonArray.
+     * @return jsonArray of transport mode names
+     */
     public static JSONArray getNamesOfPreferredTransportModes() {
         JSONArray modes = new JSONArray();
         for (TransportMode m : getPreferredTransportModes()) {

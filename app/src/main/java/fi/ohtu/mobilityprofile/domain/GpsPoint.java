@@ -22,8 +22,9 @@ public class GpsPoint extends SugarRecord implements HasCoordinate, Comparable<G
     /**
      * Creates GpsPoint.
      * @param timestamp timestamp of the visit
-     * @param latitude latitude
-     * @param longitude longitude
+     * @param accuracy accuracy of the gpsPoint location
+     * @param latitude latitude of the location
+     * @param longitude longitude of the location
      */
     public GpsPoint(long timestamp, float accuracy, Float latitude, Float longitude) {
         this.timestamp = timestamp;

@@ -29,6 +29,12 @@ public class FavouritePlace extends SugarRecord {
         this.counter = 1;
     }
 
+    /**
+     * Creates FavouritePlace.
+     * @param name the name the user has given to this location.
+     * @param address the address of the location.
+     * @param coordinate coordinates of the location
+     */
     public FavouritePlace(String name, String address, Coordinate coordinate) {
         this.name = name;
         this.address = address;

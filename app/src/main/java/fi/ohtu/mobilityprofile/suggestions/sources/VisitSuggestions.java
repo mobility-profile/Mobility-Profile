@@ -23,6 +23,7 @@ public class VisitSuggestions implements SuggestionSource {
 
     private Map<Place, Integer> lowerAccuracySuggestions;
     private GpsPointClusterizer gpsPointClusterizer;
+
     /**
      * Creates VisitSuggestions.
      */
@@ -67,6 +68,7 @@ public class VisitSuggestions implements SuggestionSource {
      * Calculates next destinations based on visited SignificantPlaces in the past.
      *
      * @param startLocation starting location
+     * @return HashMap of next destinations
      */
     private Map<Place, Integer> calculateNextDestinations(StartLocation startLocation) {
 
@@ -75,7 +77,7 @@ public class VisitSuggestions implements SuggestionSource {
         if (visits.size() > 3) {
 
             Place currentPlace = VisitDao.getLast().getPlace();
-            if (currentPlace.getCoordinate().distanceTo(startLocation.getCoordinate()) < 50) {
+            if (currentPlace.getCoordinate().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
 
                 Place previousLocation = visits.get(1).getPlace();
                 Place beforePrevious = visits.get(2).getPlace();
@@ -96,7 +98,7 @@ public class VisitSuggestions implements SuggestionSource {
                         //it is added to list of destinations of lower accuracy.
                         else if (visits.get(i + 1).getPlace().equals(previousLocation)
                                 && !nextDestinations.containsKey(visits.get(i - 1).getPlace())) {
-                                addToNextDestinations(visits.get(i - 1).getPlace(), lowerAccuracySuggestions);
+                            addToNextDestinations(visits.get(i - 1).getPlace(), lowerAccuracySuggestions);
                         }
                     }
                 }
@@ -105,6 +107,12 @@ public class VisitSuggestions implements SuggestionSource {
         return nextDestinations;
     }
 
+    /**
+     * Checks if the user is still at the last visit location
+     * @param startLocation user's current location
+     * @param lastVisit the last known visit
+     * @return true if the user is still at the location, false if not
+     */
     private boolean userStillAtLastVisitLocation(StartLocation startLocation, Visit lastVisit) {
         return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < gpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD * 2 && startLocation.distanceTo(lastVisit) < gpsPointClusterizer.CLUSTER_RADIUS;
     }
@@ -114,6 +122,7 @@ public class VisitSuggestions implements SuggestionSource {
      * current location by one.
      *
      * @param nextDestination possible next destination
+     * @param nextDestinations hashMap of nextDestinations
      */
     private void addToNextDestinations(Place nextDestination, Map<Place, Integer> nextDestinations) {
         int count = nextDestinations.containsKey(nextDestination) ? nextDestinations.get(nextDestination) : 0;
