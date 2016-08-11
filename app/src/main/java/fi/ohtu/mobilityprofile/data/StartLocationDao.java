@@ -54,7 +54,9 @@ public class StartLocationDao {
      */
     private static void deleteAllData() {
         for(StartLocation startLocation : getAll()) {
-            startLocation.getCoordinate().delete();
+            if (startLocation.getCoordinate() != null) {
+                startLocation.getCoordinate().delete();
+            }
             startLocation.delete();
         }
     }

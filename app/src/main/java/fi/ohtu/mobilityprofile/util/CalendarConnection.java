@@ -90,7 +90,7 @@ public class CalendarConnection {
         while (cursor.moveToNext()) {
             String location = cursor.getString(LOCATION);
             if (location != null) {
-                final Suggestion suggestion = new Suggestion(location, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION, null);
+                final Suggestion suggestion = new Suggestion(location, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION, new Coordinate(0, 0));
                 AddressConverter.convertToCoordinates(context, location, new AddressConvertListener() {
                     @Override
                     public void addressConverted(String address, Coordinate coordinate) {
