@@ -34,7 +34,7 @@ import fi.ohtu.mobilityprofile.domain.RouteSearch;
  */
 public class AddressConverter {
 
-    //use this RequestQueue instead of Vollew.newRequestQueue(context) in unit tests
+    //use this RequestQueue instead of Volley.newRequestQueue(context) in unit tests
     public static RequestQueue newVolleyRequestQueueForTest(final Context context) {
         File cacheDir = new File(context.getCacheDir(), "cache/volley");
         Network network = new BasicNetwork(new HurlStack());
@@ -44,7 +44,16 @@ public class AddressConverter {
         return queue;
     }
 
-    public static void convertToAddress(Context context, final Coordinate coordinate, final AddressConvertListener callback) {
+    /**
+     * Converts coordinates to an adress. This is an asynchronous process,
+     * {@link AddressConvertListener#addressConverted(String, Coordinate)} will be called after it
+     * has completed.
+     *
+     * @param context Context for creating the request queue
+     * @param coordinate Coordinates to be converted
+     * @param listener Listener for the callback after coordinates have been converted
+     */
+    public static void convertToAddress(Context context, final Coordinate coordinate, final AddressConvertListener listener) {
         String url = "https://search.mapzen.com/v1/reverse?api_key=search-xPjnrpR&point.lat="
                 + coordinate.getLatitude() + "&point.lon="
                 + coordinate.getLongitude() + "&layers=address&size=1&sources=osm";
@@ -67,7 +76,7 @@ public class AddressConverter {
 
                                 Log.i("AddressConverter", "Converted address is: " + address);
 
-                                callback.addressConverted(address, coordinate);
+                                listener.addressConverted(address, coordinate);
                             }
                         } catch (Exception e) {
                             Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");
@@ -75,23 +84,26 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
-                        error.printStackTrace();
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
+                error.printStackTrace();
 
-                    }
-                });
+            }
+        });
         queue.add(stringRequest);
     }
 
     /**
-     * Converts an address to coordinates.
+     * Converts an address to coordinates. This is an asynchronous process,
+     * {@link AddressConvertListener#addressConverted(String, Coordinate)} will be called after it
+     * has completed.
      *
-     * @param address the address
-     * @param context for new request queue
+     * @param context Context for creating the request queue
+     * @param address Address to be converted
+     * @param listener Listener for the callback after address has been converted
      */
-    public static void convertToCoordinates(Context context, final String address, final AddressConvertListener callback) {
+    public static void convertToCoordinates(Context context, final String address, final AddressConvertListener listener) {
 
         String url = "https://search.mapzen.com/v1/search?api_key=search-xPjnrpR&text="
                 + address + "&layers=address&size=1&sources=osm&boundary.country=FIN";
@@ -114,7 +126,7 @@ public class AddressConverter {
 
                                 Coordinate coordinate = new Coordinate(lat, lon);
 
-                                callback.addressConverted(address, coordinate);
+                                listener.addressConverted(address, coordinate);
 
                                 Log.i("AddressConverter", "Converted coordinates are: " + lat + "," + lon);
                             }
