@@ -17,6 +17,8 @@ public class RouteSearch extends SugarRecord {
      *
      */
     public RouteSearch() {
+        this.startCoordinates = new Coordinate(0f, 0f);
+        this.destinationCoordinates = new Coordinate(0f, 0f);
     }
 
     /**

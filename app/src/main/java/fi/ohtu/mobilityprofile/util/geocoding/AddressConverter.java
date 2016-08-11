@@ -45,7 +45,7 @@ public class AddressConverter {
     }
 
     /**
-     * Converts coordinates to an adress. This is an asynchronous process,
+     * Converts coordinates to an address. This is an asynchronous process,
      * {@link AddressConvertListener#addressConverted(String, Coordinate)} will be called after it
      * has completed.
      *
@@ -59,7 +59,6 @@ public class AddressConverter {
                 + coordinate.getLongitude() + "&layers=address&size=1&sources=osm";
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        //RequestQueue queue = newVolleyRequestQueueForTest(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

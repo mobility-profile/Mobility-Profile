@@ -10,6 +10,13 @@ import android.provider.CalendarContract;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.suggestions.Suggestion;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
+import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConvertListener;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
+
 /**
  * Class is used to get events from calendars.
  */
@@ -24,8 +31,8 @@ public class CalendarConnection {
     };
 
     private Context context;
-    private List<String> eventLocations;
-    private List<String> allDayEventLocations;
+    private List<Suggestion> eventLocations;
+    private List<Suggestion> allDayEventLocations;
     private static final int HOUR = 3600 * 1000;
     private static final int LOCATION = 0;
     private static final int ALL_DAY = 1;
@@ -83,10 +90,18 @@ public class CalendarConnection {
         while (cursor.moveToNext()) {
             String location = cursor.getString(LOCATION);
             if (location != null) {
+                final Suggestion suggestion = new Suggestion(location, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION, null);
+                AddressConverter.convertToCoordinates(context, location, new AddressConvertListener() {
+                    @Override
+                    public void addressConverted(String address, Coordinate coordinate) {
+                        suggestion.setCoordinate(coordinate);
+                    }
+                });
+
                 if (cursor.getString(ALL_DAY).equals("1469491200000")) {
-                    allDayEventLocations.add(location);
+                    allDayEventLocations.add(suggestion);
                 } else {
-                    eventLocations.add(location);
+                    eventLocations.add(suggestion);
                 }
             }
         }
@@ -97,7 +112,7 @@ public class CalendarConnection {
      *
      * @return locations of the events
      */
-    public List<String> getEventLocations() {
+    public List<Suggestion> getEventLocations() {
         return eventLocations;
     }
 
@@ -106,7 +121,7 @@ public class CalendarConnection {
      *
      * @return locations of the events
      */
-    public List<String> getAllDayEventLocations() {
+    public List<Suggestion> getAllDayEventLocations() {
         return allDayEventLocations;
     }
 }

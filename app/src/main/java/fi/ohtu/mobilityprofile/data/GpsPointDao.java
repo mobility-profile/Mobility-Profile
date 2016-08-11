@@ -1,7 +1,10 @@
 package fi.ohtu.mobilityprofile.data;
 
+import com.orm.SugarRecord;
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
@@ -28,7 +31,7 @@ public class GpsPointDao {
     /**
      * Returns a list of all GpsPoints.
      *
-     * @return list of GPSPoints
+     * @return list of GpsPoints
      */
     public static List<GpsPoint> getAll() {
         return Select.from(GpsPoint.class).orderBy("timestamp ASC").list();
@@ -61,4 +64,5 @@ public class GpsPointDao {
             gpsPoint.delete();
         }
     }
+
 }
