@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 
 /**
@@ -20,7 +21,7 @@ public class DestinationLogic {
     public static final int INTRA_CITY_SUGGESTION = 1;
     public static final int INTER_CITY_SUGGESTION = 2;
 
-    private GpsPoint latestStartLocation;
+    private StartLocation latestStartLocation;
     private List<Suggestion> latestSuggestions;
     private List<SuggestionSource> suggestionSources;
 
@@ -45,7 +46,7 @@ public class DestinationLogic {
      * @param startLocation Place where the user is starting
      * @return List of most probable destinations
      */
-    public String getListOfIntraCitySuggestions(GpsPoint startLocation) {
+    public String getListOfIntraCitySuggestions(StartLocation startLocation) {
         this.latestStartLocation = startLocation;
         this.latestSuggestionType = INTRA_CITY_SUGGESTION;
 
@@ -64,7 +65,7 @@ public class DestinationLogic {
      * @param startLocation Location where the user is starting
      * @return List of most probable destinations
      */
-    public String getListOfInterCitySuggestions(GpsPoint startLocation) {
+    public String getListOfInterCitySuggestions(StartLocation startLocation) {
         this.latestStartLocation = startLocation;
         this.latestSuggestionType = INTER_CITY_SUGGESTION;
 
@@ -99,7 +100,7 @@ public class DestinationLogic {
      *
      * @return Latest start location
      */
-    public GpsPoint getLatestStartLocation() {
+    public StartLocation getLatestStartLocation() {
         return latestStartLocation;
     }
 

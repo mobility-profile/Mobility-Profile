@@ -9,6 +9,7 @@ import java.util.Map;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 
 import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -36,7 +37,7 @@ public class VisitSuggestions implements SuggestionSource {
      * @return List of probable destinations
      */
     @Override
-    public List<Suggestion> getSuggestions(GpsPoint startLocation) {
+    public List<Suggestion> getSuggestions(StartLocation startLocation) {
         Map<Place, Integer> nextDestinations = calculateNextDestinations(startLocation);
         List<Suggestion> suggestions = new ArrayList<>();
 
@@ -67,7 +68,7 @@ public class VisitSuggestions implements SuggestionSource {
      *
      * @param startLocation starting location
      */
-    private Map<Place, Integer> calculateNextDestinations(GpsPoint startLocation) {
+    private Map<Place, Integer> calculateNextDestinations(StartLocation startLocation) {
 
         List<Visit> visits = VisitDao.getAll();
         Map<Place, Integer> nextDestinations = new HashMap<>();
@@ -104,7 +105,7 @@ public class VisitSuggestions implements SuggestionSource {
         return nextDestinations;
     }
 
-    private boolean userStillAtLastVisitLocation(GpsPoint startLocation, Visit lastVisit) {
+    private boolean userStillAtLastVisitLocation(StartLocation startLocation, Visit lastVisit) {
         return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < gpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD * 2 && startLocation.distanceTo(lastVisit) < gpsPointClusterizer.CLUSTER_RADIUS;
     }
 

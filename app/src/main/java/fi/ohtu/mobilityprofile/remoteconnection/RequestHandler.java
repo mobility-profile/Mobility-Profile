@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
+import fi.ohtu.mobilityprofile.data.StartLocationDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -142,8 +144,8 @@ public class RequestHandler extends Handler {
      *
      * @return Start location address
      */
-    private GpsPoint getStartLocation() {
-        GpsPoint lastKnownGpsPoint = GpsPointDao.getLatest();
+    private StartLocation getStartLocation() {
+        StartLocation lastKnownGpsPoint = StartLocationDao.getStartLocation();
         if (lastKnownGpsPoint == null) {
             // TODO something better
             return null;

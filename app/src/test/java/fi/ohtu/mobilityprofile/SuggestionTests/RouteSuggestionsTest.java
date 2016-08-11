@@ -18,6 +18,7 @@ import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 
@@ -49,7 +50,7 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() + 3 * HOUR, "Lauttasaari",  "Kamppi", lauttaGps, kamppiGps));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Pitäjänmäki",  "Sörnäinen", pitajanGps, sornGps));
 
-        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GpsPoint(System.currentTimeMillis(), 0, lauttaGps.getLatitude(), lauttaGps.getLongitude()));
+        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new StartLocation(System.currentTimeMillis(), 0, lauttaGps.getLatitude(), lauttaGps.getLongitude()));
         assertEquals(1, suggestions.size());
         assertEquals("Ruoholahti", suggestions.get(0).getDestination());
     }
@@ -61,7 +62,7 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Pitäjänmäki",  "Sörnäinen", pitajanGps, sornGps));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() + 3 * HOUR, "Ruoholahti", "Lauttasaari", ruohoGps, lauttaGps));
 
-        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GpsPoint(0, 0, ruohoGps.getLatitude(), ruohoGps.getLongitude()));
+        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new StartLocation(0, 0, ruohoGps.getLatitude(), ruohoGps.getLongitude()));
         assertEquals(0, suggestions.size());
     }
 
@@ -71,7 +72,7 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() - HOUR, "Lauttasaari",  "Kamppi", lauttaGps, kamppiGps));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Pitäjänmäki",  "Sörnäinen", pitajanGps, sornGps));
 
-        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new GpsPoint(0, 0, lauttaGps.getLatitude(), lauttaGps.getLongitude()));
+        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new StartLocation(0, 0, lauttaGps.getLatitude(), lauttaGps.getLongitude()));
         assertEquals(2, suggestions.size());
 
         List<String> destinations = new ArrayList<>();

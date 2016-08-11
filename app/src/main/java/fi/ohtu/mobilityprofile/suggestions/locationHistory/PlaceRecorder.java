@@ -18,7 +18,9 @@ import android.util.Log;
 
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.StartLocationDao;
 import fi.ohtu.mobilityprofile.data.TestLocationDao;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.domain.TestLocation;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
@@ -112,6 +114,8 @@ public class PlaceRecorder extends Service {
                     mLastLocation = location;
                     Log.i(TAG, "In constructor of LocationListener " + provider + ", we found location: " + mLastLocation);
 
+                    StartLocationDao.insert(new StartLocation(location.getTime(), location.getAccuracy(), new Float(location.getLatitude()), new Float(location.getLongitude())));
+
                     if(location.getAccuracy() < 50) {
                         saveGPSPoint(location);
                     }
@@ -126,6 +130,7 @@ public class PlaceRecorder extends Service {
         public void onLocationChanged(Location location) {
             //uncomment this to save TestLocation objects to database, useful for getting test data etc
             //TestLocationDao.insert(new TestLocation(location));
+            StartLocationDao.insert(new StartLocation(location.getTime(), location.getAccuracy(), new Float(location.getLatitude()), new Float(location.getLongitude())));
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
 
