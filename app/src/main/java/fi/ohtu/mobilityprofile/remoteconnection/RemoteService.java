@@ -17,6 +17,7 @@ import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 import fi.ohtu.mobilityprofile.suggestions.sources.VisitSuggestions;
+import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
 
 
@@ -39,7 +40,9 @@ public class RemoteService extends Service {
 
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
 
-                suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this)));
+                if (PermissionManager.permissionToReadCalendar(this)) {
+                    suggestionSources.add(new CalendarSuggestions(new CalendarConnection(this)));
+                }
                 suggestionSources.add(new VisitSuggestions());
                 suggestionSources.add(new RouteSuggestions());
                 suggestionSources.add(new FavoriteSuggestions());
