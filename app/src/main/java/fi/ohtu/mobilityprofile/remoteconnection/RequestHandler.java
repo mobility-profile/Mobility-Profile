@@ -26,8 +26,8 @@ import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.AddressConvertCallback;
-import fi.ohtu.mobilityprofile.suggestions.locationHistory.AddressConverter;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConvertListener;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
 
@@ -131,13 +131,13 @@ public class RequestHandler extends Handler {
 
         final RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
 
-        AddressConverter.convertToCoordinates(context, startLocation, new AddressConvertCallback() {
+        AddressConverter.convertToCoordinates(context, startLocation, new AddressConvertListener() {
             @Override
             public void addressConverted(String address, Coordinate coordinate) {
                 processRouteSearch(routeSearch, coordinate, null);
             }
         });
-        AddressConverter.convertToCoordinates(context, destination, new AddressConvertCallback() {
+        AddressConverter.convertToCoordinates(context, destination, new AddressConvertListener() {
             @Override
             public void addressConverted(String address, Coordinate coordinate) {
                 processRouteSearch(routeSearch, null, coordinate);
@@ -156,7 +156,6 @@ public class RequestHandler extends Handler {
 
         if (routeSearch.getStartCoordinates() != null && routeSearch.getDestinationCoordinates() != null) {
             RouteSearchDao.insertRouteSearch(routeSearch);
-            System.out.println("AAA " + routeSearch.getStartCoordinates() + " " + routeSearch.getDestinationCoordinates());
         }
     }
 

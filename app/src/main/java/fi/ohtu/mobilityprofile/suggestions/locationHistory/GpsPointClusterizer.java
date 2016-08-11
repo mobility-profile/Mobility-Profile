@@ -12,6 +12,8 @@ import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConvertListener;
+import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 /**
  * Class for clusterizing places into significant locations
@@ -89,9 +91,17 @@ public class GpsPointClusterizer {
     }
 
     private Place createPlace(Coordinate coordinate) {
-        Place place = new Place("name", "address", coordinate);
+        final Place place = new Place("name", "address", coordinate);
         PlaceDao.insertPlace(place);
-        AddressConverter.getAddressAndSave(place, context);
+
+        AddressConverter.convertToAddress(context, coordinate, new AddressConvertListener() {
+            @Override
+            public void addressConverted(String address, Coordinate coordinate) {
+                place.setAddress(address);
+                PlaceDao.insertPlace(place);
+            }
+        });
+
         place.setName(place.getAddress());
         PlaceDao.insertPlace(place);
         return place;

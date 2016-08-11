@@ -1,7 +1,7 @@
-package fi.ohtu.mobilityprofile.suggestions.locationHistory;
+package fi.ohtu.mobilityprofile.util.geocoding;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 
-public interface AddressConvertCallback {
+public interface AddressConvertListener {
     void addressConverted(String address, Coordinate coordinate);
 }
