@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.TransportMode;
+import fi.ohtu.mobilityprofile.util.ProfileBackup;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
@@ -39,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10);
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home).setText("Privacy");
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setText("Last searches");
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10).setText("Favourite places");
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setText("Info");
 
         checkSecurity();
         createTransportModes();
+        new ProfileBackup(this).handleBackup("import");
     }
 
     /**
