@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <!-- A child of the main activity -->
+        <!-- Children of the main activity -->
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" >
@@ -46,9 +46,28 @@
                 android:value=".MainActivity" />
         </activity>
 
-        <!-- A child of the main activity -->
         <activity
             android:name=".BackUpActivity"
+            android:parentActivityName=".MainActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.activities.FavouriteListItemActivity"
+            android:parentActivityName=".MainActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.activities.SuggestionListItemActivity"
             android:parentActivityName=".MainActivity" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -66,13 +85,16 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="65" />
+            android:value="71" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="fi.ohtu" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB1nfSKgfJISha9v1pMNOA-7mQkd2LRc7o"/>
 
         <service
             android:name=".remoteconnection.RemoteService"

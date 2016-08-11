@@ -10,7 +10,10 @@
         android:width="150dp"
         android:layout_marginStart="20dp"
         android:id="@+id/editFavouriteName"
-        android:hint="@string/favourites_name_hint" />
+        android:hint="@string/favourites_name_hint"
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="#b9b5b5"
+        android:backgroundTint="@color/colorAccentOrange" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -18,5 +21,8 @@
         android:width="150dp"
         android:layout_marginStart="20dp"
         android:id="@+id/editFavouriteAddress"
-        android:hint="@string/favourites_address_hint"/>
+        android:hint="@string/favourites_address_hint"
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="#b9b5b5"
+        android:backgroundTint="@color/colorAccentOrange" />
 </LinearLayout>

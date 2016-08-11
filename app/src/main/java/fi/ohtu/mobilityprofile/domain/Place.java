@@ -12,7 +12,6 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
     private String name;
     private String address;
     private boolean favourite;
-    private boolean unfavourited;
     private Coordinate coordinate;
 
     /**
@@ -22,8 +21,19 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
         this.name = "name";
         this.address = "address";
         this.favourite = false;
-        this.unfavourited = false;
         this.coordinate = new Coordinate(0f, 0f);
+    }
+
+    /**
+     * Creates Place.
+     * @param name Name of the Place
+     * @param address Address of the Place
+     */
+    public Place(String name, String address) {
+        this.name = name;
+        this.address = address;
+        this.favourite = false;
+        this.coordinate = null;
     }
 
     /**
@@ -36,13 +46,16 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
         this.name = name;
         this.address = address;
         this.favourite = false;
-        this.unfavourited = false;
         this.coordinate = coordinate;
     }
 
     @Override
     public Coordinate getCoordinate() {
         return this.coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getAddress() {
@@ -93,15 +106,12 @@ public class Place extends SugarRecord implements HasAddress, HasCoordinate {
         this.favourite = favourite;
     }
 
-    public boolean isUnfavourited() {
-        return unfavourited;
-    }
-
-    public void setUnfavourited(boolean unfavourited) {
-        this.unfavourited = unfavourited;
-    }
-
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return getAddress();
     }
 }

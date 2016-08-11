@@ -121,7 +121,7 @@ public class DestinationLogic {
 
         Feature feature = new Feature();
         if (suggestion.getCoordinate() != null) {
-            feature.setGeometry(new Point(suggestion.getCoordinate().getLongitude(), suggestion.getCoordinate().getLatitude()));
+            feature.setGeometry(new Point(suggestion.getCoordinate().getLatitude(),suggestion.getCoordinate().getLongitude()));
         }
         try {
             feature.setProperties(new JSONObject().put("label", suggestion.getDestination()).put("layer", "mobilityprofile"));

@@ -3,18 +3,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
-    <ImageButton
-        android:id="@+id/favourite_auto_generated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_wizard"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@string/favourite_auto_generated_hint"
-        android:padding="5dp"/>
-
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/favourites_item"
-        android:layout_width="320dp"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -25,33 +16,25 @@
     </TextView>
 
     <ImageButton
-        android:id="@+id/favourites_edit"
+        android:id="@+id/favourites_star_unfilled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_edit"
-        android:contentDescription="@string/favourites_edit_title"
-        android:padding="5dp"
-        android:layout_gravity="end">
-    </ImageButton>
-
-    <ImageButton
-        android:id="@+id/favourites_verify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_tick"
+        android:src="@drawable/ic_action_star_0"
         android:contentDescription="@string/favourites_verify_title"
         android:padding="5dp"
-        android:layout_gravity="end">
+        android:layout_gravity="end"
+        android:background="@color/colorWhite">
     </ImageButton>
 
     <ImageButton
-        android:id="@+id/favourites_delete"
+        android:id="@+id/favourites_star_filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_heart_broken"
-        android:contentDescription="@string/favourites_delete_title"
+        android:src="@drawable/ic_action_star_10"
+        android:contentDescription="@string/favourites_verify_title"
         android:padding="5dp"
-        android:layout_gravity="end">
+        android:layout_gravity="end"
+        android:background="@color/colorWhite">
     </ImageButton>
 
 </GridLayout>
