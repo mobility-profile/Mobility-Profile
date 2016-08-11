@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile.suggestions;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 
 /**
  * Interface for different route suggestion sources.
@@ -22,5 +23,5 @@ public interface SuggestionSource {
      * @param startLocation Starting location
      * @return List of probable destinations
      */
-    List<Suggestion> getSuggestions(GpsPoint startLocation);
+    List<Suggestion> getSuggestions(StartLocation startLocation);
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 
 /**
@@ -20,7 +21,7 @@ public class DestinationLogic {
     public static final int INTRA_CITY_SUGGESTION = 1;
     public static final int INTER_CITY_SUGGESTION = 2;
 
-    private GpsPoint latestStartLocation;
+    private StartLocation latestStartLocation;
     private List<Suggestion> latestSuggestions;
     private List<SuggestionSource> suggestionSources;
 
@@ -29,9 +30,10 @@ public class DestinationLogic {
     private int latestSuggestionType;
 
     /**
-     * Creates the MobilityProfile.
+     * Creates the DestinationLogic.
      *
      * @param suggestionSources sources of the suggestions
+     * @param interCitySuggestions interCitySuggestions
      */
     public DestinationLogic(List<SuggestionSource> suggestionSources, InterCitySuggestions interCitySuggestions) {
         this.suggestionSources = suggestionSources;
@@ -45,7 +47,7 @@ public class DestinationLogic {
      * @param startLocation Place where the user is starting
      * @return List of most probable destinations
      */
-    public String getListOfIntraCitySuggestions(GpsPoint startLocation) {
+    public String getListOfIntraCitySuggestions(StartLocation startLocation) {
         this.latestStartLocation = startLocation;
         this.latestSuggestionType = INTRA_CITY_SUGGESTION;
 
@@ -64,7 +66,7 @@ public class DestinationLogic {
      * @param startLocation Location where the user is starting
      * @return List of most probable destinations
      */
-    public String getListOfInterCitySuggestions(GpsPoint startLocation) {
+    public String getListOfInterCitySuggestions(StartLocation startLocation) {
         this.latestStartLocation = startLocation;
         this.latestSuggestionType = INTER_CITY_SUGGESTION;
 
@@ -74,6 +76,11 @@ public class DestinationLogic {
         return getDestinations(suggestions);
     }
 
+    /**
+     * Returns a JsonArray of destinations.
+     * @param suggestions list of suggestions
+     * @return JsonArray of destinations
+     */
     private String getDestinations(List<Suggestion> suggestions) {
         latestSuggestions = suggestions;
 
@@ -99,7 +106,7 @@ public class DestinationLogic {
      *
      * @return Latest start location
      */
-    public GpsPoint getLatestStartLocation() {
+    public StartLocation getLatestStartLocation() {
         return latestStartLocation;
     }
 
@@ -129,11 +136,11 @@ public class DestinationLogic {
         return destination;
     }
 
-    /*
- * Returns the type of the latest suggestion.
- *
- * @return Type of the latest suggestion
- */
+   /**
+    * Returns the type of the latest suggestion.
+    *
+    * @return Type of the latest suggestion
+    */
     public int getLatestSuggestionType() {
         return latestSuggestionType;
     }

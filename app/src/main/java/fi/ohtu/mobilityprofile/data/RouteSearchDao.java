@@ -57,7 +57,7 @@ public class RouteSearchDao {
     }
 
     /**
-     * Returns a list of routesearches where the startlocation matches the given one.
+     * Returns a list of routesearches where the destination matches the given one.
      *
      * @param destination destination of the routesearches
      * @return List of routesearches
@@ -72,7 +72,7 @@ public class RouteSearchDao {
     }
 
     /**
-     * Returns a list of routesearches where the startlocation matches the given one.
+     * Returns a list of routesearches where the startlocation and destination matches the given ones.
      *
      * @param startLocation Start location of the routesearche
      * @param destination Destination of the routesearch

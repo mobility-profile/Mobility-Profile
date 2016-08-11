@@ -9,7 +9,7 @@ import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
- * DAO used for clustering visited locations.
+ * DAO used for saving and reading Places to/from the database.
  */
 public class PlaceDao {
 
@@ -63,7 +63,7 @@ public class PlaceDao {
     }
 
     /**
-     * Finds a Place by name
+     * Finds a Place by address
      * @param address address of the Place
      * @return Place with the given address
      */

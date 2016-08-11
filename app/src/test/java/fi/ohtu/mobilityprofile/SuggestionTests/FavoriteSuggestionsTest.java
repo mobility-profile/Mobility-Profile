@@ -15,6 +15,7 @@ import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 
@@ -36,7 +37,7 @@ public class FavoriteSuggestionsTest {
         FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Repe", "Sorsankatu"));
         FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Kauppa", "Kauppakatu"));
 
-        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new GpsPoint(0, 0, 0f, 0f));
+        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new StartLocation(0, 0, 0f, 0f));
         assertEquals(3, suggestions.size());
     }
 
@@ -52,14 +53,14 @@ public class FavoriteSuggestionsTest {
         FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Sali", "Urheilijankatu"));
         FavouritePlaceDao.insertFavouritePlace(new FavouritePlace("Repe", "Sorsankatu"));
 
-        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new GpsPoint(0, 0, 0f, 0f));
+        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new StartLocation(0, 0, 0f, 0f));
 
         assertEquals("Kumpulan kampus", suggestions.get(0).getDestination());
     }
 
     @Test
     public void testGetZeroSuggestions() {
-        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new GpsPoint(0, 0, 0f, 0f));
+        List<Suggestion> suggestions = favoriteSuggestions.getSuggestions(new StartLocation(0, 0, 0f, 0f));
 
         assertEquals(0, suggestions.size());
     }

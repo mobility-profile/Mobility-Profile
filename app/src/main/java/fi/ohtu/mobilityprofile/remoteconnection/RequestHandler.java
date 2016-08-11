@@ -12,12 +12,14 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
+import fi.ohtu.mobilityprofile.data.StartLocationDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
@@ -82,7 +84,7 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Returns a message with data that tells the most likely destinations calculated in Mobility Profile.
+     * Returns a message with data that contains the most likely destinations within cities.
      *
      * @return Response message
      */
@@ -90,6 +92,10 @@ public class RequestHandler extends Handler {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfIntraCitySuggestions(getStartLocation()));
     }
 
+    /**
+     * Returns a message with data that contains the most likely destinations between cities.
+     * @return response message
+     */
     private Message processInterCitySuggestionsRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfInterCitySuggestions(getStartLocation()));
     }
@@ -120,6 +126,11 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     * Processes used intraCityRoutes by inserting them to the database.
+     * @param startLocation startig location of the route
+     * @param destination destination of the route
+     */
     private void processIntraCityRoute(String startLocation, String destination) {
         List<Suggestion> suggestions = destinationLogic.getLatestSuggestions();
         for (Suggestion suggestion : suggestions) {
@@ -150,6 +161,12 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     * Processes RouteSearches by inserting them to the database.
+     * @param routeSearch Routesearch
+     * @param start starting coordinates
+     * @param destination destination coordinates
+     */
     private void processRouteSearch(RouteSearch routeSearch, Coordinate start, Coordinate destination) {
         if (start != null) routeSearch.setStartCoordinates(start);
         if (destination != null) routeSearch.setDestinationCoordinates(destination);
@@ -159,6 +176,11 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     * Processes used interCityRoutes by inserting them to the database.
+     * @param startLocation starting location of the route
+     * @param destination destination of the route
+     */
     private void processInterCityRoute(String startLocation, String destination) {
         InterCitySearch interCitySearch = new InterCitySearch(startLocation, destination, System.currentTimeMillis());
         InterCitySearchDao.insertInterCitySearch(interCitySearch);
@@ -169,8 +191,8 @@ public class RequestHandler extends Handler {
      *
      * @return Start location address
      */
-    private GpsPoint getStartLocation() {
-        GpsPoint lastKnownGpsPoint = GpsPointDao.getLatest();
+    private StartLocation getStartLocation() {
+        StartLocation lastKnownGpsPoint = StartLocationDao.getStartLocation();
         if (lastKnownGpsPoint == null) {
             // TODO something better
             return null;

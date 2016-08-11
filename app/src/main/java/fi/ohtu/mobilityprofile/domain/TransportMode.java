@@ -6,6 +6,9 @@ import com.orm.query.Select;
 
 import java.util.List;
 
+/**
+ * Class is used to save Transport modes.
+ */
 public class TransportMode extends SugarRecord {
 
     private String name;
@@ -14,6 +17,10 @@ public class TransportMode extends SugarRecord {
     public TransportMode() {
     }
 
+    /**
+     * Creates TransportMode.
+     * @param name name of the transport mode
+     */
     public TransportMode(String name) {
         this.name = name;
         this.favourite = false;
@@ -31,6 +38,11 @@ public class TransportMode extends SugarRecord {
         this.favourite = favourite;
     }
 
+    /**
+     * Finds transport mode by name.
+     * @param name name of the transport mode to be searched
+     * @return transport mode with the given name
+     */
     public static TransportMode getByName(String name) {
         List<TransportMode> modes = Select.from(TransportMode.class)
                 .where(Condition.prop("name").eq(name))

@@ -20,8 +20,9 @@ public class Visit extends SugarRecord implements HasCoordinate {
 
     /**
      * Creates Visit.
-     * @param enterTime enterTime of the visit
-     * @param place Place to be referred to
+     * @param enterTime the time the user came to this location
+     * @param exitTime the time the user left this location
+     * @param place the Place the user visited
      */
     public Visit(long enterTime, long exitTime, Place place) {
         this.enterTime = enterTime;
