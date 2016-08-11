@@ -42,7 +42,7 @@ public class RouteSuggestions implements SuggestionSource {
         int counter = 0;
 
         for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
-            if (route.getStartCoordinates().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
+            //if (route.getStartCoordinates().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
                 if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
                     if (destinations.contains(route.getDestination())) {
                         continue; // Don't add the same suggestion more than once.
@@ -56,7 +56,7 @@ public class RouteSuggestions implements SuggestionSource {
                     counter++;
                     if (counter >= 3) break; // Only suggest 3 most recent searches at most.
                 }
-            }
+            //}
         }
 
 
