@@ -969,6 +969,19 @@ public class GpsPointClusterizerTest {
     }
 
     @Test
+    public void theresAlwaysOneGpsPointInDatabase() {
+        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer(this.context);
+        for(TestObject testObject : this.testObjects) {
+            for(int i = 0; i < testObject.getTestData().size(); i++) {
+                GpsPointDao.insert(testObject.getTestData().get(i));
+                GpsPointClusterizer.updateVisitHistory(GpsPointDao.getAll());
+                assertTrue(true);
+            }
+            System.out.println("At the end theres this many gps points: " + GpsPointDao.getAll().size());
+        }
+    }
+
+    @Test
     public void clusterizerFindsCorrectPlaces() {
         GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer(this.context);
         double distanceSum = 0;
@@ -991,6 +1004,7 @@ public class GpsPointClusterizerTest {
             assertTrue(places.size() == testObject.correctCoordinates.size());
             for(int i = 0; i < testObject.correctCoordinates.size(); i++) {
                 distanceSum+=testObject.getCorrectCoordinates().get(i).distanceTo(places.get(i).getCoordinate());
+                System.out.println(testObject.getCorrectCoordinates().get(i).distanceTo(places.get(i).getCoordinate()));
                 assertTrue(testObject.getCorrectCoordinates().get(i).distanceTo(places.get(i).getCoordinate()) < 100);
             }
             PlaceDao.deleteAllData();

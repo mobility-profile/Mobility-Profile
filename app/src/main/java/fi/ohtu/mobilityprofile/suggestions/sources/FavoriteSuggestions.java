@@ -6,6 +6,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
@@ -28,7 +29,7 @@ public class FavoriteSuggestions implements SuggestionSource {
      * @return Three favorite places
      */
     @Override
-    public List<Suggestion> getSuggestions(GpsPoint startLocation) {
+    public List<Suggestion> getSuggestions(StartLocation startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
         for (FavouritePlace favouritePlace : FavouritePlaceDao.FindAmountOrderByCounter(3)) {

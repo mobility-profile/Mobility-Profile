@@ -35,7 +35,6 @@
             android:exported="true"
             android:process=":mobility_profile"
             android:permission="">
-            <!-- TODO: Require permission to use our app. -->
 
             <intent-filter>
                 <action android:name="fi.ohtu.mobilityprofile.remoteconnection.RemoteService"/>

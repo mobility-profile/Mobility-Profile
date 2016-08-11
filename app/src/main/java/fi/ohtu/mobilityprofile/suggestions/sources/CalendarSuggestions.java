@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile.suggestions.sources;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.util.CalendarConnection;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
@@ -31,7 +32,7 @@ public class CalendarSuggestions implements SuggestionSource {
      * @return List of destinations from the calendar
      */
     @Override
-    public List<Suggestion> getSuggestions(GpsPoint startLocation) {
+    public List<Suggestion> getSuggestions(StartLocation startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
         // Loop through normal events first

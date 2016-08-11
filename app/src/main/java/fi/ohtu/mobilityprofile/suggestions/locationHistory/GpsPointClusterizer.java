@@ -125,6 +125,7 @@ public class GpsPointClusterizer {
                 place.setAddress(address);
                 place.setName(address);
                 PlaceDao.insertPlace(place);
+                System.out.println("AAA asfd");
             }
         });
 
