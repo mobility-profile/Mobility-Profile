@@ -15,22 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
-import java.util.List;
-
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.domain.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
 import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 public class FavouriteListItemActivity extends AppCompatActivity {
 
     private Activity activity;
-    private FavouritePlace favouritePlace;
+    private Place favouritePlace;
     private TextView name;
     private TextView address;
     private WebView webView;
@@ -44,7 +39,7 @@ public class FavouriteListItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_significant_place);
         activity = this;
 
-        favouritePlace = getFavouritePlace(Integer.parseInt(getIntent().getStringExtra("favouriteId"))).get(0);
+        favouritePlace = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("favouriteId")));
 
         initializeViewElements();
     }
@@ -68,19 +63,6 @@ public class FavouriteListItemActivity extends AppCompatActivity {
 
         editButtonListener();
         deleteButtonListener();
-    }
-
-
-    /**
-     * Returns the favourite place by the id.
-     * @param id the id
-     * @return list of one favorite place
-     */
-    private List<FavouritePlace> getFavouritePlace(int id) {
-        return Select.from(FavouritePlace.class)
-                .where(Condition.prop("id").eq(id))
-                .limit("1")
-                .list();
     }
 
     private void editButtonListener() {
@@ -155,7 +137,7 @@ public class FavouriteListItemActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                FavouritePlaceDao.deleteFavouritePlaceById(favouritePlace.getId());
+                                PlaceDao.deletePlaceById(favouritePlace.getId());
                                 Intent main = new Intent(activity, MainActivity.class);
                                 startActivity(main);
                             }

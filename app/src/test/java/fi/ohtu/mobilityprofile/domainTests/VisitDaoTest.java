@@ -53,7 +53,7 @@ public class VisitDaoTest {
         VisitDao.insert(new Visit(345, 346, new Place("Kauppa", "Kauppakatu", new Coordinate(new Float(1), new Float(1)))));
         VisitDao.insert(new Visit(567, 568, new Place("Toimisto", "Töölö", new Coordinate(new Float(1), new Float(1)))));
         assertEquals(3, VisitDao.getAll().size());
-        VisitDao.deleteAll();
+        VisitDao.deleteAllData();
         assertEquals(0, VisitDao.getAll().size());
 
     }

@@ -3,7 +3,6 @@ package fi.ohtu.mobilityprofile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -19,9 +18,6 @@ import com.orm.SugarContext;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.util.ProfileBackup;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
@@ -119,22 +115,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void testData() {
-        if (Place.count(Place.class) == 0) {
-
-
-
-            Place place = new Place("","Liisankatu 1", new Coordinate(60.174287f, 24.960481f));
-            Place place2 = new Place("","Kanavamäki 9", new Coordinate(60.186572f, 25.057416f));
-            Place place3 = new Place("","Leppäsuonkatu 9", new Coordinate(60.169143f, 24.923136f));
-            Place place4 = new Place("","Porarinkatu 6", new Coordinate(60.225002f, 24.818110f));
-
-            PlaceDao.insertPlace(place);
-            PlaceDao.insertPlace(place2);
-            PlaceDao.insertPlace(place3);
-            PlaceDao.insertPlace(place4);
-        }
-    }
+//    private void testData() {
+//        if (Place.count(Place.class) == 0) {
+//
+//            Place place = new Place("","Liisankatu 1", new Coordinate(60.174287f, 24.960481f));
+//            Place place2 = new Place("","Kanavamäki 9", new Coordinate(60.186572f, 25.057416f));
+//            Place place3 = new Place("","Leppäsuonkatu 9", new Coordinate(60.169143f, 24.923136f));
+//
+//            PlaceDao.insertPlace(place);
+//            PlaceDao.insertPlace(place2);
+//            PlaceDao.insertPlace(place3);
+//        }
+//    }
 
     private void createTransportModes() {
         if (TransportMode.count(TransportMode.class) == 0) {

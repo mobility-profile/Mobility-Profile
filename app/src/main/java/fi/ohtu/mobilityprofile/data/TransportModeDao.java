@@ -50,4 +50,11 @@ public class TransportModeDao {
         }
         return modes;
     }
+
+    /**
+     * Deletes all TransportModes from the database.
+     */
+    public void deleteAllData() {
+        TransportMode.deleteAll(TransportMode.class);
+    }
 }

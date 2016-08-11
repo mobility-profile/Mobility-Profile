@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import fi.ohtu.mobilityprofile.data.GpsPointDao;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.StartLocationDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
@@ -23,8 +22,6 @@ import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.data.CalendarTagDao;
-import fi.ohtu.mobilityprofile.domain.FavouritePlace;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
@@ -154,11 +151,6 @@ public class RequestHandler extends Handler {
                 processRouteSearch(routeSearch, null, coordinate);
             }
         });
-        
-        FavouritePlace fav = FavouritePlaceDao.findFavouritePlaceByAddress(destination);
-        if (fav != null) {
-            fav.increaseCounter();
-        }
     }
 
     /**
@@ -194,8 +186,8 @@ public class RequestHandler extends Handler {
     private StartLocation getStartLocation() {
         StartLocation lastKnownGpsPoint = StartLocationDao.getStartLocation();
         if (lastKnownGpsPoint == null) {
-            // TODO something better
-            return null;
+            // TODO: Something better
+            return new StartLocation(System.currentTimeMillis(), 0, 0f, 0f);
         } else {
             return lastKnownGpsPoint;
         }
@@ -254,6 +246,6 @@ public class RequestHandler extends Handler {
      * @return User's favourite places as message
      */
     private Message getFavouritePlaces() {
-        return createMessage(RESPOND_FAVOURITE_PLACES, FavouritePlaceDao.getNamesOfFavouritePlaces());
+        return createMessage(RESPOND_FAVOURITE_PLACES, PlaceDao.getFavouritePlacesInJson());
     }
 }

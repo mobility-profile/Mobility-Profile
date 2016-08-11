@@ -23,9 +23,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.FavouritePlace;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
 
@@ -46,7 +44,7 @@ public class SuggestionListItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_significant_place);
         activity = this;
 
-        place = getPlace(Integer.parseInt(getIntent().getStringExtra("placeId"))).get(0);
+        place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("placeId")));
 
         initializeViewElements();
     }
@@ -75,19 +73,6 @@ public class SuggestionListItemActivity extends AppCompatActivity {
         deleteButtonListener();
     }
 
-
-    /**
-     * Returns the place by the id.
-     * @param id the id
-     * @return list of one place
-     */
-    private List<Place> getPlace(int id) {
-        return Select.from(Place.class)
-                .where(Condition.prop("id").eq(id))
-                .limit("1")
-                .list();
-    }
-
     private void setFavouriteButtonListener() {
         setFavouriteButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -106,8 +91,6 @@ public class SuggestionListItemActivity extends AppCompatActivity {
                                 EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
 
                                 if (!editTextName.equals("") && !editTextAddress.equals("")) {
-                                    FavouritePlace fav = new FavouritePlace(editTextName.getText().toString(), editTextAddress.getText().toString(), place.getCoordinate());
-                                    FavouritePlaceDao.insertFavouritePlace(fav);
 
                                     place.setName(editTextName.getText().toString());
                                     place.setAddress(editTextAddress.getText().toString());
@@ -140,22 +123,6 @@ public class SuggestionListItemActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Edits the given favourite place.
-     * @param name the new name
-     * @param address the new address
-     */
-    private void editPlace(String name, String address){
-        if (!name.equals("")) {
-            place.setName(name);
-        }
-
-        if (!address.equals("")) {
-            place.setAddress(address);
-        }
-        place.save();
-    }
-
 
     private void deleteButtonListener() {
         deleteButton.setOnClickListener(new View.OnClickListener(){
@@ -168,7 +135,7 @@ public class SuggestionListItemActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                PlaceDao.deletePlaceByAddress(place.getAddress());
+                                PlaceDao.deletePlaceById(place.getId());
                                 Intent main = new Intent(activity, MainActivity.class);
                                 startActivity(main);
                             }

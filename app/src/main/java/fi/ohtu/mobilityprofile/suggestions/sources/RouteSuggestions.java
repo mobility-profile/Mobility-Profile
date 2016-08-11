@@ -59,8 +59,6 @@ public class RouteSuggestions implements SuggestionSource {
                 }
             }
         }
-
-
         return suggestions;
     }
 

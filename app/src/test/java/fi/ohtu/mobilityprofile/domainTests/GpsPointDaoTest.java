@@ -66,7 +66,7 @@ public class GpsPointDaoTest {
         GpsPointDao.insert(new GpsPoint(123, "Kumpula"));
         GpsPointDao.insert(new GpsPoint(234, "Kumpula"));
         assertEquals(2, GpsPointDao.getVisitsByLocation("Kumpula").size());
-        fi.ohtu.mobilityprofile.data.GpsPointDao.deleteAll();
+        fi.ohtu.mobilityprofile.data.GpsPointDao.deleteAllData();
         assertEquals(0, GpsPointDao.getVisitsByLocation("Kumpula").size());
     }*/
 }

@@ -56,7 +56,7 @@
 
     <string name="reset_all_button_text">Reset app and delete all data</string>
     <string name="reset_title">Delete all collected data?</string>
-    <string name="reset_message">Deletes all collected data, including visited places, searched routes, and favourite places.</string>
+    <string name="reset_message">Deletes all collected data, including location history, searched routes and favourite places.</string>
 
 
     <string name="custom_permission_info">Allows the software to use information provided by Mobility Profile. Exact data collected by Mobility Profile won\'t be shared, only suggestions Mobility Profile is giving based on that data.</string>

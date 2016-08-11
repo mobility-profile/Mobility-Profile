@@ -16,22 +16,15 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.concurrent.Executors;
 
-import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.FavouritePlace;
-import fi.ohtu.mobilityprofile.domain.GpsPoint;
-import fi.ohtu.mobilityprofile.domain.RouteSearch;
+import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
  * This class is used for converting GPS coordinates to an actual address and save that address to the database.
@@ -154,7 +147,7 @@ public class AddressConverter {
      *
      * @param context for new request queue
      */
-    public static void convertFavouriteAddressToCoordinatesAndSave(final FavouritePlace favouritePlace, Context context) {
+    public static void convertFavouriteAddressToCoordinatesAndSave(final Place favouritePlace, Context context) {
 
         String url = "https://search.mapzen.com/v1/search?api_key=search-xPjnrpR&text="
                 + favouritePlace.getAddress() + "&layers=address&size=1&sources=osm&boundary.country=FIN";

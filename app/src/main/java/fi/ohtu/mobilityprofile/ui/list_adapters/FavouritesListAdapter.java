@@ -22,19 +22,17 @@ import com.orm.query.Select;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.domain.FavouritePlace;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.domain.SignificantPlace;
 import fi.ohtu.mobilityprofile.ui.activities.FavouriteListItemActivity;
 import fi.ohtu.mobilityprofile.ui.activities.SuggestionListItemActivity;
 
 /**
  * This class adapts a list of SignificantPlace to ListView.
  */
-public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
+public class FavouritesListAdapter extends ArrayAdapter<Place> {
 
-    private List<SignificantPlace> items;
+    private List<Place> items;
     private int resourceId;
     private Context context;
     private Fragment fragment;
@@ -51,7 +49,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
      * @param items      list of favourite places
      * @param fragment   fragment
      */
-    public SignificantsListAdapter(Context context, int resourceId, List<SignificantPlace> items, Fragment fragment) {
+    public FavouritesListAdapter(Context context, int resourceId, List<Place> items, Fragment fragment) {
         super(context, resourceId, items);
         this.resourceId = resourceId;
         this.context = context;
@@ -71,17 +69,18 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
         starFilled = (ImageButton) view.findViewById(R.id.favourites_star_filled);
         starUnfilled = (ImageButton) view.findViewById(R.id.favourites_star_unfilled);
 
-        if (getItem(position).getClass().equals(FavouritePlace.class)) {
+        if (getItem(position).isFavourite()) {
             starUnfilled.setVisibility(View.GONE);
             starFilled.setVisibility(View.VISIBLE);
             setColorsForFavourite(view);
+            listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
         } else {
             starFilled.setVisibility(View.GONE);
             starUnfilled.setVisibility(View.VISIBLE);
             setColorsForPlace(view);
+            listItemText.setText(items.get(position).toString());
         }
 
-        listItemText.setText(items.get(position).toString());
         itemTextListener(position);
         starUnfilledListener(position);
         starFilledListener(position);
@@ -93,7 +92,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
         starUnfilled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Place place = getPlace(position).get(0);
+                final Place place = PlaceDao.getPlaceById(getItemId(position));
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 View dialogView = LayoutInflater.from(context).inflate(R.layout.significant_place_dialog_edit, null);
@@ -108,15 +107,13 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
                                 EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
 
                                 if (!editTextName.equals("") && !editTextAddress.equals("")) {
-                                    FavouritePlace fav = new FavouritePlace(editTextName.getText().toString(), editTextAddress.getText().toString(), place.getCoordinate());
-                                    FavouritePlaceDao.insertFavouritePlace(fav);
 
                                     place.setName(editTextName.getText().toString());
                                     place.setAddress(editTextAddress.getText().toString());
+                                    place.setCoordinate(place.getCoordinate());
                                     place.setFavourite(true);
                                     place.save();
 
-                                    items.remove(position);
                                     notifyDataSetChanged();
                                 }
 
@@ -154,7 +151,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
 
-                                FavouritePlaceDao.deleteFavouritePlaceById(getItemId(position));
+                                PlaceDao.deletePlaceById(getItemId(position));
                                 items.remove(position);
                                 notifyDataSetChanged();
 
@@ -178,7 +175,7 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
             @Override
             public void onClick(View v) {
 
-                if (getItem(position).getClass().equals(FavouritePlace.class)) {
+                if (getItem(position).isFavourite()) {
                     Intent favouriteIntent = new Intent(context, FavouriteListItemActivity.class);
                     favouriteIntent.putExtra("favouriteId", getItemId(position) + "");
                     fragment.getActivity().startActivity(favouriteIntent);
@@ -221,97 +218,12 @@ public class SignificantsListAdapter extends ArrayAdapter<SignificantPlace> {
     }
 
     @Override
-    public SignificantPlace getItem(int pos) {
+    public Place getItem(int pos) {
         return items.get(pos);
     }
 
     @Override
     public long getItemId(int pos) {
-        return items.get(pos).getID();
+        return items.get(pos).getId();
     }
-
-    /**
-     * Returns the significant place by the position.
-     * @param position the position of the item in the list
-     * @return list of one significant place
-     */
-    private List<Place> getPlace(int position) {
-        return Select.from(Place.class)
-                .where(Condition.prop("id").eq(getItemId(position)))
-                .limit("1")
-                .list();
-    }
-
 }
-
-//        private void deleteButtonListener(final int position) {
-//            deleteButton.setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View v) {
-//                    final Place place = getPlace(position).get(0);
-//
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                    View dialogView = LayoutInflater.from(context).inflate(R.layout.favourite_suggestion_edit_dialog, null);
-//
-//                    builder
-//                            .setView(dialogView)
-//                            .setTitle(R.string.favourites_auto_generated_delete_title)
-//                            .setPositiveButton(R.string.unfavourite, new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int id) {
-//
-//                                    EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
-//
-//                                    if (!editTextAddress.equals("")) {
-//                                        place.updateAddress(editTextAddress.getText().toString());
-//                                    }
-//
-//                                    place.setUnfavourited(true);
-//                                    PlaceDao.insertPlace(place);
-//                                    items.remove(position);
-//                                    updateView();
-//
-//                                }
-//                            })
-//                            .setNegativeButton(R.string.forget, new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    place.delete();
-//                                    items.remove(position);
-//                                    notifyDataSetChanged();
-//                                }
-//                            });
-//
-//                    EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
-//                    editTextAddress.setText(place.getAddress());
-//
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
-//
-//                }
-//            });
-//        }
-//
-//
-//        private void wizardListener() {
-//            wizard.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                    View dialogView = LayoutInflater.from(context).inflate(R.layout.favourite_suggestion_dialog, null);
-//
-//                    builder
-//                            .setView(dialogView)
-//                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                }
-//                            })
-//                            .setTitle(R.string.favourite_auto_generated_title);
-//
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
-//                }
-//            });
-//        }

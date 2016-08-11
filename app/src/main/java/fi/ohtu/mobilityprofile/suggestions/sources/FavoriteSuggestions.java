@@ -3,9 +3,8 @@ package fi.ohtu.mobilityprofile.suggestions.sources;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.FavouritePlaceDao;
-import fi.ohtu.mobilityprofile.domain.FavouritePlace;
-import fi.ohtu.mobilityprofile.domain.GpsPoint;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
@@ -23,16 +22,16 @@ public class FavoriteSuggestions implements SuggestionSource {
     }
 
     /**
-     * Returns three most used favorite places.
+     * Returns the favorite places.
      *
      * @param startLocation Location where the user starts the journey
-     * @return Three favorite places
+     * @return The favorite places
      */
     @Override
     public List<Suggestion> getSuggestions(StartLocation startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
-        for (FavouritePlace favouritePlace : FavouritePlaceDao.FindAmountOrderByCounter(3)) {
+        for (Place favouritePlace : PlaceDao.getFavouritePlaces()) {
             Suggestion suggestion = new Suggestion(favouritePlace.getAddress(), SuggestionAccuracy.MODERATE, FAVORITE_SUGGESTION, favouritePlace.getCoordinate());
             suggestions.add(suggestion);
         }
