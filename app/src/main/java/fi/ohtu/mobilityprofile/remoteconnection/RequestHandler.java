@@ -194,8 +194,8 @@ public class RequestHandler extends Handler {
     private StartLocation getStartLocation() {
         StartLocation lastKnownGpsPoint = StartLocationDao.getStartLocation();
         if (lastKnownGpsPoint == null) {
-            // TODO something better
-            return null;
+            // TODO: Something better
+            return new StartLocation(System.currentTimeMillis(), 0, 0f, 0f);
         } else {
             return lastKnownGpsPoint;
         }
