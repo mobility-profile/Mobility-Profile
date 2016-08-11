@@ -29,9 +29,10 @@ public class DestinationLogic {
     private int latestSuggestionType;
 
     /**
-     * Creates the MobilityProfile.
+     * Creates the DestinationLogic.
      *
      * @param suggestionSources sources of the suggestions
+     * @param interCitySuggestions interCitySuggestions
      */
     public DestinationLogic(List<SuggestionSource> suggestionSources, InterCitySuggestions interCitySuggestions) {
         this.suggestionSources = suggestionSources;
@@ -74,6 +75,11 @@ public class DestinationLogic {
         return getDestinations(suggestions);
     }
 
+    /**
+     * Returns a JsonArray of destinations.
+     * @param suggestions list of suggestions
+     * @return JsonArray of destinations
+     */
     private String getDestinations(List<Suggestion> suggestions) {
         latestSuggestions = suggestions;
 
@@ -129,11 +135,11 @@ public class DestinationLogic {
         return destination;
     }
 
-    /*
- * Returns the type of the latest suggestion.
- *
- * @return Type of the latest suggestion
- */
+   /**
+    * Returns the type of the latest suggestion.
+    *
+    * @return Type of the latest suggestion
+    */
     public int getLatestSuggestionType() {
         return latestSuggestionType;
     }

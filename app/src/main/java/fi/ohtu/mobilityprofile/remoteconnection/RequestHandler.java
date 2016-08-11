@@ -76,7 +76,7 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Returns a message with data that tells the most likely destinations calculated in Mobility Profile.
+     * Returns a message with data that contains the most likely destinations within cities.
      *
      * @return Response message
      */
@@ -84,6 +84,10 @@ public class RequestHandler extends Handler {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfIntraCitySuggestions(getStartLocation()));
     }
 
+    /**
+     * Returns a message with data that contains the most likely destinations between cities.
+     * @return response message
+     */
     private Message processInterCitySuggestionsRequest() {
         return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfInterCitySuggestions(getStartLocation()));
     }
@@ -114,6 +118,11 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     * Processes used intraCityRoutes by inserting them to the database.
+     * @param startLocation startig location of the route
+     * @param destination destination of the route
+     */
     private void processIntraCityRoute(String startLocation, String destination) {
         List<Suggestion> suggestions = destinationLogic.getLatestSuggestions();
         for (Suggestion suggestion : suggestions) {
@@ -132,6 +141,11 @@ public class RequestHandler extends Handler {
         }
     }
 
+    /**
+     * Processes used interCityRoutes by inserting them to the database.
+     * @param startLocation starting location of the route
+     * @param destination destination of the route
+     */
     private void processInterCityRoute(String startLocation, String destination) {
         InterCitySearch interCitySearch = new InterCitySearch(startLocation, destination, System.currentTimeMillis());
         InterCitySearchDao.insertInterCitySearch(interCitySearch);

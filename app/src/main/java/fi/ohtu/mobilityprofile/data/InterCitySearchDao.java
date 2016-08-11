@@ -8,6 +8,7 @@ import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 
 public class InterCitySearchDao {
+
     /**
      * Returns all saved searches.
      *

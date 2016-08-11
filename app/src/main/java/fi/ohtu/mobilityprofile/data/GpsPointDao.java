@@ -7,7 +7,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 
 /**
- * DAO used for saving and reading GPSPoints to/from the database.
+ * DAO used for saving and reading GpsPoints to/from the database.
  */
 public class GpsPointDao {
 
@@ -26,7 +26,7 @@ public class GpsPointDao {
     }
 
     /**
-     * Returns a list of all GPSPoints.
+     * Returns a list of all GpsPoints.
      *
      * @return list of GPSPoints
      */
@@ -44,6 +44,10 @@ public class GpsPointDao {
         gpsPoint.save();
     }
 
+    /**
+     * Deletes given GpsPoint.
+     * @param gpsPoint gpsPoint to be deleted
+     */
     public static void delete(GpsPoint gpsPoint) {
         gpsPoint.delete();
     }
