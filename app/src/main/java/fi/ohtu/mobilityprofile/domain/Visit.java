@@ -31,7 +31,7 @@ public class Visit extends SugarRecord implements HasCoordinate {
     }
 
     public long getEnterTime() {
-        return enterTime;
+        return this.enterTime;
     }
 
     public long getExitTime() {
@@ -43,11 +43,11 @@ public class Visit extends SugarRecord implements HasCoordinate {
     }
 
     public Place getPlace() {
-        return place;
+        return this.place;
     }
 
     public String getAddress() {
-        return place.getAddress();
+        return this.place.getAddress();
     }
 
     public void setPlace(Place place) {

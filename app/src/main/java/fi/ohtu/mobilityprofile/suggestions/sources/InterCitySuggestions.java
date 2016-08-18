@@ -25,11 +25,12 @@ public class InterCitySuggestions implements SuggestionSource {
     public List<Suggestion> getSuggestions(StartLocation startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
-        int counter = 0;
         for (InterCitySearch search : InterCitySearchDao.getAllSearches()) {
             suggestions.add(new Suggestion(search.getDestination(), SuggestionAccuracy.MODERATE, INTER_CITY_SUGGESTION, null));
-            counter++;
-            if (counter == 5) break;
+            
+            if (suggestions.size() >= 5) {
+                break;
+            }
         }
 
         return suggestions;

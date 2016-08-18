@@ -40,7 +40,6 @@ public class RouteSuggestions implements SuggestionSource {
         List<Suggestion> suggestions = new ArrayList<>();
         Set<String> destinations = new HashSet<>();
 
-        int counter = 0;
 
         for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
             if (route.getStartCoordinates().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
@@ -54,8 +53,7 @@ public class RouteSuggestions implements SuggestionSource {
 
                     destinations.add(route.getDestination());
 
-                    counter++;
-                    if (counter >= 3) break; // Only suggest 3 most recent searches at most.
+                    if (suggestions.size() >= 3) break; // Only suggest 3 most recent searches at most.
                 }
             }
         }

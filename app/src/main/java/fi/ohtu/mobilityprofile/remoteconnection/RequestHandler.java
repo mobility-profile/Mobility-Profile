@@ -188,9 +188,9 @@ public class RequestHandler extends Handler {
         if (lastKnownGpsPoint == null) {
             // TODO: Something better
             return new StartLocation(System.currentTimeMillis(), 0, 0f, 0f);
-        } else {
-            return lastKnownGpsPoint;
         }
+        return lastKnownGpsPoint;
+        
     }
 
     private Message getTransportPreferences() {

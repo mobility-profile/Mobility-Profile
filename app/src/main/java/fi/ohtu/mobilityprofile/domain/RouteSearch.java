@@ -52,19 +52,19 @@ public class RouteSearch extends SugarRecord {
     }
 
     public long getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     public String getStartlocation() {
-        return startlocation;
+        return this.startlocation;
     }
 
     public String getDestination() {
-        return destination;
+        return this.destination;
     }
 
     public Coordinate getStartCoordinates() {
-        return startCoordinates;
+        return this.startCoordinates;
     }
 
     public void setStartCoordinates(Coordinate startCoordinates) {
@@ -76,7 +76,7 @@ public class RouteSearch extends SugarRecord {
     }
 
     public Coordinate getDestinationCoordinates() {
-        return destinationCoordinates;
+        return this.destinationCoordinates;
     }
 
     @Override
