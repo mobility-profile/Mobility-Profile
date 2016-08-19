@@ -1,5 +1,5 @@
 mobilityprofile.db
-algotestausta.gpx
+algotestausta*.gpx
 *.iml
 .gradle
 /local.properties
