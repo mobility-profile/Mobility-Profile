@@ -6,18 +6,12 @@ import com.orm.SugarRecord;
  * Class is used to save raw gps data.
  */
 public class StartLocation extends GpsPoint {
-    long timestamp;
-    float accuracy;
-    Coordinate coordinate;
 
     /**
      *
      */
     public StartLocation() {
         super();
-        // this.timestamp = 0;
-        // this.accuracy = 0;
-        // this.coordinate = new Coordinate(0f, 0f);
     }
 
     /**
@@ -28,40 +22,6 @@ public class StartLocation extends GpsPoint {
      */
     public StartLocation(long timestamp, float accuracy, Float latitude, Float longitude) {
         super(timestamp, accuracy, latitude, longitude);
-        // this.timestamp = timestamp;
-        // this.accuracy = accuracy;
-        // this.coordinate = new Coordinate(latitude, longitude);
     }
-
-    // public long getTimestamp() {
-    //     return this.timestamp;
-    // }
-    //
-    // public float getAccuracy() {
-    //     return this.accuracy;
-    // }
-    //
-    // @Override
-    // public Coordinate getCoordinate() {
-    //     return this.coordinate;
-    // }
-    //
-    // public Float getLatitude() {
-    //     return this.coordinate.getLatitude();
-    // }
-    //
-    // public Float getLongitude() {
-    //     return this.coordinate.getLongitude();
-    // }
-    //
-    // @Override
-    // public String toString() {
-    //     return "lat=" + " lon=";
-    // }
-    //
-    // @Override
-    // public double distanceTo(HasCoordinate hasCoordinate) {
-    //     return this.coordinate.distanceTo(hasCoordinate.getCoordinate());
-    // }
 
 }

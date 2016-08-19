@@ -59,6 +59,6 @@ public class RequestHandlerTest {
         msg.setData(bundle);
 
         requestHandler.handleMessage(msg);
-        assertTrue(RouteSearchDao.getLatestRouteSearch().getDestination().equals("Naantali"));
+        assertEquals(RouteSearchDao.getLatestRouteSearch().getDestination(), "Naantali");
     }
 }
