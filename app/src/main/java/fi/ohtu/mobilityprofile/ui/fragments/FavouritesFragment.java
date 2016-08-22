@@ -36,6 +36,8 @@ public class FavouritesFragment extends Fragment {
      */
     private static final int page = 2;
     private Context context;
+    private FavouritesListAdapter adapter;
+    private int items = 0;
 
     /**
      * Creates a new instance of FavouritesFragment.
@@ -69,14 +71,25 @@ public class FavouritesFragment extends Fragment {
         setFavouritesListView(view);
     }
 
+    @Override
+    public void onResume() {
+        Log.i(title, "onResumed");
+        super.onResume();
+        if (Place.count(Place.class) < items) {
+            updateView();
+        }
+
+    }
+
     private void setFavouritesListView(View view) {
         List<Place> favouritePlaces = Place.listAll(Place.class);
+        items = favouritePlaces.size();
 
-        final FavouritesListAdapter adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
+        adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
         listView.setAdapter(adapter);
 
-        addButtonListener(view, adapter);
+        addButtonListener(view);
     }
 
     @Override
@@ -88,9 +101,8 @@ public class FavouritesFragment extends Fragment {
     /**
      * Listener to add favourite place button
      * @param view view inside the fragment
-     * @param adapter FavouritesListAdapter
      */
-    private void addButtonListener(final View view, final FavouritesListAdapter adapter) {
+    private void addButtonListener(final View view) {
 
         Button button = (Button) view.findViewById(R.id.add_favourite_button);
         final EditText addFavouriteName = (EditText) view.findViewById(R.id.add_favourite_name);
@@ -107,7 +119,7 @@ public class FavouritesFragment extends Fragment {
                     fav.setFavourite(true);
                     fav.save();
 
-                    updateView(adapter);
+                    updateView();
                     addFavouriteName.setText("");
                     addFavouriteAddress.setText("");
                 }
@@ -119,9 +131,8 @@ public class FavouritesFragment extends Fragment {
 
     /**
      * Updates the favourites fragment view
-     * @param adapter FavouritesListAdapter
      */
-    private void updateView(FavouritesListAdapter adapter) {
+    private void updateView() {
         FragmentTransaction tr = getFragmentManager().beginTransaction();
         tr.detach(this);
         tr.attach(this);

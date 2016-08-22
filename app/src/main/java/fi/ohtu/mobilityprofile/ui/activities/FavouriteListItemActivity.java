@@ -20,6 +20,7 @@ import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
+import fi.ohtu.mobilityprofile.ui.fragments.FavouritesFragment;
 import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 public class FavouriteListItemActivity extends AppCompatActivity {
@@ -138,8 +139,7 @@ public class FavouriteListItemActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 PlaceDao.deletePlaceById(favouritePlace.getId());
-                                Intent main = new Intent(activity, MainActivity.class);
-                                startActivity(main);
+                                finish();
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

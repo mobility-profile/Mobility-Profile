@@ -183,6 +183,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
                     Intent placeIntent = new Intent(context, SuggestionListItemActivity.class);
                     placeIntent.putExtra("placeId", getItemId(position) + "");
                     fragment.getActivity().startActivity(placeIntent);
+
                 }
 
             }

@@ -136,8 +136,7 @@ public class SuggestionListItemActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 PlaceDao.deletePlaceById(place.getId());
-                                Intent main = new Intent(activity, MainActivity.class);
-                                startActivity(main);
+                                finish();
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
