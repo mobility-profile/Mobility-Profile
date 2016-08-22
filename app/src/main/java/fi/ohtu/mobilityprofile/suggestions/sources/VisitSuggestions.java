@@ -115,7 +115,7 @@ public class VisitSuggestions implements SuggestionSource {
      * @return true if the user is still at the location, false if not
      */
     private boolean userStillAtLastVisitLocation(StartLocation startLocation, Visit lastVisit) {
-        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < gpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD * 2 && startLocation.distanceTo(lastVisit) < gpsPointClusterizer.CLUSTER_RADIUS;
+        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < gpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD * 2 && startLocation.distanceTo(lastVisit.getPlace().getCoordinate()) < gpsPointClusterizer.CLUSTER_RADIUS;
     }
 
     /**

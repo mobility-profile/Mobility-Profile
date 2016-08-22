@@ -5,7 +5,7 @@ import com.orm.SugarRecord;
 /**
  * Class is used to save visits to Places.
  */
-public class Visit extends SugarRecord implements HasCoordinate {
+public class Visit extends SugarRecord {
     private long enterTime;
     private long exitTime;
     private Place place;
@@ -54,14 +54,7 @@ public class Visit extends SugarRecord implements HasCoordinate {
         this.place = place;
     }
 
-    @Override
-    public Coordinate getCoordinate() {
-        return this.getPlace().getCoordinate();
+    public double distanceTo(Coordinate coordinate) {
+        return getPlace().getCoordinate().distanceTo(coordinate);
     }
-
-    @Override
-    public double distanceTo(HasCoordinate hasCoordinate) {
-        return this.getPlace().getCoordinate().distanceTo(hasCoordinate.getCoordinate());
-    }
-
 }

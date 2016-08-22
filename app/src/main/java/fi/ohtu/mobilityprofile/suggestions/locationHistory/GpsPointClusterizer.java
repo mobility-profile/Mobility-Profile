@@ -138,7 +138,7 @@ public class GpsPointClusterizer {
      * @return speed of the transition
      */
     private double speedBetweenPlaces(GpsPoint gpsPoint1, GpsPoint gpsPoint2) {
-        double distance = Math.max(gpsPoint1.distanceTo(gpsPoint2) - gpsPoint1.getAccuracy() - gpsPoint2.getAccuracy(), 0);
+        double distance = Math.max(gpsPoint1.distanceTo(gpsPoint2.getCoordinate()) - gpsPoint1.getAccuracy() - gpsPoint2.getAccuracy(), 0);
         return distance / ((gpsPoint2.getTimestamp() / 1000) - (gpsPoint1.getTimestamp() / 1000));
     }
 
