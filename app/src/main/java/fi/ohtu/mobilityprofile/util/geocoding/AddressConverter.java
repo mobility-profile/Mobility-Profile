@@ -1,8 +1,10 @@
 package fi.ohtu.mobilityprofile.util.geocoding;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PointF;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.ExecutorDelivery;
 import com.android.volley.Network;
@@ -16,6 +18,10 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -147,7 +153,7 @@ public class AddressConverter {
      *
      * @param context for new request queue
      */
-    public static void convertFavouriteAddressToCoordinatesAndSave(final Place favouritePlace, Context context) {
+    public static void convertFavouriteAddressToCoordinatesAndSave(final Place favouritePlace, final Context context) {
 
         String url = "https://search.mapzen.com/v1/search?api_key=search-xPjnrpR&text="
                 + favouritePlace.getAddress() + "&layers=address&size=1&sources=osm&boundary.country=FIN";
@@ -174,10 +180,79 @@ public class AddressConverter {
                                 favouritePlace.setCoordinate(coordinate);
                                 favouritePlace.save();
                                 System.out.println(lat + " " + lon);
+                            } else {
+                                Toast.makeText(context, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
                             Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");
                             e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
+                error.printStackTrace();
+
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    /**
+     * Converts an address to coordinates and saves it.
+     * Also updates the map and recreates the activity.
+     * @param favouritePlace place
+     * @param googleMap for update it
+     * @param activity for recreating it
+     * @param context for new request queue
+     */
+    public static void convertFavouriteAddressToCoordinatesAndSave(final Place favouritePlace, final Context context, final GoogleMap googleMap, final Activity activity) {
+
+        String url = "https://search.mapzen.com/v1/search?api_key=search-xPjnrpR&text="
+                + favouritePlace.getAddress() + "&layers=address&size=1&sources=osm&boundary.country=FIN";
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject json = new JSONObject(response);
+                            JSONArray features = new JSONArray(json.get("features").toString());
+                            if (features.length() > 0) {
+                                JSONObject zero = new JSONObject(features.get(0).toString());
+                                JSONObject geometry = new JSONObject(zero.get("geometry").toString());
+                                JSONArray coordinates = new JSONArray(geometry.get("coordinates").toString());
+
+                                Float lat = Float.parseFloat(coordinates.get(1).toString());
+                                Float lon = Float.parseFloat((coordinates.get(0).toString()));
+
+                                Coordinate coordinate = new Coordinate(lat, lon);
+                                coordinate.save();
+
+                                favouritePlace.setCoordinate(coordinate);
+                                favouritePlace.save();
+                                System.out.println(lat + " " + lon);
+
+                                LatLng point = new LatLng(favouritePlace.getCoordinate().getLatitude(), favouritePlace.getCoordinate().getLongitude());
+
+                                googleMap.setMyLocationEnabled(true);
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 17));
+
+                                googleMap.addMarker(new MarkerOptions()
+                                        .title(favouritePlace.getName())
+                                        .position(point));
+                                activity.recreate();
+                            } else {
+                                activity.recreate();
+                                Toast.makeText(context, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            Log.e("AddressConverter", "Exception in onResponse-method in convertToAddress-method of AddressConverter");
+
+                            e.printStackTrace();
+
                         }
                     }
                 }, new Response.ErrorListener() {

@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.domain;
 
+import android.util.Log;
+
 import com.orm.SugarRecord;
 
 import fi.ohtu.mobilityprofile.data.PlaceDao;
@@ -75,7 +77,12 @@ public class Place extends SugarRecord {
 
     @Override
     public boolean delete() {
-        this.coordinate.delete();
+        try {
+            this.coordinate.delete();
+        } catch (Exception e) {
+            Log.i("Place", "Place didn't have coordinates!");
+        }
+
         return super.delete();
     }
 

@@ -67,6 +67,8 @@ dependencies {
 
     compile 'com.google.android.gms:play-services-identity:8.1.0'
     compile 'com.google.android.gms:play-services-location:8.1.0'
+    compile 'com.google.android.gms:play-services-maps:8.1.0'
+
     compile('pub.devrel:easypermissions:0.1.5') {
         exclude group: 'com.android.support'
     }
