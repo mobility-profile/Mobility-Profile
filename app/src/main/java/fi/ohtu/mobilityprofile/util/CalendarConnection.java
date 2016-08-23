@@ -91,6 +91,7 @@ public class CalendarConnection {
     private void getLocations(Cursor cursor) {
         while (cursor.moveToNext()) {
             String location = cursor.getString(LOCATION);
+
             if (location == null) continue;
 
             Coordinate coordinate = AddressConverter.convertToCoordinates(context, location);
@@ -103,7 +104,7 @@ public class CalendarConnection {
 
             Suggestion suggestion = new Suggestion(location, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION, coordinate);
 
-            if (cursor.getString(ALL_DAY).equals("1469491200000")) {
+            if (cursor.getString(ALL_DAY).equals("1")) {
                 allDayEventLocations.add(suggestion);
             } else {
                 eventLocations.add(suggestion);

@@ -39,6 +39,7 @@ public class RequestHandler extends Handler {
     /**
      * Creates the RequestHandler.
      *
+     * @param context context
      * @param destinationLogic Journey planner that provides the logic for our app
      */
     public RequestHandler(Context context, DestinationLogic destinationLogic) {

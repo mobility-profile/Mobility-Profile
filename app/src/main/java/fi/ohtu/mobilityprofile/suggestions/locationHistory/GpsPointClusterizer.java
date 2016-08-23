@@ -15,7 +15,7 @@ import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 /**
- * Class for clusterizing places into significant locations
+ * Class for clustering places into significant locations
  */
 public class GpsPointClusterizer {
 

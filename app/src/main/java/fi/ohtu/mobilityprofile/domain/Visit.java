@@ -54,7 +54,12 @@ public class Visit extends SugarRecord {
         this.place = place;
     }
 
+    /**
+     * Returns the distance between this Visit and given coordinate
+     * @param coordinate coordinate to be compared
+     * @return distance
+     */
     public double distanceTo(Coordinate coordinate) {
-        return getPlace().getCoordinate().distanceTo(coordinate);
+        return this.place.getCoordinate().distanceTo(coordinate);
     }
 }

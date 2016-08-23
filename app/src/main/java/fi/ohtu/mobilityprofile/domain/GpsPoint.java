@@ -59,8 +59,13 @@ public class GpsPoint extends SugarRecord implements Comparable<GpsPoint> {
         return "lat=" + " lon=";
     }
 
+    /**
+     * Returns the distance between this GpsPoint and given coordinate
+     * @param coordinate the coordinate to be compared
+     * @return distance
+     */
     public double distanceTo(Coordinate coordinate) {
-        return getCoordinate().distanceTo(coordinate);
+        return this.coordinate.distanceTo(coordinate);
     }
 
     @Override

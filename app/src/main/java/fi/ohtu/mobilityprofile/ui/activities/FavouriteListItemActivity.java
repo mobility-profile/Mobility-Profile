@@ -21,6 +21,9 @@ import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
 import fi.ohtu.mobilityprofile.util.AddressConverter;
 
+/**
+ * Class is used to create a list of favourites in the ui.
+ */
 public class FavouriteListItemActivity extends AppCompatActivity {
 
     private Activity activity;

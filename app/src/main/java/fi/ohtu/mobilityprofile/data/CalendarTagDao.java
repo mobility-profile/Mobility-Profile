@@ -11,6 +11,7 @@ import fi.ohtu.mobilityprofile.domain.CalendarTag;
  * DAO used for saving and reading CalendarTags to/from the database.
  */
 public class CalendarTagDao {
+
     /**
      * Returns a calendar tag that has the given key. If there are multiple tags with the same key,
      * the tag with the highest counter is returned. Returns null if no tags with the given key

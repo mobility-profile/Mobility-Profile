@@ -17,7 +17,7 @@ import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
 
 /**
- * This class creates suggestions based on previous route searches user has made.
+ * This class creates suggestions based on previous route searches the user has made.
  */
 public class RouteSuggestions implements SuggestionSource {
 
@@ -39,8 +39,7 @@ public class RouteSuggestions implements SuggestionSource {
     public List<Suggestion> getSuggestions(StartLocation startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
         Set<String> destinations = new HashSet<>();
-
-
+        
         for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
             if (route.getStartCoordinates().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
                 if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {

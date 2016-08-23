@@ -125,14 +125,13 @@ public class PlaceDao {
         }
     }
 
-
     /**
      * Returns places with favourite = true
+     * @return list of all favourited Places
      */
     public static List<Place> getFavouritePlaces() {
         List<Place> allPlaces = Place.listAll(Place.class);
         List<Place> remove = new ArrayList<>();
-
 
         for (Place place: allPlaces) {
             if (!place.isFavourite()) {
@@ -144,9 +143,9 @@ public class PlaceDao {
         return allPlaces;
     }
 
-
     /**
      * Returns places with favourite = true
+     * @return JSONArray of favourited places in String
      */
     public static String getFavouritePlacesInJson() {
         List<Place> allPlaces = Place.listAll(Place.class);
