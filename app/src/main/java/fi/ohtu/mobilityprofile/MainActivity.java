@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home).setContentDescription("Privacy");
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setContentDescription("Last searches");
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_star_10).setContentDescription("Favourite places");
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setContentDescription("Info");
+        //tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setContentDescription("Last searches");
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_star_10).setContentDescription("Favourite places");
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_info).setContentDescription("Info");
 
 
 //        testData();

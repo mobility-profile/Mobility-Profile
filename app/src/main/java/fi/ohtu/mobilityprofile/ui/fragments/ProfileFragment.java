@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment {
     /**
      * The position of the fragment in the "queue" of all fragments.
      */
-    private static final int page = 1;
+    private static final int page = 3;
     private Context context;
 
     /**

@@ -16,7 +16,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     /**
      * The number of fragments.
      */
-    private static final int NUM_ITEMS = 4;
+    private static final int NUM_ITEMS = 3;
 
 
     /**
@@ -38,10 +38,8 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return PrivacyFragment.newInstance();
             case 1:
-                return ProfileFragment.newInstance();
-            case 2:
                 return FavouritesFragment.newInstance();
-            case 3:
+            case 2:
                 return InfoFragment.newInstance();
 
             default:

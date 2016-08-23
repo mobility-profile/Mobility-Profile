@@ -38,7 +38,7 @@ public class FavouritesFragment extends Fragment {
     /**
      * The position of the fragment in the "queue" of all fragments.
      */
-    private static final int page = 2;
+    private static final int page = 1;
     private Context context;
     private FavouritesListAdapter adapter;
 
