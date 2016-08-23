@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -25,9 +24,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
+import fi.ohtu.mobilityprofile.util.AddressConverter;
 
+/**
+ * Class is used to create a list of favourites in the ui.
+ */
 public class FavouriteListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Activity activity;
@@ -89,7 +92,19 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
                                 editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
 
-                                AddressConverter.convertFavouriteAddressToCoordinatesAndSave(favouritePlace, getApplicationContext(), googleMap, activity);
+                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), favouritePlace.getAddress());
+                                if (coordinate != null) {
+                                    coordinate.save();
+
+                                    favouritePlace.setCoordinate(coordinate);
+                                    favouritePlace.save();
+
+                                    setMarker();
+                                    activity.recreate();
+                                } else {
+                                    activity.recreate();
+                                    Toast.makeText(activity, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
+                                }
 
                             }
                         })

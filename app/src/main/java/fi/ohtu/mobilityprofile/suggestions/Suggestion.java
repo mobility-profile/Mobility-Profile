@@ -3,7 +3,7 @@ package fi.ohtu.mobilityprofile.suggestions;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 
 /**
- * This class represents a route suggestion that can be made to the user.
+ * This class represents a destination suggestion that can be made for the user.
  */
 public class Suggestion {
     private String destination;

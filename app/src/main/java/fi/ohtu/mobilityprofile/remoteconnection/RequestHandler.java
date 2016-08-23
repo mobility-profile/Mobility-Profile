@@ -25,8 +25,7 @@ import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.util.geocoding.AddressConvertListener;
-import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
+import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
 
@@ -40,6 +39,7 @@ public class RequestHandler extends Handler {
     /**
      * Creates the RequestHandler.
      *
+     * @param context context
      * @param destinationLogic Journey planner that provides the logic for our app
      */
     public RequestHandler(Context context, DestinationLogic destinationLogic) {
@@ -125,7 +125,7 @@ public class RequestHandler extends Handler {
 
     /**
      * Processes used intraCityRoutes by inserting them to the database.
-     * @param startLocation startig location of the route
+     * @param startLocation starting location of the route
      * @param destination destination of the route
      */
     private void processIntraCityRoute(String startLocation, String destination) {
@@ -137,33 +137,11 @@ public class RequestHandler extends Handler {
             }
         }
 
-        final RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
+        Coordinate startCoordinate = AddressConverter.convertToCoordinates(context, startLocation);
+        Coordinate endCoordinate = AddressConverter.convertToCoordinates(context, destination);
 
-        AddressConverter.convertToCoordinates(context, startLocation, new AddressConvertListener() {
-            @Override
-            public void addressConverted(String address, Coordinate coordinate) {
-                processRouteSearch(routeSearch, coordinate, null);
-            }
-        });
-        AddressConverter.convertToCoordinates(context, destination, new AddressConvertListener() {
-            @Override
-            public void addressConverted(String address, Coordinate coordinate) {
-                processRouteSearch(routeSearch, null, coordinate);
-            }
-        });
-    }
-
-    /**
-     * Processes RouteSearches by inserting them to the database.
-     * @param routeSearch Routesearch
-     * @param start starting coordinates
-     * @param destination destination coordinates
-     */
-    private void processRouteSearch(RouteSearch routeSearch, Coordinate start, Coordinate destination) {
-        if (start != null) routeSearch.setStartCoordinates(start);
-        if (destination != null) routeSearch.setDestinationCoordinates(destination);
-
-        if (routeSearch.getStartCoordinates() != null && routeSearch.getDestinationCoordinates() != null) {
+        if (startCoordinate != null && endCoordinate != null) {
+            RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination, startCoordinate, endCoordinate);
             RouteSearchDao.insertRouteSearch(routeSearch);
         }
     }
@@ -185,12 +163,12 @@ public class RequestHandler extends Handler {
      */
     private StartLocation getStartLocation() {
         StartLocation lastKnownGpsPoint = StartLocationDao.getStartLocation();
-        if (lastKnownGpsPoint == null) {
+        if (lastKnownGpsPoint == null || lastKnownGpsPoint.getCoordinate() == null) {
             // TODO: Something better
             return new StartLocation(System.currentTimeMillis(), 0, 0f, 0f);
         }
+
         return lastKnownGpsPoint;
-        
     }
 
     private Message getTransportPreferences() {

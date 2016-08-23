@@ -2,7 +2,6 @@ package fi.ohtu.mobilityprofile.ui.activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,11 +23,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
 
+
+/**
+ * Class is used to create a list of suggested favourite places in the ui.
+ */
 public class SuggestionListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Activity activity;
@@ -113,7 +115,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
         });
 
@@ -143,7 +144,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                         });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
         });
     }

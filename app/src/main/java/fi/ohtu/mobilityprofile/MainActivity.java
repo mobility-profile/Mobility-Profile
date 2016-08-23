@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setContentDescription("Info");
 
 
-        //testData();
+//        testData();
         checkSecurity();
         createTransportModes();
         new ProfileBackup(this).handleBackup("import");

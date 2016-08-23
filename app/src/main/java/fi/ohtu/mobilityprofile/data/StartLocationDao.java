@@ -11,14 +11,14 @@ import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 
 /**
- * DAO used for saving and reading GPSPoints to/from the database.
+ * DAO used for saving and reading StartLocations to/from the database.
  */
 public class StartLocationDao {
 
     /**
-     * Returns the latest GpsPoint from the database, or null if there is none.
+     * Returns the latest StartLocations from the database, or null if there is none.
      *
-     * @return Latest GpsPoint
+     * @return Latest StartLocation
      */
     public static StartLocation getStartLocation() {
         List<StartLocation> startLocations = Select.from(StartLocation.class).orderBy("timestamp DESC").limit("1").list();
@@ -30,18 +30,18 @@ public class StartLocationDao {
     }
 
     /**
-     * Returns a list of all GpsPoints.
+     * Returns a list of all StartLocations.
      *
-     * @return list of GpsPoints
+     * @return list of StartLocations
      */
     private static List<StartLocation> getAll() {
         return Select.from(StartLocation.class).orderBy("timestamp ASC").list();
     }
 
     /**
-     * Saves a GpsPoint to the database.
+     * Saves a StartLocation to the database.
      *
-     * @param startLocation GpsPoint to be saved
+     * @param startLocation StartLocation to be saved
      */
     public static void insert(StartLocation startLocation) {
         deleteAllData();
@@ -50,15 +50,15 @@ public class StartLocationDao {
     }
 
     /**
-     * Deletes all GpsPoint data from the database
+     * Deletes all StartLocation data from the database
      */
     private static void deleteAllData() {
         for(StartLocation startLocation : getAll()) {
             if (startLocation.getCoordinate() != null) {
                 startLocation.getCoordinate().delete();
             }
-            startLocation.delete();
         }
+        StartLocation.deleteAll(StartLocation.class);
     }
 
 }

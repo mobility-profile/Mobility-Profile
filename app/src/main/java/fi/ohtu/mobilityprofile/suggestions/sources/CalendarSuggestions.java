@@ -3,14 +3,10 @@ package fi.ohtu.mobilityprofile.suggestions.sources;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.util.CalendarConnection;
-import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
-import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
-import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 /**
  * This class creates suggestions based on data collected from the user's calendar.

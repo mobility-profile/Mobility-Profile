@@ -26,6 +26,10 @@ public class Cluster {
         return gpsPoints;
     }
 
+    /**
+     * Adds a gpsPoint to a list of gpsPoints
+     * @param gpsPoint gpsPoint to be added
+     */
     public void add(GpsPoint gpsPoint) {
         gpsPoints.add(gpsPoint);
     }
