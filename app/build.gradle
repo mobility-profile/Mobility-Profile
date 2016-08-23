@@ -65,6 +65,7 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:23.0.1'
 
+    compile 'com.google.android.gms:play-services-drive:8.1.0'
     compile 'com.google.android.gms:play-services-identity:8.1.0'
     compile 'com.google.android.gms:play-services-location:8.1.0'
     compile('pub.devrel:easypermissions:0.1.5') {
