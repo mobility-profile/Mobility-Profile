@@ -18,6 +18,9 @@ import com.orm.SugarContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.util.ProfileBackup;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_info).setContentDescription("Info");
 
 
-        //testData();
+//        testData();
         checkSecurity();
         createTransportModes();
         new ProfileBackup(this).handleBackup("import");

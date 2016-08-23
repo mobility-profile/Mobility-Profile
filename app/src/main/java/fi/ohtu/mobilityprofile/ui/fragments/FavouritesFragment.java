@@ -1,7 +1,9 @@
 package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -38,7 +41,6 @@ public class FavouritesFragment extends Fragment {
     private static final int page = 2;
     private Context context;
     private FavouritesListAdapter adapter;
-    private int items = 0;
 
     /**
      * Creates a new instance of FavouritesFragment.
@@ -76,15 +78,22 @@ public class FavouritesFragment extends Fragment {
     public void onResume() {
         Log.i(title, "onResumed");
         super.onResume();
-        if (Place.count(Place.class) < items) {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String dataChanged = sharedPref.getString("dataChanged", "Not Available");
+
+        if (dataChanged.equals("true") ) {
             updateView();
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("dataChanged", "false");
+            editor.commit();
         }
 
     }
 
     private void setFavouritesListView(View view) {
         List<Place> favouritePlaces = Place.listAll(Place.class);
-        items = favouritePlaces.size();
 
         adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
@@ -124,6 +133,8 @@ public class FavouritesFragment extends Fragment {
                         fav.setCoordinate(coordinate);
                         fav.setFavourite(true);
                         fav.save();
+                    } else {
+                        Toast.makeText(context, "No coordinates were found for the address", Toast.LENGTH_LONG).show();
                     }
 
                     updateView();
