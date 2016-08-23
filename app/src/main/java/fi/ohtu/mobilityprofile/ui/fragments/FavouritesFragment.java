@@ -15,9 +15,10 @@ import android.widget.ListView;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.FavouritesListAdapter;
-import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
+import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 /**
  * The class creates a component called FavouritesFragment.
@@ -115,9 +116,15 @@ public class FavouritesFragment extends Fragment {
 
                 if (!addFavouriteName.getText().toString().equals("") && !addFavouriteAddress.getText().toString().equals("")) {
                     Place fav = new Place(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
-                    AddressConverter.convertFavouriteAddressToCoordinatesAndSave(fav, context);
-                    fav.setFavourite(true);
-                    fav.save();
+
+                    Coordinate coordinate = AddressConverter.convertToCoordinates(context, fav.getAddress());
+                    if (coordinate != null) {
+                        coordinate.save();
+
+                        fav.setCoordinate(coordinate);
+                        fav.setFavourite(true);
+                        fav.save();
+                    }
 
                     updateView();
                     addFavouriteName.setText("");

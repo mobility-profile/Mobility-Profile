@@ -2,7 +2,6 @@ package fi.ohtu.mobilityprofile.ui.activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
-import fi.ohtu.mobilityprofile.ui.fragments.FavouritesFragment;
-import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
+import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 public class FavouriteListItemActivity extends AppCompatActivity {
 
@@ -85,7 +83,13 @@ public class FavouriteListItemActivity extends AppCompatActivity {
 
                                 editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
 
-                                AddressConverter.convertFavouriteAddressToCoordinatesAndSave(favouritePlace, getApplicationContext());
+                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), favouritePlace.getAddress());
+                                if (coordinate != null) {
+                                    coordinate.save();
+
+                                    favouritePlace.setCoordinate(coordinate);
+                                    favouritePlace.save();
+                                }
 
                                 activity.recreate();
                             }

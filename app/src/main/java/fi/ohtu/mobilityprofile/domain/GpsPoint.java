@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.domain;
 
+import android.support.annotation.NonNull;
+
 import com.orm.SugarRecord;
 
 /**
@@ -26,7 +28,7 @@ public class GpsPoint extends SugarRecord implements Comparable<GpsPoint> {
      * @param latitude latitude of the location
      * @param longitude longitude of the location
      */
-    public GpsPoint(long timestamp, float accuracy, Float latitude, Float longitude) {
+    public GpsPoint(long timestamp, float accuracy, float latitude, float longitude) {
         this.timestamp = timestamp;
         this.accuracy = accuracy;
         this.coordinate = new Coordinate(latitude, longitude);
@@ -62,7 +64,7 @@ public class GpsPoint extends SugarRecord implements Comparable<GpsPoint> {
     }
 
     @Override
-    public int compareTo(GpsPoint another) {
+    public int compareTo(@NonNull GpsPoint another) {
         long difference = timestamp - another.getTimestamp();
         if (difference < 0) {
             return -1;
