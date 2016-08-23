@@ -45,7 +45,7 @@ public class AddressConverter {
         try {
             Geocoder geocoder = new Geocoder(context);
             List<Address> addresses = geocoder.getFromLocation(coordinate.getLatitude(), coordinate.getLongitude(), 1);
-            if (addresses != null && addresses.size() >= 1) {
+            if (addresses.size() >= 1) {
                 return addresses.get(0).getAddressLine(0);
             }
         } catch (IOException e) {
@@ -62,11 +62,11 @@ public class AddressConverter {
      * @param address Address to be converted
      * @return Converted coordinates
      */
-    public static Coordinate convertToCoordinates(Context context, final String address) {
+    public static Coordinate convertToCoordinates(Context context, String address) {
         try {
             Geocoder geocoder = new Geocoder(context);
             List<Address> addresses = geocoder.getFromLocationName(address, 1);
-            if (addresses != null && addresses.size() >= 1) {
+            if (addresses.size() >= 1) {
                 return new Coordinate((float) addresses.get(0).getLatitude(), (float) addresses.get(0).getLongitude());
             }
         } catch (IOException e) {
