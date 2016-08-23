@@ -75,4 +75,18 @@ public class AddressConverter {
 
         return null;
     }
+
+    public static String getCountryCode(Context context, String address) {
+        try {
+            Geocoder geocoder = new Geocoder(context);
+            List<Address> addresses = geocoder.getFromLocationName(address, 1);
+            if (addresses.size() >= 1) {
+                return addresses.get(0).getCountryCode();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

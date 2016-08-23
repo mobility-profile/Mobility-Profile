@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
+import android.telephony.TelephonyManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,11 @@ public class CalendarConnection {
 
             Coordinate coordinate = AddressConverter.convertToCoordinates(context, location);
             if (coordinate == null) continue;
+
+            // Check if the user is in the same country as the geocoded address.
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            String countryCode = tm.getSimCountryIso();
+            if (!countryCode.equalsIgnoreCase(AddressConverter.getCountryCode(context, location))) continue;
 
             Suggestion suggestion = new Suggestion(location, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION, coordinate);
 
