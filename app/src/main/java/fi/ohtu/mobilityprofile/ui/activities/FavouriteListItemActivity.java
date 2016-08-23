@@ -2,53 +2,65 @@ package fi.ohtu.mobilityprofile.ui.activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import fi.ohtu.mobilityprofile.MainActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
-import fi.ohtu.mobilityprofile.ui.fragments.FavouritesFragment;
-import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
+import fi.ohtu.mobilityprofile.util.AddressConverter;
 
-public class FavouriteListItemActivity extends AppCompatActivity {
+/**
+ * Class is used to create a list of favourites in the ui.
+ */
+public class FavouriteListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Activity activity;
     private Place favouritePlace;
     private TextView name;
     private TextView address;
-    private WebView webView;
     private Button editButton;
     private Button setFavouriteButton;
     private Button deleteButton;
+    private MapFragment mapFragment;
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_significant_place);
-        activity = this;
 
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        activity = this;
         favouritePlace = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("favouriteId")));
 
         initializeViewElements();
+
     }
 
     private void initializeViewElements() {
         name = (TextView) findViewById(R.id.favourite_item_name);
         address = (TextView) findViewById(R.id.favourite_item_address);
-        webView = (WebView) findViewById(R.id.webview);
         editButton = (Button) findViewById(R.id.favourite_edit);
         setFavouriteButton = (Button) findViewById(R.id.favourite_set_favourite);
         deleteButton = (Button) findViewById(R.id.favourite_delete);
@@ -56,11 +68,6 @@ public class FavouriteListItemActivity extends AppCompatActivity {
         name.setText(favouritePlace.getName().toUpperCase());
         address.setText(favouritePlace.getAddress());
         setFavouriteButton.setVisibility(View.GONE);
-
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webView.setWebViewClient(new MyWebViewClient());
-        webView.loadUrl("http://maps.google.com/?q=" + favouritePlace.getAddress() + "&z=15");
 
         editButtonListener();
         deleteButtonListener();
@@ -85,9 +92,20 @@ public class FavouriteListItemActivity extends AppCompatActivity {
 
                                 editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
 
-                                AddressConverter.convertFavouriteAddressToCoordinatesAndSave(favouritePlace, getApplicationContext());
+                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), favouritePlace.getAddress());
+                                if (coordinate != null) {
+                                    coordinate.save();
 
-                                activity.recreate();
+                                    favouritePlace.setCoordinate(coordinate);
+                                    favouritePlace.save();
+
+                                    setMarker();
+                                    activity.recreate();
+                                } else {
+                                    activity.recreate();
+                                    Toast.makeText(activity, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
+                                }
+
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -126,7 +144,6 @@ public class FavouriteListItemActivity extends AppCompatActivity {
         favouritePlace.save();
     }
 
-
     private void deleteButtonListener() {
         deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -139,7 +156,7 @@ public class FavouriteListItemActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 PlaceDao.deletePlaceById(favouritePlace.getId());
-                                finish();
+                                backToFragment();
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -155,17 +172,57 @@ public class FavouriteListItemActivity extends AppCompatActivity {
         });
     }
 
+    private void setMarker() {
+        try {
+            LatLng point = new LatLng(favouritePlace.getCoordinate().getLatitude(), favouritePlace.getCoordinate().getLongitude());
+
+            googleMap.setMyLocationEnabled(true);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 17));
+
+            googleMap.addMarker(new MarkerOptions()
+                    .title(favouritePlace.getName())
+                    .position(point));
+        } catch (Exception e) {
+            Toast.makeText(this, "Coordinates for the address were not found", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // Check if the key event was the Back button and if there's history
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-            webView.goBack();
-            return true;
-        }
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
 
-        // If it wasn't the Back key or there's no web page history, bubble up to the default
-        // system behavior (probably exit the activity)
-        return super.onKeyDown(keyCode, event);
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(true);
+
+        setMarker();
+    }
+
+    @Override
+    public void onBackPressed() {
+        backToFragment();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                backToFragment();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void backToFragment() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("dataChanged", "true");
+        editor.commit();
+        finish();
     }
 }

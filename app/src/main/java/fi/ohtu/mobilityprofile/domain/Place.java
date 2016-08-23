@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.domain;
 
+import android.util.Log;
+
 import com.orm.SugarRecord;
 
 import fi.ohtu.mobilityprofile.data.PlaceDao;
@@ -69,13 +71,23 @@ public class Place extends SugarRecord {
         return name;
     }
 
+    /**
+     * Returns the distance between this Place and given coordinate
+     * @param coordinate coordinate to be compared
+     * @return distance
+     */
     public double distanceTo(Coordinate coordinate) {
-        return getCoordinate().distanceTo(coordinate);
+        return this.coordinate.distanceTo(coordinate);
     }
 
     @Override
     public boolean delete() {
-        this.coordinate.delete();
+        try {
+            this.coordinate.delete();
+        } catch (Exception e) {
+            Log.i("Place", "Place didn't have coordinates!");
+        }
+
         return super.delete();
     }
 

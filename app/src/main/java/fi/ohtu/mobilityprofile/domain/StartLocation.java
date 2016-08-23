@@ -3,7 +3,7 @@ package fi.ohtu.mobilityprofile.domain;
 import com.orm.SugarRecord;
 
 /**
- * Class is used to save raw gps data.
+ * Class is used to save the starting locations of the searches
  */
 public class StartLocation extends GpsPoint {
 
@@ -17,6 +17,7 @@ public class StartLocation extends GpsPoint {
     /**
      * Creates GpsPoint.
      * @param timestamp timestamp of the visit
+     * @param accuracy accuracy of location
      * @param latitude latitude
      * @param longitude longitude
      */
