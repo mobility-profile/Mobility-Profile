@@ -40,6 +40,7 @@ public class RequestHandler extends Handler {
     /**
      * Creates the RequestHandler.
      *
+     * @param context context
      * @param destinationLogic Journey planner that provides the logic for our app
      */
     public RequestHandler(Context context, DestinationLogic destinationLogic) {
@@ -125,7 +126,7 @@ public class RequestHandler extends Handler {
 
     /**
      * Processes used intraCityRoutes by inserting them to the database.
-     * @param startLocation startig location of the route
+     * @param startLocation starting location of the route
      * @param destination destination of the route
      */
     private void processIntraCityRoute(String startLocation, String destination) {
@@ -155,7 +156,7 @@ public class RequestHandler extends Handler {
 
     /**
      * Processes RouteSearches by inserting them to the database.
-     * @param routeSearch Routesearch
+     * @param routeSearch RouteSearch
      * @param start starting coordinates
      * @param destination destination coordinates
      */

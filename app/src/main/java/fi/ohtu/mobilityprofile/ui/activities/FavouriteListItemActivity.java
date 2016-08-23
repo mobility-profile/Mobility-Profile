@@ -23,6 +23,9 @@ import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
 import fi.ohtu.mobilityprofile.ui.fragments.FavouritesFragment;
 import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
+/**
+ * Class is used to create a list of favourites in the ui.
+ */
 public class FavouriteListItemActivity extends AppCompatActivity {
 
     private Activity activity;

@@ -98,7 +98,7 @@ public class CalendarConnection {
                     }
                 });
 
-                if (cursor.getString(ALL_DAY).equals("1469491200000")) {
+                if (cursor.getString(ALL_DAY).equals("1")) {
                     allDayEventLocations.add(suggestion);
                 } else {
                     eventLocations.add(suggestion);

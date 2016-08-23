@@ -80,13 +80,12 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
-                error.printStackTrace();
-
-            }
-        });
+                    @Override
+                        public void onErrorResponse(VolleyError error) {
+                        Log.e("AddressConverter", "Exception in convertToAddress-method of AddressConverter");
+                        error.printStackTrace();
+                        }
+                });
         queue.add(stringRequest);
     }
 
@@ -132,19 +131,19 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
-                error.printStackTrace();
-
-            }
-        });
+                    @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
+                            error.printStackTrace();
+                        }
+                });
         queue.add(stringRequest);
     }
 
     /**
      * Converts an address to coordinates and saves it.
      *
+     * @param favouritePlace Place whose address is to be converted
      * @param context for new request queue
      */
     public static void convertFavouriteAddressToCoordinatesAndSave(final Place favouritePlace, Context context) {
@@ -181,13 +180,12 @@ public class AddressConverter {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
-                error.printStackTrace();
-
-            }
-        });
+                    @Override
+                        public void onErrorResponse(VolleyError error) {
+                        Log.e("AddressConverter", "Exception in convertToCoordinates-method of AddressConverter");
+                        error.printStackTrace();
+                        }
+                });
         queue.add(stringRequest);
     }
 }

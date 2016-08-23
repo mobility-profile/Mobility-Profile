@@ -16,7 +16,7 @@ import fi.ohtu.mobilityprofile.util.geocoding.AddressConvertListener;
 import fi.ohtu.mobilityprofile.util.geocoding.AddressConverter;
 
 /**
- * Class for clusterizing places into significant locations
+ * Class for clustering places into significant locations
  */
 public class GpsPointClusterizer {
 

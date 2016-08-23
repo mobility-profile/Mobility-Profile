@@ -7,12 +7,16 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 
+
+/**
+ * DAO used for saving and reading InterCitySearches to/from the database.
+ */
 public class InterCitySearchDao {
 
     /**
      * Returns all saved searches.
      *
-     * @return List of searcher
+     * @return List of searches
      */
     public static List<InterCitySearch> getAllSearches() {
         List<InterCitySearch> searches = Select.from(InterCitySearch.class)

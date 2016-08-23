@@ -11,6 +11,9 @@ import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 
+/**
+ * This class creates suggestions based on InterCitySearches the user has made
+ */
 public class InterCitySuggestions implements SuggestionSource {
 
     /**

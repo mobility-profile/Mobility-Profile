@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fi.ohtu.mobilityprofile.domain.GpsPoint;
-
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.domain.Visit;
@@ -21,14 +19,15 @@ import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
  */
 public class VisitSuggestions implements SuggestionSource {
 
-    private Map<Place, Integer> lowerAccuracySuggestions;
-    private GpsPointClusterizer gpsPointClusterizer;
+    private Map<Place, Integer> nextDestinations;
+    private Map<Place, Integer> lowerAccuracyDestinations;
 
     /**
      * Creates VisitSuggestions.
      */
     public VisitSuggestions() {
-        this.lowerAccuracySuggestions = new HashMap<>();
+        this.nextDestinations = new HashMap<>();
+        this.lowerAccuracyDestinations = new HashMap<>();
     }
 
     /**
@@ -39,25 +38,28 @@ public class VisitSuggestions implements SuggestionSource {
      */
     @Override
     public List<Suggestion> getSuggestions(StartLocation startLocation) {
-        Map<Place, Integer> nextDestinations = calculateNextDestinations(startLocation);
+        calculateNextDestinations(startLocation);
         List<Suggestion> suggestions = new ArrayList<>();
 
         if (!nextDestinations.isEmpty() && userStillAtLastVisitLocation(startLocation, VisitDao.getLast())) {
             int maxValue = Collections.max(nextDestinations.values());
+
             for (Map.Entry<Place, Integer> entry : nextDestinations.entrySet()) {
                 if (entry.getValue() == maxValue) {
                     suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
                 }
             }
-        }
-        if (suggestions.size() < 2 && lowerAccuracySuggestions.size() > 0) {
-            int maxValue = Collections.max(lowerAccuracySuggestions.values());
-            for (Map.Entry<Place, Integer> entry : lowerAccuracySuggestions.entrySet()) {
-                if (entry.getValue() == maxValue && !suggestions.contains(entry)) {
-                    suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
-                }
-                if (suggestions.size() >= 3) {
-                    break;
+
+            if (suggestions.size() <= 2 && lowerAccuracyDestinations.size() > 0) {
+                maxValue = Collections.max(lowerAccuracyDestinations.values());
+
+                for (Map.Entry<Place, Integer> entry : lowerAccuracyDestinations.entrySet()) {
+                    if (entry.getValue() == maxValue && !nextDestinations.containsKey(entry.getKey())) {
+                        suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
+                    }
+                    if (suggestions.size() >= 3) {
+                        break;
+                    }
                 }
             }
         }
@@ -68,12 +70,10 @@ public class VisitSuggestions implements SuggestionSource {
      * Calculates next destinations based on visited SignificantPlaces in the past.
      *
      * @param startLocation starting location
-     * @return HashMap of next destinations
      */
-    private Map<Place, Integer> calculateNextDestinations(StartLocation startLocation) {
+    private void calculateNextDestinations(StartLocation startLocation) {
 
         List<Visit> visits = VisitDao.getAll();
-        Map<Place, Integer> nextDestinations = new HashMap<>();
         if (visits.size() > 3) {
 
             Place currentPlace = VisitDao.getLast().getPlace();
@@ -99,13 +99,12 @@ public class VisitSuggestions implements SuggestionSource {
                         //it is added to list of destinations of lower accuracy.
                         else if (visits.get(i + 1).getPlace().equals(previousLocation)
                                 && !nextDestinations.containsKey(visits.get(i - 1).getPlace())) {
-                            addToNextDestinations(visits.get(i - 1).getPlace(), lowerAccuracySuggestions);
+                            addToNextDestinations(visits.get(i - 1).getPlace(), lowerAccuracyDestinations);
                         }
                     }
                 }
             }
         }
-        return nextDestinations;
     }
 
     /**
@@ -115,7 +114,8 @@ public class VisitSuggestions implements SuggestionSource {
      * @return true if the user is still at the location, false if not
      */
     private boolean userStillAtLastVisitLocation(StartLocation startLocation, Visit lastVisit) {
-        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < gpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD * 2 && startLocation.distanceTo(lastVisit.getPlace().getCoordinate()) < gpsPointClusterizer.CLUSTER_RADIUS;
+        return Math.abs(startLocation.getTimestamp() - lastVisit.getExitTime()) < GpsPointClusterizer.TIME_SPENT_IN_CLUSTER_THRESHOLD * 2
+                && startLocation.distanceTo(lastVisit.getPlace().getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS;
     }
 
     /**
@@ -123,11 +123,11 @@ public class VisitSuggestions implements SuggestionSource {
      * current location by one.
      *
      * @param nextDestination possible next destination
-     * @param nextDestinations hashMap of nextDestinations
+     * @param destinationMap hashmap where the place is added
      */
-    private void addToNextDestinations(Place nextDestination, Map<Place, Integer> nextDestinations) {
-        int count = nextDestinations.containsKey(nextDestination) ? nextDestinations.get(nextDestination) : 0;
-        nextDestinations.put(nextDestination, count + 1);
+    private void addToNextDestinations(Place nextDestination, Map<Place, Integer> destinationMap) {
+        int count = destinationMap.containsKey(nextDestination) ? destinationMap.get(nextDestination) : 0;
+        destinationMap.put(nextDestination, count + 1);
     }
 
 }

@@ -27,6 +27,9 @@ import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
 
+/**
+ * Class is used to create a list of suggested favourite places in the ui.
+ */
 public class SuggestionListItemActivity extends AppCompatActivity {
 
     private Activity activity;
@@ -117,7 +120,6 @@ public class SuggestionListItemActivity extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
         });
 
@@ -147,7 +149,6 @@ public class SuggestionListItemActivity extends AppCompatActivity {
                         });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
         });
     }
