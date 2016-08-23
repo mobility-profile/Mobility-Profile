@@ -130,7 +130,12 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
 
-                editTextName.setText("");
+                if (place.getName().equals("name")) {
+                    editTextName.setText("");
+                } else {
+                    editTextName.setText(place.getName());
+                }
+
                 editTextAddress.setText(place.getAddress());
 
                 AlertDialog dialog = builder.create();
@@ -144,16 +149,20 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
         starFilled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final Place place = PlaceDao.getPlaceById(getItemId(position));
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder
-                        .setTitle(R.string.favourites_delete_title)
-                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.favourites_unfavourite_title)
+                        .setPositiveButton(R.string.unfavourite, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
 
-                                PlaceDao.deletePlaceById(getItemId(position));
-                                items.remove(position);
+                                place.setFavourite(false);
+                                place.save();
                                 notifyDataSetChanged();
+                                updateView();
 
                             }
                         })

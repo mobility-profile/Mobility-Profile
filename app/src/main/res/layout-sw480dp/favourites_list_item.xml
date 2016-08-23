@@ -3,18 +3,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/favourites_item"
-        android:layout_width="370dp"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimaryDark">
-    </TextView>
-
     <ImageButton
         android:id="@+id/favourites_star_unfilled"
         android:layout_width="wrap_content"
@@ -23,7 +11,8 @@
         android:contentDescription="@string/favourites_verify_title"
         android:padding="5dp"
         android:layout_gravity="end"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite"
+        android:layout_marginEnd="10dp">
     </ImageButton>
 
     <ImageButton
@@ -34,7 +23,20 @@
         android:contentDescription="@string/favourites_verify_title"
         android:padding="5dp"
         android:layout_gravity="end"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite"
+        android:layout_marginEnd="10dp">
     </ImageButton>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/favourites_item"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark">
+    </TextView>
 
 </GridLayout>

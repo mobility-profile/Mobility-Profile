@@ -63,8 +63,13 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         setFavouriteButton = (Button) findViewById(R.id.favourite_set_favourite);
         deleteButton = (Button) findViewById(R.id.favourite_delete);
 
-        name.setText("NAME");
-        name.setTextColor(ContextCompat.getColor(this, R.color.colorAccentGrey));
+        if (place.getName().equals("name")) {
+            name.setText("NAME");
+        } else {
+            name.setText(place.getName());
+        }
+
+        name.setTextColor(ContextCompat.getColor(this, R.color.colorAccentGreyDark));
         address.setText(place.getAddress());
         editButton.setVisibility(View.GONE);
 
@@ -110,7 +115,11 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
 
-                editTextName.setText("");
+                if (place.getName().equals("name")) {
+                    editTextName.setText("");
+                } else {
+                    editTextName.setText(place.getName());
+                }
                 editTextAddress.setText(place.getAddress());
 
                 AlertDialog dialog = builder.create();
