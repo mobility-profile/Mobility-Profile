@@ -2,51 +2,55 @@ package fi.ohtu.mobilityprofile.ui.activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.orm.query.Condition;
-import com.orm.query.Select;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.List;
-
-import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.ui.MyWebViewClient;
+
 
 /**
  * Class is used to create a list of suggested favourite places in the ui.
  */
-public class SuggestionListItemActivity extends AppCompatActivity {
+public class SuggestionListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Activity activity;
     private Place place;
     private TextView name;
     private TextView address;
-    private WebView webView;
     private Button editButton;
     private Button setFavouriteButton;
     private Button deleteButton;
+    private MapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_significant_place);
-        activity = this;
 
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        activity = this;
         place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("placeId")));
 
         initializeViewElements();
@@ -55,22 +59,19 @@ public class SuggestionListItemActivity extends AppCompatActivity {
     private void initializeViewElements() {
         name = (TextView) findViewById(R.id.favourite_item_name);
         address = (TextView) findViewById(R.id.favourite_item_address);
-        webView = (WebView) findViewById(R.id.webview);
         editButton = (Button) findViewById(R.id.favourite_edit);
         setFavouriteButton = (Button) findViewById(R.id.favourite_set_favourite);
         deleteButton = (Button) findViewById(R.id.favourite_delete);
 
-        name.setText("NAME");
-        name.setTextColor(ContextCompat.getColor(this, R.color.colorAccentGrey));
+        if (place.getName().equals("name")) {
+            name.setText("NAME");
+        } else {
+            name.setText(place.getName());
+        }
+
+        name.setTextColor(ContextCompat.getColor(this, R.color.colorAccentGreyDark));
         address.setText(place.getAddress());
         editButton.setVisibility(View.GONE);
-
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webView.setWebViewClient(new MyWebViewClient());
-        webView.loadUrl("http://maps.google.com/?q=" +
-                place.getCoordinate().getLatitude() + "," +
-                place.getCoordinate().getLongitude() + "&z=15");
 
         setFavouriteButtonListener();
         deleteButtonListener();
@@ -100,8 +101,7 @@ public class SuggestionListItemActivity extends AppCompatActivity {
                                     place.setFavourite(true);
                                     place.save();
 
-                                    Intent main = new Intent(activity, MainActivity.class);
-                                    startActivity(main);
+                                    backToFragment();
                                 }
                             }
                         })
@@ -115,7 +115,11 @@ public class SuggestionListItemActivity extends AppCompatActivity {
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
 
-                editTextName.setText("");
+                if (place.getName().equals("name")) {
+                    editTextName.setText("");
+                } else {
+                    editTextName.setText(place.getName());
+                }
                 editTextAddress.setText(place.getAddress());
 
                 AlertDialog dialog = builder.create();
@@ -138,7 +142,7 @@ public class SuggestionListItemActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 PlaceDao.deletePlaceById(place.getId());
-                                finish();
+                                backToFragment();
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -153,17 +157,53 @@ public class SuggestionListItemActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // Check if the key event was the Back button and if there's history
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-            webView.goBack();
-            return true;
+    public void onMapReady(GoogleMap map) {
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(true);
+
+        try {
+            LatLng point = new LatLng(place.getCoordinate().getLatitude(), place.getCoordinate().getLongitude());
+
+            map.setMyLocationEnabled(true);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 17));
+
+            map.addMarker(new MarkerOptions()
+                    .title(place.getName())
+                    .position(point));
+        } catch (Exception e) {
+            Toast.makeText(this, "Coordinates for the address were not found", Toast.LENGTH_LONG).show();
         }
 
-        // If it wasn't the Back key or there's no web page history, bubble up to the default
-        // system behavior (probably exit the activity)
-        return super.onKeyDown(keyCode, event);
+
     }
+
+    @Override
+    public void onBackPressed() {
+        backToFragment();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                backToFragment();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void backToFragment() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("dataChanged", "true");
+        editor.commit();
+        finish();
+    }
+
 }

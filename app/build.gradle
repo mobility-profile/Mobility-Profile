@@ -60,8 +60,10 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:23.0.1'
 
+    compile 'com.google.android.gms:play-services-drive:8.1.0'
     compile 'com.google.android.gms:play-services-identity:8.1.0'
     compile 'com.google.android.gms:play-services-location:8.1.0'
+    compile 'com.google.android.gms:play-services-maps:8.1.0'
     compile('com.google.api-client:google-api-client-android:1.20.0') {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.code.findbugs'

@@ -24,9 +24,10 @@
     <string name="profile_item_delete_title">Delete this route search?</string>
 
     <!--Favourite GPSPoints page-->
-    <string name="favourites_title">Your favourite places</string>
+    <string name="favourites_title">Your places</string>
     <string name="favourites_edit_title">Edit this favourite place</string>
     <string name="favourites_delete_title">Delete this favourite place?</string>
+    <string name="favourites_unfavourite_title">Unfavourite this favourite place?</string>
     <string name="favourites_verify_title">Verify this suggested place</string>
     <string name="favourites_auto_generated_delete_title">Forget this place for good or unfavourite? </string>
     <string name="favourites_name_hint">Name</string>

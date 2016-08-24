@@ -82,7 +82,7 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="71" />
+            android:value="72" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -107,7 +107,7 @@
             android:process=":mobility_profile_location" />
 
         <activity android:name=".SecurityProblemActivity" />
-        <activity android:name=".LicensesActivity"></activity>
+        <activity android:name=".LicensesActivity"/>
     </application>
 
 </manifest>
