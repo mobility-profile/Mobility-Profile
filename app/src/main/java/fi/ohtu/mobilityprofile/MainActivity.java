@@ -108,24 +108,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentBackup = new Intent(this, BackUpActivity.class);
                 startActivity(intentBackup);
                 return true;
+            case R.id.action_licenses:
+                Intent intentLicenses = new Intent(this, LicensesActivity.class);
+                startActivity(intentLicenses);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
         }
     }
-
-//    private void testData() {
-//        if (Place.count(Place.class) == 0) {
-//
-//            Place place = new Place("","Liisankatu 1", new Coordinate(60.174287f, 24.960481f));
-//            Place place2 = new Place("","Kanavamäki 9", new Coordinate(60.186572f, 25.057416f));
-//            Place place3 = new Place("","Leppäsuonkatu 9", new Coordinate(60.169143f, 24.923136f));
-//
-//            PlaceDao.insertPlace(place);
-//            PlaceDao.insertPlace(place2);
-//            PlaceDao.insertPlace(place3);
-//        }
-//    }
 
     private void createTransportModes() {
         if (TransportMode.count(TransportMode.class) == 0) {

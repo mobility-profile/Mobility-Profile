@@ -1,34 +1,12 @@
 package fi.ohtu.mobilityprofile.util;
 
 import android.content.Context;
-import android.graphics.PointF;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
-
-import com.android.volley.ExecutorDelivery;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.ResponseDelivery;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
  * This class is used for converting GPS coordinates to an actual address and save that address to the database.

@@ -65,8 +65,6 @@
         \n\nMore information about the problem can be found at https://datatheorem.github.io/2014/04/16/custom-permissions/</string>
 
 
-
-
     <!--Settings-->
     <string name="settings">Settings</string>
     <string name="settings_title">Settings</string>
@@ -90,4 +88,89 @@
     <string name="location_tracking_title">Gathering data</string>
     <string name="location_tracking_description">Mobility Profile is tracking your location</string>
     <string name="stop_location_tracking">Stop tracking</string>
+    <string name="licenses">Licenses</string>
+
+
+    <string name="software_licenses" translatable="false">
+        THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY BE INCLUDED
+        IN PORTIONS OF MOBILITY PROFILE.
+
+        \n\n----------
+
+        \n\nThe following software may be included in this product: CWAC Security. The software is
+        subject to the following license and notice:
+
+        \n\nLicensed under the Apache License, Version 2.0 (the "License"); you may not use this
+        file except in compliance with the License. You may obtain a copy of the License at
+
+        \n\nhttp://www.apache.org/licenses/LICENSE-2.0
+
+        \n\nUnless required by applicable law or agreed to in writing, software distributed under
+        the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+        KIND, either express or implied. See the License for the specific language governing
+        permissions and limitations under the License.
+
+        \n\n----------
+
+        \n\nThe following software may be included in this product: EasyPermissions. The software is
+        subject to the following license and notice:
+
+        \n\nLicensed under the Apache License, Version 2.0 (the "License"); you may not use this
+        file except in compliance with the License. You may obtain a copy of the License at
+
+        \n\nhttp://www.apache.org/licenses/LICENSE-2.0
+
+        \n\nUnless required by applicable law or agreed to in writing, software distributed under
+        the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+        KIND, either express or implied. See the License for the specific language governing
+        permissions and limitations under the License.
+
+        \n\n----------
+
+        \n\nThe following software may be included in this product: Sugar ORM. The software is
+        subject to the following license and notice:
+
+        \n\nCopyright © 2012 by Satya Narayan
+
+        \n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this
+        software and associated documentation files (the "Software"), to deal in the Software
+        without restriction, including without limitation the rights to use, copy, modify, merge,
+        publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+        to whom the Software is furnished to do so, subject to the following conditions:
+
+        \n\nThe above copyright notice and this permission notice shall be included in all copies or
+        substantial portions of the Software.
+
+        \n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+        INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+        PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+        FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+        OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+        DEALINGS IN THE SOFTWARE.
+
+        \n\n----------
+
+        \n\nThe following software may be included in this product: Android GeoJSON. The software is
+        subject to the following license and notice:
+
+        \n\nThe MIT License (MIT)
+
+        \n\nCopyright © 2014 Jonathan Baker
+
+        \n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this
+        software and associated documentation files (the "Software"), to deal in the Software
+        without restriction, including without limitation the rights to use, copy, modify, merge,
+        publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+        to whom the Software is furnished to do so, subject to the following conditions:
+
+        \n\nThe above copyright notice and this permission notice shall be included in all copies or
+        substantial portions of the Software.
+
+        \n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+        INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+        PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+        FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+        OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+        DEALINGS IN THE SOFTWARE.
+    </string>
 </resources>
