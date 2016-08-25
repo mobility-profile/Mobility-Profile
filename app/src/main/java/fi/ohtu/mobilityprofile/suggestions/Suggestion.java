@@ -5,7 +5,7 @@ import fi.ohtu.mobilityprofile.domain.Coordinate;
 /**
  * This class represents a destination suggestion that can be made for the user.
  */
-public class Suggestion {
+public class Suggestion implements Comparable {
     private String destination;
     private SuggestionAccuracy accuracy;
     private int source;
@@ -59,5 +59,18 @@ public class Suggestion {
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
+    }
+
+    /**
+     * Compares this Suggestion to given Suggestion based on SuggestionAccuracy.
+     *
+     * @param another the Suggestion to compare to this Suggestion.
+     * @return a negative integer if this Suggestion's SuggestionAccuracy is lower than the accuracy of the given Suggestion,
+     * a positive integer if this accuracy is greater than given accuracy,
+     * 0 if accuracies are the same.
+     */
+    @Override
+    public int compareTo(Object another) {
+        return this.accuracy.compareTo(((Suggestion) another).accuracy);
     }
 }
