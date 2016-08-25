@@ -1,276 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tracking_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/settings"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"/>
-
-    <!--<ImageView-->
-        <!--android:id="@+id/tracking_on"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/ic_action_compass"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:contentDescription="@string/tracking_on_hint"-->
-        <!--android:layout_marginTop="10dp" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/tracking_start"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--android:text="@string/tracking_start"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:background="@color/colorAccentSand"/>-->
-
-    <!--<Button-->
-        <!--android:id="@+id/tracking_stop"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--android:text="@string/tracking_stop"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:background="@color/colorAccentSand"/>-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/allow"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-        <!--android:text="Switch GPS on or off"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:layout_marginBottom="10dp"/>-->
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/checkbox_GPS"
-        android:id="@+id/checkbox_GPS"
-        android:layout_weight="0.04"
-        android:layout_gravity="start"
-        android:textSize="20sp" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/checkbox_calendar"
-        android:id="@+id/checkbox_calendar"
-        android:layout_weight="0.04"
-        android:layout_gravity="start"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/reset_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="18sp"
-        android:text="@string/settings_reset_title"
-        android:layout_gravity="start"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"/>
-
-
-
-    <Button
-        android:id="@+id/resetSearchesButton"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/reset_searches_button_text"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="15dp"
-        android:background="@color/colorAccentSand"
-        android:layout_marginTop="20dp"/>
+        android:weightSum="1">
 
-    <Button
-        android:id="@+id/resetAllButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/reset_all_button_text"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="15dp"
-        android:background="@color/colorAccentSand"
-        android:layout_marginTop="20dp"/>
-
-    <TextView
-        android:id="@+id/backup_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="15sp"
-        android:text="@string/backup_text"
-        android:layout_gravity="start"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="10dp"/>
-
-    <Button
-        android:id="@+id/backup_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:text="@string/backup_title"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/colorAccentSand"/>
-
-
-
-    <TextView
-        android:id="@+id/transport_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="18sp"
-        android:text="@string/transport_modes_title"
-        android:layout_gravity="start"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginStart="10dp"/>
-
-
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:columnCount="3"
-        android:rowCount="3">
-
-
-        <ImageButton
+        <TextView
+            android:id="@+id/tracking_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/walking"
-            android:id="@+id/imagebutton_walking"
-            android:layout_gravity="start"
-            android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_walking"
-            android:layout_margin="5dp"
-            />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/settings"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"/>
 
-        <ImageButton
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/bike"
-            android:id="@+id/imagebutton_bike"
+            android:text="@string/checkbox_GPS"
+            android:id="@+id/checkbox_GPS"
             android:layout_gravity="start"
-            android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_bike"
-            android:layout_margin="5dp"/>
+            android:textSize="20sp" />
 
-        <ImageButton
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/car"
-            android:id="@+id/imagebutton_car"
+            android:text="@string/checkbox_calendar"
+            android:id="@+id/checkbox_calendar"
             android:layout_gravity="start"
-            android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_car"
-            android:layout_margin="5dp"/>
+            android:textSize="20sp" />
 
-        <ImageButton
+        <TextView
+            android:id="@+id/reset_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/bus"
-            android:id="@+id/imagebutton_bus"
-            android:layout_gravity="start"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_bus"
-            android:layout_margin="5dp"
-            />
+            android:text="@string/settings_reset_title"
+            android:layout_gravity="start"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"/>
 
-        <ImageButton
+
+
+        <Button
+            android:id="@+id/resetSearchesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_searches_button_text"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:background="@color/colorAccentSand"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/resetAllButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_all_button_text"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:background="@color/colorAccentSand"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/backup_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/metro"
-            android:id="@+id/imagebutton_metro"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="15sp"
+            android:text="@string/backup_text"
             android:layout_gravity="start"
-            android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_subway"
-            android:layout_margin="5dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="10dp"/>
 
-        <ImageButton
+        <Button
+            android:id="@+id/backup_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="@string/backup_title"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorAccentSand"/>
+
+
+
+        <TextView
+            android:id="@+id/transport_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/tram"
-            android:id="@+id/imagebutton_tram"
-            android:layout_gravity="start"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_tram"
-            android:layout_margin="5dp"/>
+            android:text="@string/transport_modes_title"
+            android:layout_gravity="start"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="10dp"/>
 
-        <ImageButton
+
+        <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/train"
-            android:id="@+id/imagebutton_train"
-            android:layout_gravity="start"
-            android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_train"
-            android:layout_margin="5dp"/>
+            android:layout_marginStart="10dp"
+            android:columnCount="3"
+            android:rowCount="3">
 
-        <ImageButton
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/walking"
+                android:id="@+id/imagebutton_walking"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_walking"
+                android:layout_margin="5dp"
+                />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/bike"
+                android:id="@+id/imagebutton_bike"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_bike"
+                android:layout_margin="5dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/car"
+                android:id="@+id/imagebutton_car"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_car"
+                android:layout_margin="5dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/bus"
+                android:id="@+id/imagebutton_bus"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_bus"
+                android:layout_margin="5dp"
+                />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/metro"
+                android:id="@+id/imagebutton_metro"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_subway"
+                android:layout_margin="5dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/tram"
+                android:id="@+id/imagebutton_tram"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_tram"
+                android:layout_margin="5dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/train"
+                android:id="@+id/imagebutton_train"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_train"
+                android:layout_margin="5dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/boat"
+                android:id="@+id/imagebutton_boat"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_boat"
+                android:layout_margin="5dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/plane"
+                android:id="@+id/imagebutton_plane"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_plane"
+                android:layout_margin="5dp"/>
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/license"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/boat"
-            android:id="@+id/imagebutton_boat"
-            android:layout_gravity="start"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_boat"
-            android:layout_margin="5dp"/>
+            android:text="@string/other_info"
+            android:layout_gravity="start"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/licenses_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/plane"
-            android:id="@+id/imagebutton_plane"
-            android:layout_gravity="start"
-            android:textSize="18sp"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_plane"
-            android:layout_margin="5dp"/>
-    </GridLayout>
+            android:text="@string/licenses"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:background="@color/colorAccentSand"
+            android:layout_marginTop="20dp"/>
 
-    <TextView
-        android:id="@+id/license"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="18sp"
-        android:text="@string/other_info"
-        android:layout_gravity="start"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"/>
-
-    <Button
-        android:id="@+id/licenses_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/licenses"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="15dp"
-        android:background="@color/colorAccentSand"
-        android:layout_marginTop="20dp"/>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
