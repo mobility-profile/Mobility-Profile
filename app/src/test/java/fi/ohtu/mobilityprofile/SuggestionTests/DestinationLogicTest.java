@@ -32,11 +32,14 @@ import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 public class DestinationLogicTest {
 
     private DestinationLogic mp;
-    private RouteSearchDao routeSearchDao;
-    private PlaceDao placeDao;
+    private static RouteSearchDao routeSearchDao;
+    private static PlaceDao placeDao;
+
+    private Coordinate laut;
 
     @Before
     public void setUp() throws Exception {
+
         CalendarTagDao calendarTagDao = mock(CalendarTagDao.class);
 
         List<SuggestionSource> suggestionSources = new ArrayList<>();
@@ -74,9 +77,18 @@ public class DestinationLogicTest {
 
     @Test
     public void suggestionsAreSortedBasedOnAccuracy() {
+        insertDataToDatabase();
+
+        mp.getListOfIntraCitySuggestions(new StartLocation(343423, 50, laut.getLatitude(), laut.getLongitude()));
+        List<Suggestion> suggestions = mp.getLatestSuggestions();
+
+        assertEquals("Sörnäinen", suggestions.get(0).getDestination());
+    }
+
+    private void insertDataToDatabase() {
         Coordinate sorn = new Coordinate(new Float(60.186422), new Float(24.968971));
-        Coordinate laut = new Coordinate(new Float(60.157330), new Float(24.877253));
-        Coordinate haka = new Coordinate(new Float(61.670660), new Float(27.759819));
+        laut = new Coordinate(new Float(60.157330), new Float(24.877253));
+        Coordinate haka = new Coordinate(new Float(60.17885), new Float(24.95006));
         Coordinate pita = new Coordinate(new Float(60.222980), new Float(24.862062));
         routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Lauttasaari",  "Sörnäinen", laut, sorn));
         routeSearchDao.insertRouteSearch(new RouteSearch(23232, "Lauttasaari",  "Sörnäinen", laut, sorn));
@@ -89,10 +101,5 @@ public class DestinationLogicTest {
         kumpula.setFavourite(true);
         placeDao.insertPlace(kamppi);
         placeDao.insertPlace(kumpula);
-
-        mp.getListOfIntraCitySuggestions(new StartLocation(343423, 50, laut.getLatitude(), laut.getLongitude()));
-        List<Suggestion> suggestions = mp.getLatestSuggestions();
-
-        assertEquals("Sörnäinen", suggestions.get(0).getDestination());
     }
 }
