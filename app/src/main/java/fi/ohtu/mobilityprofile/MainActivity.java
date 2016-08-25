@@ -1,18 +1,25 @@
 package fi.ohtu.mobilityprofile;
 
+import android.*;
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.os.Handler;
+import android.os.ResultReceiver;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.orm.SugarContext;
@@ -30,11 +37,9 @@ import com.google.android.gms.drive.Drive;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
-import fi.ohtu.mobilityprofile.util.ProfileBackup;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
+import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
@@ -44,8 +49,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
     public final static String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
+    public Activity activity;
+    private static final int ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST = 1;
+    private static final int READ_CALENDAR_PERMISSIONS_REQUEST = 2;
     
     private GoogleApiClient mGoogleApiClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +62,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_main);
 
         SugarContext.init(this);
+        activity = this;
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_home).setContentDescription("Privacy");
-        //tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_list).setContentDescription("Last searches");
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_star_10).setContentDescription("Favourite places");
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_info).setContentDescription("Info");
-
+        setViewPagerAndTabs();
         checkSecurity();
         createTransportModes();
         // new ProfileBackup(this).handleBackup("import");
@@ -79,6 +79,42 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     .build();
         }
         mGoogleApiClient.connect();
+    }
+
+    private void setViewPagerAndTabs() {
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.colorWhite));
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_info_orange).setContentDescription("Mobility Profile");
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
+
+
+        tabLayout.setOnTabSelectedListener(new  TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                int tabIconColor = ContextCompat.getColor(activity, R.color.colorAccentOrange);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                super.onTabUnselected(tab);
+                int tabIconColor = ContextCompat.getColor(activity, R.color.colorPrimaryDark);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+            }
+        });
     }
 
     /**
@@ -117,34 +153,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = new Intent(this, SecurityProblemActivity.class);
         intent.putStringArrayListExtra(CONFLICT_APPS, appNames);
         startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.settings, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intentSettings = new Intent(this, SettingsActivity.class);
-                startActivity(intentSettings);
-                return true;
-            case R.id.action_backup:
-                Intent intentBackup = new Intent(this, BackUpActivity.class);
-                startActivity(intentBackup);
-                return true;
-            case R.id.action_licenses:
-                Intent intentLicenses = new Intent(this, LicensesActivity.class);
-                startActivity(intentLicenses);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
     }
 
     private void createTransportModes() {

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
     private Activity activity;
     private Place favouritePlace;
+    private ImageButton back;
     private TextView name;
     private TextView address;
     private Button editButton;
@@ -59,6 +61,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
     }
 
     private void initializeViewElements() {
+        back = (ImageButton) findViewById(R.id.favourites_back_button);
         name = (TextView) findViewById(R.id.favourite_item_name);
         address = (TextView) findViewById(R.id.favourite_item_address);
         editButton = (Button) findViewById(R.id.favourite_edit);
@@ -71,6 +74,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
         editButtonListener();
         deleteButtonListener();
+        backButtonListener();
     }
 
     private void editButtonListener() {
@@ -170,6 +174,16 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
             }
         });
+    }
+
+    private void backButtonListener(){
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToFragment();
+            }
+        });
+
     }
 
     private void setMarker() {

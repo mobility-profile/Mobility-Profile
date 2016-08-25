@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
     private Activity activity;
     private Place place;
+    private ImageButton back;
     private TextView name;
     private TextView address;
     private Button editButton;
@@ -57,24 +59,32 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     }
 
     private void initializeViewElements() {
+        back = (ImageButton) findViewById(R.id.favourites_back_button);
         name = (TextView) findViewById(R.id.favourite_item_name);
         address = (TextView) findViewById(R.id.favourite_item_address);
+
         editButton = (Button) findViewById(R.id.favourite_edit);
+        editButton.setVisibility(View.GONE);
+
         setFavouriteButton = (Button) findViewById(R.id.favourite_set_favourite);
         deleteButton = (Button) findViewById(R.id.favourite_delete);
 
-        if (place.getName().equals("name")) {
+
+        fancifyNameAndAddress();
+        setFavouriteButtonListener();
+        deleteButtonListener();
+        backButtonListener();
+    }
+
+    private void fancifyNameAndAddress() {
+        if (place.getName().equals("")) {
             name.setText("NAME");
         } else {
-            name.setText(place.getName());
+            name.setText(place.getName().toUpperCase());
         }
 
         name.setTextColor(ContextCompat.getColor(this, R.color.colorAccentGreyDark));
         address.setText(place.getAddress());
-        editButton.setVisibility(View.GONE);
-
-        setFavouriteButtonListener();
-        deleteButtonListener();
     }
 
     private void setFavouriteButtonListener() {
@@ -129,7 +139,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
     }
 
-
     private void deleteButtonListener() {
         deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -157,6 +166,16 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         });
     }
 
+    private void backButtonListener(){
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToFragment();
+            }
+        });
+
+    }
+
     @Override
     public void onMapReady(GoogleMap map) {
         map.getUiSettings().setZoomGesturesEnabled(true);
@@ -176,7 +195,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         } catch (Exception e) {
             Toast.makeText(this, "Coordinates for the address were not found", Toast.LENGTH_LONG).show();
         }
-
 
     }
 

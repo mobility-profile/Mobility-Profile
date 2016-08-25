@@ -30,14 +30,7 @@ import fi.ohtu.mobilityprofile.util.AddressConverter;
  */
 public class FavouritesFragment extends Fragment {
 
-    /**
-     * The title of the fragment.
-     */
     private static final String title = "FAVOURITES";
-
-    /**
-     * The position of the fragment in the "queue" of all fragments.
-     */
     private static final int page = 1;
     private Context context;
     private FavouritesListAdapter adapter;

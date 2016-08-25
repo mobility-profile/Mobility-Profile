@@ -6,8 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import fi.ohtu.mobilityprofile.ui.fragments.FavouritesFragment;
 import fi.ohtu.mobilityprofile.ui.fragments.InfoFragment;
-import fi.ohtu.mobilityprofile.ui.fragments.PrivacyFragment;
-import fi.ohtu.mobilityprofile.ui.fragments.ProfileFragment;
+import fi.ohtu.mobilityprofile.ui.fragments.SettingsFragment;
 
 /**
  * This class manages all the fragments of the program.
@@ -17,7 +16,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
      * The number of fragments.
      */
     private static final int NUM_ITEMS = 3;
-
 
     /**
      * Creates MyPagerAdapter.
@@ -36,12 +34,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return PrivacyFragment.newInstance();
+                return InfoFragment.newInstance();
             case 1:
                 return FavouritesFragment.newInstance();
             case 2:
-                return InfoFragment.newInstance();
-
+                return SettingsFragment.newInstance();
             default:
                 return new Fragment();
         }

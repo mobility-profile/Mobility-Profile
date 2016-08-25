@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
     <ImageButton
         android:id="@+id/favourites_star_unfilled"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight=".05"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_star_0"
         android:contentDescription="@string/favourites_verify_title"
@@ -17,7 +18,8 @@
 
     <ImageButton
         android:id="@+id/favourites_star_filled"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight=".05"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_star_10"
         android:contentDescription="@string/favourites_verify_title"
@@ -29,7 +31,8 @@
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/favourites_item"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
+        android:layout_weight=".9"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -39,4 +42,4 @@
         android:textColor="@color/colorPrimaryDark">
     </TextView>
 
-</GridLayout>
+</LinearLayout>
