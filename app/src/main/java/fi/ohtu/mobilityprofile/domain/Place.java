@@ -1,8 +1,11 @@
 package fi.ohtu.mobilityprofile.domain;
 
+import android.location.Address;
 import android.util.Log;
 
 import com.orm.SugarRecord;
+
+import java.util.Locale;
 
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 
@@ -12,18 +15,16 @@ import fi.ohtu.mobilityprofile.data.PlaceDao;
  */
 public class Place extends SugarRecord {
     private String name;
-    private String address;
+    private Address address;
     private boolean favourite;
-    private Coordinate coordinate;
 
     /**
      *
      */
     public Place() {
         this.name = "name";
-        this.address = "address";
+        this.address = new Address(Locale.getDefault());
         this.favourite = false;
-        this.coordinate = new Coordinate(0f, 0f);
     }
 
     /**
@@ -31,35 +32,22 @@ public class Place extends SugarRecord {
      * @param name Name of the Place
      * @param address Address of the Place
      */
-    public Place(String name, String address) {
+    public Place(String name, Address address) {
         this.name = name;
         this.address = address;
         this.favourite = false;
-        this.coordinate = null;
-    }
-
-    /**
-     * Creates Place.
-     * @param name Name of the Place
-     * @param address Address of the Place
-     * @param coordinate Coordinate object representing the coordinates of the place
-     */
-    public Place(String name, String address, Coordinate coordinate) {
-        this.name = name;
-        this.address = address;
-        this.favourite = false;
-        this.coordinate = coordinate;
     }
 
     public Coordinate getCoordinate() {
-        return this.coordinate;
+        return new Coordinate(new Float(this.address.getLatitude()), new Float(this.address.getLongitude()));
     }
 
     public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+        this.address.setLatitude(coordinate.getLatitude());
+        this.address.setLongitude(coordinate.getLongitude());
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
@@ -77,18 +65,7 @@ public class Place extends SugarRecord {
      * @return distance
      */
     public double distanceTo(Coordinate coordinate) {
-        return this.coordinate.distanceTo(coordinate);
-    }
-
-    @Override
-    public boolean delete() {
-        try {
-            this.coordinate.delete();
-        } catch (Exception e) {
-            Log.i("Place", "Place didn't have coordinates!");
-        }
-
-        return super.delete();
+        return getCoordinate().distanceTo(coordinate);
     }
 
     @Override
@@ -98,7 +75,7 @@ public class Place extends SugarRecord {
 
         Place that = (Place) o;
 
-        return coordinate.equals(that.coordinate);
+        return address.equals(that.address);
 
     }
 
@@ -110,12 +87,12 @@ public class Place extends SugarRecord {
         this.favourite = favourite;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
     @Override
     public String toString() {
-        return getAddress();
+        return getAddress().toString();
     }
 }

@@ -98,7 +98,7 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Processes used route by adding it to calendar tags and used routes.
+     * Processes searched route by adding it to database.
      *
      * @param message Message with data that tells which destination the user inputted
      */
@@ -106,7 +106,7 @@ public class RequestHandler extends Handler {
         Bundle bundle = message.getData();
         StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_SEARCHED_ROUTE + ""), "|");
         if (tokenizer.countTokens() != 2) {
-            Log.d("Request Handler", "Invalid parameters when processing used route");
+            Log.d("Request Handler", "Invalid parameters when processing searched route");
             return;
         }
 
@@ -124,21 +124,13 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Processes used intraCityRoutes by inserting them to the database.
+     * Processes searched intraCityRoutes by inserting them to the database.
      * @param startLocation starting location of the route
      * @param destination destination of the route
      */
     private void processIntraCityRoute(String startLocation, String destination) {
-        List<Suggestion> suggestions = destinationLogic.getLatestSuggestions();
-        for (Suggestion suggestion : suggestions) {
-            if (suggestion.getSource() == SuggestionSource.CALENDAR_SUGGESTION) {
-                CalendarTag calendarTag = new CalendarTag(suggestion.getDestination(), destination);
-                CalendarTagDao.insertCalendarTag(calendarTag);
-            }
-        }
-
-        Coordinate startCoordinate = AddressConverter.convertToCoordinates(context, startLocation);
-        Coordinate endCoordinate = AddressConverter.convertToCoordinates(context, destination);
+        Coordinate startCoordinate = AddressConverter.getCoordinatesFromAddress(context, startLocation);
+        Coordinate endCoordinate = AddressConverter.getCoordinatesFromAddress(context, destination);
 
         if (startCoordinate != null && endCoordinate != null) {
             RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination, startCoordinate, endCoordinate);

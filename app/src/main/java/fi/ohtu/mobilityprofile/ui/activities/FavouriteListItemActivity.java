@@ -92,7 +92,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
                                 editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
 
-                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), favouritePlace.getAddress());
+                                Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(getApplicationContext(), favouritePlace.getAddress());
                                 if (coordinate != null) {
                                     coordinate.save();
 

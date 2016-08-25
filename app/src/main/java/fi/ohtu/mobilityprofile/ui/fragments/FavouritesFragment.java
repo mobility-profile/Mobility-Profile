@@ -126,7 +126,7 @@ public class FavouritesFragment extends Fragment {
                 if (!addFavouriteName.getText().toString().equals("") && !addFavouriteAddress.getText().toString().equals("")) {
                     Place fav = new Place(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
 
-                    Coordinate coordinate = AddressConverter.convertToCoordinates(context, fav.getAddress());
+                    Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(context, fav.getAddress());
                     if (coordinate != null) {
                         coordinate.save();
 

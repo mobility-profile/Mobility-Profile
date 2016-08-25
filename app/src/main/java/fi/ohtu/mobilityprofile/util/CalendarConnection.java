@@ -94,7 +94,7 @@ public class CalendarConnection {
 
             if (location == null) continue;
 
-            Coordinate coordinate = AddressConverter.convertToCoordinates(context, location);
+            Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(context, location);
             if (coordinate == null) continue;
 
             // Check if the user is in the same country as the geocoded address.

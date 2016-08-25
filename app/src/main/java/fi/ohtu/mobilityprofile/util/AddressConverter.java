@@ -20,17 +20,16 @@ public class AddressConverter {
      * @param coordinate Coordinates to be converted
      * @return Converted address
      */
-    public static String convertToAddress(Context context, Coordinate coordinate) {
+    public static Address getAddressForCoordinates(Context context, Coordinate coordinate) {
         try {
             Geocoder geocoder = new Geocoder(context);
             List<Address> addresses = geocoder.getFromLocation(coordinate.getLatitude(), coordinate.getLongitude(), 1);
             if (addresses.size() >= 1) {
-                return addresses.get(0).getAddressLine(0);
+                return addresses.get(0);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -41,7 +40,7 @@ public class AddressConverter {
      * @param address Address to be converted
      * @return Converted coordinates
      */
-    public static Coordinate convertToCoordinates(Context context, String address) {
+    public static Coordinate getCoordinatesFromAddress(Context context, String address) {
         try {
             Geocoder geocoder = new Geocoder(context);
             List<Address> addresses = geocoder.getFromLocationName(address, 1);

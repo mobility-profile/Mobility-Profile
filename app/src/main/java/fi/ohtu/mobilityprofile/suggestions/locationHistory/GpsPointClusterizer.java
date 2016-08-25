@@ -1,6 +1,7 @@
 package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import android.content.Context;
+import android.location.Address;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,10 +116,9 @@ public class GpsPointClusterizer {
      * @return Place
      */
     private Place createPlace(Coordinate coordinate) {
-        String address = AddressConverter.convertToAddress(context, coordinate);
-        final Place place = new Place(address, address, coordinate);
+        Address address = AddressConverter.getAddressForCoordinates(context, coordinate);
+        final Place place = new Place(address.getAddressLine(0), address);
         PlaceDao.insertPlace(place);
-
         return place;
     }
 
