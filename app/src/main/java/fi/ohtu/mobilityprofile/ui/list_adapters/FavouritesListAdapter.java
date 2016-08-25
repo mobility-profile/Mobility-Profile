@@ -192,7 +192,6 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
                     Intent placeIntent = new Intent(context, SuggestionListItemActivity.class);
                     placeIntent.putExtra("placeId", getItemId(position) + "");
                     fragment.getActivity().startActivity(placeIntent);
-
                 }
 
             }
@@ -217,9 +216,9 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
     }
 
     private void setColorsForPlace(View view) {
-        int grey = ContextCompat.getColor(context, R.color.colorAccentGrey);
-        view.setBackgroundColor(grey);
-        starUnfilled.setBackgroundColor(grey);
+        int white = ContextCompat.getColor(context, R.color.colorWhite);
+        view.setBackgroundColor(white);
+        starUnfilled.setBackgroundColor(white);
     }
 
     @Override

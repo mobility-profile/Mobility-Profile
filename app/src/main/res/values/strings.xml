@@ -3,8 +3,8 @@
 
     <!--Allow access-->
     <string name="allow_access">Allow Mobility Profile access to:</string>
-    <string name="checkbox_GPS">GPS (Fine and coarse)</string>
-    <string name="checkbox_calendar">Read calendar</string>
+    <string name="checkbox_GPS">GPS</string>
+    <string name="checkbox_calendar">Read calendar events</string>
     <!--Tracking-->
     <string name="tracking_title">Location tracking</string>
     <string name="tracking_start">Start</string>
@@ -29,6 +29,7 @@
     <string name="favourites_delete_title">Delete this favourite place?</string>
     <string name="favourites_unfavourite_title">Unfavourite this favourite place?</string>
     <string name="favourites_verify_title">Verify this suggested place</string>
+    <string name="favourites_back_button">Back to Your places</string>
     <string name="favourites_auto_generated_delete_title">Forget this place for good or unfavourite? </string>
     <string name="favourites_name_hint">Name</string>
     <string name="favourites_address_hint">Address</string>
@@ -90,6 +91,8 @@
     <string name="location_tracking_description">Mobility Profile is tracking your location</string>
     <string name="stop_location_tracking">Stop tracking</string>
     <string name="licenses">Licenses</string>
+
+    <string name="other_info">Other info</string>
 
 
     <string name="software_licenses" translatable="false">
