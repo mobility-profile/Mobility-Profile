@@ -112,6 +112,14 @@ public class RouteSearchDao {
         routeSearch.save();
     }
 
+    public static List<RouteSearch> getAll(int mode) {
+        List<RouteSearch> searches = Select.from(RouteSearch.class)
+                .where(Condition.prop("mode").eq(mode))
+                .orderBy("timestamp DESC")
+                .list();
+        return searches;
+    }
+
     /**
      * Deletes all RouteSearch data from the database.
      */

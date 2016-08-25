@@ -66,7 +66,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         deleteButton = (Button) findViewById(R.id.favourite_delete);
 
         name.setText(favouritePlace.getName().toUpperCase());
-        address.setText(favouritePlace.getAddress());
+        address.setText(favouritePlace.getAddress().getAddressLine(0));
         setFavouriteButton.setVisibility(View.GONE);
 
         editButtonListener();

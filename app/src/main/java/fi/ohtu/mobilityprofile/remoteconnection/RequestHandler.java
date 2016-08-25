@@ -1,6 +1,7 @@
 package fi.ohtu.mobilityprofile.remoteconnection;
 
 import android.content.Context;
+import android.location.Address;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,21 +10,17 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.StartLocationDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
-import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.suggestions.Suggestion;
-import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
 import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
@@ -52,10 +49,10 @@ public class RequestHandler extends Handler {
 
         Message message;
         switch (msg.what) {
-            case REQUEST_INTRA_CITY_SUGGESTIONS:
+            case REQUEST_INTRACITY_SUGGESTIONS:
                 message = processIntraCitySuggestionsRequest();
                 break;
-            case REQUEST_INTER_CITY_SUGGESTIONS:
+            case REQUEST_INTERCITY_SUGGESTIONS:
                 message = processInterCitySuggestionsRequest();
                 break;
             case SEND_SEARCHED_ROUTE:
@@ -103,48 +100,23 @@ public class RequestHandler extends Handler {
      */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
-        StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_SEARCHED_ROUTE + ""), "|");
-        if (tokenizer.countTokens() != 2) {
-            Log.d("Request Handler", "Invalid parameters when processing searched route");
-            return;
+        Coordinate start = new Coordinate(bundle.getFloat("startLat"), bundle.getFloat("startLon"));
+        Coordinate end = new Coordinate(bundle.getFloat("endLat"), bundle.getFloat("endLon"));
+        Place startLocation = PlaceDao.getPlaceClosestTo(start);
+        Place destination = PlaceDao.getPlaceClosestTo(end);
+        if(startLocation.distanceTo(start) > GpsPointClusterizer.CLUSTER_RADIUS) {
+            Address address = AddressConverter.getAddressForCoordinates(context, start);
+            startLocation = new Place(address.getAddressLine(0), address);
+            PlaceDao.insertPlace(startLocation);
+        }
+        if(destination.distanceTo(end) > GpsPointClusterizer.CLUSTER_RADIUS) {
+            Address address = AddressConverter.getAddressForCoordinates(context, end);
+            destination = new Place(address.getAddressLine(0), address);
+            PlaceDao.insertPlace(destination);
         }
 
-        String startLocation = tokenizer.nextToken();
-        String destination = tokenizer.nextToken();
-
-        switch (destinationLogic.getLatestSuggestionType()) {
-            case DestinationLogic.INTRA_CITY_SUGGESTION:
-                processIntraCityRoute(startLocation, destination);
-                break;
-            case DestinationLogic.INTER_CITY_SUGGESTION:
-                processInterCityRoute(startLocation, destination);
-                break;
-        }
-    }
-
-    /**
-     * Processes searched intraCityRoutes by inserting them to the database.
-     * @param startLocation starting location of the route
-     * @param destination destination of the route
-     */
-    private void processIntraCityRoute(Place startLocation, Place destination) {
-        Coordinate startCoordinate = AddressConverter.getCoordinatesFromAddress(context, startLocation);
-        Coordinate endCoordinate = AddressConverter.getCoordinatesFromAddress(context, destination);
-
-        if (startCoordinate != null && endCoordinate != null) {
-            RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
-            RouteSearchDao.insertRouteSearch(routeSearch);
-        }
-    }
-
-    /**
-     * Processes used interCityRoutes by inserting them to the database.
-     * @param startLocation starting location of the route
-     * @param destination destination of the route
-     */
-    private void processInterCityRoute(String startLocation, String destination) {
-        InterCitySearch interCitySearch = new InterCitySearch(startLocation, destination, System.currentTimeMillis());
-        InterCitySearchDao.insertInterCitySearch(interCitySearch);
+        RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), bundle.getInt("mode"), startLocation, destination);
+        RouteSearchDao.insertRouteSearch(routeSearch);
     }
 
     /**

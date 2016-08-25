@@ -140,7 +140,6 @@ public class SettingsActivity extends AppCompatActivity {
     private void deleteAllDataFromDatabase() {
         GpsPointDao.deleteAllData();
         PlaceDao.deleteAllData();
-        CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         Coordinate.deleteAll(Coordinate.class);
         InterCitySearchDao.deleteAllData();
@@ -148,7 +147,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (GpsPoint.count(GpsPoint.class) == 0
                 && Place.count(Place.class)  == 0
-                && CalendarTag.count(CalendarTag.class) == 0
                 && RouteSearch.count(RouteSearch.class) == 0
                 && Coordinate.count(Coordinate.class) == 0
                 && InterCitySearch.count(InterCitySearch.class) == 0

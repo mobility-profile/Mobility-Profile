@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 
@@ -18,8 +17,8 @@ import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
  * This class is used for calculating the most likely trips the user is going to make.
  */
 public class DestinationLogic {
-    public static final int INTRA_CITY_SUGGESTION = 1;
-    public static final int INTER_CITY_SUGGESTION = 2;
+    public static final int MODE_INTRACITY = 300;
+    public static final int MODE_INTERCITY = 301;
 
     private StartLocation latestStartLocation;
     private List<Suggestion> latestSuggestions;
@@ -49,7 +48,7 @@ public class DestinationLogic {
      */
     public String getListOfIntraCitySuggestions(StartLocation startLocation) {
         this.latestStartLocation = startLocation;
-        this.latestSuggestionType = INTRA_CITY_SUGGESTION;
+        this.latestSuggestionType = MODE_INTRACITY;
 
         List<Suggestion> suggestions = new ArrayList<>();
         for (SuggestionSource suggestionSource : suggestionSources) {
@@ -68,7 +67,7 @@ public class DestinationLogic {
      */
     public String getListOfInterCitySuggestions(StartLocation startLocation) {
         this.latestStartLocation = startLocation;
-        this.latestSuggestionType = INTER_CITY_SUGGESTION;
+        this.latestSuggestionType = MODE_INTERCITY;
 
         List<Suggestion> suggestions = new ArrayList<>();
         suggestions.addAll(interCitySuggestions.getSuggestions(startLocation));

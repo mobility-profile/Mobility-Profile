@@ -8,6 +8,7 @@ import com.orm.SugarRecord;
 public class RouteSearch extends SugarRecord {
 
     long timestamp;
+    int mode;
     Place startlocation;
     Place destination;
 
@@ -18,8 +19,9 @@ public class RouteSearch extends SugarRecord {
      * @param startlocation starting location of the routesearch
      * @param destination   destination of the routesearch
      */
-    public RouteSearch(long timestamp, Place startlocation, Place destination) {
+    public RouteSearch(long timestamp, int mode, Place startlocation, Place destination) {
         this.timestamp = timestamp;
+        this.mode = mode;
         this.startlocation = startlocation;
         this.destination = destination;
     }

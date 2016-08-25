@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.location.Address;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.telephony.TelephonyManager;
@@ -11,10 +12,13 @@ import android.telephony.TelephonyManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionAccuracy;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
 
 /**
  * Class is used to get events from calendars.
@@ -102,7 +106,14 @@ public class CalendarConnection {
             String countryCode = tm.getSimCountryIso();
             if (!countryCode.equalsIgnoreCase(AddressConverter.getCountryCode(context, location))) continue;
 
-            Suggestion suggestion = new Suggestion(location, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION, coordinate);
+            Place place = PlaceDao.getPlaceClosestTo(coordinate);
+            if(place.distanceTo(coordinate) > GpsPointClusterizer.CLUSTER_RADIUS) {
+                Address address = AddressConverter.getAddressForCoordinates(context, coordinate);
+                place = new Place(address.getAddressLine(0), address);
+                PlaceDao.insertPlace(place);
+            }
+
+            Suggestion suggestion = new Suggestion(place, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION);
 
             if (cursor.getString(ALL_DAY).equals("1")) {
                 allDayEventLocations.add(suggestion);
