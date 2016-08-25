@@ -6,8 +6,8 @@ import com.orm.SugarRecord;
  * Class is used to save searches between cities the user has made.
  */
 public class InterCitySearch extends SugarRecord {
-    String startlocation;
-    String destination;
+    Place startlocation;
+    Place destination;
     long timestamp;
 
     public InterCitySearch() {
@@ -19,17 +19,17 @@ public class InterCitySearch extends SugarRecord {
      * @param destination destination of the search
      * @param timestamp the time the search was done
      */
-    public InterCitySearch(String startlocation, String destination, long timestamp) {
+    public InterCitySearch(Place startlocation, Place destination, long timestamp) {
         this.startlocation = startlocation;
         this.destination = destination;
         this.timestamp = timestamp;
     }
 
-    public String getStartlocation() {
+    public Place getStartlocation() {
         return startlocation;
     }
 
-    public String getDestination() {
+    public Place getDestination() {
         return destination;
     }
 

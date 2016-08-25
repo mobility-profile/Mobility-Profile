@@ -120,8 +120,8 @@ public class DestinationLogic {
         JSONObject destination = new JSONObject();
 
         Feature feature = new Feature();
-        if (suggestion.getCoordinate() != null) {
-            feature.setGeometry(new Point(suggestion.getCoordinate().getLatitude(),suggestion.getCoordinate().getLongitude()));
+        if (suggestion.getDestination().getCoordinate() != null) {
+            feature.setGeometry(new Point(suggestion.getDestination().getCoordinate().getLatitude(),suggestion.getDestination().getCoordinate().getLongitude()));
         }
         try {
             feature.setProperties(new JSONObject().put("label", suggestion.getDestination()).put("layer", "mobilityprofile").put("name", suggestion.getDestination().getName()));

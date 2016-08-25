@@ -8,18 +8,8 @@ import com.orm.SugarRecord;
 public class RouteSearch extends SugarRecord {
 
     long timestamp;
-    String startlocation;
-    String destination;
-    Coordinate startCoordinates;
-    Coordinate destinationCoordinates;
-
-    /**
-     *
-     */
-    public RouteSearch() {
-        this.startCoordinates = new Coordinate(0f, 0f);
-        this.destinationCoordinates = new Coordinate(0f, 0f);
-    }
+    Place startlocation;
+    Place destination;
 
     /**
      * Creates Routesearch.
@@ -28,55 +18,30 @@ public class RouteSearch extends SugarRecord {
      * @param startlocation starting location of the routesearch
      * @param destination   destination of the routesearch
      */
-    public RouteSearch(long timestamp, String startlocation, String destination) {
+    public RouteSearch(long timestamp, Place startlocation, Place destination) {
         this.timestamp = timestamp;
         this.startlocation = startlocation;
         this.destination = destination;
-    }
-
-    /**
-     * Creates Routesearch.
-     *
-     * @param timestamp              timestamp of the routesearch
-     * @param startlocation          starting location of the routesearch
-     * @param destination            destination of the routesearch
-     * @param startCoordinates       coordinates of the starting location
-     * @param destinationCoordinates coordinates of the destination
-     */
-    public RouteSearch(long timestamp, String startlocation, String destination, Coordinate startCoordinates, Coordinate destinationCoordinates) {
-        this.timestamp = timestamp;
-        this.startlocation = startlocation;
-        this.destination = destination;
-        this.startCoordinates = startCoordinates;
-        this.destinationCoordinates = destinationCoordinates;
     }
 
     public long getTimestamp() {
         return this.timestamp;
     }
 
-    public String getStartlocation() {
+    public Place getStartlocation() {
         return this.startlocation;
     }
 
-    public String getDestination() {
+    public Place getDestination() {
         return this.destination;
     }
 
     public Coordinate getStartCoordinates() {
-        return this.startCoordinates;
-    }
-
-    public void setStartCoordinates(Coordinate startCoordinates) {
-        this.startCoordinates = startCoordinates;
-    }
-
-    public void setDestinationCoordinates(Coordinate destinationCoordinates) {
-        this.destinationCoordinates = destinationCoordinates;
+        return this.startlocation.getCoordinate();
     }
 
     public Coordinate getDestinationCoordinates() {
-        return this.destinationCoordinates;
+        return this.getDestination().getCoordinate();
     }
 
     @Override

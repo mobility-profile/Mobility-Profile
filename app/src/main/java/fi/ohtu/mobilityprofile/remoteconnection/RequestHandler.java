@@ -17,11 +17,10 @@ import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.domain.InterCitySearch;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
-import fi.ohtu.mobilityprofile.domain.CalendarTag;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
@@ -128,12 +127,12 @@ public class RequestHandler extends Handler {
      * @param startLocation starting location of the route
      * @param destination destination of the route
      */
-    private void processIntraCityRoute(String startLocation, String destination) {
+    private void processIntraCityRoute(Place startLocation, Place destination) {
         Coordinate startCoordinate = AddressConverter.getCoordinatesFromAddress(context, startLocation);
         Coordinate endCoordinate = AddressConverter.getCoordinatesFromAddress(context, destination);
 
         if (startCoordinate != null && endCoordinate != null) {
-            RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination, startCoordinate, endCoordinate);
+            RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination);
             RouteSearchDao.insertRouteSearch(routeSearch);
         }
     }
