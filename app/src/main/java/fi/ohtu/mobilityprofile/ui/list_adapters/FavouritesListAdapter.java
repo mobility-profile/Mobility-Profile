@@ -94,52 +94,10 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             public void onClick(View v) {
                 final Place place = PlaceDao.getPlaceById(getItemId(position));
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View dialogView = LayoutInflater.from(context).inflate(R.layout.significant_place_dialog_edit, null);
-
-                builder
-                        .setView(dialogView)
-                        .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteName);
-                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
-
-                                if (!editTextName.equals("") && !editTextAddress.equals("")) {
-
-                                    place.setName(editTextName.getText().toString());
-                                    place.setAddress(editTextAddress.getText().toString());
-                                    place.setCoordinate(place.getCoordinate());
-                                    place.setFavourite(true);
-                                    place.save();
-
-                                    notifyDataSetChanged();
-                                }
-
-                                updateView();
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        })
-                        .setTitle(R.string.favourite_set_favourite_title);
-
-                EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
-                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
-
-                if (place.getName().equals("name")) {
-                    editTextName.setText("");
-                } else {
-                    editTextName.setText(place.getName());
-                }
-
-                editTextAddress.setText(place.getAddress());
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                place.setFavourite(true);
+                place.save();
+                notifyDataSetChanged();
+                updateView();
             }
         });
 
@@ -152,28 +110,11 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
 
                 final Place place = PlaceDao.getPlaceById(getItemId(position));
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder
-                        .setTitle(R.string.favourites_unfavourite_title)
-                        .setPositiveButton(R.string.unfavourite, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
+                place.setFavourite(false);
+                place.save();
+                notifyDataSetChanged();
+                updateView();
 
-                                place.setFavourite(false);
-                                place.save();
-                                notifyDataSetChanged();
-                                updateView();
-
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
             }
         });
     }

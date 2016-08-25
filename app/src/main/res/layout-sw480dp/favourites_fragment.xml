@@ -15,6 +15,16 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/tracking_title_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/favourites_title_info"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"/>
+
     <GridLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"

@@ -14,7 +14,7 @@
     <!--Info page-->
     <string name="info">is an application which offers your next probable destination to your favourite journey planner without you needing to type anything.</string>
     <string name="permissions_info">
-        To do this Mobility Profile needs permissions to read your calendar and access your location.\n\n
+        To do this Mobility Profile needs permissions to read your calendar and access your location. You can always switch them off.\n\n
         If you have calendar events, Mobility profile will suggest them.\n\n
         And with your location data Mobility Profile will learn step by step to predict your next destination.
     </string>
@@ -25,6 +25,9 @@
 
     <!--Favourite GPSPoints page-->
     <string name="favourites_title">Your places</string>
+    <string name="favourites_title_info">You can add your favorite places, and they will show up in your destination suggestions.
+        In addition, Mobility Profile will suggest new places based on tracking.
+    </string>
     <string name="favourites_edit_title">Edit this favourite place</string>
     <string name="favourites_delete_title">Delete this favourite place?</string>
     <string name="favourites_unfavourite_title">Unfavourite this favourite place?</string>
