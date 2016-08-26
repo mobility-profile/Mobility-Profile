@@ -31,6 +31,7 @@ import fi.ohtu.mobilityprofile.LicensesActivity;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.CalendarTag;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
@@ -447,55 +448,55 @@ public class SettingsFragment extends Fragment {
 
     private void setCheckedTransportModes() {
 
-        if (TransportMode.getByName("walking").isFavourite()) {
+        if (TransportModeDao.getByName("walking").isFavourite()) {
             setColorForTransport(walking, R.color.colorAccentOrange);
         } else {
             setColorForTransport(walking, R.color.colorAccentGrey);
         }
 
-        if (TransportMode.getByName("bike").isFavourite()) {
+        if (TransportModeDao.getByName("bike").isFavourite()) {
             setColorForTransport(bike, R.color.colorAccentOrange);
         } else {
             setColorForTransport(bike, R.color.colorAccentGrey);
         }
 
-        if (TransportMode.getByName("car").isFavourite()) {
+        if (TransportModeDao.getByName("car").isFavourite()) {
             setColorForTransport(car, R.color.colorAccentOrange);
         } else {
             setColorForTransport(car, R.color.colorAccentGrey);
         }
 
-        if (TransportMode.getByName("bus").isFavourite()) {
+        if (TransportModeDao.getByName("bus").isFavourite()) {
             setColorForTransport(bus, R.color.colorAccentOrange);
         } else {
             setColorForTransport(bus, R.color.colorAccentGrey);
         }
 
-        if (TransportMode.getByName("metro").isFavourite()) {
+        if (TransportModeDao.getByName("metro").isFavourite()) {
             setColorForTransport(metro, R.color.colorAccentOrange);
         } else {
             setColorForTransport(metro, R.color.colorAccentGrey);
         }
 
-        if (TransportMode.getByName("tram").isFavourite()) {
+        if (TransportModeDao.getByName("tram").isFavourite()) {
             setColorForTransport(tram, R.color.colorAccentOrange);
         } else {
             setColorForTransport(tram, R.color.colorAccentGrey);
         }
 
-        if (TransportMode.getByName("train").isFavourite()) {
+        if (TransportModeDao.getByName("train").isFavourite()) {
             setColorForTransport(train, R.color.colorAccentOrange);
         } else {
             setColorForTransport(train, R.color.colorAccentGrey);
         }
 
-        if (TransportMode.getByName("boat").isFavourite()) {
+        if (TransportModeDao.getByName("boat").isFavourite()) {
             setColorForTransport(boat, R.color.colorAccentOrange);
         } else {
             setColorForTransport(boat, R.color.colorAccentGrey);
         }
 
-        if (TransportMode.getByName("plane").isFavourite()) {
+        if (TransportModeDao.getByName("plane").isFavourite()) {
             setColorForTransport(plane, R.color.colorAccentOrange);
         } else {
             setColorForTransport(plane, R.color.colorAccentGrey);
@@ -523,7 +524,7 @@ public class SettingsFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TransportMode.getByName(button.getContentDescription().toString().toLowerCase()).isFavourite()) {
+                if (TransportModeDao.getByName(button.getContentDescription().toString().toLowerCase()).isFavourite()) {
                     saveTransportPreference(button.getContentDescription().toString().toLowerCase(), false);
                     setColorForTransport(button, R.color.colorAccentGrey);
                 } else {
@@ -535,7 +536,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void saveTransportPreference(String name, boolean preference) {
-        TransportMode mode = TransportMode.getByName(name);
+        TransportMode mode = TransportModeDao.getByName(name);
         mode.setFavourite(preference);
         mode.save();
     }
