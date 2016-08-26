@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ImageButton
+        android:id="@+id/favourites_star_unfilled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_star_0"
+        android:contentDescription="@string/your_places_favourite_hint"
+        android:padding="5dp"
+        android:layout_gravity="end"
+        android:background="@color/color_white"
+        android:layout_marginEnd="10dp">
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/favourites_star_filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_star_10"
+        android:contentDescription="@string/your_places_unfavourite_hint"
+        android:padding="5dp"
+        android:layout_gravity="end"
+        android:background="@color/color_white"
+        android:layout_marginEnd="10dp">
+    </ImageButton>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/favourites_item"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/color_primary_dark">
+    </TextView>
+
+</GridLayout>

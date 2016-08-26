@@ -38,7 +38,7 @@
         <!-- Children of the main activity -->
         <activity
             android:name=".LicensesActivity"
-            android:label="@string/licenses"
+            android:label="@string/settings_other_info_licences"
             android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->

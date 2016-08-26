@@ -2,22 +2,15 @@ package fi.ohtu.mobilityprofile.ui.list_adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.util.List;
 
@@ -152,12 +145,12 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
     }
 
     private void setColorsForFavourite(View view) {
-        int white = ContextCompat.getColor(context, R.color.colorWhite);
+        int white = ContextCompat.getColor(context, R.color.color_white);
         view.setBackgroundColor(white);
     }
 
     private void setColorsForPlace(View view) {
-        int white = ContextCompat.getColor(context, R.color.colorWhite);
+        int white = ContextCompat.getColor(context, R.color.color_white);
         view.setBackgroundColor(white);
         starUnfilled.setBackgroundColor(white);
     }

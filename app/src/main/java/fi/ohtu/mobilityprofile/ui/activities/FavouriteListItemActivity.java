@@ -48,7 +48,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_significant_place);
+        setContentView(R.layout.activity_place);
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -83,7 +83,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
-                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.significant_place_dialog_edit, null);
+                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_place_edit, null);
 
                 builder
                         .setView(dialogView)
@@ -117,7 +117,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                                 dialog.cancel();
                             }
                         })
-                        .setTitle(R.string.favourites_edit_title);
+                        .setTitle(R.string.dialog_edit_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
@@ -155,7 +155,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
                 builder
-                        .setTitle(R.string.favourites_delete_title)
+                        .setTitle(R.string.dialog_delete_title)
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {

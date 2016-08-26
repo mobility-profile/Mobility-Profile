@@ -47,7 +47,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_significant_place);
+        setContentView(R.layout.activity_place);
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -83,7 +83,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
             name.setText(place.getName().toUpperCase());
         }
 
-        name.setTextColor(ContextCompat.getColor(this, R.color.colorAccentGreyDark));
+        name.setTextColor(ContextCompat.getColor(this, R.color.color_grey_dark));
         address.setText(place.getAddress());
     }
 
@@ -93,7 +93,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
-                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.significant_place_dialog_edit, null);
+                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_place_edit, null);
 
                 builder
                         .setView(dialogView)
@@ -120,7 +120,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                                 dialog.cancel();
                             }
                         })
-                        .setTitle(R.string.favourite_set_favourite_title);
+                        .setTitle(R.string.dialog_set_favourite_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
@@ -146,7 +146,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
                 builder
-                        .setTitle(R.string.favourites_delete_title)
+                        .setTitle(R.string.dialog_delete_title)
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
