@@ -12,6 +12,7 @@ import fi.ohtu.mobilityprofile.ui.fragments.SettingsFragment;
  * This class manages all the fragments of the program.
  */
 public class MyPagerAdapter extends FragmentPagerAdapter {
+
     /**
      * The number of fragments.
      */

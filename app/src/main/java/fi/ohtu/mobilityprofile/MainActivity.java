@@ -1,11 +1,14 @@
 package fi.ohtu.mobilityprofile;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.PorterDuff;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.TransportMode;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
+import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
@@ -36,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public final static String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
     public Activity activity;
-    private static final int ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST = 1;
-    private static final int READ_CALENDAR_PERMISSIONS_REQUEST = 2;
     
     private GoogleApiClient mGoogleApiClient;
 
@@ -46,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String gps = sharedPref.getString("gps", "Not Available");
+
+        if (PermissionManager.permissionToFineLocation(this) && gps.equals("true") && !isLocationServiceRunning()) {
+            Intent intent = new Intent(this, PlaceRecorder.class);
+            startService(intent);
+        }
 
         SugarContext.init(this);
         activity = this;
@@ -235,6 +246,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
     public GoogleApiClient getGoogleApiClient() {
       return mGoogleApiClient;
+    }
+
+    /**
+     * Checks if PlaceRecorder is running.
+     * @see PlaceRecorder
+     * @return true/false
+     */
+    private boolean isLocationServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (PlaceRecorder.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
