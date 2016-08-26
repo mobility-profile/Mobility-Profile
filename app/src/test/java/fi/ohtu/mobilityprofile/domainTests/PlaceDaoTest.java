@@ -1,9 +1,5 @@
 package fi.ohtu.mobilityprofile.domainTests;
 
-import com.google.api.client.json.Json;
-import com.google.api.client.json.JsonParser;
-import com.google.api.client.json.JsonString;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Before;

@@ -36,19 +36,6 @@ public class TransportMode extends SugarRecord {
 
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
-    }
-
-    /**
-     * Finds transport mode by name.
-     * @param name name of the transport mode to be searched
-     * @return transport mode with the given name
-     */
-    public static TransportMode getByName(String name) {
-        List<TransportMode> modes = Select.from(TransportMode.class)
-                .where(Condition.prop("name").eq(name))
-                .limit("1")
-                .list();
-
-        return modes.get(0);
+        this.save();
     }
 }
