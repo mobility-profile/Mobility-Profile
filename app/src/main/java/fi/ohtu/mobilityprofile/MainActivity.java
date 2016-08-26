@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color_white));
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_info_orange).setContentDescription("Mobility Profile");
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_logo_orange).setContentDescription("Mobility Profile");
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
