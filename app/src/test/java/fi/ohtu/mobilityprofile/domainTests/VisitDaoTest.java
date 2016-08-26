@@ -20,42 +20,54 @@ import static org.junit.Assert.*;
 @Config(manifest = "src/main/AndroidManifestTest.xml", constants = BuildConfig.class, sdk = 21)
 public class VisitDaoTest {
 
+    private VisitDao visitDao;
+    private Visit kumpula;
+    private Visit hakaniemi;
+    private Visit lauttasaari;
+
     @Before
     public void setUp() {
+        visitDao = new VisitDao();
         Robolectric.setupActivity(MainActivityStub.class);
+        createVisits();
     }
 
     @Test
     public void placeAndCoordinateAreSaveIntoDatabase() {
-        VisitDao.insert(new Visit(123, 124, new Place("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
+        visitDao.insert(kumpula);
         assertTrue(VisitDao.getLast().getPlace() != null && VisitDao.getLast().getPlace().getCoordinate() != null);
     }
 
     @Test
     public void testInsert() {
-        VisitDao.insert(new Visit(123, 124, new Place("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
-        assertEquals("Kumpula", VisitDao.getAll().get(0).getAddress());
+        visitDao.insert(kumpula);
+        assertEquals(kumpula.getPlace().getCoordinate(), visitDao.getLast().getPlace().getCoordinate());
     }
 
     @Test
     public void testInsertMultiple() {
-        VisitDao.insert(new Visit(123, 124, new Place("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
-        VisitDao.insert(new Visit(345, 346, new Place("Kauppa", "Kauppakatu", new Coordinate(new Float(1), new Float(1)))));
-        VisitDao.insert(new Visit(567, 568, new Place("Toimisto", "Töölö", new Coordinate(new Float(1), new Float(1)))));
+        visitDao.insert(kumpula);
+        visitDao.insert(hakaniemi);
+        visitDao.insert(lauttasaari);
 
-        assertEquals("Töölö", VisitDao.getLast().getAddress());
+        assertEquals(lauttasaari.getPlace().getCoordinate(), visitDao.getLast().getPlace().getCoordinate());
         assertEquals(3, VisitDao.getAll().size());
     }
 
     @Test
     public void testDeleteAll() {
-        VisitDao.insert(new Visit(123, 124, new Place("Koulu", "Kumpula", new Coordinate(new Float(1), new Float(1)))));
-        VisitDao.insert(new Visit(345, 346, new Place("Kauppa", "Kauppakatu", new Coordinate(new Float(1), new Float(1)))));
-        VisitDao.insert(new Visit(567, 568, new Place("Toimisto", "Töölö", new Coordinate(new Float(1), new Float(1)))));
-        assertEquals(3, VisitDao.getAll().size());
-        VisitDao.deleteAllData();
-        assertEquals(0, VisitDao.getAll().size());
+        visitDao.insert(kumpula);
+        visitDao.insert(hakaniemi);
+        visitDao.insert(lauttasaari);
 
+        assertEquals(3, VisitDao.getAll().size());
+        visitDao.deleteAllData();
+        assertEquals(0, VisitDao.getAll().size());
     }
 
+    public void createVisits() {
+        kumpula = new Visit(123123, 232444, new Place("Kumpula", "Kumpula", new Coordinate(new Float(60.209108), new Float(24.964735))));
+        hakaniemi = new Visit(238788, 343444, new Place("Hakaniemi", "Hakaniemi", new Coordinate(new Float(60.17885), new Float(24.95006))));
+        lauttasaari = new Visit(454545,743433, new Place("Lauttasaari", "Lauttasaari", new Coordinate(new Float(60.157330), new Float(24.877253))));
+    }
 }
