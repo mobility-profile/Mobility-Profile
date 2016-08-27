@@ -18,13 +18,10 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import fi.ohtu.mobilityprofile.LicensesActivity;
@@ -129,7 +126,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.settings_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
     @Override
@@ -207,7 +204,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder
-                        .setTitle(R.string.reset_title).setMessage(R.string.reset_message)
+                        .setTitle(R.string.dialog_settings_reset_title).setMessage(R.string.dialog_settings_reset_info)
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -235,8 +232,8 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder
-                        .setTitle(R.string.reset_searches_title)
-                        .setMessage(R.string.reset_searches_message)
+                        .setTitle(R.string.dialog_settings_delete_searches_title)
+                        .setMessage(R.string.dialog_settings_delete_searches_info)
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -449,57 +446,57 @@ public class SettingsFragment extends Fragment {
     private void setCheckedTransportModes() {
 
         if (TransportModeDao.getByName("walking").isFavourite()) {
-            setColorForTransport(walking, R.color.colorAccentOrange);
+            setColorForTransport(walking, R.color.color_orange);
         } else {
-            setColorForTransport(walking, R.color.colorAccentGrey);
+            setColorForTransport(walking, R.color.color_grey);
         }
 
         if (TransportModeDao.getByName("bike").isFavourite()) {
-            setColorForTransport(bike, R.color.colorAccentOrange);
+            setColorForTransport(bike, R.color.color_orange);
         } else {
-            setColorForTransport(bike, R.color.colorAccentGrey);
+            setColorForTransport(bike, R.color.color_grey);
         }
 
         if (TransportModeDao.getByName("car").isFavourite()) {
-            setColorForTransport(car, R.color.colorAccentOrange);
+            setColorForTransport(car, R.color.color_orange);
         } else {
-            setColorForTransport(car, R.color.colorAccentGrey);
+            setColorForTransport(car, R.color.color_grey);
         }
 
         if (TransportModeDao.getByName("bus").isFavourite()) {
-            setColorForTransport(bus, R.color.colorAccentOrange);
+            setColorForTransport(bus, R.color.color_orange);
         } else {
-            setColorForTransport(bus, R.color.colorAccentGrey);
+            setColorForTransport(bus, R.color.color_grey);
         }
 
         if (TransportModeDao.getByName("metro").isFavourite()) {
-            setColorForTransport(metro, R.color.colorAccentOrange);
+            setColorForTransport(metro, R.color.color_orange);
         } else {
-            setColorForTransport(metro, R.color.colorAccentGrey);
+            setColorForTransport(metro, R.color.color_grey);
         }
 
         if (TransportModeDao.getByName("tram").isFavourite()) {
-            setColorForTransport(tram, R.color.colorAccentOrange);
+            setColorForTransport(tram, R.color.color_orange);
         } else {
-            setColorForTransport(tram, R.color.colorAccentGrey);
+            setColorForTransport(tram, R.color.color_grey);
         }
 
         if (TransportModeDao.getByName("train").isFavourite()) {
-            setColorForTransport(train, R.color.colorAccentOrange);
+            setColorForTransport(train, R.color.color_orange);
         } else {
-            setColorForTransport(train, R.color.colorAccentGrey);
+            setColorForTransport(train, R.color.color_grey);
         }
 
         if (TransportModeDao.getByName("boat").isFavourite()) {
-            setColorForTransport(boat, R.color.colorAccentOrange);
+            setColorForTransport(boat, R.color.color_orange);
         } else {
-            setColorForTransport(boat, R.color.colorAccentGrey);
+            setColorForTransport(boat, R.color.color_grey);
         }
 
         if (TransportModeDao.getByName("plane").isFavourite()) {
-            setColorForTransport(plane, R.color.colorAccentOrange);
+            setColorForTransport(plane, R.color.color_orange);
         } else {
-            setColorForTransport(plane, R.color.colorAccentGrey);
+            setColorForTransport(plane, R.color.color_grey);
         }
     }
 
@@ -526,10 +523,10 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 if (TransportModeDao.getByName(button.getContentDescription().toString().toLowerCase()).isFavourite()) {
                     saveTransportPreference(button.getContentDescription().toString().toLowerCase(), false);
-                    setColorForTransport(button, R.color.colorAccentGrey);
+                    setColorForTransport(button, R.color.color_grey);
                 } else {
                     saveTransportPreference(button.getContentDescription().toString().toLowerCase(), true);
-                    setColorForTransport(button, R.color.colorAccentOrange);
+                    setColorForTransport(button, R.color.color_orange);
                 }
             }
         });

@@ -1,18 +1,14 @@
 package fi.ohtu.mobilityprofile;
 
-import android.*;
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
-import android.os.Handler;
-import android.os.ResultReceiver;
-import android.support.annotation.NonNull;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,15 +20,10 @@ import android.widget.Toast;
 
 import com.orm.SugarContext;
 
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi.DriveContentsResult;
-import com.google.android.gms.drive.DriveFolder.DriveFileResult;
-import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public final static String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
     public Activity activity;
-    private static final int ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST = 1;
-    private static final int READ_CALENDAR_PERMISSIONS_REQUEST = 2;
     
     private GoogleApiClient mGoogleApiClient;
 
@@ -60,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String gps = sharedPref.getString("gps", "Not Available");
+
+        if (PermissionManager.permissionToFineLocation(this) && gps.equals("true") && !isLocationServiceRunning()) {
+            Intent intent = new Intent(this, PlaceRecorder.class);
+            startService(intent);
+        }
 
         SugarContext.init(this);
         activity = this;
@@ -88,9 +85,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.colorWhite));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color_white));
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_info_orange).setContentDescription("Mobility Profile");
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_logo_orange).setContentDescription("Mobility Profile");
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
@@ -99,14 +96,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
-                int tabIconColor = ContextCompat.getColor(activity, R.color.colorAccentOrange);
+                int tabIconColor = ContextCompat.getColor(activity, R.color.color_orange);
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 super.onTabUnselected(tab);
-                int tabIconColor = ContextCompat.getColor(activity, R.color.colorPrimaryDark);
+                int tabIconColor = ContextCompat.getColor(activity, R.color.color_primary_dark);
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             }
 
@@ -249,6 +246,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
     public GoogleApiClient getGoogleApiClient() {
       return mGoogleApiClient;
+    }
+
+    /**
+     * Checks if PlaceRecorder is running.
+     * @see PlaceRecorder
+     * @return true/false
+     */
+    private boolean isLocationServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (PlaceRecorder.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

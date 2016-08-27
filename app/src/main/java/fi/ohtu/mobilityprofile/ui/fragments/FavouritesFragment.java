@@ -88,7 +88,7 @@ public class FavouritesFragment extends Fragment {
     private void setFavouritesListView(View view) {
         List<Place> favouritePlaces = Place.listAll(Place.class);
 
-        adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
+        adapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
         listView.setAdapter(adapter);
 
@@ -98,7 +98,7 @@ public class FavouritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.favourites_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_your_places, container, false);
     }
 
     /**
