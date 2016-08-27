@@ -32,7 +32,7 @@ public class InterCitySuggestionsTest {
         interCitySearchDao = new InterCitySearchDao();
         createInterCitySearches();
     }
-/*
+
     @Test
     public void getSuggestionsSuggestsOnlyDestinationsWithTheSameStartLocation() {
         List<Suggestion> results = interCitySuggestions.getSuggestions(new StartLocation(767565, 50, new Float(60.209108), new Float(24.964735)));
@@ -48,7 +48,7 @@ public class InterCitySuggestionsTest {
         List<Suggestion> results = interCitySuggestions.getSuggestions(new StartLocation(767565, 50, new Float(60.209108), new Float(24.964735)));
         assertEquals(5, results.size());
     }
-*/
+
     private void createInterCitySearches() {
         interCitySearchDao.insertInterCitySearch(new InterCitySearch("Helsinki", "Tampere", 122324));
         interCitySearchDao.insertInterCitySearch(new InterCitySearch("Tampere", "Turku", 232411));

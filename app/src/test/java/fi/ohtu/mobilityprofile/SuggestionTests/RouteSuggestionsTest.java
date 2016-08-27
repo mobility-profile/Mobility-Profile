@@ -62,7 +62,7 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Pitäjänmäki",  "Sörnäinen", pitajanGps, sornGps));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() + 3 * HOUR, "Ruoholahti", "Lauttasaari", ruohoGps, lauttaGps));
 
-        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new StartLocation(0, 0, ruohoGps.getLatitude(), ruohoGps.getLongitude()));
+        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new StartLocation(System.currentTimeMillis(), 0, ruohoGps.getLatitude(), ruohoGps.getLongitude()));
         assertEquals(0, suggestions.size());
     }
 
