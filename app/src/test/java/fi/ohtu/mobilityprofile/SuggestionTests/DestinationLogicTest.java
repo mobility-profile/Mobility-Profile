@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile.SuggestionTests;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import static org.junit.Assert.*;
@@ -13,6 +14,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
+import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
@@ -49,7 +51,7 @@ public class DestinationLogicTest {
         suggestionSources.add(new RouteSuggestions());
         //suggestionSources.add(new FavoriteSuggestions());
 
-        mp = new DestinationLogic(suggestionSources, new InterCitySuggestions());
+        mp = new DestinationLogic(suggestionSources, new InterCitySuggestions(Robolectric.setupActivity(MainActivityStub.class)));
 
         // when(CalendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
     }

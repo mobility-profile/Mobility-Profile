@@ -67,4 +67,17 @@ public class AddressConverter {
 
         return null;
     }
+
+    public static String getCity(Context context, Coordinate coordinate) {
+        try {
+            Geocoder geocoder = new Geocoder(context);
+            List<Address> addresses = geocoder.getFromLocation(coordinate.getLatitude(), coordinate.getLongitude(), 1);
+            if (addresses.size() >= 1) {
+                return addresses.get(0).getLocality();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
