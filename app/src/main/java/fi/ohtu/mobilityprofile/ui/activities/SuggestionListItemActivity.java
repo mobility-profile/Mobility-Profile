@@ -26,7 +26,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 
 /**
@@ -40,9 +42,9 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     private TextView name;
     private TextView address;
     private Button editButton;
-    private Button setFavouriteButton;
     private Button deleteButton;
     private MapFragment mapFragment;
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +64,14 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         back = (ImageButton) findViewById(R.id.favourites_back_button);
         name = (TextView) findViewById(R.id.favourite_item_name);
         address = (TextView) findViewById(R.id.favourite_item_address);
-
         editButton = (Button) findViewById(R.id.favourite_edit);
-        editButton.setVisibility(View.GONE);
-
-        setFavouriteButton = (Button) findViewById(R.id.favourite_set_favourite);
         deleteButton = (Button) findViewById(R.id.favourite_delete);
 
 
         fancifyNameAndAddress();
-        setFavouriteButtonListener();
         deleteButtonListener();
         backButtonListener();
+        editButtonListener();
     }
 
     private void fancifyNameAndAddress() {
@@ -85,58 +83,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
         name.setTextColor(ContextCompat.getColor(this, R.color.color_grey_dark));
         address.setText(place.getAddress());
-    }
-
-    private void setFavouriteButtonListener() {
-        setFavouriteButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
-                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_place_edit, null);
-
-                builder
-                        .setView(dialogView)
-                        .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteName);
-                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
-
-                                if (!editTextName.equals("") && !editTextAddress.equals("")) {
-
-                                    place.setName(editTextName.getText().toString());
-                                    place.setAddress(editTextAddress.getText().toString());
-                                    place.setFavourite(true);
-                                    place.save();
-
-                                    backToFragment();
-                                }
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        })
-                        .setTitle(R.string.dialog_set_favourite_title);
-
-                EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
-                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
-
-                if (place.getName().equals("name")) {
-                    editTextName.setText("");
-                } else {
-                    editTextName.setText(place.getName());
-                }
-                editTextAddress.setText(place.getAddress());
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-
     }
 
     private void deleteButtonListener() {
@@ -176,25 +122,102 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
     }
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        map.getUiSettings().setZoomGesturesEnabled(true);
-        map.getUiSettings().setZoomControlsEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.getUiSettings().setMapToolbarEnabled(true);
+    private void editButtonListener() {
+        editButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
+                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_place_edit, null);
+
+                builder
+                        .setView(dialogView)
+                        .setPositiveButton(R.string.edit, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
+                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_address);
+
+                                editPlace(editTextName.getText().toString(), editTextAddress.getText().toString());
+
+                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), place.getAddress());
+                                if (coordinate != null) {
+                                    coordinate.save();
+
+                                    place.setCoordinate(coordinate);
+                                    place.save();
+
+                                    setMarker();
+                                    activity.recreate();
+                                } else {
+                                    activity.recreate();
+                                    Toast.makeText(activity, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setTitle(R.string.dialog_edit_title);
+
+                EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
+                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.edit_address);
+
+                editTextName.setText(place.getName());
+                editTextAddress.setText(place.getAddress());
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+    }
+
+    /**
+     * Edits the given favourite place.
+     * @param name the new name
+     * @param address the new address
+     */
+    private void editPlace(String name, String address){
+        if (!name.equals("")) {
+            place.setName(name);
+        }
+
+        if (!address.equals("")) {
+            place.setAddress(address);
+        }
+        place.save();
+    }
+
+    private void setMarker() {
         try {
             LatLng point = new LatLng(place.getCoordinate().getLatitude(), place.getCoordinate().getLongitude());
 
-            map.setMyLocationEnabled(true);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 17));
+            googleMap.setMyLocationEnabled(true);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 17));
 
-            map.addMarker(new MarkerOptions()
+            googleMap.addMarker(new MarkerOptions()
                     .title(place.getName())
                     .position(point));
         } catch (Exception e) {
             Toast.makeText(this, "Coordinates for the address were not found", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+
+        googleMap = map;
+
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(true);
+
+        setMarker();
 
     }
 

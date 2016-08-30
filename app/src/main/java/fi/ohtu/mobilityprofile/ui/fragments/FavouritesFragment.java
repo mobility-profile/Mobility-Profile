@@ -69,7 +69,6 @@ public class FavouritesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.i(title, "onResumed");
         super.onResume();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);

@@ -66,12 +66,22 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             starUnfilled.setVisibility(View.GONE);
             starFilled.setVisibility(View.VISIBLE);
             setColorsForFavourite(view);
-            listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
+            if (items.get(position).getName().equals("")) {
+                listItemText.setText(items.get(position).toString());
+            } else {
+                listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
+            }
+
         } else {
             starFilled.setVisibility(View.GONE);
             starUnfilled.setVisibility(View.VISIBLE);
             setColorsForPlace(view);
             listItemText.setText(items.get(position).toString());
+            if (items.get(position).getName().equals("")) {
+                listItemText.setText(items.get(position).toString());
+            } else {
+                listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
+            }
         }
 
         itemTextListener(position);

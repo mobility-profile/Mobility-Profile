@@ -14,6 +14,7 @@ import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.util.List;
 
 import fi.ohtu.mobilityprofile.LicensesActivity;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
@@ -62,7 +65,6 @@ public class SettingsFragment extends Fragment {
     private CheckBox calendarCheckBox;
 
     private Button resetAllButton;
-    private Button resetSearcesButton;
     private Button backUpButton;
     private Button licenses;
 
@@ -135,7 +137,6 @@ public class SettingsFragment extends Fragment {
         calendarCheckBox = (CheckBox) view.findViewById(R.id.checkbox_calendar);
 
         resetAllButton = (Button) view.findViewById(R.id.resetAllButton);
-        resetSearcesButton = (Button) view.findViewById(R.id.resetSearchesButton);
         backUpButton = (Button) view.findViewById(R.id.backup_button);
         licenses = (Button) view.findViewById(R.id.licenses_button);
 
@@ -147,7 +148,6 @@ public class SettingsFragment extends Fragment {
         setListenerForCheckBoxCalendar();
 
         setListenerForResetAllButton();
-        setListenerForResetSearchesButton();
         setListenerForBackupButton();
         setListenerForLicensesButton();
 
@@ -209,43 +209,8 @@ public class SettingsFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 deleteAllDataFromDatabase();
+                                updateView();
                             }})
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-    }
-
-    /**
-     * Creates alert dialog to confirm resetting all route searches.
-     */
-    private void setListenerForResetSearchesButton() {
-        resetSearcesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder
-                        .setTitle(R.string.dialog_settings_delete_searches_title)
-                        .setMessage(R.string.dialog_settings_delete_searches_info)
-                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                RouteSearchDao.deleteAllData();
-
-                                if (RouteSearch.count(RouteSearch.class) == 0) {
-                                    Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -536,5 +501,13 @@ public class SettingsFragment extends Fragment {
         TransportMode mode = TransportModeDao.getByName(name);
         mode.setFavourite(preference);
         mode.save();
+    }
+
+    private void updateView() {
+        FragmentTransaction tr = getFragmentManager().beginTransaction();
+        Fragment yourPlaces = getFragmentManager().getFragments().get(1);
+        tr.detach(yourPlaces);
+        tr.attach(yourPlaces);
+        tr.commit();
     }
 }

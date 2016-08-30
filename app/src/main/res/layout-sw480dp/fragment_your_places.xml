@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:tag="your_places">
 
     <TextView
         android:id="@+id/tracking_title"
