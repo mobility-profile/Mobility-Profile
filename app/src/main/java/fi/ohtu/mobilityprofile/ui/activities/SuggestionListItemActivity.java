@@ -61,11 +61,11 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     }
 
     private void initializeViewElements() {
-        back = (ImageButton) findViewById(R.id.favourites_back_button);
-        name = (TextView) findViewById(R.id.favourite_item_name);
-        address = (TextView) findViewById(R.id.favourite_item_address);
-        editButton = (Button) findViewById(R.id.favourite_edit);
-        deleteButton = (Button) findViewById(R.id.favourite_delete);
+        back = (ImageButton) findViewById(R.id.place_back_button);
+        name = (TextView) findViewById(R.id.place_name);
+        address = (TextView) findViewById(R.id.place_address);
+        editButton = (Button) findViewById(R.id.place_edit_button);
+        deleteButton = (Button) findViewById(R.id.place_delete_button);
 
 
         fancifyNameAndAddress();

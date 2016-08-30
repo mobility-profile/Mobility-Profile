@@ -5,11 +5,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/info_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/info_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -22,6 +24,7 @@
             android:textColor="@color/color_orange"/>
 
         <TextView
+            android:id="@+id/info_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -30,11 +33,12 @@
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:text="@string/info_idea"
-            android:textColor="#000000"
+            android:textColor="@color/color_primary_dark"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/info_info_permissions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -43,7 +47,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:text="@string/info_how_works"
-            android:textColor="#000000"
+            android:textColor="@color/color_primary_dark"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 </ScrollView>

@@ -4,11 +4,10 @@
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:orientation="vertical"
-    android:weightSum="1"
-    android:tag="your_places">
+    android:weightSum="1">
 
     <TextView
-        android:id="@+id/tracking_title"
+        android:id="@+id/your_places_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -17,7 +16,7 @@
         android:layout_marginTop="20dp"/>
 
     <TextView
-        android:id="@+id/tracking_title_info"
+        android:id="@+id/your_places_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -27,7 +26,7 @@
         android:padding="10dp"/>
 
     <GridLayout
-        android:id="@+id/relativeLayout1"
+        android:id="@+id/your_places_new_place_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -36,7 +35,7 @@
         android:layout_gravity="center_horizontal">
 
         <EditText
-            android:id="@+id/add_favourite_name"
+            android:id="@+id/your_places_new_place_name"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -44,7 +43,7 @@
             android:padding="10dp"/>
 
         <EditText
-            android:id="@+id/add_favourite_address"
+            android:id="@+id/your_places_new_place_address"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -52,7 +51,7 @@
             android:padding="10dp"/>
 
         <Button
-            android:id="@+id/add_favourite_button"
+            android:id="@+id/your_places_new_place_add"
             android:layout_width="60dp"
             android:layout_height="32dp"
             android:layout_gravity="center_vertical"
@@ -64,7 +63,7 @@
     </GridLayout>
 
     <ListView
-        android:id="@+id/favourites_listView"
+        android:id="@+id/your_places_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" />
