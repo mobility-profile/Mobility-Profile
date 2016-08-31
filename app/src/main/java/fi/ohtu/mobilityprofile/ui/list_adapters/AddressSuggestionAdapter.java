@@ -57,8 +57,14 @@ public class AddressSuggestionAdapter extends BaseAdapter implements Filterable 
         }
 
         TextView textView = ((TextView) convertView.findViewById(R.id.address_item));
-        textView.setText(getItem(position).getAddressLine(0));
-        textView.setContentDescription(getItem(position).getAddressLine(0));
+
+        String addressLine = "";
+
+        if (getItem(position).getMaxAddressLineIndex() > 0) addressLine += getItem(position).getAddressLine(0) + " ";
+        if (getItem(position).getMaxAddressLineIndex() > 1) addressLine += getItem(position).getAddressLine(1) + " ";
+        if (getItem(position).getMaxAddressLineIndex() > 2) addressLine += getItem(position).getAddressLine(2) + " ";
+        textView.setText(addressLine);
+        textView.setContentDescription(addressLine);
 
         return convertView;
     }

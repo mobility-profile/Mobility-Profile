@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/address_item"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:textSize="16sp"
