@@ -2,6 +2,7 @@ package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Address;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,6 +23,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
 import fi.ohtu.mobilityprofile.ui.list_adapters.FavouritesListAdapter;
 import fi.ohtu.mobilityprofile.util.AddressConverter;
 
@@ -34,6 +38,8 @@ public class FavouritesFragment extends Fragment {
     private static final int page = 1;
     private Context context;
     private FavouritesListAdapter adapter;
+    private AutoCompleteTextView autoCompleteTextView;
+    private Address address;
 
     /**
      * Creates a new instance of FavouritesFragment.
@@ -63,6 +69,8 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
         Log.i(title, "onViewCreated");
+
+        setAddressSuggestions(view);
 
         setFavouritesListView(view);
     }
@@ -94,6 +102,19 @@ public class FavouritesFragment extends Fragment {
         addButtonListener(view);
     }
 
+    private void setAddressSuggestions(View view) {
+        autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.add_favourite_address);
+        autoCompleteTextView.setAdapter(new AddressSuggestionAdapter(context));
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Address a = (Address) adapterView.getItemAtPosition(position);
+                autoCompleteTextView.setText(a.getAddressLine(0));
+                address = a;
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,17 +129,16 @@ public class FavouritesFragment extends Fragment {
 
         Button button = (Button) view.findViewById(R.id.add_favourite_button);
         final EditText addFavouriteName = (EditText) view.findViewById(R.id.add_favourite_name);
-        final EditText addFavouriteAddress = (EditText) view.findViewById(R.id.add_favourite_address);
 
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
 
-                if (!addFavouriteName.getText().toString().equals("") && !addFavouriteAddress.getText().toString().equals("")) {
-                    Place fav = new Place(addFavouriteName.getText().toString(), addFavouriteAddress.getText().toString());
+                if (!addFavouriteName.getText().toString().equals("") && address != null) {
+                    Place fav = new Place(addFavouriteName.getText().toString(), address);
 
-                    Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(context, fav.getAddress());
+                    Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(context, fav.getAddress().getAddressLine(0));
                     if (coordinate != null) {
                         coordinate.save();
 
@@ -131,7 +151,7 @@ public class FavouritesFragment extends Fragment {
 
                     updateView();
                     addFavouriteName.setText("");
-                    addFavouriteAddress.setText("");
+                    //addFavouriteAddress.setText("");
                 }
             }
 
