@@ -73,6 +73,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
                 Address a = (Address) adapterView.getItemAtPosition(p);
+                System.out.println(a);
                 autoCompleteTextView.setText(a.getAddressLine(0));
                 position = p;
             }

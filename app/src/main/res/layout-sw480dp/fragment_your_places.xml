@@ -7,6 +7,14 @@
     android:weightSum="1"
     android:tag="your_places">
 
+    <ImageButton
+        android:id="@+id/"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_action_help" />
+
     <TextView
         android:id="@+id/tracking_title"
         android:layout_width="wrap_content"
@@ -14,7 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/your_places_title"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="-30dp"/>
 
     <TextView
         android:id="@+id/tracking_title_info"
