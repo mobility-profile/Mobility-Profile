@@ -33,12 +33,13 @@ public class Place extends SugarRecord {
 
     /**
      * Creates Place.
-     * @param name Name of the Place
+     *
+     * @param name    Name of the Place
      * @param address Address of the Place
      */
     public Place(String name, Address address) {
         this.name = name;
-        this.coordinate = new Coordinate((float) address.getLatitude(), (float)address.getLongitude());
+        this.coordinate = new Coordinate((float) address.getLatitude(), (float) address.getLongitude());
         this.favourite = false;
 
         setAddress(address);
@@ -64,6 +65,7 @@ public class Place extends SugarRecord {
 
     /**
      * Returns the distance between this Place and given coordinate
+     *
      * @param coordinate coordinate to be compared
      * @return distance
      */
