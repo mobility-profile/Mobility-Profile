@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile.ui.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.location.Address;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
@@ -145,7 +146,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
      * @param name the new name
      * @param address the new address
      */
-    private void editFavoritePlace(String name, String address){
+    private void editFavoritePlace(String name, Address address){
         if (!name.equals("")) {
             place.setName(name);
         }

@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile.ui.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.location.Address;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
@@ -82,7 +83,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         }
 
         name.setTextColor(ContextCompat.getColor(this, R.color.color_grey_dark));
-        address.setText(place.getAddress());
+        address.setText(place.getAddress().getAddressLine(0));
     }
 
     private void deleteButtonListener() {
@@ -168,7 +169,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddress());
+                editTextAddress.setText(place.getAddress().getAddressLine(0));
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -181,7 +182,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
      * @param name the new name
      * @param address the new address
      */
-    private void editPlace(String name, String address){
+    private void editPlace(String name, Address address){
         if (!name.equals("")) {
             place.setName(name);
         }
