@@ -32,10 +32,9 @@ import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
-import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 /**
- * Class is used to create a list of favourites in the ui.
+ * Class is used to create a page for one favourite place.
  */
 public class FavouriteListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -46,56 +45,40 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
     private TextView address;
     private Button editButton;
     private Button deleteButton;
-    private MapFragment mapFragment;
     private GoogleMap googleMap;
-    private AddressSuggestionAdapter addressSuggestionAdapter;
-    private AutoCompleteTextView autoCompleteTextView;
-    private int position;
+    private Address tempAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
 
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        activity = this;
         place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("favouriteId")));
+        activity = this;
 
         initializeViewElements();
-
-        addressSuggestionAdapter = new AddressSuggestionAdapter(this, R.layout.list_addresses_item);
-
-        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.edit_address);
-        autoCompleteTextView.setAdapter(addressSuggestionAdapter);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
-                Address a = (Address) adapterView.getItemAtPosition(p);
-                autoCompleteTextView.setText(a.getAddressLine(0));
-                position = p;
-            }
-        });
-
     }
 
     private void initializeViewElements() {
-        back = (ImageButton) findViewById(R.id.favourites_back_button);
-        name = (TextView) findViewById(R.id.favourite_item_name);
-        address = (TextView) findViewById(R.id.favourite_item_address);
-        editButton = (Button) findViewById(R.id.favourite_edit);
-        deleteButton = (Button) findViewById(R.id.favourite_delete);
+        name = (TextView) findViewById(R.id.place_name);
+        address = (TextView) findViewById(R.id.place_address);
+
+        editButton = (Button) findViewById(R.id.place_edit_button);
+        deleteButton = (Button) findViewById(R.id.place_delete_button);
+
+        back = (ImageButton) findViewById(R.id.place_back_button);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
 
         fancifyNameAndAddress();
         editButtonListener();
         deleteButtonListener();
         backButtonListener();
+        mapFragment.getMapAsync(this);
     }
 
     private void fancifyNameAndAddress() {
         if (place.getName().equals("")) {
-            name.setText("NAME");
+            name.setText(getResources().getString(R.string.name));
         } else {
             name.setText(place.getName().toUpperCase());
         }
@@ -119,9 +102,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                             public void onClick(DialogInterface dialog, int id) {
 
                                 EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
-                                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) ((AlertDialog) dialog).findViewById(R.id.edit_address);
-
-                                editFavoritePlace(editTextName.getText().toString(), addressSuggestionAdapter.getItem(position));
+                                editFavoritePlace(editTextName.getText().toString(), tempAddress);
                                 setMarker();
                                 activity.recreate();
 
@@ -135,10 +116,25 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                         .setTitle(R.string.dialog_edit_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
+                final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddressLine(0));
+                autoCompleteTextView.setText(place.getAddressLine(0));
+
+                AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(activity, R.layout.list_addresses_item);
+                autoCompleteTextView.setAdapter(addressSuggestionAdapter);
+
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
+                        Address a = (Address) adapterView.getItemAtPosition(p);
+                        System.out.println(a);
+                        autoCompleteTextView.setText(a.getAddressLine(0));
+                        tempAddress = a;
+                    }
+                });
+
+
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -153,16 +149,19 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
      * @param address the new address
      */
     private void editFavoritePlace(String name, Address address){
+        System.out.println(place.getCoordinate());
         if (!name.equals("")) {
             place.setName(name);
         }
 
         if (address != null) {
             place.setAddress(address);
+            place.setCoordinate(new Coordinate((float) address.getLatitude(), (float) address.getLongitude()));
         } else {
             Toast.makeText(this, "Address not valid", Toast.LENGTH_LONG).show();
         }
         place.save();
+        System.out.println(place.getCoordinate());
     }
 
     private void deleteButtonListener() {
@@ -193,16 +192,21 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         });
     }
 
-    private void backButtonListener(){
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToFragment();
-            }
-        });
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
 
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(true);
+
+        setMarker();
     }
 
+    /**
+     * Sets a marker on map.
+     */
     private void setMarker() {
         try {
             LatLng point = new LatLng(place.getCoordinate().getLatitude(), place.getCoordinate().getLongitude());
@@ -218,16 +222,24 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         }
     }
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        googleMap = map;
+    /**
+     * Returns back to the fragment where user was before.
+     */
+    private void backToFragment() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("dataChanged", "true");
+        editor.commit();
+        finish();
+    }
 
-        map.getUiSettings().setZoomGesturesEnabled(true);
-        map.getUiSettings().setZoomControlsEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.getUiSettings().setMapToolbarEnabled(true);
-
-        setMarker();
+    private void backButtonListener(){
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToFragment();
+            }
+        });
     }
 
     @Override
@@ -246,14 +258,5 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    private void backToFragment() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("dataChanged", "true");
-        editor.commit();
-        finish();
     }
 }

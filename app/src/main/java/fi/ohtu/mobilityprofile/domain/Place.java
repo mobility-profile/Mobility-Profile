@@ -76,16 +76,16 @@ public class Place extends SugarRecord {
         return this.coordinate.distanceTo(coordinate);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Place that = (Place) o;
-
-        return this.coordinate.equals(that.getCoordinate());
-
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        Place that = (Place) o;
+//
+//        return this.coordinate.equals(that.getCoordinate());
+//
+//    }
 
     public boolean isFavourite() {
         return favourite;

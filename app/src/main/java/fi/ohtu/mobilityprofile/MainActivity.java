@@ -91,10 +91,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
-        tabLayout.setOnTabSelectedListener(new  TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.i(TAG, "tab SElected " + tab.getContentDescription());
                 super.onTabSelected(tab);
                 int tabIconColor = ContextCompat.getColor(activity, R.color.color_orange);
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                Log.i(TAG, "tab UN selected " + tab.getContentDescription());
                 super.onTabUnselected(tab);
                 int tabIconColor = ContextCompat.getColor(activity, R.color.color_primary_dark);
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
@@ -110,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                Log.i(TAG, "tab RE selected " + tab.getContentDescription());
                 super.onTabReselected(tab);
             }
         });
@@ -182,13 +179,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onResume() {
         super.onResume();
-
-
-        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_orange), PorterDuff.Mode.SRC_IN);
-        tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
-        tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
-
-
         // showMessage("Connected to Google Drive");
     }
     
@@ -208,6 +198,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mGoogleApiClient.disconnect();
         }
         super.onPause();
+
+        System.out.println("ON PAUSE");
+
+//        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_orange), PorterDuff.Mode.SRC_IN);
+//        tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+//        tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
     }
 
     @Override
