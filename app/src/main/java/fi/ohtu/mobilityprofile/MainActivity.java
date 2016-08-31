@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.PorterDuff;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -89,15 +90,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color_orange));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color_white));
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_logo_orange).setContentDescription("Mobility Profile");
-        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
 
-        tabLayout.setOnTabSelectedListener(new  TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
@@ -219,6 +219,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mGoogleApiClient.disconnect();
         }
         super.onPause();
+
+        System.out.println("ON PAUSE");
     }
 
     @Override

@@ -41,12 +41,11 @@ import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.ui.Transport;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 import fi.ohtu.mobilityprofile.util.ProfileBackup;
 
 /**
- * The class creates a component called SettingsFragment.
- *
  * SettingsFragment handles everything concerning the SETTINGS tab in the UI.
  */
 public class SettingsFragment extends Fragment {
@@ -67,20 +66,9 @@ public class SettingsFragment extends Fragment {
     private Context context;
     private ResultReceiver resultReceiver;
 
-    private ImageButton walking;
-    private ImageButton bike;
-    private ImageButton car;
-    private ImageButton bus;
-    private ImageButton metro;
-    private ImageButton tram;
-    private ImageButton train;
-    private ImageButton boat;
-    private ImageButton plane;
-
-
     /**
      * Creates a new instance of SettingsFragment.
-     * @return a Settings Fragment
+     * @return SettingsFragment
      */
     public static SettingsFragment newInstance() {
         SettingsFragment settingsFragment = new SettingsFragment();
@@ -90,6 +78,30 @@ public class SettingsFragment extends Fragment {
         settingsFragment.setArguments(args);
         return settingsFragment;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_settings, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, final Bundle savedInstanceState) {
+
+        Transport transport = new Transport(context);
+        transport.initializeTransportModes(view);
+
+        findViewElements(view);
+        setChecked();
+        setListeners();
+    }
+
+
 
     @Override
     public void onStart() {
@@ -116,119 +128,47 @@ public class SettingsFragment extends Fragment {
         };
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println("onresume set");
-
-
-
-    }
-
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, final Bundle savedInstanceState) {
+    private void findViewElements(View view) {
         gpsCheckBox = (CheckBox) view.findViewById(R.id.settings_gps_checkbox);
         calendarCheckBox = (CheckBox) view.findViewById(R.id.settings_calendar_checkbox);
 
         resetAllButton = (Button) view.findViewById(R.id.settings_reset);
         backUpButton = (Button) view.findViewById(R.id.settings_backup_button);
         licenses = (Button) view.findViewById(R.id.settings_other_info_licenses_button);
+    }
 
-        transportModes(view);
+    /**
+     * Sets the checkboxes checked or unchecked based on the states of the permissions.
+     */
+    private void setChecked() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String gps = sharedPref.getString("gps", "Not Available");
+        String cal = sharedPref.getString("cal", "Not Available");
 
-        setChecked();
+        if (!PermissionManager.permissionToFineLocation(context) || gps.equals("false")) {
+            gpsCheckBox.setChecked(false);
+        } else if (PermissionManager.permissionToFineLocation(context) || gps.equals("true")) {
+            gpsCheckBox.setChecked(true);
+        } else {
+            gpsCheckBox.setChecked(false);
+        }
 
+        if (!PermissionManager.permissionToReadCalendar(context) || cal.equals("false")) {
+            calendarCheckBox.setChecked(false);
+        } else if (PermissionManager.permissionToReadCalendar(context) || cal.equals("true")) {
+            calendarCheckBox.setChecked(true);
+        } else {
+            calendarCheckBox.setChecked(false);
+        }
+    }
+
+    private void setListeners() {
         setListenerForGPSCheckBox();
         setListenerForCheckBoxCalendar();
 
         setListenerForResetAllButton();
         setListenerForBackupButton();
         setListenerForLicensesButton();
-
-    }
-
-    private void setListenerForBackupButton() {
-        backUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProfileBackup profileBackup = new ProfileBackup(context);
-                profileBackup.handleBackup("back up");
-            }
-        });
-    }
-
-    /**
-     * Initializes transportmode buttons.
-     * @param view
-     */
-    private void transportModes(View view) {
-        walking = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_walking);
-        bike = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_bike);
-        car = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_car);
-        bus = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_bus);
-        metro = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_metro);
-        tram = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_tram);
-        train = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_train);
-        boat = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_boat);
-        plane = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_plane);
-
-        setCheckedTransportModes();
-        setListenersForTransportModes();
-    }
-
-    /**
-     * Creates an activity to show licenses of the app.
-     */
-    private void setListenerForLicensesButton() {
-        licenses.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentLicenses = new Intent(context, LicensesActivity.class);
-                startActivity(intentLicenses);
-            }
-        });
-    }
-
-    /**
-     * Creates alert dialog to confirm resetting of the app when reset button is clicked.
-     */
-    private void setListenerForResetAllButton() {
-        resetAllButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder
-                        .setTitle(R.string.dialog_settings_reset_title).setMessage(R.string.dialog_settings_reset_info)
-                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                deleteAllDataFromDatabase();
-                                updateView();
-                            }})
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
     }
 
     /**
@@ -297,6 +237,59 @@ public class SettingsFragment extends Fragment {
     }
 
     /**
+     * Creates alert dialog to confirm resetting of the app when reset button is clicked.
+     */
+    private void setListenerForResetAllButton() {
+        resetAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder
+                        .setTitle(R.string.dialog_settings_reset_title).setMessage(R.string.dialog_settings_reset_info)
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteAllDataFromDatabase();
+                                updateView();
+                            }})
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+    }
+
+    private void setListenerForBackupButton() {
+        backUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileBackup profileBackup = new ProfileBackup(context);
+                profileBackup.handleBackup("back up");
+            }
+        });
+    }
+
+    /**
+     * Creates an activity to show licenses of the app.
+     */
+    private void setListenerForLicensesButton() {
+        licenses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentLicenses = new Intent(context, LicensesActivity.class);
+                startActivity(intentLicenses);
+            }
+        });
+    }
+
+
+    /**
      * Checks if we have permission to access location, and then if not, requests it.
      */
     private void getPermissionToAccessFineLocation() {
@@ -351,31 +344,6 @@ public class SettingsFragment extends Fragment {
     }
 
     /**
-     * Sets the checkboxes checked or unchecked based on the states of the permissions.
-     */
-    private void setChecked() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        String gps = sharedPref.getString("gps", "Not Available");
-        String cal = sharedPref.getString("cal", "Not Available");
-
-        if (!PermissionManager.permissionToFineLocation(context) || gps.equals("false")) {
-            gpsCheckBox.setChecked(false);
-        } else if (PermissionManager.permissionToFineLocation(context) || gps.equals("true")) {
-            gpsCheckBox.setChecked(true);
-        } else {
-            gpsCheckBox.setChecked(false);
-        }
-
-        if (!PermissionManager.permissionToReadCalendar(context) || cal.equals("false")) {
-            calendarCheckBox.setChecked(false);
-        } else if (PermissionManager.permissionToReadCalendar(context) || cal.equals("true")) {
-            calendarCheckBox.setChecked(true);
-        } else {
-            calendarCheckBox.setChecked(false);
-        }
-    }
-
-    /**
      * Checks if PlaceRecorder is running.
      * @see PlaceRecorder
      * @return true/false
@@ -413,101 +381,6 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    private void setCheckedTransportModes() {
-
-        if (TransportModeDao.getByName("walking").isFavourite()) {
-            setColorForTransport(walking, R.color.color_orange);
-        } else {
-            setColorForTransport(walking, R.color.color_grey);
-        }
-
-        if (TransportModeDao.getByName("bike").isFavourite()) {
-            setColorForTransport(bike, R.color.color_orange);
-        } else {
-            setColorForTransport(bike, R.color.color_grey);
-        }
-
-        if (TransportModeDao.getByName("car").isFavourite()) {
-            setColorForTransport(car, R.color.color_orange);
-        } else {
-            setColorForTransport(car, R.color.color_grey);
-        }
-
-        if (TransportModeDao.getByName("bus").isFavourite()) {
-            setColorForTransport(bus, R.color.color_orange);
-        } else {
-            setColorForTransport(bus, R.color.color_grey);
-        }
-
-        if (TransportModeDao.getByName("metro").isFavourite()) {
-            setColorForTransport(metro, R.color.color_orange);
-        } else {
-            setColorForTransport(metro, R.color.color_grey);
-        }
-
-        if (TransportModeDao.getByName("tram").isFavourite()) {
-            setColorForTransport(tram, R.color.color_orange);
-        } else {
-            setColorForTransport(tram, R.color.color_grey);
-        }
-
-        if (TransportModeDao.getByName("train").isFavourite()) {
-            setColorForTransport(train, R.color.color_orange);
-        } else {
-            setColorForTransport(train, R.color.color_grey);
-        }
-
-        if (TransportModeDao.getByName("boat").isFavourite()) {
-            setColorForTransport(boat, R.color.color_orange);
-        } else {
-            setColorForTransport(boat, R.color.color_grey);
-        }
-
-        if (TransportModeDao.getByName("plane").isFavourite()) {
-            setColorForTransport(plane, R.color.color_orange);
-        } else {
-            setColorForTransport(plane, R.color.color_grey);
-        }
-    }
-
-    private void setColorForTransport(ImageButton button, int color) {
-        button.setBackgroundColor(ContextCompat.getColor(context, color));
-    }
-
-    private void setListenersForTransportModes() {
-        setListenerForImageButton(walking);
-        setListenerForImageButton(bike);
-        setListenerForImageButton(car);
-        setListenerForImageButton(bus);
-        setListenerForImageButton(metro);
-        setListenerForImageButton(tram);
-        setListenerForImageButton(train);
-        setListenerForImageButton(boat);
-        setListenerForImageButton(plane);
-    }
-
-    private void setListenerForImageButton(final ImageButton button) {
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TransportModeDao.getByName(button.getContentDescription().toString().toLowerCase()).isFavourite()) {
-                    saveTransportPreference(button.getContentDescription().toString().toLowerCase(), false);
-                    setColorForTransport(button, R.color.color_grey);
-                } else {
-                    saveTransportPreference(button.getContentDescription().toString().toLowerCase(), true);
-                    setColorForTransport(button, R.color.color_orange);
-                }
-            }
-        });
-    }
-
-    private void saveTransportPreference(String name, boolean preference) {
-        TransportMode mode = TransportModeDao.getByName(name);
-        mode.setFavourite(preference);
-        mode.save();
-    }
-
     private void updateView() {
         FragmentTransaction tr = getFragmentManager().beginTransaction();
         Fragment yourPlaces = getFragmentManager().getFragments().get(1);
@@ -515,4 +388,5 @@ public class SettingsFragment extends Fragment {
         tr.attach(yourPlaces);
         tr.commit();
     }
+
 }

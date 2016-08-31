@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,39 +23,34 @@ import android.widget.Toast;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
 import fi.ohtu.mobilityprofile.ui.list_adapters.FavouritesListAdapter;
-import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 /**
- * The class creates a component called FavouritesFragment.
- *
- * FavouritesFragment handles everything concerning the FAVOURITES tab in the UI.
+ * YourPlacesFragment handles everything concerning the YOUR PLACES tab in the UI.
  */
-public class FavouritesFragment extends Fragment {
+public class YourPlacesFragment extends Fragment {
 
-    private static final String title = "FAVOURITES";
+    private static final String title = "YOUR PLACES";
     private static final int page = 1;
     private Context context;
-    private FavouritesListAdapter adapter;
+    private FavouritesListAdapter favouritesListAdapter;
     private AddressSuggestionAdapter addressSuggestionAdapter;
     private AutoCompleteTextView autoCompleteTextView;
     private int position;
 
     /**
-     * Creates a new instance of FavouritesFragment.
-     *
-     * @return favourites fragment
+     * Creates a new instance of YourPlacesFragment.
+     * @return YourPlacesFragment
      */
-    public static FavouritesFragment newInstance() {
-        FavouritesFragment favouritesFragment = new FavouritesFragment();
+    public static YourPlacesFragment newInstance() {
+        YourPlacesFragment yourPlacesFragment = new YourPlacesFragment();
         Bundle args = new Bundle();
         args.putInt("page", page);
         args.putString("title", title);
-        favouritesFragment.setArguments(args);
-        return favouritesFragment;
+        yourPlacesFragment.setArguments(args);
+        return yourPlacesFragment;
     }
 
     @Override
@@ -71,40 +65,22 @@ public class FavouritesFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, final Bundle savedInstanceState) {
-        Log.i(title, "onViewCreated");
-
-        setAddressSuggestions(view);
-        setFavouritesListView(view);
-        setHelpListener(view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_your_places, container, false);
     }
 
-    private void setHelpListener(View view) {
-        ImageButton help = (ImageButton) view.findViewById(R.id.your_places_help);
-        help.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-                builder
-                        .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        })
-                        .setTitle(R.string.your_places_title)
-                        .setMessage(R.string.your_places_info);
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
+    @Override
+    public void onViewCreated(View view, final Bundle savedInstanceState) {
+        setHelpListener(view);
+        setAddressSuggestions(view);
+        addButtonListener(view);
+        setFavouritesListView(view);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("onresume fav");
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String dataChanged = sharedPref.getString("dataChanged", "Not Available");
@@ -119,16 +95,38 @@ public class FavouritesFragment extends Fragment {
 
     }
 
-    private void setFavouritesListView(View view) {
-        List<Place> favouritePlaces = Place.listAll(Place.class);
+    /**
+     * Listener for Help button.
+     * Shows info about Your Places tab.
+     * @param view View
+     */
+    private void setHelpListener(View view) {
+        ImageButton help = (ImageButton) view.findViewById(R.id.your_places_help);
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        adapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
-        ListView listView = (ListView) view.findViewById(R.id.your_places_listview);
-        listView.setAdapter(adapter);
+                builder
+                        .setTitle(R.string.your_places_title)
+                        .setMessage(R.string.your_places_info)
+                        .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
 
-        addButtonListener(view);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 
+    /**
+     * Creates {@link AddressSuggestionAdapter} and listener for AutoCompleteTextView
+     * which shows addresses.
+     * @param view View
+     */
     private void setAddressSuggestions(View view) {
         addressSuggestionAdapter = new AddressSuggestionAdapter(context, R.layout.list_addresses_item);
 
@@ -144,15 +142,10 @@ public class FavouritesFragment extends Fragment {
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_your_places, container, false);
-    }
-
     /**
-     * Listener to add favourite place button
-     * @param view view inside the fragment
+     * Listener for Add button.
+     * Saves new places.
+     * @param view View
      */
     private void addButtonListener(final View view) {
 
@@ -180,7 +173,6 @@ public class FavouritesFragment extends Fragment {
                 }
 
                 updateView();
-
                 nameEditText.setText("");
                 autoCompleteTextView.setText("");
             }
@@ -190,6 +182,31 @@ public class FavouritesFragment extends Fragment {
     }
 
     /**
+     * Creates {@link FavouritesListAdapter} for listing favourite places.
+     * @param view View
+     */
+    private void setFavouritesListView(View view) {
+        List<Place> favouritePlaces = Place.listAll(Place.class);
+
+        favouritesListAdapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
+        ListView listView = (ListView) view.findViewById(R.id.your_places_listview);
+        listView.setAdapter(favouritesListAdapter);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
      * Updates the favourites fragment view
      */
     private void updateView() {
@@ -197,7 +214,7 @@ public class FavouritesFragment extends Fragment {
         tr.detach(this);
         tr.attach(this);
         tr.commit();
-        adapter.notifyDataSetChanged();
+        favouritesListAdapter.notifyDataSetChanged();
     }
 
 

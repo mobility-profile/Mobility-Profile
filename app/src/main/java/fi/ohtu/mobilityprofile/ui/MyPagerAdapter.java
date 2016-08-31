@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import fi.ohtu.mobilityprofile.ui.fragments.FavouritesFragment;
+import fi.ohtu.mobilityprofile.ui.fragments.YourPlacesFragment;
 import fi.ohtu.mobilityprofile.ui.fragments.InfoFragment;
 import fi.ohtu.mobilityprofile.ui.fragments.SettingsFragment;
 
@@ -37,7 +37,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return InfoFragment.newInstance();
             case 1:
-                return FavouritesFragment.newInstance();
+                return YourPlacesFragment.newInstance();
             case 2:
                 return SettingsFragment.newInstance();
             default:

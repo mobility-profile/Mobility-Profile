@@ -17,7 +17,7 @@
     <!--Your places Tab-->
     <string name="your_places_title">Your places</string>
     <string name="your_places_info">
-        You can add your favorite places, and they will show up in your destination suggestions.
+        You can add your favourite places, and they will show up in your destination suggestions.
         In addition, Mobility Profile will suggest new places based on tracking.
     </string>
     <string name="your_places_new_place_name">Name</string>
