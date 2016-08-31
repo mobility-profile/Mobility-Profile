@@ -67,14 +67,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         editButton = (Button) findViewById(R.id.favourite_edit);
         deleteButton = (Button) findViewById(R.id.favourite_delete);
 
-<<<<<<< HEAD
-        name.setText(favouritePlace.getName().toUpperCase());
-        address.setText(favouritePlace.getAddress().getAddressLine(0));
-        setFavouriteButton.setVisibility(View.GONE);
-
-=======
         fancifyNameAndAddress();
->>>>>>> master
         editButtonListener();
         deleteButtonListener();
         backButtonListener();
@@ -88,7 +81,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         }
 
         name.setTextColor(ContextCompat.getColor(this, R.color.color_grey_dark));
-        address.setText(place.getAddress());
+        address.setText(place.getAddress().getAddressLine(0));
     }
 
     private void editButtonListener() {
@@ -110,11 +103,8 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
                                 editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
 
-<<<<<<< HEAD
-                                Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(getApplicationContext(), favouritePlace.getAddress());
-=======
-                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), place.getAddress());
->>>>>>> master
+                                Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(getApplicationContext(), place.getAddress().getAddressLine(0));
+
                                 if (coordinate != null) {
                                     coordinate.save();
 
@@ -141,7 +131,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddress());
+                editTextAddress.setText(place.getAddress().getAddressLine(0));
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
