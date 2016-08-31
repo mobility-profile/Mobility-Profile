@@ -46,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:hint="@string/your_places_new_place_address"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:dropDownWidth="250dp"/>
 
         <Button
             android:id="@+id/your_places_new_place_add"
