@@ -14,7 +14,6 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 
 /**
  * DAO used for saving and reading Places to/from the database.

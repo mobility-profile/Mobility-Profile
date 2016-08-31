@@ -110,12 +110,12 @@ public class RequestHandler extends Handler {
         Coordinate end = new Coordinate(bundle.getFloat("endLat"), bundle.getFloat("endLon"));
         Place startLocation = PlaceDao.getPlaceClosestTo(start);
         Place destination = PlaceDao.getPlaceClosestTo(end);
-        if(startLocation.distanceTo(start) > GpsPointClusterizer.CLUSTER_RADIUS) {
+        if(startLocation == null || startLocation.distanceTo(start) > GpsPointClusterizer.CLUSTER_RADIUS) {
             Address address = AddressConverter.getAddressForCoordinates(context, start);
             startLocation = new Place(address.getAddressLine(0), address);
             PlaceDao.insertPlace(startLocation);
         }
-        if(destination.distanceTo(end) > GpsPointClusterizer.CLUSTER_RADIUS) {
+        if(destination == null || destination.distanceTo(end) > GpsPointClusterizer.CLUSTER_RADIUS) {
             Address address = AddressConverter.getAddressForCoordinates(context, end);
             destination = new Place(address.getAddressLine(0), address);
             PlaceDao.insertPlace(destination);
