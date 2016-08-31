@@ -131,13 +131,14 @@ public class FavouritesFragment extends Fragment {
 
         Button button = (Button) view.findViewById(R.id.add_favourite_button);
         final EditText nameEditText = (EditText) view.findViewById(R.id.add_favourite_name);
-        final Address address = addressSuggestionAdapter.getItem(position);
-        final String name = nameEditText.getText().toString();
 
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
+
+                Address address = addressSuggestionAdapter.getItem(position);
+                String name = nameEditText.getText().toString();
 
                 if (address == null) {
                     Toast.makeText(context, "Choose an address of the list", Toast.LENGTH_LONG).show();
