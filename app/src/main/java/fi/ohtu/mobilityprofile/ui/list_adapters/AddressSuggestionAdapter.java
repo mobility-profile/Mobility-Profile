@@ -18,6 +18,9 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.R;
 
+/**
+ * This class adapts a changing list of addresses to a dropdown menu of AutoCompleteTextView.
+ */
 public class AddressSuggestionAdapter extends BaseAdapter implements Filterable {
 
     private Context context;

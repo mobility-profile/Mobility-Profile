@@ -61,6 +61,7 @@
 
     <!--Activity Place-->
     <string name="activity_place_back_button">Back to Your places Tab</string>
+    <string name="name">NAME</string>
     <!--Place Dialogs-->
     <string name="dialog_edit_title">Edit this favourite place</string>
     <string name="dialog_delete_title">Delete this favourite place?</string>

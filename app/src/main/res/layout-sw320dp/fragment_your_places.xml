@@ -23,16 +23,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="-32dp"/>
 
-    <!--<TextView-->
-        <!--android:id="@+id/your_places_info"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-        <!--android:text="@string/your_places_info"-->
-        <!--android:textSize="16sp"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:padding="10dp"/>-->
-
     <GridLayout
         android:id="@+id/your_places_new_place_layout"
         android:layout_width="wrap_content"

@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final String TAG = "Mobility Profile";
     private Activity activity;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
     private GoogleApiClient mGoogleApiClient;
 
 
@@ -118,21 +117,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        //testData();
     }
-
-//        private void testData() {
-//        if (Place.count(Place.class) == 0) {
-//
-//            Place place = new Place("","Liisankatu 1", new Coordinate(60.174287f, 24.960481f));
-//            Place place2 = new Place("","Kanavamäki 9", new Coordinate(60.186572f, 25.057416f));
-//            Place place3 = new Place("","Leppäsuonkatu 9", new Coordinate(60.169143f, 24.923136f));
-//
-//            PlaceDao.insertPlace(place);
-//            PlaceDao.insertPlace(place2);
-//            PlaceDao.insertPlace(place3);
-//        }
-//    }
 
     /**
      * Checks if there are any security problems with other applications. Check SecurityCheck.java
@@ -221,6 +206,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onPause();
 
         System.out.println("ON PAUSE");
+
+//        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_orange), PorterDuff.Mode.SRC_IN);
+//        tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+//        tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
     }
 
     @Override

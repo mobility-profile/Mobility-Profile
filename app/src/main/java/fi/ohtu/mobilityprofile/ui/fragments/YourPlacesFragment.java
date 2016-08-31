@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class YourPlacesFragment extends Fragment {
     private FavouritesListAdapter favouritesListAdapter;
     private AddressSuggestionAdapter addressSuggestionAdapter;
     private AutoCompleteTextView autoCompleteTextView;
-    private int position;
+    private Address address;
 
     /**
      * Creates a new instance of YourPlacesFragment.
@@ -92,7 +93,7 @@ public class YourPlacesFragment extends Fragment {
             editor.putString("dataChanged", "false");
             editor.commit();
         }
-
+        
     }
 
     /**
@@ -137,7 +138,8 @@ public class YourPlacesFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
                 Address a = (Address) adapterView.getItemAtPosition(p);
                 autoCompleteTextView.setText(a.getAddressLine(0));
-                position = p;
+                address = a;
+                System.out.println(a);
             }
         });
     }
@@ -157,7 +159,6 @@ public class YourPlacesFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
 
-                Address address = addressSuggestionAdapter.getItem(position);
                 String name = nameEditText.getText().toString();
 
                 if (address == null) {
@@ -167,6 +168,7 @@ public class YourPlacesFragment extends Fragment {
                         Toast.makeText(context,"Set name for the place", Toast.LENGTH_LONG).show();
                     } else {
                         Place fav = new Place(name, address);
+                        System.out.println(fav.getAddress());
                         fav.setFavourite(true);
                         fav.save();
                     }
@@ -193,19 +195,6 @@ public class YourPlacesFragment extends Fragment {
         listView.setAdapter(favouritesListAdapter);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Updates the favourites fragment view
      */
@@ -216,6 +205,5 @@ public class YourPlacesFragment extends Fragment {
         tr.commit();
         favouritesListAdapter.notifyDataSetChanged();
     }
-
 
 }

@@ -27,6 +27,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Map;
+
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
@@ -36,7 +38,7 @@ import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 
 /**
- * Class is used to create a list of suggested favourite places in the ui.
+ * Class is used to create a page for a suggestion of a new favourite place.
  */
 public class SuggestionListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -47,62 +49,102 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     private TextView address;
     private Button editButton;
     private Button deleteButton;
-    private MapFragment mapFragment;
-    private GoogleMap googleMap;private AddressSuggestionAdapter addressSuggestionAdapter;
+    private GoogleMap googleMap;
     private AutoCompleteTextView autoCompleteTextView;
-    private int position;
+    private Address tempAddress;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
-
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        activity = this;
         place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("placeId")));
+        activity = this;
 
         initializeViewElements();
+    }
 
+    private void initializeViewElements() {
 
-        addressSuggestionAdapter = new AddressSuggestionAdapter(this, R.layout.list_addresses_item);
-
+        name = (TextView) findViewById(R.id.place_name);
+        address = (TextView) findViewById(R.id.place_address);
+        editButton = (Button) findViewById(R.id.place_edit_button);
+        deleteButton = (Button) findViewById(R.id.place_delete_button);
+        back = (ImageButton) findViewById(R.id.place_back_button);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.edit_address);
+
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(this, R.layout.list_addresses_item);
+
+        fancifyNameAndAddress();
+        editButtonListener();
+        deleteButtonListener();
+        backButtonListener();
+        mapFragment.getMapAsync(this);
+
         autoCompleteTextView.setAdapter(addressSuggestionAdapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
                 Address a = (Address) adapterView.getItemAtPosition(p);
                 autoCompleteTextView.setText(a.getAddressLine(0));
-                position = p;
+                tempAddress = a;
             }
         });
-    }
 
-    private void initializeViewElements() {
-        back = (ImageButton) findViewById(R.id.place_back_button);
-        name = (TextView) findViewById(R.id.place_name);
-        address = (TextView) findViewById(R.id.place_address);
-        editButton = (Button) findViewById(R.id.place_edit_button);
-        deleteButton = (Button) findViewById(R.id.place_delete_button);
 
-        fancifyNameAndAddress();
-        deleteButtonListener();
-        backButtonListener();
-        editButtonListener();
     }
 
     private void fancifyNameAndAddress() {
         if (place.getName().equals("")) {
-            name.setText("NAME");
+            name.setText(getResources().getString(R.string.name));
         } else {
             name.setText(place.getName().toUpperCase());
         }
 
         name.setTextColor(ContextCompat.getColor(this, R.color.color_grey_dark));
         address.setText(place.getAddressLine(0));
+    }
+
+    private void editButtonListener() {
+        editButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
+                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_place_edit, null);
+
+                builder
+                        .setView(dialogView)
+                        .setPositiveButton(R.string.edit, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
+                                editPlace(editTextName.getText().toString(), tempAddress);
+
+                                setMarker();
+                                activity.recreate();
+
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setTitle(R.string.dialog_edit_title);
+
+                EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
+                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
+
+                editTextName.setText(place.getName());
+                editTextAddress.setText(place.getAddressLine(0));
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 
     private void deleteButtonListener() {
@@ -141,49 +183,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         });
     }
 
-    private void editButtonListener() {
-        editButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
-                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_place_edit, null);
-
-                builder
-                        .setView(dialogView)
-                        .setPositiveButton(R.string.edit, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
-                                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) ((AlertDialog) dialog).findViewById(R.id.edit_address);
-
-                                editPlace(editTextName.getText().toString(), addressSuggestionAdapter.getItem(position));
-
-                                setMarker();
-                                activity.recreate();
-
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        })
-                        .setTitle(R.string.dialog_edit_title);
-
-                EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
-
-                editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddressLine(0));
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-    }
-
     /**
      * Edits the given favourite place.
      * @param name the new name
@@ -202,6 +201,9 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         place.save();
     }
 
+    /**
+     * Sets a marker on map.
+     */
     private void setMarker() {
         try {
             LatLng point = new LatLng(place.getCoordinate().getLatitude(), place.getCoordinate().getLongitude());
@@ -219,7 +221,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
     @Override
     public void onMapReady(GoogleMap map) {
-
         googleMap = map;
 
         map.getUiSettings().setZoomGesturesEnabled(true);
