@@ -32,7 +32,7 @@
             android:hint="@string/favourites_name_hint"
             android:padding="10dp"/>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/add_favourite_address"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
