@@ -101,6 +101,7 @@
     <string name="edit">Edit</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="back">Back</string>
 
 
     <!--Activity Licenses-->

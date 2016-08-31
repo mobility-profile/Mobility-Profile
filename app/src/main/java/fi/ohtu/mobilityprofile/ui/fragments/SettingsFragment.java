@@ -25,8 +25,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.util.List;
-
 import fi.ohtu.mobilityprofile.LicensesActivity;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
@@ -125,18 +123,29 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("onresume set");
+
+
+
+    }
+
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
-        gpsCheckBox = (CheckBox) view.findViewById(R.id.checkbox_GPS);
-        calendarCheckBox = (CheckBox) view.findViewById(R.id.checkbox_calendar);
+        gpsCheckBox = (CheckBox) view.findViewById(R.id.settings_gps_checkbox);
+        calendarCheckBox = (CheckBox) view.findViewById(R.id.settings_calendar_checkbox);
 
-        resetAllButton = (Button) view.findViewById(R.id.resetAllButton);
-        backUpButton = (Button) view.findViewById(R.id.backup_button);
-        licenses = (Button) view.findViewById(R.id.licenses_button);
+        resetAllButton = (Button) view.findViewById(R.id.settings_reset);
+        backUpButton = (Button) view.findViewById(R.id.settings_backup_button);
+        licenses = (Button) view.findViewById(R.id.settings_other_info_licenses_button);
 
         transportModes(view);
 
@@ -166,15 +175,15 @@ public class SettingsFragment extends Fragment {
      * @param view
      */
     private void transportModes(View view) {
-        walking = (ImageButton) view.findViewById(R.id.imagebutton_walking);
-        bike = (ImageButton) view.findViewById(R.id.imagebutton_bike);
-        car = (ImageButton) view.findViewById(R.id.imagebutton_car);
-        bus = (ImageButton) view.findViewById(R.id.imagebutton_bus);
-        metro = (ImageButton) view.findViewById(R.id.imagebutton_metro);
-        tram = (ImageButton) view.findViewById(R.id.imagebutton_tram);
-        train = (ImageButton) view.findViewById(R.id.imagebutton_train);
-        boat = (ImageButton) view.findViewById(R.id.imagebutton_boat);
-        plane = (ImageButton) view.findViewById(R.id.imagebutton_plane);
+        walking = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_walking);
+        bike = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_bike);
+        car = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_car);
+        bus = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_bus);
+        metro = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_metro);
+        tram = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_tram);
+        train = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_train);
+        boat = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_boat);
+        plane = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_plane);
 
         setCheckedTransportModes();
         setListenersForTransportModes();

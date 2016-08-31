@@ -1,12 +1,14 @@
 package fi.ohtu.mobilityprofile.ui.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -73,11 +76,35 @@ public class FavouritesFragment extends Fragment {
 
         setAddressSuggestions(view);
         setFavouritesListView(view);
+        setHelpListener(view);
+    }
+
+    private void setHelpListener(View view) {
+        ImageButton help = (ImageButton) view.findViewById(R.id.your_places_help);
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                builder
+                        .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setTitle(R.string.your_places_title)
+                        .setMessage(R.string.your_places_info);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        System.out.println("onresume fav");
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String dataChanged = sharedPref.getString("dataChanged", "Not Available");
@@ -96,7 +123,7 @@ public class FavouritesFragment extends Fragment {
         List<Place> favouritePlaces = Place.listAll(Place.class);
 
         adapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
-        ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
+        ListView listView = (ListView) view.findViewById(R.id.your_places_listview);
         listView.setAdapter(adapter);
 
         addButtonListener(view);
@@ -105,7 +132,7 @@ public class FavouritesFragment extends Fragment {
     private void setAddressSuggestions(View view) {
         addressSuggestionAdapter = new AddressSuggestionAdapter(context, R.layout.list_addresses_item);
 
-        autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.add_favourite_address);
+        autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.your_places_new_place_address);
         autoCompleteTextView.setAdapter(addressSuggestionAdapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -129,8 +156,8 @@ public class FavouritesFragment extends Fragment {
      */
     private void addButtonListener(final View view) {
 
-        Button button = (Button) view.findViewById(R.id.add_favourite_button);
-        final EditText nameEditText = (EditText) view.findViewById(R.id.add_favourite_name);
+        Button button = (Button) view.findViewById(R.id.your_places_new_place_add);
+        final EditText nameEditText = (EditText) view.findViewById(R.id.your_places_new_place_name);
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -172,5 +199,6 @@ public class FavouritesFragment extends Fragment {
         tr.commit();
         adapter.notifyDataSetChanged();
     }
+
 
 }
