@@ -88,33 +88,6 @@ public class PlaceDao {
     }
 
     /**
-     * Finds a Place by address
-     * @param address address of the Place
-     * @return Place with the given address
-     */
-    public static Place getPlaceByAddress(String address) {
-        List<Place> places = Select.from(Place.class)
-                .where(Condition.prop("address").eq(address))
-                .limit("1")
-                .list();
-
-        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-
-        return  (places.size() == 1) ? places.get(0) : null;
-    }
-
-    /**
-     * Deletes a Place by address
-     * @param address address of the Place to be deleted
-     */
-    public static void deletePlaceByAddress(String address) {
-        Place place = getPlaceByAddress(address);
-        if (place != null) {
-            place.delete();
-        }
-    }
-
-    /**
      * Deletes a Place by id
      * @param id id of the Place to be deleted
      */
