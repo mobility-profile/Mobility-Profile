@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,6 +31,7 @@ import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
 import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 /**
@@ -45,6 +48,9 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
     private Button deleteButton;
     private MapFragment mapFragment;
     private GoogleMap googleMap;
+    private AddressSuggestionAdapter addressSuggestionAdapter;
+    private AutoCompleteTextView autoCompleteTextView;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,19 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("favouriteId")));
 
         initializeViewElements();
+
+        addressSuggestionAdapter = new AddressSuggestionAdapter(this, R.layout.list_addresses_item);
+
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.edit_address);
+        autoCompleteTextView.setAdapter(addressSuggestionAdapter);
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
+                Address a = (Address) adapterView.getItemAtPosition(p);
+                autoCompleteTextView.setText(a.getAddressLine(0));
+                position = p;
+            }
+        });
 
     }
 
@@ -100,24 +119,11 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                             public void onClick(DialogInterface dialog, int id) {
 
                                 EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
-                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_address);
+                                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) ((AlertDialog) dialog).findViewById(R.id.edit_address);
 
-                                editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
-
-                                Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(getApplicationContext(), place.getAddress().getAddressLine(0));
-
-                                if (coordinate != null) {
-                                    coordinate.save();
-
-                                    place.setCoordinate(coordinate);
-                                    place.save();
-
-                                    setMarker();
-                                    activity.recreate();
-                                } else {
-                                    activity.recreate();
-                                    Toast.makeText(activity, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
-                                }
+                                editFavoritePlace(editTextName.getText().toString(), addressSuggestionAdapter.getItem(position));
+                                setMarker();
+                                activity.recreate();
 
                             }
                         })
@@ -129,7 +135,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                         .setTitle(R.string.dialog_edit_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.edit_address);
+                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
                 editTextAddress.setText(place.getAddress().getAddressLine(0));
@@ -151,8 +157,10 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
             place.setName(name);
         }
 
-        if (!address.equals("")) {
+        if (address != null) {
             place.setAddress(address);
+        } else {
+            Toast.makeText(this, "Address not valid", Toast.LENGTH_LONG).show();
         }
         place.save();
     }

@@ -15,7 +15,7 @@
         android:textColorHint="#b9b5b5"
         android:backgroundTint="@color/color_orange" />
 
-    <EditText
+    <AutoCompleteTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="150dp"

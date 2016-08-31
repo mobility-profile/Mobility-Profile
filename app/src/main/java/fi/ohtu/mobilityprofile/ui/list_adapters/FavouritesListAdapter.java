@@ -96,7 +96,6 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             @Override
             public void onClick(View v) {
                 final Place place = PlaceDao.getPlaceById(getItemId(position));
-
                 place.setFavourite(true);
                 place.save();
                 notifyDataSetChanged();

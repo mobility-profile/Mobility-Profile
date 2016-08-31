@@ -21,11 +21,14 @@ import fi.ohtu.mobilityprofile.R;
 public class AddressSuggestionAdapter extends BaseAdapter implements Filterable {
 
     private Context context;
+    private int resourseId;
     private List<Address> resultList = new ArrayList<Address>();
 
-    public AddressSuggestionAdapter(Context c) {
+    public AddressSuggestionAdapter(Context c, int resource) {
         context = c;
+        resourseId = resource;
     }
+
 
     @Override
     public int getCount() {
@@ -47,9 +50,13 @@ public class AddressSuggestionAdapter extends BaseAdapter implements Filterable 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_addresses_item, parent, false);
+            convertView = inflater.inflate(resourseId, parent, false);
         }
-        ((TextView) convertView.findViewById(R.id.address_item)).setText(getItem(position).getAddressLine(0));
+
+        TextView textView = ((TextView) convertView.findViewById(R.id.address_item));
+        textView.setText(getItem(position).getAddressLine(0));
+        textView.setContentDescription(getItem(position).getAddressLine(0));
+
         return convertView;
     }
 
@@ -83,7 +90,7 @@ public class AddressSuggestionAdapter extends BaseAdapter implements Filterable 
     private List<Address> findAddresses(Context context, String address) {
         Geocoder geocoder = new Geocoder(context);
         try {
-            return  geocoder.getFromLocationName(address, 1);
+            return  geocoder.getFromLocationName(address, 5);
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();

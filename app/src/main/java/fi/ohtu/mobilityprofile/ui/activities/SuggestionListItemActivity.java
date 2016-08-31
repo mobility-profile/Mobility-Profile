@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,6 +31,7 @@ import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
 import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 
@@ -45,7 +48,10 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     private Button editButton;
     private Button deleteButton;
     private MapFragment mapFragment;
-    private GoogleMap googleMap;
+    private GoogleMap googleMap;private AddressSuggestionAdapter addressSuggestionAdapter;
+    private AutoCompleteTextView autoCompleteTextView;
+    private int position;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,20 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("placeId")));
 
         initializeViewElements();
+
+
+        addressSuggestionAdapter = new AddressSuggestionAdapter(this, R.layout.list_addresses_item);
+
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.edit_address);
+        autoCompleteTextView.setAdapter(addressSuggestionAdapter);
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
+                Address a = (Address) adapterView.getItemAtPosition(p);
+                autoCompleteTextView.setText(a.getAddressLine(0));
+                position = p;
+            }
+        });
     }
 
     private void initializeViewElements() {
@@ -67,7 +87,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         address = (TextView) findViewById(R.id.favourite_item_address);
         editButton = (Button) findViewById(R.id.favourite_edit);
         deleteButton = (Button) findViewById(R.id.favourite_delete);
-
 
         fancifyNameAndAddress();
         deleteButtonListener();
@@ -120,7 +139,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                 backToFragment();
             }
         });
-
     }
 
     private void editButtonListener() {
@@ -138,23 +156,12 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                             public void onClick(DialogInterface dialog, int id) {
 
                                 EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
-                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_address);
+                                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) ((AlertDialog) dialog).findViewById(R.id.edit_address);
 
-                                editPlace(editTextName.getText().toString(), editTextAddress.getText().toString());
+                                editPlace(editTextName.getText().toString(), addressSuggestionAdapter.getItem(position));
 
-                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), place.getAddress());
-                                if (coordinate != null) {
-                                    coordinate.save();
-
-                                    place.setCoordinate(coordinate);
-                                    place.save();
-
-                                    setMarker();
-                                    activity.recreate();
-                                } else {
-                                    activity.recreate();
-                                    Toast.makeText(activity, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
-                                }
+                                setMarker();
+                                activity.recreate();
 
                             }
                         })
@@ -166,7 +173,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                         .setTitle(R.string.dialog_edit_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.edit_address);
+                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
                 editTextAddress.setText(place.getAddress().getAddressLine(0));
@@ -189,6 +196,8 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
         if (!address.equals("")) {
             place.setAddress(address);
+        } else {
+            Toast.makeText(this, "Address not valid", Toast.LENGTH_LONG).show();
         }
         place.save();
     }

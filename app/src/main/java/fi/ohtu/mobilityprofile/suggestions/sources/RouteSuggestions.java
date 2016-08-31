@@ -47,7 +47,6 @@ public class RouteSuggestions implements SuggestionSource {
                     if (destinations.contains(route.getDestination())) {
                         continue; // Don't add the same suggestion more than once.
                     }
-
                     Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
                     suggestions.add(suggestion);
 
