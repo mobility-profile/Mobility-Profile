@@ -93,7 +93,7 @@ public class YourPlacesFragment extends Fragment {
             editor.putString("dataChanged", "false");
             editor.commit();
         }
-        
+
     }
 
     /**

@@ -49,11 +49,8 @@ public class RequestHandler extends Handler {
 
         Message message;
         switch (msg.what) {
-            case REQUEST_INTRACITY_SUGGESTIONS:
-                message = processIntraCitySuggestionsRequest();
-                break;
-            case REQUEST_INTERCITY_SUGGESTIONS:
-                message = processInterCitySuggestionsRequest();
+            case REQUEST_SUGGESTIONS:
+                message = processSuggestionsRequest(msg.getData());
                 break;
             case SEND_SEARCHED_ROUTE:
                 processUsedRoute(msg);
@@ -65,7 +62,7 @@ public class RequestHandler extends Handler {
                 message = getTransportPreferences();
                 break;
             default:
-                message = processErrorMessage(msg.what);
+                message = processUnknownCode(msg.what);
         }
 
         try {
@@ -81,8 +78,17 @@ public class RequestHandler extends Handler {
      *
      * @return Response message
      */
-    private Message processIntraCitySuggestionsRequest() {
-        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfIntraCitySuggestions(getStartLocation()));
+    private Message processSuggestionsRequest(Bundle data) {
+        int mode = data.getInt("mode");
+
+        switch (mode) {
+            case MODE_INTRACITY:
+                return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfIntraCitySuggestions(getStartLocation()));
+            case MODE_INTERCITY:
+                return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfInterCitySuggestions(getStartLocation()));
+        }
+
+        return createMessage(ERROR_UNKNOWN_MODE, "");
     }
 
     /**
@@ -104,12 +110,12 @@ public class RequestHandler extends Handler {
         Coordinate end = new Coordinate(bundle.getFloat("endLat"), bundle.getFloat("endLon"));
         Place startLocation = PlaceDao.getPlaceClosestTo(start);
         Place destination = PlaceDao.getPlaceClosestTo(end);
-        if(startLocation.distanceTo(start) > GpsPointClusterizer.CLUSTER_RADIUS) {
+        if(startLocation == null || startLocation.distanceTo(start) > GpsPointClusterizer.CLUSTER_RADIUS) {
             Address address = AddressConverter.getAddressForCoordinates(context, start);
             startLocation = new Place(address.getAddressLine(0), address);
             PlaceDao.insertPlace(startLocation);
         }
-        if(destination.distanceTo(end) > GpsPointClusterizer.CLUSTER_RADIUS) {
+        if(destination == null || destination.distanceTo(end) > GpsPointClusterizer.CLUSTER_RADIUS) {
             Address address = AddressConverter.getAddressForCoordinates(context, end);
             destination = new Place(address.getAddressLine(0), address);
             PlaceDao.insertPlace(destination);
@@ -144,8 +150,8 @@ public class RequestHandler extends Handler {
      * @param code Message code
      * @return Error message
      */
-    private Message processErrorMessage(int code) {
-        return createMessage(ERROR_UNKNOWN_CODE, code + "");
+    private Message processUnknownCode(int code) {
+        return createMessage(ERROR_UNKNOWN_REQUEST, code + "");
     }
 
     /**

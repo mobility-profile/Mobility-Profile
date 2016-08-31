@@ -50,7 +50,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     private Button editButton;
     private Button deleteButton;
     private GoogleMap googleMap;
-    private AutoCompleteTextView autoCompleteTextView;
     private Address tempAddress;
 
 
@@ -71,28 +70,14 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         editButton = (Button) findViewById(R.id.place_edit_button);
         deleteButton = (Button) findViewById(R.id.place_delete_button);
         back = (ImageButton) findViewById(R.id.place_back_button);
-        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.edit_address);
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(this, R.layout.list_addresses_item);
 
         fancifyNameAndAddress();
         editButtonListener();
         deleteButtonListener();
         backButtonListener();
         mapFragment.getMapAsync(this);
-
-        autoCompleteTextView.setAdapter(addressSuggestionAdapter);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
-                Address a = (Address) adapterView.getItemAtPosition(p);
-                autoCompleteTextView.setText(a.getAddressLine(0));
-                tempAddress = a;
-            }
-        });
-
-
     }
 
     private void fancifyNameAndAddress() {
@@ -136,10 +121,22 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                         .setTitle(R.string.dialog_edit_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
+                final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
+                AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(activity, R.layout.list_addresses_item);
+
+
+                autoCompleteTextView.setAdapter(addressSuggestionAdapter);
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
+                        Address a = (Address) adapterView.getItemAtPosition(p);
+                        autoCompleteTextView.setText(a.getAddressLine(0));
+                        tempAddress = a;
+                    }
+                });
 
                 editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddressLine(0));
+                autoCompleteTextView.setText(place.getAddressLine(0));
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -195,6 +192,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
         if (!address.equals("")) {
             place.setAddress(address);
+            place.setCoordinate(new Coordinate((float) address.getLatitude(), (float) address.getLongitude()));
         } else {
             Toast.makeText(this, "Address not valid", Toast.LENGTH_LONG).show();
         }

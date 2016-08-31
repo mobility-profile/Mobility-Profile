@@ -27,13 +27,11 @@ import android.widget.Toast;
 
 import fi.ohtu.mobilityprofile.LicensesActivity;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
-import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
-import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
@@ -366,14 +364,12 @@ public class SettingsFragment extends Fragment {
         PlaceDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         Coordinate.deleteAll(Coordinate.class);
-        InterCitySearchDao.deleteAllData();
         VisitDao.deleteAllData();
 
         if (GpsPoint.count(GpsPoint.class) == 0
                 && Place.count(Place.class)  == 0
                 && RouteSearch.count(RouteSearch.class) == 0
                 && Coordinate.count(Coordinate.class) == 0
-                && InterCitySearch.count(InterCitySearch.class) == 0
                 && Visit.count(Visit.class) == 0) {
             Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
         } else {

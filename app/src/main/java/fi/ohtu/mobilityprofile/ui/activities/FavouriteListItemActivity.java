@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
 
@@ -45,7 +46,6 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
     private Button editButton;
     private Button deleteButton;
     private GoogleMap googleMap;
-    private AutoCompleteTextView autoCompleteTextView;
     private Address tempAddress;
 
     @Override
@@ -68,25 +68,12 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
         back = (ImageButton) findViewById(R.id.place_back_button);
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.edit_address);
-        AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(this, R.layout.list_addresses_item);
 
         fancifyNameAndAddress();
         editButtonListener();
         deleteButtonListener();
         backButtonListener();
         mapFragment.getMapAsync(this);
-
-        autoCompleteTextView.setAdapter(addressSuggestionAdapter);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
-                Address a = (Address) adapterView.getItemAtPosition(p);
-                System.out.println(a);
-                autoCompleteTextView.setText(a.getAddressLine(0));
-                tempAddress = a;
-            }
-        });
     }
 
     private void fancifyNameAndAddress() {
@@ -129,10 +116,25 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                         .setTitle(R.string.dialog_edit_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
+                final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddressLine(0));
+                autoCompleteTextView.setText(place.getAddressLine(0));
+
+                AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(activity, R.layout.list_addresses_item);
+                autoCompleteTextView.setAdapter(addressSuggestionAdapter);
+
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
+                        Address a = (Address) adapterView.getItemAtPosition(p);
+                        System.out.println(a);
+                        autoCompleteTextView.setText(a.getAddressLine(0));
+                        tempAddress = a;
+                    }
+                });
+
+
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -147,16 +149,19 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
      * @param address the new address
      */
     private void editFavoritePlace(String name, Address address){
+        System.out.println(place.getCoordinate());
         if (!name.equals("")) {
             place.setName(name);
         }
 
         if (address != null) {
             place.setAddress(address);
+            place.setCoordinate(new Coordinate((float) address.getLatitude(), (float) address.getLongitude()));
         } else {
             Toast.makeText(this, "Address not valid", Toast.LENGTH_LONG).show();
         }
         place.save();
+        System.out.println(place.getCoordinate());
     }
 
     private void deleteButtonListener() {

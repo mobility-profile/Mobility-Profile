@@ -69,7 +69,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             if (items.get(position).getName().equals("")) {
                 listItemText.setText(items.get(position).toString());
             } else {
-                listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
+                listItemText.setText(items.get(position).getName() + ": " + items.get(position).getAddressLine(0));
             }
 
         } else {
@@ -80,7 +80,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             if (items.get(position).getName().equals("")) {
                 listItemText.setText(items.get(position).toString());
             } else {
-                listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
+                listItemText.setText(items.get(position).getName() + ": " + items.get(position).getAddressLine(0));
             }
         }
 
