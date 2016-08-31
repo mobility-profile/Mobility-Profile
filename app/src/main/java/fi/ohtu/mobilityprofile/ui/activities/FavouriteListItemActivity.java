@@ -139,7 +139,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                 AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddress().getAddressLine(0));
+                editTextAddress.setText(place.getAddressLine(0));
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
