@@ -39,7 +39,7 @@ public class Place extends SugarRecord {
     }
 
     public Coordinate getCoordinate() {
-        return new Coordinate(new Float(this.address.getLatitude()), new Float(this.address.getLongitude()));
+        return new Coordinate((float) this.address.getLatitude(), (float) this.address.getLongitude());
     }
 
     public void setCoordinate(Coordinate coordinate) {

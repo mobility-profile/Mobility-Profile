@@ -107,7 +107,8 @@ public class CalendarConnection {
             if (!countryCode.equalsIgnoreCase(AddressConverter.getCountryCode(context, location))) continue;
 
             Place place = PlaceDao.getPlaceClosestTo(coordinate);
-            if(place.distanceTo(coordinate) > GpsPointClusterizer.CLUSTER_RADIUS) {
+            System.out.println();
+            if(place == null || place.distanceTo(coordinate) > GpsPointClusterizer.CLUSTER_RADIUS) {
                 Address address = AddressConverter.getAddressForCoordinates(context, coordinate);
                 place = new Place(address.getAddressLine(0), address);
                 PlaceDao.insertPlace(place);
