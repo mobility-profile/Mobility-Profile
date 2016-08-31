@@ -4,7 +4,6 @@ import android.location.Address;
 
 import com.orm.SugarRecord;
 
-import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -31,6 +30,8 @@ public class Place extends SugarRecord {
      */
     public Place() {
         this.name = "name";
+        this.coordinate = new Coordinate(new Float(0), new Float(0));
+        this.coordinate.save();
         this.favourite = false;
     }
 
@@ -43,8 +44,8 @@ public class Place extends SugarRecord {
     public Place(String name, Address address) {
         this.name = name;
         this.coordinate = new Coordinate((float) address.getLatitude(), (float) address.getLongitude());
-        this.favourite = false;
         this.coordinate.save();
+        this.favourite = false;
         setAddress(address);
     }
 
@@ -75,16 +76,16 @@ public class Place extends SugarRecord {
         return this.coordinate.distanceTo(coordinate);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Place that = (Place) o;
-
-        return this.coordinate.equals(that.getCoordinate());
-
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        Place that = (Place) o;
+//
+//        return this.coordinate.equals(that.getCoordinate());
+//
+//    }
 
     public boolean isFavourite() {
         return favourite;
@@ -109,8 +110,10 @@ public class Place extends SugarRecord {
         address.setCountryCode(countryCode);
         address.setCountryName(countryName);
         address.setFeatureName(featureName);
-        address.setLatitude(coordinate.getLatitude());
-        address.setLongitude(coordinate.getLongitude());
+        if (coordinate != null) {
+            address.setLatitude(coordinate.getLatitude());
+            address.setLongitude(coordinate.getLongitude());
+        }
         address.setLocality(locality);
         address.setPostalCode(postalCode);
         if (addressLine1 != null) address.setAddressLine(0, addressLine1);

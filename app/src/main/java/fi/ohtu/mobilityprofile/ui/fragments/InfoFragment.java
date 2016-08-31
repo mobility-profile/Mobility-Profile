@@ -5,12 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import fi.ohtu.mobilityprofile.R;
 
 /**
- * The class creates a component called InfoFragment.
- *
  * InfoFragment handles everything concerning the INFO tab in the UI.
  */
 public class InfoFragment extends Fragment {
@@ -40,6 +39,11 @@ public class InfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_info, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState)  {
+        super.onViewCreated(view, savedInstanceState);
     }
 }
 

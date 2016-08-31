@@ -12,7 +12,7 @@
         android:id="@+id/edit_name"
         android:hint="@string/your_places_new_place_name"
         android:textColor="@color/color_primary_dark"
-        android:textColorHint="#b9b5b5"
+        android:textColorHint="@color/color_grey_dark"
         android:backgroundTint="@color/color_orange" />
 
     <AutoCompleteTextView
@@ -23,6 +23,7 @@
         android:id="@+id/edit_address"
         android:hint="@string/your_places_new_place_address"
         android:textColor="@color/color_primary_dark"
-        android:textColorHint="#b9b5b5"
-        android:backgroundTint="@color/color_orange" />
+        android:textColorHint="@color/color_grey_dark"
+        android:backgroundTint="@color/color_orange"
+        android:dropDownWidth="250dp"/>
 </LinearLayout>

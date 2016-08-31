@@ -4,7 +4,7 @@
     android:layout_height="wrap_content" >
 
     <ImageButton
-        android:id="@+id/favourites_star_unfilled"
+        android:id="@+id/your_places_star_unfilled"
         android:layout_width="0dp"
         android:layout_weight=".05"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
     </ImageButton>
 
     <ImageButton
-        android:id="@+id/favourites_star_filled"
+        android:id="@+id/your_places_star_filled"
         android:layout_width="0dp"
         android:layout_weight=".05"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
     </ImageButton>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/favourites_item"
+        android:id="@+id/your_places_item"
         android:layout_width="0dp"
         android:layout_weight=".9"
         android:layout_height="wrap_content"
