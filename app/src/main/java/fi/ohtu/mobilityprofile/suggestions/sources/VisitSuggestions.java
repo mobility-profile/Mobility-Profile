@@ -46,23 +46,23 @@ public class VisitSuggestions implements SuggestionSource {
 
             for (Map.Entry<Place, Integer> entry : nextDestinations.entrySet()) {
                 if (entry.getValue() == maxValue) {
-//                    suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
+                    suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION));
                 }
             }
+        }
 
-            if (suggestions.size() <= 2 && lowerAccuracyDestinations.size() > 0) {
-                maxValue = Collections.max(lowerAccuracyDestinations.values());
+        if (suggestions.size() <= 2 && lowerAccuracyDestinations.size() > 0 && userStillAtLastVisitLocation(startLocation, VisitDao.getLast())) {
+            int maxValue = Collections.max(lowerAccuracyDestinations.values());
 
                 for (Map.Entry<Place, Integer> entry : lowerAccuracyDestinations.entrySet()) {
                     if (entry.getValue() == maxValue && !nextDestinations.containsKey(entry.getKey())) {
-                        //suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
+                        suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION));
                     }
                     if (suggestions.size() >= 3) {
                         break;
                     }
                 }
             }
-        }
         return suggestions;
     }
 
@@ -129,5 +129,4 @@ public class VisitSuggestions implements SuggestionSource {
         int count = destinationMap.containsKey(nextDestination) ? destinationMap.get(nextDestination) : 0;
         destinationMap.put(nextDestination, count + 1);
     }
-
 }

@@ -21,12 +21,12 @@
     <application
         android:name="com.orm.SugarApp"
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@mipmap/mobility_profile_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--MAIN ACTIVITY-->
+        <!-- MAIN ACTIVITY -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,38 +37,27 @@
 
         <!-- Children of the main activity -->
         <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity" >
+            android:name=".LicensesActivity"
+            android:label="@string/settings_other_info_licences"
+            android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
-        <activity
-            android:name=".BackUpActivity"
-            android:parentActivityName=".MainActivity" >
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-
         <activity
             android:name=".ui.activities.FavouriteListItemActivity"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
         <activity
             android:name=".ui.activities.SuggestionListItemActivity"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -94,7 +83,7 @@
             android:value="fi.ohtu" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB1nfSKgfJISha9v1pMNOA-7mQkd2LRc7o"/>
+            android:value="AIzaSyB1nfSKgfJISha9v1pMNOA-7mQkd2LRc7o" />
 
         <service
             android:name=".remoteconnection.RemoteService"
@@ -105,13 +94,11 @@
                 <action android:name="fi.ohtu.mobilityprofile.remoteconnection.RemoteService" />
             </intent-filter>
         </service>
-
         <service
             android:name=".suggestions.locationHistory.PlaceRecorder"
             android:process=":mobility_profile_location" />
 
-        <activity android:name=".SecurityProblemActivity"/>
-
+        <activity android:name=".SecurityProblemActivity" />
     </application>
 
 </manifest>

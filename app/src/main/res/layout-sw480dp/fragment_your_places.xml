@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:tag="your_places">
+
+    <TextView
+        android:id="@+id/tracking_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/your_places_title"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/tracking_title_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/your_places_info"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"/>
+
+    <GridLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/add_favourite_name"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/your_places_new_place_name"
+            android:padding="10dp"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/add_favourite_address"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/your_places_new_place_address"
+            android:padding="10dp"/>
+
+        <Button
+            android:id="@+id/add_favourite_button"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/add"
+            android:background="@color/color_sand"/>
+
+    </GridLayout>
+
+    <ListView
+        android:id="@+id/favourites_listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

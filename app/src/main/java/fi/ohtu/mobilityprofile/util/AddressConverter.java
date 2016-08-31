@@ -3,7 +3,6 @@ package fi.ohtu.mobilityprofile.util;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -65,6 +64,19 @@ public class AddressConverter {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public static String getCity(Context context, Coordinate coordinate) {
+        try {
+            Geocoder geocoder = new Geocoder(context);
+            List<Address> addresses = geocoder.getFromLocation(coordinate.getLatitude(), coordinate.getLongitude(), 1);
+            if (addresses.size() >= 1) {
+                return addresses.get(0).getLocality();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

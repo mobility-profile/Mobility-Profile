@@ -9,6 +9,7 @@ import java.util.Set;
 
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
@@ -38,7 +39,7 @@ public class RouteSuggestions implements SuggestionSource {
     @Override
     public List<Suggestion> getSuggestions(StartLocation startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
-        Set<String> destinations = new HashSet<>();
+        Set<Place> destinations = new HashSet<>();
         
         for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
             if (route.getStartCoordinates().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
@@ -46,9 +47,8 @@ public class RouteSuggestions implements SuggestionSource {
                     if (destinations.contains(route.getDestination())) {
                         continue; // Don't add the same suggestion more than once.
                     }
-
-                    //Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION, route.getDestinationCoordinates());
-                    //suggestions.add(suggestion);
+                    Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
+                    suggestions.add(suggestion);
 
                     destinations.add(route.getDestination());
 

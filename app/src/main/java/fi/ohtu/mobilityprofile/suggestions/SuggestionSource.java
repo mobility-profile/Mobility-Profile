@@ -6,7 +6,7 @@ import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 
 /**
- * Interface for different route suggestion sources.
+ * Interface for different destination suggestion sources.
  */
 public interface SuggestionSource {
     int CALENDAR_SUGGESTION = 1;

@@ -31,10 +31,10 @@ public class FavoriteSuggestions implements SuggestionSource {
     public List<Suggestion> getSuggestions(StartLocation startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
 
-//        for (Place favouritePlace : PlaceDao.getFavouritePlaces()) {
-//            Suggestion suggestion = new Suggestion(favouritePlace.getAddress(), SuggestionAccuracy.MODERATE, FAVORITE_SUGGESTION, favouritePlace.getCoordinate());
-//            suggestions.add(suggestion);
-//        }
+        for (Place favouritePlace : PlaceDao.getFavouritePlaces()) {
+            Suggestion suggestion = new Suggestion(favouritePlace, SuggestionAccuracy.MODERATE, FAVORITE_SUGGESTION);
+            suggestions.add(suggestion);
+        }
 
         return suggestions;
     }

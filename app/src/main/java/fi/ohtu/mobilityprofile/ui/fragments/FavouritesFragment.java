@@ -34,19 +34,13 @@ import fi.ohtu.mobilityprofile.util.AddressConverter;
  */
 public class FavouritesFragment extends Fragment {
 
-    /**
-     * The title of the fragment.
-     */
     private static final String title = "FAVOURITES";
-
-    /**
-     * The position of the fragment in the "queue" of all fragments.
-     */
-    private static final int page = 2;
+    private static final int page = 1;
     private Context context;
     private FavouritesListAdapter adapter;
+    private AddressSuggestionAdapter addressSuggestionAdapter;
     private AutoCompleteTextView autoCompleteTextView;
-    private Address address;
+    private int position;
 
     /**
      * Creates a new instance of FavouritesFragment.
@@ -78,7 +72,6 @@ public class FavouritesFragment extends Fragment {
         Log.i(title, "onViewCreated");
 
         setAddressSuggestions(view);
-
         setFavouritesListView(view);
     }
 
@@ -102,7 +95,7 @@ public class FavouritesFragment extends Fragment {
     private void setFavouritesListView(View view) {
         List<Place> favouritePlaces = Place.listAll(Place.class);
 
-        adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
+        adapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
         listView.setAdapter(adapter);
 
@@ -110,14 +103,16 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void setAddressSuggestions(View view) {
+        addressSuggestionAdapter = new AddressSuggestionAdapter(context, R.layout.list_addresses_item);
+
         autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.add_favourite_address);
-        autoCompleteTextView.setAdapter(new AddressSuggestionAdapter(context, R.layout.list_addresses_item));
+        autoCompleteTextView.setAdapter(addressSuggestionAdapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Address a = (Address) adapterView.getItemAtPosition(position);
+            public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
+                Address a = (Address) adapterView.getItemAtPosition(p);
                 autoCompleteTextView.setText(a.getAddressLine(0));
-                address = a;
+                position = p;
             }
         });
     }
@@ -125,7 +120,7 @@ public class FavouritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.favourites_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_your_places, container, false);
     }
 
     /**
@@ -135,31 +130,31 @@ public class FavouritesFragment extends Fragment {
     private void addButtonListener(final View view) {
 
         Button button = (Button) view.findViewById(R.id.add_favourite_button);
-        final EditText addFavouriteName = (EditText) view.findViewById(R.id.add_favourite_name);
+        final EditText nameEditText = (EditText) view.findViewById(R.id.add_favourite_name);
+        final Address address = addressSuggestionAdapter.getItem(position);
+        final String name = nameEditText.getText().toString();
 
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
 
-                if (!addFavouriteName.getText().toString().equals("") && address != null) {
-                    Place fav = new Place(addFavouriteName.getText().toString(), address);
-
-                    Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(context, fav.getAddress().getAddressLine(0));
-                    if (coordinate != null) {
-                        coordinate.save();
-
-                        fav.setCoordinate(coordinate);
+                if (address == null) {
+                    Toast.makeText(context, "Choose an address of the list", Toast.LENGTH_LONG).show();
+                } else {
+                    if (name.equals("")) {
+                        Toast.makeText(context,"Set name for the place", Toast.LENGTH_LONG).show();
+                    } else {
+                        Place fav = new Place(name, address);
                         fav.setFavourite(true);
                         fav.save();
-                    } else {
-                        Toast.makeText(context, "No coordinates were found for the address", Toast.LENGTH_LONG).show();
                     }
-
-                    updateView();
-                    addFavouriteName.setText("");
-                    //addFavouriteAddress.setText("");
                 }
+
+                updateView();
+
+                nameEditText.setText("");
+                autoCompleteTextView.setText("");
             }
 
         });

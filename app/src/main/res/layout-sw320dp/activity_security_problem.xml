@@ -22,7 +22,7 @@
                 android:id="@+id/header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/conflict_header"
+                android:text="@string/activity_security_problem_conflict_header"
                 android:textSize="20sp" />
 
             <TextView
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="@string/conflict_info"
+                android:text="@string/activity_security_problem_conflict_info"
                 android:textSize="20sp" />
         </LinearLayout>
     </ScrollView>
