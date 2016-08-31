@@ -58,20 +58,30 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             view = ((Activity) context).getLayoutInflater().inflate(resourceId, parent, false);
         }
 
-        listItemText = (TextView) view.findViewById(R.id.favourites_item);
-        starFilled = (ImageButton) view.findViewById(R.id.favourites_star_filled);
-        starUnfilled = (ImageButton) view.findViewById(R.id.favourites_star_unfilled);
+        listItemText = (TextView) view.findViewById(R.id.your_places_item);
+        starFilled = (ImageButton) view.findViewById(R.id.your_places_star_filled);
+        starUnfilled = (ImageButton) view.findViewById(R.id.your_places_star_unfilled);
 
         if (getItem(position).isFavourite()) {
             starUnfilled.setVisibility(View.GONE);
             starFilled.setVisibility(View.VISIBLE);
             setColorsForFavourite(view);
-            listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
+            if (items.get(position).getName().equals("")) {
+                listItemText.setText(items.get(position).toString());
+            } else {
+                listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
+            }
+
         } else {
             starFilled.setVisibility(View.GONE);
             starUnfilled.setVisibility(View.VISIBLE);
             setColorsForPlace(view);
             listItemText.setText(items.get(position).toString());
+            if (items.get(position).getName().equals("")) {
+                listItemText.setText(items.get(position).toString());
+            } else {
+                listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
+            }
         }
 
         itemTextListener(position);

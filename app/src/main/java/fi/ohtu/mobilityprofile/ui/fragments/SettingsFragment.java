@@ -14,6 +14,7 @@ import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,6 @@ public class SettingsFragment extends Fragment {
     private CheckBox calendarCheckBox;
 
     private Button resetAllButton;
-    private Button resetSearcesButton;
     private Button backUpButton;
     private Button licenses;
 
@@ -125,19 +125,29 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("onresume set");
+
+
+
+    }
+
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
-        gpsCheckBox = (CheckBox) view.findViewById(R.id.checkbox_GPS);
-        calendarCheckBox = (CheckBox) view.findViewById(R.id.checkbox_calendar);
+        gpsCheckBox = (CheckBox) view.findViewById(R.id.settings_gps_checkbox);
+        calendarCheckBox = (CheckBox) view.findViewById(R.id.settings_calendar_checkbox);
 
-        resetAllButton = (Button) view.findViewById(R.id.resetAllButton);
-        resetSearcesButton = (Button) view.findViewById(R.id.resetSearchesButton);
-        backUpButton = (Button) view.findViewById(R.id.backup_button);
-        licenses = (Button) view.findViewById(R.id.licenses_button);
+        resetAllButton = (Button) view.findViewById(R.id.settings_reset);
+        backUpButton = (Button) view.findViewById(R.id.settings_backup_button);
+        licenses = (Button) view.findViewById(R.id.settings_other_info_licenses_button);
 
         transportModes(view);
 
@@ -147,7 +157,6 @@ public class SettingsFragment extends Fragment {
         setListenerForCheckBoxCalendar();
 
         setListenerForResetAllButton();
-        setListenerForResetSearchesButton();
         setListenerForBackupButton();
         setListenerForLicensesButton();
 
@@ -168,15 +177,15 @@ public class SettingsFragment extends Fragment {
      * @param view
      */
     private void transportModes(View view) {
-        walking = (ImageButton) view.findViewById(R.id.imagebutton_walking);
-        bike = (ImageButton) view.findViewById(R.id.imagebutton_bike);
-        car = (ImageButton) view.findViewById(R.id.imagebutton_car);
-        bus = (ImageButton) view.findViewById(R.id.imagebutton_bus);
-        metro = (ImageButton) view.findViewById(R.id.imagebutton_metro);
-        tram = (ImageButton) view.findViewById(R.id.imagebutton_tram);
-        train = (ImageButton) view.findViewById(R.id.imagebutton_train);
-        boat = (ImageButton) view.findViewById(R.id.imagebutton_boat);
-        plane = (ImageButton) view.findViewById(R.id.imagebutton_plane);
+        walking = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_walking);
+        bike = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_bike);
+        car = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_car);
+        bus = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_bus);
+        metro = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_metro);
+        tram = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_tram);
+        train = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_train);
+        boat = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_boat);
+        plane = (ImageButton) view.findViewById(R.id.settings_transport_imagebutton_plane);
 
         setCheckedTransportModes();
         setListenersForTransportModes();
@@ -209,43 +218,8 @@ public class SettingsFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 deleteAllDataFromDatabase();
+                                updateView();
                             }})
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-    }
-
-    /**
-     * Creates alert dialog to confirm resetting all route searches.
-     */
-    private void setListenerForResetSearchesButton() {
-        resetSearcesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder
-                        .setTitle(R.string.dialog_settings_delete_searches_title)
-                        .setMessage(R.string.dialog_settings_delete_searches_info)
-                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                RouteSearchDao.deleteAllData();
-
-                                if (RouteSearch.count(RouteSearch.class) == 0) {
-                                    Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -536,5 +510,13 @@ public class SettingsFragment extends Fragment {
         TransportMode mode = TransportModeDao.getByName(name);
         mode.setFavourite(preference);
         mode.save();
+    }
+
+    private void updateView() {
+        FragmentTransaction tr = getFragmentManager().beginTransaction();
+        Fragment yourPlaces = getFragmentManager().getFragments().get(1);
+        tr.detach(yourPlaces);
+        tr.attach(yourPlaces);
+        tr.commit();
     }
 }

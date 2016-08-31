@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/favourite"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_gravity="center_horizontal"/>
+
     <ImageButton
-        android:id="@+id/favourites_back_button"
+        android:id="@+id/place_back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_arrow_left"
@@ -16,11 +24,11 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_gravity="start"
-        android:background="@color/color_white">
+        android:background="@android:color/transparent">
     </ImageButton>
 
     <TextView
-        android:id="@+id/favourite_item_name"
+        android:id="@+id/place_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -29,31 +37,25 @@
         android:layout_marginTop="-52dp"/>
 
     <TextView
-        android:id="@+id/favourite_item_address"
+        android:id="@+id/place_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="25dp"/>
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:id="@+id/map"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_marginBottom="10dp"/>
 
     <GridLayout
+        android:id="@+id/place_buttons_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="3"
         android:rowCount="1"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="10dp">
 
         <Button
-            android:id="@+id/favourite_edit"
+            android:id="@+id/place_edit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit"
@@ -63,17 +65,7 @@
             android:layout_marginTop="20dp"/>
 
         <Button
-            android:id="@+id/favourite_set_favourite"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="@string/set_favourite"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="15dp"
-            android:background="@color/color_sand"
-            android:layout_marginTop="20dp"/>
-
-        <Button
-            android:id="@+id/favourite_delete"
+            android:id="@+id/place_delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/delete"

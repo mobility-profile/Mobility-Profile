@@ -10,7 +10,7 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/tracking_title"
+            android:id="@+id/settings_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_gps"
-            android:id="@+id/checkbox_GPS"
+            android:id="@+id/settings_gps_checkbox"
             android:layout_gravity="start"
             android:textSize="20sp" />
 
@@ -30,12 +30,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_calendar"
-            android:id="@+id/checkbox_calendar"
+            android:id="@+id/settings_calendar_checkbox"
             android:layout_gravity="start"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/reset_title"
+            android:id="@+id/settings_your_data_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -46,20 +46,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"/>
 
-
-
         <Button
-            android:id="@+id/resetSearchesButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_your_data_delete_searches"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="15dp"
-            android:background="@color/color_sand"
-            android:layout_marginTop="20dp"/>
-
-        <Button
-            android:id="@+id/resetAllButton"
+            android:id="@+id/settings_reset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/settings_your_data_reset"
@@ -69,7 +57,7 @@
             android:layout_marginTop="20dp"/>
 
         <TextView
-            android:id="@+id/backup_text"
+            android:id="@+id/settings_backup_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -81,7 +69,7 @@
             android:layout_marginStart="10dp"/>
 
         <Button
-            android:id="@+id/backup_button"
+            android:id="@+id/settings_backup_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -92,7 +80,7 @@
 
 
         <TextView
-            android:id="@+id/transport_title"
+            android:id="@+id/settings_transport_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -105,6 +93,7 @@
 
 
         <GridLayout
+            android:id="@+id/settings_transport_modes_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -116,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/walking"
-                android:id="@+id/imagebutton_walking"
+                android:id="@+id/settings_transport_imagebutton_walking"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -128,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/bike"
-                android:id="@+id/imagebutton_bike"
+                android:id="@+id/settings_transport_imagebutton_bike"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -139,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/car"
-                android:id="@+id/imagebutton_car"
+                android:id="@+id/settings_transport_imagebutton_car"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -150,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/bus"
-                android:id="@+id/imagebutton_bus"
+                android:id="@+id/settings_transport_imagebutton_bus"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -162,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/metro"
-                android:id="@+id/imagebutton_metro"
+                android:id="@+id/settings_transport_imagebutton_metro"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -173,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/tram"
-                android:id="@+id/imagebutton_tram"
+                android:id="@+id/settings_transport_imagebutton_tram"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -184,7 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/train"
-                android:id="@+id/imagebutton_train"
+                android:id="@+id/settings_transport_imagebutton_train"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -195,7 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/boat"
-                android:id="@+id/imagebutton_boat"
+                android:id="@+id/settings_transport_imagebutton_boat"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -206,7 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/plane"
-                android:id="@+id/imagebutton_plane"
+                android:id="@+id/settings_transport_imagebutton_plane"
                 android:layout_gravity="start"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -215,7 +204,7 @@
         </GridLayout>
 
         <TextView
-            android:id="@+id/license"
+            android:id="@+id/settings_other_info_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -227,7 +216,7 @@
             android:layout_marginStart="10dp"/>
 
         <Button
-            android:id="@+id/licenses_button"
+            android:id="@+id/settings_other_info_licenses_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/settings_other_info_licences"

@@ -69,8 +69,8 @@ public class FavouritesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.i(title, "onResumed");
         super.onResume();
+        System.out.println("onresume fav");
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String dataChanged = sharedPref.getString("dataChanged", "Not Available");
@@ -89,7 +89,7 @@ public class FavouritesFragment extends Fragment {
         List<Place> favouritePlaces = Place.listAll(Place.class);
 
         adapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
-        ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
+        ListView listView = (ListView) view.findViewById(R.id.your_places_listview);
         listView.setAdapter(adapter);
 
         addButtonListener(view);
@@ -107,9 +107,9 @@ public class FavouritesFragment extends Fragment {
      */
     private void addButtonListener(final View view) {
 
-        Button button = (Button) view.findViewById(R.id.add_favourite_button);
-        final EditText addFavouriteName = (EditText) view.findViewById(R.id.add_favourite_name);
-        final EditText addFavouriteAddress = (EditText) view.findViewById(R.id.add_favourite_address);
+        Button button = (Button) view.findViewById(R.id.your_places_new_place_add);
+        final EditText addFavouriteName = (EditText) view.findViewById(R.id.your_places_new_place_name);
+        final EditText addFavouriteAddress = (EditText) view.findViewById(R.id.your_places_new_place_address);
 
         button.setOnClickListener(new View.OnClickListener() {
 

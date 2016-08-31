@@ -9,10 +9,10 @@
         android:layout_height="wrap_content"
         android:width="150dp"
         android:layout_marginStart="20dp"
-        android:id="@+id/editFavouriteName"
+        android:id="@+id/edit_name"
         android:hint="@string/your_places_new_place_name"
         android:textColor="@color/color_primary_dark"
-        android:textColorHint="#b9b5b5"
+        android:textColorHint="@color/color_grey_dark"
         android:backgroundTint="@color/color_orange" />
 
     <EditText
@@ -20,9 +20,9 @@
         android:layout_height="wrap_content"
         android:width="150dp"
         android:layout_marginStart="20dp"
-        android:id="@+id/editFavouriteAddress"
+        android:id="@+id/edit_address"
         android:hint="@string/your_places_new_place_address"
         android:textColor="@color/color_primary_dark"
-        android:textColorHint="#b9b5b5"
+        android:textColorHint="@color/color_grey_dark"
         android:backgroundTint="@color/color_orange" />
 </LinearLayout>

@@ -28,6 +28,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.data.PlaceDao;
+import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
@@ -41,8 +44,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
     public final static String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
-    public Activity activity;
-    
+    private Activity activity;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
     private GoogleApiClient mGoogleApiClient;
 
 
@@ -82,38 +86,54 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private void setViewPagerAndTabs() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color_white));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color_orange));
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_logo_orange).setContentDescription("Mobility Profile");
+        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
 
-        tabLayout.setOnTabSelectedListener(new  TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                super.onTabSelected(tab);
-                int tabIconColor = ContextCompat.getColor(activity, R.color.color_orange);
-                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-            }
+//        tabLayout.setOnTabSelectedListener(new  TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                super.onTabSelected(tab);
+//                int tabIconColor = ContextCompat.getColor(activity, R.color.color_orange);
+//                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                super.onTabUnselected(tab);
+//                int tabIconColor = ContextCompat.getColor(activity, R.color.color_primary_dark);
+//                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//                super.onTabReselected(tab);
+//            }
+//        });
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                super.onTabUnselected(tab);
-                int tabIconColor = ContextCompat.getColor(activity, R.color.color_primary_dark);
-                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                super.onTabReselected(tab);
-            }
-        });
+        //testData();
     }
+
+//        private void testData() {
+//        if (Place.count(Place.class) == 0) {
+//
+//            Place place = new Place("","Liisankatu 1", new Coordinate(60.174287f, 24.960481f));
+//            Place place2 = new Place("","Kanavamäki 9", new Coordinate(60.186572f, 25.057416f));
+//            Place place3 = new Place("","Leppäsuonkatu 9", new Coordinate(60.169143f, 24.923136f));
+//
+//            PlaceDao.insertPlace(place);
+//            PlaceDao.insertPlace(place2);
+//            PlaceDao.insertPlace(place3);
+//        }
+//    }
 
     /**
      * Checks if there are any security problems with other applications. Check SecurityCheck.java

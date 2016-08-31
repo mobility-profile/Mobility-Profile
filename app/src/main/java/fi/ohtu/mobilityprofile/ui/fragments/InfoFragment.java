@@ -41,5 +41,12 @@ public class InfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_info, container, false);
     }
+
+    @Override
+    public void onResume()  {
+        super.onResume();
+
+        System.out.println("onresume info");
+    }
 }
 
