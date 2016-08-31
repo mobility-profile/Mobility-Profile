@@ -31,6 +31,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
+import fi.ohtu.mobilityprofile.util.ProfileBackup;
 import fi.ohtu.mobilityprofile.util.SecurityCheck;
 import fi.ohtu.mobilityprofile.ui.MyPagerAdapter;
 
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setViewPagerAndTabs();
         checkSecurity();
         createTransportModes();
-        // new ProfileBackup(this).handleBackup("import");
+        new ProfileBackup(this).handleBackup("import");
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     .addOnConnectionFailedListener(this)
                     .build();
         }
-        mGoogleApiClient.connect();
+        // mGoogleApiClient.connect();
     }
 
     private void setViewPagerAndTabs() {
