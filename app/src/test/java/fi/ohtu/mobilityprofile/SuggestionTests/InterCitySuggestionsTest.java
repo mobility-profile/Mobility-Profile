@@ -11,9 +11,11 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
-import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
-import fi.ohtu.mobilityprofile.domain.InterCitySearch;
+import fi.ohtu.mobilityprofile.data.RouteSearchDao;
+import fi.ohtu.mobilityprofile.domain.Place;
+import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
+import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 
@@ -24,12 +26,24 @@ import static org.junit.Assert.*;
 public class InterCitySuggestionsTest {
 
     private InterCitySuggestions interCitySuggestions;
-    private InterCitySearchDao interCitySearchDao;
+    private Place helsinki;
+    private Place vaasa;
+    private Place oulu;
+    private Place jyvaskyla;
+    private Place lahti;
+    private Place tampere;
+    private Place turku;
 
     @Before
     public void setUp() {
         this.interCitySuggestions = new InterCitySuggestions(Robolectric.setupActivity(MainActivityStub.class));
-        interCitySearchDao = new InterCitySearchDao();
+        helsinki = new Place();
+        vaasa = new Place();
+        oulu = new Place();
+        jyvaskyla = new Place();
+        lahti = new Place();
+        tampere = new Place();
+        turku = new Place();
         createInterCitySearches();
     }
 
@@ -41,21 +55,21 @@ public class InterCitySuggestionsTest {
 
     @Test
     public void getMaxFiveSuggestions() {
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Helsinki", "Vaasa", 122324));
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Helsinki", "Oulu", 922324));
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Helsinki", "Jyväskylä", 9122324));
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Helsinki", "Lahti", 92122324));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(0, DestinationLogic.MODE_INTERCITY, helsinki, vaasa));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(0, DestinationLogic.MODE_INTERCITY, helsinki, oulu));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(0, DestinationLogic.MODE_INTERCITY, helsinki, jyvaskyla));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(0, DestinationLogic.MODE_INTERCITY, helsinki, lahti));
         List<Suggestion> results = interCitySuggestions.getSuggestions(new StartLocation(767565, 50, new Float(60.209108), new Float(24.964735)));
         assertEquals(5, results.size());
     }
 
     private void createInterCitySearches() {
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Helsinki", "Tampere", 122324));
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Tampere", "Turku", 232411));
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Helsinki", "Tampere", 532434));
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Helsinki", "Turku", 772411));
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Turku", "Tampere", 885454));
-        interCitySearchDao.insertInterCitySearch(new InterCitySearch("Tampere", "Helsinki", 987541));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(122324, DestinationLogic.MODE_INTERCITY, helsinki, tampere));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(232411, DestinationLogic.MODE_INTERCITY, tampere, turku));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(532434, DestinationLogic.MODE_INTERCITY, helsinki, tampere));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(772411, DestinationLogic.MODE_INTERCITY, helsinki, turku));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(885454, DestinationLogic.MODE_INTERCITY, turku, tampere));
+        RouteSearchDao.insertRouteSearch(new RouteSearch(987541, DestinationLogic.MODE_INTERCITY, tampere, helsinki));
     }
 }
 
