@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public final static String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
     private Activity activity;
+    private static Context context;
     private TabLayout tabLayout;
     private GoogleApiClient mGoogleApiClient;
 
@@ -52,17 +53,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = this.getApplicationContext();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String gps = sharedPref.getString("gps", "Not Available");
 
-        if (PermissionManager.permissionToFineLocation(this) && gps.equals("true") && !isLocationServiceRunning()) {
+        if (PermissionManager.permissionToFineLocation() && gps.equals("true") && !isLocationServiceRunning()) {
             Intent intent = new Intent(this, PlaceRecorder.class);
             startService(intent);
         }
 
         SugarContext.init(this);
         activity = this;
+
 
         setViewPagerAndTabs();
         checkSecurity();
@@ -147,12 +149,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // If this is the first time the application is run or security check is not ok, we should
         // run the security check.
         if (sharedPreferences.getBoolean("firstrun", true) || !SecurityCheck.securityCheckOk(sharedPreferences)) {
-            securityOk = SecurityCheck.doSecurityCheck(this, sharedPreferences);
+            securityOk = SecurityCheck.doSecurityCheck(sharedPreferences);
             sharedPreferences.edit().putBoolean("firstrun", false).apply();
         }
 
         if (!securityOk) {
-            processSecurityConflicts(SecurityCheck.getConflictInfo(this));
+            processSecurityConflicts(SecurityCheck.getConflictInfo());
         }
     }
 
@@ -289,6 +291,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
         return false;
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
 }

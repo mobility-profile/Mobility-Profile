@@ -28,6 +28,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.LicensesActivity;
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
@@ -66,7 +67,6 @@ public class SettingsFragment extends Fragment {
     private Button backUpButton;
     private Button licenses;
 
-    private Context context;
     private ResultReceiver resultReceiver;
 
     private ImageButton walking;
@@ -96,7 +96,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
+        Context context = MainActivity.getContext();
         setupServiceReceiver();
 
         if (isLocationServiceRunning()) {
@@ -121,7 +121,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.context = context;
     }
 
     @Override
@@ -155,7 +154,7 @@ public class SettingsFragment extends Fragment {
         backUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileBackup profileBackup = new ProfileBackup(context);
+                ProfileBackup profileBackup = new ProfileBackup();
                 profileBackup.handleBackup("back up");
             }
         });
@@ -187,7 +186,7 @@ public class SettingsFragment extends Fragment {
         licenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentLicenses = new Intent(context, LicensesActivity.class);
+                Intent intentLicenses = new Intent(MainActivity.getContext(), LicensesActivity.class);
                 startActivity(intentLicenses);
             }
         });
@@ -200,7 +199,7 @@ public class SettingsFragment extends Fragment {
         resetAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
                 builder
                         .setTitle(R.string.dialog_settings_reset_title).setMessage(R.string.dialog_settings_reset_info)
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
@@ -230,10 +229,11 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                final Context context = MainActivity.getContext();
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
                 if (isChecked) {
-                    if (!PermissionManager.permissionToFineLocation(context)) {
+                    if (!PermissionManager.permissionToFineLocation()) {
                         getPermissionToAccessFineLocation();
                     } else {
 
@@ -263,12 +263,13 @@ public class SettingsFragment extends Fragment {
      * Sets a listener for calendarCheckBox.
      */
     private void setListenerForCheckBoxCalendar() {
+        final Context context = MainActivity.getContext();
         calendarCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked && !PermissionManager.permissionToReadCalendar(context)) {
+                if (isChecked && !PermissionManager.permissionToReadCalendar()) {
                     getPermissionToReadCalendar();
                 } else if (isChecked) {
                     Toast.makeText(context, "Calendar is used again", Toast.LENGTH_SHORT).show();
@@ -291,12 +292,12 @@ public class SettingsFragment extends Fragment {
      * Checks if we have permission to access location, and then if not, requests it.
      */
     private void getPermissionToAccessFineLocation() {
-        if (!PermissionManager.permissionToFineLocation(context)) {
+        if (!PermissionManager.permissionToFineLocation()) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST);
         }
 
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (ContextCompat.checkSelfPermission(MainActivity.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST);
@@ -307,7 +308,7 @@ public class SettingsFragment extends Fragment {
      * Checks if we have permission to read calendar, and then if not, requests it.
      */
     private void getPermissionToReadCalendar() {
-        if (!PermissionManager.permissionToReadCalendar(context)) {
+        if (!PermissionManager.permissionToReadCalendar()) {
             requestPermissions(new String[]{Manifest.permission.READ_CALENDAR},
                     READ_CALENDAR_PERMISSIONS_REQUEST);
         }
@@ -316,6 +317,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        Context context = MainActivity.getContext();
         switch (requestCode) {
             case ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST:
                 if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -345,21 +347,21 @@ public class SettingsFragment extends Fragment {
      * Sets the checkboxes checked or unchecked based on the states of the permissions.
      */
     private void setChecked() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
         String gps = sharedPref.getString("gps", "Not Available");
         String cal = sharedPref.getString("cal", "Not Available");
 
-        if (!PermissionManager.permissionToFineLocation(context) || gps.equals("false")) {
+        if (!PermissionManager.permissionToFineLocation() || gps.equals("false")) {
             gpsCheckBox.setChecked(false);
-        } else if (PermissionManager.permissionToFineLocation(context) || gps.equals("true")) {
+        } else if (PermissionManager.permissionToFineLocation() || gps.equals("true")) {
             gpsCheckBox.setChecked(true);
         } else {
             gpsCheckBox.setChecked(false);
         }
 
-        if (!PermissionManager.permissionToReadCalendar(context) || cal.equals("false")) {
+        if (!PermissionManager.permissionToReadCalendar() || cal.equals("false")) {
             calendarCheckBox.setChecked(false);
-        } else if (PermissionManager.permissionToReadCalendar(context) || cal.equals("true")) {
+        } else if (PermissionManager.permissionToReadCalendar() || cal.equals("true")) {
             calendarCheckBox.setChecked(true);
         } else {
             calendarCheckBox.setChecked(false);
@@ -372,7 +374,7 @@ public class SettingsFragment extends Fragment {
      * @return true/false
      */
     private boolean isLocationServiceRunning() {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager manager = (ActivityManager) MainActivity.getContext().getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (PlaceRecorder.class.getName().equals(service.service.getClassName())) {
                 return true;
@@ -385,6 +387,7 @@ public class SettingsFragment extends Fragment {
      * Deletes all data from the database.
      */
     private void deleteAllDataFromDatabase() {
+        Context context = MainActivity.getContext();
         GpsPointDao.deleteAllData();
         PlaceDao.deleteAllData();
         RouteSearchDao.deleteAllData();
@@ -462,7 +465,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setColorForTransport(ImageButton button, int color) {
-        button.setBackgroundColor(ContextCompat.getColor(context, color));
+        button.setBackgroundColor(ContextCompat.getColor(MainActivity.getContext(), color));
     }
 
     private void setListenersForTransportModes() {

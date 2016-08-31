@@ -44,9 +44,8 @@ public class Place extends SugarRecord {
         this.name = name;
         this.coordinate = new Coordinate((float) address.getLatitude(), (float) address.getLongitude());
         this.favourite = false;
-
-        setAddress(address);
         this.coordinate.save();
+        setAddress(address);
     }
 
     public Coordinate getCoordinate() {

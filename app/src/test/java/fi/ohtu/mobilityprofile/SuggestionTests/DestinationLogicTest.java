@@ -24,7 +24,6 @@ import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
@@ -41,8 +40,6 @@ public class DestinationLogicTest {
 
     @Before
     public void setUp() throws Exception {
-
-        CalendarTagDao calendarTagDao = mock(CalendarTagDao.class);
 
         List<SuggestionSource> suggestionSources = new ArrayList<>();
         //suggestionSources.add(new CalendarSuggestions(new CalendarConnection(Robolectric.setupActivity(MainActivityStub.class))));

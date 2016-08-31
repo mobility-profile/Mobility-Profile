@@ -1,7 +1,5 @@
 package fi.ohtu.mobilityprofile.suggestions.sources;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +20,6 @@ import fi.ohtu.mobilityprofile.util.AddressConverter;
  */
 public class InterCitySuggestions implements SuggestionSource {
 
-    private Context context;
-
-    public InterCitySuggestions(Context context) {
-        this.context = context;
-    }
     /**
      * Returns a list of probable locations the user would like to visit based on the previous
      * searches the user has made. This method is valid for inter city travelling only.

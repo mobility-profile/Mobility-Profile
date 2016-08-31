@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
@@ -36,7 +37,6 @@ public class FavouritesFragment extends Fragment {
 
     private static final String title = "FAVOURITES";
     private static final int page = 1;
-    private Context context;
     private FavouritesListAdapter adapter;
     private AddressSuggestionAdapter addressSuggestionAdapter;
     private AutoCompleteTextView autoCompleteTextView;
@@ -58,8 +58,7 @@ public class FavouritesFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
+        super.onAttach(MainActivity.getContext());
     }
 
     @Override
@@ -79,7 +78,7 @@ public class FavouritesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
         String dataChanged = sharedPref.getString("dataChanged", "Not Available");
 
         if (dataChanged.equals("true") ) {
@@ -95,7 +94,7 @@ public class FavouritesFragment extends Fragment {
     private void setFavouritesListView(View view) {
         List<Place> favouritePlaces = Place.listAll(Place.class);
 
-        adapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
+        adapter = new FavouritesListAdapter(R.layout.list_your_places_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
         listView.setAdapter(adapter);
 
@@ -103,7 +102,7 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void setAddressSuggestions(View view) {
-        addressSuggestionAdapter = new AddressSuggestionAdapter(context, R.layout.list_addresses_item);
+        addressSuggestionAdapter = new AddressSuggestionAdapter(R.layout.list_addresses_item);
 
         autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.add_favourite_address);
         autoCompleteTextView.setAdapter(addressSuggestionAdapter);
@@ -128,7 +127,7 @@ public class FavouritesFragment extends Fragment {
      * @param view view inside the fragment
      */
     private void addButtonListener(final View view) {
-
+        final Context context = MainActivity.getContext();
         Button button = (Button) view.findViewById(R.id.add_favourite_button);
         final EditText nameEditText = (EditText) view.findViewById(R.id.add_favourite_name);
 

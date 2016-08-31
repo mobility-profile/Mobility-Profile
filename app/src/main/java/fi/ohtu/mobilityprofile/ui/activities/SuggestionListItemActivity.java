@@ -67,7 +67,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         initializeViewElements();
 
 
-        addressSuggestionAdapter = new AddressSuggestionAdapter(this, R.layout.list_addresses_item);
+        addressSuggestionAdapter = new AddressSuggestionAdapter(R.layout.list_addresses_item);
 
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.edit_address);
         autoCompleteTextView.setAdapter(addressSuggestionAdapter);

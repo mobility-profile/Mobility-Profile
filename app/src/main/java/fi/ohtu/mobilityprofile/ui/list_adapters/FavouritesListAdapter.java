@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
@@ -27,7 +29,6 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
 
     private List<Place> items;
     private int resourceId;
-    private Context context;
     private Fragment fragment;
 
     private TextView listItemText;
@@ -37,15 +38,13 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
     /**
      * Creates favouritesListAdapter
      *
-     * @param context    context of the app
      * @param resourceId resourceId
      * @param items      list of favourite places
      * @param fragment   fragment
      */
-    public FavouritesListAdapter(Context context, int resourceId, List<Place> items, Fragment fragment) {
-        super(context, resourceId, items);
+    public FavouritesListAdapter(int resourceId, List<Place> items, Fragment fragment) {
+        super(MainActivity.getContext(), resourceId, items);
         this.resourceId = resourceId;
-        this.context = context;
         this.items = items;
         this.fragment = fragment;
     }
@@ -55,7 +54,8 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
 
         View view = convertView;
         if (view == null) {
-            view = ((Activity) context).getLayoutInflater().inflate(resourceId, parent, false);
+            //view = ((Activity) MainActivity.getContext()).getLayoutInflater().inflate(resourceId, parent, false);
+            view = LayoutInflater.from(MainActivity.getContext()).inflate(resourceId, parent, false);
         }
 
         listItemText = (TextView) view.findViewById(R.id.favourites_item);
@@ -126,7 +126,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
         listItemText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Context context = MainActivity.getContext();
                 if (getItem(position).isFavourite()) {
                     Intent favouriteIntent = new Intent(context, FavouriteListItemActivity.class);
                     favouriteIntent.putExtra("favouriteId", getItemId(position) + "");
@@ -154,12 +154,12 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
     }
 
     private void setColorsForFavourite(View view) {
-        int white = ContextCompat.getColor(context, R.color.color_white);
+        int white = ContextCompat.getColor(MainActivity.getContext(), R.color.color_white);
         view.setBackgroundColor(white);
     }
 
     private void setColorsForPlace(View view) {
-        int white = ContextCompat.getColor(context, R.color.color_white);
+        int white = ContextCompat.getColor(MainActivity.getContext(), R.color.color_white);
         view.setBackgroundColor(white);
         starUnfilled.setBackgroundColor(white);
     }

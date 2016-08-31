@@ -11,6 +11,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.StartLocationDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
@@ -29,17 +30,14 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
-    private Context context;
     private DestinationLogic destinationLogic;
 
     /**
      * Creates the RequestHandler.
      *
-     * @param context context
      * @param destinationLogic Journey planner that provides the logic for our app
      */
-    public RequestHandler(Context context, DestinationLogic destinationLogic) {
-        this.context = context;
+    public RequestHandler(DestinationLogic destinationLogic) {
         this.destinationLogic = destinationLogic;
     }
 
@@ -105,18 +103,19 @@ public class RequestHandler extends Handler {
      * @param message Message with data that tells which destination the user inputted
      */
     private void processUsedRoute(Message message) {
+        Context context = MainActivity.getContext();
         Bundle bundle = message.getData();
         Coordinate start = new Coordinate(bundle.getFloat("startLat"), bundle.getFloat("startLon"));
         Coordinate end = new Coordinate(bundle.getFloat("endLat"), bundle.getFloat("endLon"));
         Place startLocation = PlaceDao.getPlaceClosestTo(start);
         Place destination = PlaceDao.getPlaceClosestTo(end);
         if(startLocation.distanceTo(start) > GpsPointClusterizer.CLUSTER_RADIUS) {
-            Address address = AddressConverter.getAddressForCoordinates(context, start);
+            Address address = AddressConverter.getAddressForCoordinates(start);
             startLocation = new Place(address.getAddressLine(0), address);
             PlaceDao.insertPlace(startLocation);
         }
         if(destination.distanceTo(end) > GpsPointClusterizer.CLUSTER_RADIUS) {
-            Address address = AddressConverter.getAddressForCoordinates(context, end);
+            Address address = AddressConverter.getAddressForCoordinates(end);
             destination = new Place(address.getAddressLine(0), address);
             PlaceDao.insertPlace(destination);
         }
