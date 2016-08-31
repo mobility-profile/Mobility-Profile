@@ -28,9 +28,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
@@ -94,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
-
         tabLayout.setOnTabSelectedListener(new  TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -118,26 +114,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 super.onTabReselected(tab);
             }
         });
-
-        //testData();
     }
 
-//        private void testData() {
-//        if (Place.count(Place.class) == 0) {
-//
-//            Place place = new Place("","Liisankatu 1", new Coordinate(60.174287f, 24.960481f));
-//            Place place2 = new Place("","Kanavamäki 9", new Coordinate(60.186572f, 25.057416f));
-//            Place place3 = new Place("","Leppäsuonkatu 9", new Coordinate(60.169143f, 24.923136f));
-//
-//            PlaceDao.insertPlace(place);
-//            PlaceDao.insertPlace(place2);
-//            PlaceDao.insertPlace(place3);
-//        }
-//    }
-
     /**
-     * Checks if there are any security problems with other applications. Check SecurityCheck.java
-     * for more information.
+     * Checks if there are any security problems with other applications. Check
+     * {@link SecurityCheck} for more information.
      */
     private void checkSecurity() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
