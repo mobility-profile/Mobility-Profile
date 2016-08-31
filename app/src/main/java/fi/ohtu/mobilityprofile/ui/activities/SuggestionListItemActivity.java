@@ -102,7 +102,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         }
 
         name.setTextColor(ContextCompat.getColor(this, R.color.color_grey_dark));
-        address.setText(place.getAddress().getAddressLine(0));
+        address.setText(place.getAddressLine(0));
     }
 
     private void deleteButtonListener() {
@@ -176,7 +176,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                 AutoCompleteTextView editTextAddress = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddress().getAddressLine(0));
+                editTextAddress.setText(place.getAddressLine(0));
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
