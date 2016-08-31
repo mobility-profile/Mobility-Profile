@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.domainTests;
 
+import android.location.Address;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Before;
@@ -8,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.util.Locale;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
@@ -54,7 +58,7 @@ public class PlaceDaoTest {
     @Test
     public void coordinateIsSavedIntoDatabase() {
         placeDao.insertPlace(kumpula);
-        Place place = placeDao.getPlaceByAddress("Kumpula");
+        Place place = placeDao.getPlaceByName("Kumpula");
         assertTrue(place.getCoordinate() != null);
     }
 
@@ -64,14 +68,6 @@ public class PlaceDaoTest {
         Place place = placeDao.getPlaceByName("Kumpula");
         assertTrue(place != null);
         assertEquals("Kumpula", place.getName());
-    }
-
-    @Test
-    public void testInsertandFindByAddress() {
-        placeDao.insertPlace(kumpula);
-        Place place = placeDao.getPlaceByAddress("Kumpula");
-        assertTrue(place != null);
-        assertEquals("Kumpula", place.getAddress());
     }
 
     @Test
@@ -86,36 +82,13 @@ public class PlaceDaoTest {
     }
 
     @Test
-    public void testInsertMultipleAndFindByAddress() {
-        placeDao.insertPlace(kumpula);
-        placeDao.insertPlace(hakaniemi);
-        placeDao.insertPlace(lauttasaari);
-
-        Place place = placeDao.getPlaceByAddress("Hakaniemi");
-        assertTrue(place != null);
-        assertEquals("Hakaniemi", place.getAddress());
-    }
-
-    @Test
     public void testFindNothing() {
         placeDao.insertPlace(kumpula);
         placeDao.insertPlace(hakaniemi);
         placeDao.insertPlace(lauttasaari);
 
-        Place place = placeDao.getPlaceByAddress("Kamppi");
+        Place place = placeDao.getPlaceByName("Kamppi");
         assertTrue(place == null);
-    }
-
-    @Test
-    public void testDeletePlaceByAddress() {
-        placeDao.insertPlace(kumpula);
-        placeDao.insertPlace(hakaniemi);
-
-        assertTrue(placeDao.getAll().size() == 2);
-
-        placeDao.deletePlaceByAddress("Hakaniemi");
-        assertTrue(placeDao.getAll().size() == 1);
-        assertEquals("Kumpula", placeDao.getAll().get(0).getAddress());
     }
 
     @Test
@@ -161,9 +134,13 @@ public class PlaceDaoTest {
     }
 
     private void createPlaces() {
-        kumpula = new Place("Kumpula", "Kumpula", new Coordinate(new Float(60.209108), new Float(24.964735)));
-        sornainen = new Place("Sörnäinen", "Sörnäinen", new Coordinate(new Float(60.186422), new Float(24.968971)));
-        lauttasaari = new Place("Lauttasaari", "Lauttasaari", new Coordinate(new Float(60.157330), new Float(24.877253)));
-        hakaniemi = new Place("Hakaniemi", "Hakaniemi", new Coordinate(new Float(60.17885), new Float(24.95006)));
+        kumpula = new Place("Kumpula", new Address(Locale.getDefault()));
+        sornainen = new Place("Sörnäinen", new Address(Locale.getDefault()));
+        lauttasaari = new Place("Lauttasaari", new Address(Locale.getDefault()));
+        hakaniemi = new Place("Hakaniemi", new Address(Locale.getDefault()));
+        kumpula.setCoordinate(new Coordinate(new Float(60.209108), new Float(24.964735)));
+        sornainen.setCoordinate(new Coordinate(new Float(60.186422), new Float(24.968971)));
+        lauttasaari.setCoordinate(new Coordinate(new Float(60.157330), new Float(24.877253)));
+        hakaniemi.setCoordinate(new Coordinate(new Float(60.17885), new Float(24.95006)));
     }
 }

@@ -14,7 +14,6 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 
 /**
  * DAO used for saving and reading Places to/from the database.
@@ -85,33 +84,6 @@ public class PlaceDao {
         assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
 
         return  (places.size() == 1) ? places.get(0) : null;
-    }
-
-    /**
-     * Finds a Place by address
-     * @param address address of the Place
-     * @return Place with the given address
-     */
-    public static Place getPlaceByAddress(String address) {
-        List<Place> places = Select.from(Place.class)
-                .where(Condition.prop("address").eq(address))
-                .limit("1")
-                .list();
-
-        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-
-        return  (places.size() == 1) ? places.get(0) : null;
-    }
-
-    /**
-     * Deletes a Place by address
-     * @param address address of the Place to be deleted
-     */
-    public static void deletePlaceByAddress(String address) {
-        Place place = getPlaceByAddress(address);
-        if (place != null) {
-            place.delete();
-        }
     }
 
     /**
