@@ -30,15 +30,8 @@ import fi.ohtu.mobilityprofile.util.AddressConverter;
  */
 public class FavouritesFragment extends Fragment {
 
-    /**
-     * The title of the fragment.
-     */
     private static final String title = "FAVOURITES";
-
-    /**
-     * The position of the fragment in the "queue" of all fragments.
-     */
-    private static final int page = 2;
+    private static final int page = 1;
     private Context context;
     private FavouritesListAdapter adapter;
 
@@ -76,7 +69,6 @@ public class FavouritesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.i(title, "onResumed");
         super.onResume();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -95,7 +87,7 @@ public class FavouritesFragment extends Fragment {
     private void setFavouritesListView(View view) {
         List<Place> favouritePlaces = Place.listAll(Place.class);
 
-        adapter = new FavouritesListAdapter(context, R.layout.favourites_list_item, favouritePlaces, this);
+        adapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.favourites_listView);
         listView.setAdapter(adapter);
 
@@ -105,7 +97,7 @@ public class FavouritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.favourites_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_your_places, container, false);
     }
 
     /**

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +36,11 @@ import fi.ohtu.mobilityprofile.util.AddressConverter;
 public class FavouriteListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Activity activity;
-    private Place favouritePlace;
+    private Place place;
+    private ImageButton back;
     private TextView name;
     private TextView address;
     private Button editButton;
-    private Button setFavouriteButton;
     private Button deleteButton;
     private MapFragment mapFragment;
     private GoogleMap googleMap;
@@ -46,31 +48,47 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_significant_place);
+        setContentView(R.layout.activity_place);
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         activity = this;
-        favouritePlace = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("favouriteId")));
+        place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("favouriteId")));
 
         initializeViewElements();
 
     }
 
     private void initializeViewElements() {
+        back = (ImageButton) findViewById(R.id.favourites_back_button);
         name = (TextView) findViewById(R.id.favourite_item_name);
         address = (TextView) findViewById(R.id.favourite_item_address);
         editButton = (Button) findViewById(R.id.favourite_edit);
-        setFavouriteButton = (Button) findViewById(R.id.favourite_set_favourite);
         deleteButton = (Button) findViewById(R.id.favourite_delete);
 
+<<<<<<< HEAD
         name.setText(favouritePlace.getName().toUpperCase());
         address.setText(favouritePlace.getAddress().getAddressLine(0));
         setFavouriteButton.setVisibility(View.GONE);
 
+=======
+        fancifyNameAndAddress();
+>>>>>>> master
         editButtonListener();
         deleteButtonListener();
+        backButtonListener();
+    }
+
+    private void fancifyNameAndAddress() {
+        if (place.getName().equals("")) {
+            name.setText("NAME");
+        } else {
+            name.setText(place.getName().toUpperCase());
+        }
+
+        name.setTextColor(ContextCompat.getColor(this, R.color.color_grey_dark));
+        address.setText(place.getAddress());
     }
 
     private void editButtonListener() {
@@ -79,7 +97,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
-                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.significant_place_dialog_edit, null);
+                View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_place_edit, null);
 
                 builder
                         .setView(dialogView)
@@ -87,17 +105,21 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
 
-                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteName);
-                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
+                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
+                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_address);
 
                                 editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
 
+<<<<<<< HEAD
                                 Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(getApplicationContext(), favouritePlace.getAddress());
+=======
+                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), place.getAddress());
+>>>>>>> master
                                 if (coordinate != null) {
                                     coordinate.save();
 
-                                    favouritePlace.setCoordinate(coordinate);
-                                    favouritePlace.save();
+                                    place.setCoordinate(coordinate);
+                                    place.save();
 
                                     setMarker();
                                     activity.recreate();
@@ -113,13 +135,13 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                                 dialog.cancel();
                             }
                         })
-                        .setTitle(R.string.favourites_edit_title);
+                        .setTitle(R.string.dialog_edit_title);
 
-                EditText editTextName = (EditText) dialogView.findViewById(R.id.editFavouriteName);
-                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
+                EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
+                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.edit_address);
 
-                editTextName.setText(favouritePlace.getName());
-                editTextAddress.setText(favouritePlace.getAddress());
+                editTextName.setText(place.getName());
+                editTextAddress.setText(place.getAddress());
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -135,13 +157,13 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
      */
     private void editFavoritePlace(String name, String address){
         if (!name.equals("")) {
-            favouritePlace.setName(name);
+            place.setName(name);
         }
 
         if (!address.equals("")) {
-            favouritePlace.setAddress(address);
+            place.setAddress(address);
         }
-        favouritePlace.save();
+        place.save();
     }
 
     private void deleteButtonListener() {
@@ -151,11 +173,11 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
                 builder
-                        .setTitle(R.string.favourites_delete_title)
+                        .setTitle(R.string.dialog_delete_title)
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                PlaceDao.deletePlaceById(favouritePlace.getId());
+                                PlaceDao.deletePlaceById(place.getId());
                                 backToFragment();
                             }
                         })
@@ -172,15 +194,25 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         });
     }
 
+    private void backButtonListener(){
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToFragment();
+            }
+        });
+
+    }
+
     private void setMarker() {
         try {
-            LatLng point = new LatLng(favouritePlace.getCoordinate().getLatitude(), favouritePlace.getCoordinate().getLongitude());
+            LatLng point = new LatLng(place.getCoordinate().getLatitude(), place.getCoordinate().getLongitude());
 
             googleMap.setMyLocationEnabled(true);
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 17));
 
             googleMap.addMarker(new MarkerOptions()
-                    .title(favouritePlace.getName())
+                    .title(place.getName())
                     .position(point));
         } catch (Exception e) {
             Toast.makeText(this, "Coordinates for the address were not found", Toast.LENGTH_LONG).show();

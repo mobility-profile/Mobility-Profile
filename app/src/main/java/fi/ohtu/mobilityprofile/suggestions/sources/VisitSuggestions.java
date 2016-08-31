@@ -49,9 +49,10 @@ public class VisitSuggestions implements SuggestionSource {
                     suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION));
                 }
             }
+        }
 
-            if (suggestions.size() <= 2 && lowerAccuracyDestinations.size() > 0) {
-                maxValue = Collections.max(lowerAccuracyDestinations.values());
+        if (suggestions.size() <= 2 && lowerAccuracyDestinations.size() > 0 && userStillAtLastVisitLocation(startLocation, VisitDao.getLast())) {
+            int maxValue = Collections.max(lowerAccuracyDestinations.values());
 
                 for (Map.Entry<Place, Integer> entry : lowerAccuracyDestinations.entrySet()) {
                     if (entry.getValue() == maxValue && !nextDestinations.containsKey(entry.getKey())) {
@@ -62,7 +63,6 @@ public class VisitSuggestions implements SuggestionSource {
                     }
                 }
             }
-        }
         return suggestions;
     }
 
@@ -129,5 +129,4 @@ public class VisitSuggestions implements SuggestionSource {
         int count = destinationMap.containsKey(nextDestination) ? destinationMap.get(nextDestination) : 0;
         destinationMap.put(nextDestination, count + 1);
     }
-
 }

@@ -15,15 +15,8 @@ import fi.ohtu.mobilityprofile.R;
  */
 public class InfoFragment extends Fragment {
 
-    /**
-     * The title of the fragment.
-     */
     private static final String title = "INFO";
-
-    /**
-     * The position of the fragment in the "queue" of all fragments.
-     */
-    private static final int page = 3;
+    private static final int page = 0;
 
     /**
      * Creates a new instance of InfoFragment.
@@ -46,7 +39,7 @@ public class InfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.info_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_info, container, false);
     }
 }
 

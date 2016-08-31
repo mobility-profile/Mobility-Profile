@@ -85,6 +85,7 @@ public class Place extends SugarRecord {
 
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
+        this.save();
     }
 
     public void setAddress(Address address) {

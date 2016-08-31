@@ -8,13 +8,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
 
 /**
- * This class is used for calculating the most likely trips the user is going to make.
+ * This class is used for collecting suggestions from all the SuggestionSources
  */
 public class DestinationLogic {
     public static final int MODE_INTRACITY = 300;
@@ -54,7 +55,7 @@ public class DestinationLogic {
         for (SuggestionSource suggestionSource : suggestionSources) {
             suggestions.addAll(suggestionSource.getSuggestions(startLocation));
         }
-
+        Collections.sort(suggestions);
         return getDestinations(suggestions);
     }
 
@@ -71,6 +72,7 @@ public class DestinationLogic {
 
         List<Suggestion> suggestions = new ArrayList<>();
         suggestions.addAll(interCitySuggestions.getSuggestions(startLocation));
+        Collections.sort(suggestions);
 
         return getDestinations(suggestions);
     }

@@ -43,4 +43,3 @@ task checkstyle(type: Checkstyle) {
 
     classpath = files()
 }
-

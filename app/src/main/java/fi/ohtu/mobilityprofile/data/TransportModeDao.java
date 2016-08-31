@@ -1,5 +1,6 @@
 package fi.ohtu.mobilityprofile.data;
 
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.json.JSONArray;
@@ -49,6 +50,20 @@ public class TransportModeDao {
             modes.put(m.getName());
         }
         return modes;
+    }
+
+    /**
+     * Finds transport mode by name.
+     * @param name name of the transport mode to be searched
+     * @return transport mode with the given name
+     */
+    public static TransportMode getByName(String name) {
+        List<TransportMode> modes = Select.from(TransportMode.class)
+                .where(Condition.prop("name").eq(name))
+                .limit("1")
+                .list();
+
+        return modes.get(0);
     }
 
     /**

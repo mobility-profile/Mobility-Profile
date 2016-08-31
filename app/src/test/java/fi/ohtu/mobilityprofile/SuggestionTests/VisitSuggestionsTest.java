@@ -15,7 +15,6 @@ import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.domain.Visit;
@@ -30,9 +29,9 @@ public class VisitSuggestionsTest {
     private List<Suggestion> suggestions;
 
     private Place kumpula;
-    private Place toolo;
+    private Place sornainen;
     private Place lauttasaari;
-    private Place pitajanmaki;
+    private Place hakaniemi;
 
     @Before
     public void setUp() {
@@ -40,15 +39,15 @@ public class VisitSuggestionsTest {
         this.suggestions = new ArrayList<>();
         Robolectric.setupActivity(MainActivityStub.class);
 
-        kumpula = new Place("Kumpula", "Kumpula", new Coordinate(new Float(1), new Float(2)));
-        toolo = new Place("Töölö", "Töölö", new Coordinate(new Float(3), new Float(4)));
-        lauttasaari = new Place("Lauttasaari", "Lauttasaari", new Coordinate(new Float(5), new Float(6)));
-        pitajanmaki = new Place("Pitäjänmäki", "Pitäjänmäki", new Coordinate(new Float(7), new Float(8)));
+        kumpula = new Place("Kumpula", "Kumpula", new Coordinate(new Float(60.209108), new Float(24.964735)));
+        sornainen = new Place("Sörnäinen", "Sörnäinen", new Coordinate(new Float(60.186422), new Float(24.968971)));
+        lauttasaari = new Place("Lauttasaari", "Lauttasaari", new Coordinate(new Float(60.157330), new Float(24.877253)));
+        hakaniemi = new Place("Hakaniemi", "Hakaniemi", new Coordinate(new Float(60.17885), new Float(24.95006)));
 
         PlaceDao.insertPlace(kumpula);
-        PlaceDao.insertPlace(toolo);
+        PlaceDao.insertPlace(sornainen);
         PlaceDao.insertPlace(lauttasaari);
-        PlaceDao.insertPlace(pitajanmaki);
+        PlaceDao.insertPlace(hakaniemi);
     }
 
     @Test
@@ -57,7 +56,7 @@ public class VisitSuggestionsTest {
         createListOfVisits();
         suggestions = visitSuggestions.getSuggestions(new StartLocation(0, 0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(1, suggestions.size());
-        assertEquals("Töölö", suggestions.get(0).getDestination());
+        assertEquals("Sörnäinen", suggestions.get(0).getDestination());
     }
 
     @Test
@@ -85,7 +84,7 @@ public class VisitSuggestionsTest {
         destinations.add(suggestions.get(0).getDestination());
         destinations.add(suggestions.get(1).getDestination());
 
-        assertTrue(destinations.contains("Töölö"));
+        assertTrue(destinations.contains("Sörnäinen"));
         assertTrue(destinations.contains("Lauttasaari"));
     }
 
@@ -104,27 +103,27 @@ public class VisitSuggestionsTest {
 
         suggestions = visitSuggestions.getSuggestions(new StartLocation(0, 0, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
         assertEquals(1, suggestions.size());
-        assertEquals("Töölö", suggestions.get(0).getDestination());
+        assertEquals("Sörnäinen", suggestions.get(0).getDestination());
     }
 
     private void createListOfVisits() {
 
         VisitDao.insert(new Visit(100, 101, kumpula));
 
-        VisitDao.insert(new Visit(200, 201, toolo));
+        VisitDao.insert(new Visit(200, 201, sornainen));
         VisitDao.insert(new Visit(300, 301, lauttasaari));
-        VisitDao.insert(new Visit(400, 401, pitajanmaki));
+        VisitDao.insert(new Visit(400, 401, hakaniemi));
         VisitDao.insert(new Visit(500, 501, kumpula));
 
-        VisitDao.insert(new Visit(600, 601, toolo));
+        VisitDao.insert(new Visit(600, 601, sornainen));
         VisitDao.insert(new Visit(700, 701, kumpula));
-        VisitDao.insert(new Visit(800, 801, toolo));
+        VisitDao.insert(new Visit(800, 801, sornainen));
         VisitDao.insert(new Visit(900, 901, lauttasaari));
 
-        VisitDao.insert(new Visit(1000, 1001, toolo));
+        VisitDao.insert(new Visit(1000, 1001, sornainen));
         VisitDao.insert(new Visit(2000, 2001, kumpula));
         VisitDao.insert(new Visit(3000, 3001, lauttasaari));
-        VisitDao.insert(new Visit(4000, 4001, pitajanmaki));
+        VisitDao.insert(new Visit(4000, 4001, hakaniemi));
 
         VisitDao.insert(new Visit(5000, 5001, kumpula));
     }
@@ -132,34 +131,34 @@ public class VisitSuggestionsTest {
     private void createShortListOfVisits() {
 
         PlaceDao.insertPlace(kumpula);
-        PlaceDao.insertPlace(toolo);
+        PlaceDao.insertPlace(sornainen);
         PlaceDao.insertPlace(lauttasaari);
-        PlaceDao.insertPlace(pitajanmaki);
+        PlaceDao.insertPlace(hakaniemi);
 
         VisitDao.insert(new Visit(100, 101, kumpula));
 
-        VisitDao.insert(new Visit(200, 201, toolo));
+        VisitDao.insert(new Visit(200, 201, sornainen));
         VisitDao.insert(new Visit(300, 301, lauttasaari));
-        VisitDao.insert(new Visit(400, 401, pitajanmaki));
+        VisitDao.insert(new Visit(400, 401, hakaniemi));
     }
 
     private void createShortishListOfVisits() {
         PlaceDao.insertPlace(kumpula);
-        PlaceDao.insertPlace(toolo);
+        PlaceDao.insertPlace(sornainen);
         PlaceDao.insertPlace(lauttasaari);
-        PlaceDao.insertPlace(pitajanmaki);
+        PlaceDao.insertPlace(hakaniemi);
 
         VisitDao.insert(new Visit(100, 101, kumpula));
 
-        VisitDao.insert(new Visit(200, 201, toolo));
-        VisitDao.insert(new Visit(400, 401, pitajanmaki));
+        VisitDao.insert(new Visit(200, 201, sornainen));
+        VisitDao.insert(new Visit(400, 401, hakaniemi));
 
-        VisitDao.insert(new Visit(600, 601, toolo));
+        VisitDao.insert(new Visit(600, 601, sornainen));
         VisitDao.insert(new Visit(700, 701, kumpula));
-        VisitDao.insert(new Visit(800, 801, toolo));
+        VisitDao.insert(new Visit(800, 801, sornainen));
         VisitDao.insert(new Visit(900, 901, lauttasaari));
 
-        VisitDao.insert(new Visit(1000, 1001, toolo));
+        VisitDao.insert(new Visit(1000, 1001, sornainen));
         VisitDao.insert(new Visit(2000, 2001, kumpula));
         VisitDao.insert(new Visit(3000, 3001, lauttasaari));
     }
@@ -168,26 +167,26 @@ public class VisitSuggestionsTest {
 
         VisitDao.insert(new Visit(100, 101, kumpula));
 
-        VisitDao.insert(new Visit(200, 201, toolo));
+        VisitDao.insert(new Visit(200, 201, sornainen));
         VisitDao.insert(new Visit(300, 301, lauttasaari));
-        VisitDao.insert(new Visit(400, 401, pitajanmaki));
+        VisitDao.insert(new Visit(400, 401, hakaniemi));
         VisitDao.insert(new Visit(500, 501, kumpula));
-        VisitDao.insert(new Visit(501, 502, toolo));
+        VisitDao.insert(new Visit(501, 502, sornainen));
 
         VisitDao.insert(new Visit(510, 511, lauttasaari));
-        VisitDao.insert(new Visit(512, 513, pitajanmaki));
+        VisitDao.insert(new Visit(512, 513, hakaniemi));
         VisitDao.insert(new Visit(513, 514, kumpula));
         VisitDao.insert(new Visit(514, 515, lauttasaari));
 
-        VisitDao.insert(new Visit(600, 601, toolo));
+        VisitDao.insert(new Visit(600, 601, sornainen));
         VisitDao.insert(new Visit(700, 701, kumpula));
-        VisitDao.insert(new Visit(800, 801, toolo));
+        VisitDao.insert(new Visit(800, 801, sornainen));
         VisitDao.insert(new Visit(900, 901, lauttasaari));
 
-        VisitDao.insert(new Visit(1000, 1001, toolo));
+        VisitDao.insert(new Visit(1000, 1001, sornainen));
         VisitDao.insert(new Visit(2000, 2001, kumpula));
         VisitDao.insert(new Visit(3000, 3001, lauttasaari));
-        VisitDao.insert(new Visit(4000, 4001, pitajanmaki));
+        VisitDao.insert(new Visit(4000, 4001, hakaniemi));
 
         VisitDao.insert(new Visit(5000, 5001, kumpula));
     }
@@ -195,20 +194,20 @@ public class VisitSuggestionsTest {
     public void createListForLowerAccuracyVisits() {
         VisitDao.insert(new Visit(100, 101, kumpula));
 
-        VisitDao.insert(new Visit(200, 201, toolo));
+        VisitDao.insert(new Visit(200, 201, sornainen));
         VisitDao.insert(new Visit(300, 301, lauttasaari));
-        VisitDao.insert(new Visit(400, 401, pitajanmaki));
+        VisitDao.insert(new Visit(400, 401, hakaniemi));
         VisitDao.insert(new Visit(500, 501, kumpula));
 
-        VisitDao.insert(new Visit(600, 601, toolo));
+        VisitDao.insert(new Visit(600, 601, sornainen));
         VisitDao.insert(new Visit(700, 701, kumpula));
-        VisitDao.insert(new Visit(800, 801, toolo));
+        VisitDao.insert(new Visit(800, 801, sornainen));
         VisitDao.insert(new Visit(805, 810, kumpula));
         VisitDao.insert(new Visit(900, 901, lauttasaari));
 
-        VisitDao.insert(new Visit(1000, 1001, toolo));
+        VisitDao.insert(new Visit(1000, 1001, sornainen));
         VisitDao.insert(new Visit(2000, 2001, kumpula));
-        VisitDao.insert(new Visit(4000, 4001, pitajanmaki));
+        VisitDao.insert(new Visit(4000, 4001, hakaniemi));
 
         VisitDao.insert(new Visit(5000, 5001, kumpula));
         VisitDao.insert(new Visit(6000, 6001, lauttasaari));
