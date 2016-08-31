@@ -47,8 +47,8 @@ public class RouteSuggestions implements SuggestionSource {
                         continue; // Don't add the same suggestion more than once.
                     }
 
-                    Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION, route.getDestinationCoordinates());
-                    suggestions.add(suggestion);
+                    //Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION, route.getDestinationCoordinates());
+                    //suggestions.add(suggestion);
 
                     destinations.add(route.getDestination());
 

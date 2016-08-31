@@ -20,8 +20,6 @@ import fi.ohtu.mobilityprofile.domain.InterCitySearch;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
-import fi.ohtu.mobilityprofile.domain.CalendarTag;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;

@@ -84,7 +84,6 @@ public class FavouritesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.i(title, "onResumed");
         super.onResume();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -112,7 +111,7 @@ public class FavouritesFragment extends Fragment {
 
     private void setAddressSuggestions(View view) {
         autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.add_favourite_address);
-        autoCompleteTextView.setAdapter(new AddressSuggestionAdapter(context));
+        autoCompleteTextView.setAdapter(new AddressSuggestionAdapter(context, R.layout.list_addresses_item));
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {

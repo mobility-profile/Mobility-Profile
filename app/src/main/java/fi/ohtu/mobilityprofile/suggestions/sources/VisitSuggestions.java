@@ -46,7 +46,7 @@ public class VisitSuggestions implements SuggestionSource {
 
             for (Map.Entry<Place, Integer> entry : nextDestinations.entrySet()) {
                 if (entry.getValue() == maxValue) {
-                    suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
+//                    suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
                 }
             }
 
@@ -55,7 +55,7 @@ public class VisitSuggestions implements SuggestionSource {
 
                 for (Map.Entry<Place, Integer> entry : lowerAccuracyDestinations.entrySet()) {
                     if (entry.getValue() == maxValue && !nextDestinations.containsKey(entry.getKey())) {
-                        suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
+                        //suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
                     }
                     if (suggestions.size() >= 3) {
                         break;

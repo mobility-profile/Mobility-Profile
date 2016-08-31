@@ -33,7 +33,6 @@ import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.R;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
 
@@ -364,7 +363,6 @@ public class PrivacyFragment extends Fragment {
     private void deleteAllDataFromDatabase() {
         PlaceDao.deleteAllData();
         GpsPointDao.deleteAllData();
-        CalendarTagDao.deleteAllData();
         RouteSearchDao.deleteAllData();
         InterCitySearchDao.deleteAllData();
     }

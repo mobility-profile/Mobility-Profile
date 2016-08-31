@@ -65,7 +65,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
         name.setText("NAME");
         name.setTextColor(ContextCompat.getColor(this, R.color.colorAccentGrey));
-        address.setText(place.getAddress());
+        //address.setText(place.getAddress());
         editButton.setVisibility(View.GONE);
 
         setFavouriteButtonListener();
@@ -92,7 +92,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                                 if (!editTextName.equals("") && !editTextAddress.equals("")) {
 
                                     place.setName(editTextName.getText().toString());
-                                    place.setAddress(editTextAddress.getText().toString());
+                                    //place.setAddress(editTextAddress.getText().toString());
                                     place.setFavourite(true);
                                     place.save();
 
@@ -111,7 +111,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
 
                 editTextName.setText("");
-                editTextAddress.setText(place.getAddress());
+                //editTextAddress.setText(place.getAddress());
 
                 AlertDialog dialog = builder.create();
                 dialog.show();

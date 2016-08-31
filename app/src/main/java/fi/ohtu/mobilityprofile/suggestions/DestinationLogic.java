@@ -119,20 +119,20 @@ public class DestinationLogic {
 
         JSONObject destination = new JSONObject();
 
-        Feature feature = new Feature();
-        if (suggestion.getCoordinate() != null) {
-            feature.setGeometry(new Point(suggestion.getCoordinate().getLatitude(),suggestion.getCoordinate().getLongitude()));
-        }
-        try {
-            feature.setProperties(new JSONObject().put("label", suggestion.getDestination()).put("layer", "mobilityprofile").put("name", suggestion.getDestination().getName()));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            destination = feature.toJSON();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        Feature feature = new Feature();
+//        if (suggestion.getCoordinate() != null) {
+//            feature.setGeometry(new Point(suggestion.getCoordinate().getLatitude(),suggestion.getCoordinate().getLongitude()));
+//        }
+//        try {
+//            feature.setProperties(new JSONObject().put("label", suggestion.getDestination()).put("layer", "mobilityprofile").put("name", suggestion.getDestination().getName()));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            destination = feature.toJSON();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
         return destination;
     }
 

@@ -66,7 +66,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         deleteButton = (Button) findViewById(R.id.favourite_delete);
 
         name.setText(favouritePlace.getName().toUpperCase());
-        address.setText(favouritePlace.getAddress());
+//        address.setText(favouritePlace.getAddress());
         setFavouriteButton.setVisibility(View.GONE);
 
         editButtonListener();
@@ -86,25 +86,25 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                         .setPositiveButton(R.string.edit, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-
-                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteName);
-                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
-
-                                editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
-
-                                Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(getApplicationContext(), favouritePlace.getAddress());
-                                if (coordinate != null) {
-                                    coordinate.save();
-
-                                    favouritePlace.setCoordinate(coordinate);
-                                    favouritePlace.save();
-
-                                    setMarker();
-                                    activity.recreate();
-                                } else {
-                                    activity.recreate();
-                                    Toast.makeText(activity, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
-                                }
+//
+//                                EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteName);
+//                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.editFavouriteAddress);
+//
+//                                editFavoritePlace(editTextName.getText().toString(), editTextAddress.getText().toString());
+//
+//                                Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(getApplicationContext(), favouritePlace.getAddress());
+//                                if (coordinate != null) {
+//                                    coordinate.save();
+//
+//                                    favouritePlace.setCoordinate(coordinate);
+//                                    favouritePlace.save();
+//
+//                                    setMarker();
+//                                    activity.recreate();
+//                                } else {
+//                                    activity.recreate();
+//                                    Toast.makeText(activity, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
+//                                }
 
                             }
                         })
@@ -119,7 +119,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
 
                 editTextName.setText(favouritePlace.getName());
-                editTextAddress.setText(favouritePlace.getAddress());
+//                editTextAddress.setText(favouritePlace.getAddress());
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -139,7 +139,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         }
 
         if (!address.equals("")) {
-            favouritePlace.setAddress(address);
+//            favouritePlace.setAddress(address);
         }
         favouritePlace.save();
     }

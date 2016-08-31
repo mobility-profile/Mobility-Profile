@@ -109,7 +109,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
                                 if (!editTextName.equals("") && !editTextAddress.equals("")) {
 
                                     place.setName(editTextName.getText().toString());
-                                    place.setAddress(editTextAddress.getText().toString());
+                                    //place.setAddress(editTextAddress.getText().toString());
                                     place.setCoordinate(place.getCoordinate());
                                     place.setFavourite(true);
                                     place.save();
@@ -131,7 +131,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
                 EditText editTextAddress = (EditText) dialogView.findViewById(R.id.editFavouriteAddress);
 
                 editTextName.setText("");
-                editTextAddress.setText(place.getAddress());
+                //editTextAddress.setText(place.getAddress());
 
                 AlertDialog dialog = builder.create();
                 dialog.show();

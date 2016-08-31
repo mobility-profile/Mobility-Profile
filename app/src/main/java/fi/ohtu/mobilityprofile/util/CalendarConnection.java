@@ -102,14 +102,14 @@ public class CalendarConnection {
             String countryCode = tm.getSimCountryIso();
             if (!countryCode.equalsIgnoreCase(AddressConverter.getCountryCode(context, location))) continue;
 
-            Suggestion suggestion = new Suggestion(location, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION, coordinate);
+//            Suggestion suggestion = new Suggestion(location, SuggestionAccuracy.VERY_HIGH, SuggestionSource.CALENDAR_SUGGESTION, coordinate);
 
-            if (cursor.getString(ALL_DAY).equals("1")) {
-                allDayEventLocations.add(suggestion);
-            } else {
-                eventLocations.add(suggestion);
-            }
-        }
+//            if (cursor.getString(ALL_DAY).equals("1")) {
+//                allDayEventLocations.add(suggestion);
+//            } else {
+//                eventLocations.add(suggestion);
+//            }
+       }
     }
 
     /**
