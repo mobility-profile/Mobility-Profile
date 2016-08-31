@@ -1,13 +1,11 @@
 package fi.ohtu.mobilityprofile.domain;
 
 import android.location.Address;
-import android.util.Log;
 
 import com.orm.SugarRecord;
 
+import java.util.HashMap;
 import java.util.Locale;
-
-import fi.ohtu.mobilityprofile.data.PlaceDao;
 
 /**
  * Class is used to save places assumed significant to the user (ie. places where he/she spends some
@@ -15,7 +13,14 @@ import fi.ohtu.mobilityprofile.data.PlaceDao;
  */
 public class Place extends SugarRecord {
     private String name;
-    private Address address;
+    private HashMap<Integer, String> addressLines;
+    private Coordinate coordinate;
+    private String adminArea;
+    private String countryCode;
+    private String countryName;
+    private String featureName;
+    private String locality;
+    private String postalCode;
     private boolean favourite;
 
     /**
@@ -23,7 +28,6 @@ public class Place extends SugarRecord {
      */
     public Place() {
         this.name = "name";
-        this.address = new Address(Locale.getDefault());
         this.favourite = false;
     }
 
@@ -34,21 +38,20 @@ public class Place extends SugarRecord {
      */
     public Place(String name, Address address) {
         this.name = name;
-        this.address = address;
+        this.coordinate = new Coordinate((float) address.getLatitude(), (float)address.getLongitude());
         this.favourite = false;
+
+        setAddress(address);
+        this.coordinate.save();
     }
 
     public Coordinate getCoordinate() {
-        return new Coordinate((float) this.address.getLatitude(), (float) this.address.getLongitude());
+        return this.coordinate;
     }
 
     public void setCoordinate(Coordinate coordinate) {
-        this.address.setLatitude(coordinate.getLatitude());
-        this.address.setLongitude(coordinate.getLongitude());
-    }
-
-    public Address getAddress() {
-        return address;
+        this.coordinate = coordinate;
+        this.coordinate.save();
     }
 
     public void setName(String name) {
@@ -65,7 +68,7 @@ public class Place extends SugarRecord {
      * @return distance
      */
     public double distanceTo(Coordinate coordinate) {
-        return getCoordinate().distanceTo(coordinate);
+        return this.coordinate.distanceTo(coordinate);
     }
 
     @Override
@@ -75,7 +78,7 @@ public class Place extends SugarRecord {
 
         Place that = (Place) o;
 
-        return address.equals(that.address);
+        return this.coordinate.equals(that.getCoordinate());
 
     }
 
@@ -88,12 +91,38 @@ public class Place extends SugarRecord {
         this.save();
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public Address getAddress() {
+        Address address = new Address(Locale.getDefault());
+        address.setAdminArea(adminArea);
+        address.setCountryCode(countryCode);
+        address.setCountryName(countryName);
+        address.setFeatureName(featureName);
+        address.setLatitude(coordinate.getLatitude());
+        address.setLongitude(coordinate.getLongitude());
+        address.setLocality(locality);
+        address.setPostalCode(postalCode);
+
+        for (int i = 0; i < addressLines.size(); i++) {
+            address.setAddressLine(i, addressLines.get(i));
+        }
+        return address;
     }
 
-    @Override
-    public String toString() {
-        return getAddress().toString();
+    public void setAddress(Address address) {
+        this.adminArea = address.getAdminArea();
+        this.countryCode = address.getCountryCode();
+        this.countryName = address.getCountryName();
+        this.featureName = address.getFeatureName();
+        this.locality = address.getLocality();
+        this.postalCode = address.getPostalCode();
+
+        addressLines = new HashMap<>();
+        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+            addressLines.put(i, address.getAddressLine(i));
+        }
+    }
+
+    public String getAddressLine(int index) {
+        return addressLines.get(index);
     }
 }
