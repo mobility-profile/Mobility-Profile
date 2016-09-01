@@ -105,9 +105,9 @@ public class RouteSearchDao {
     }
 
     /**
-     * Returns all the routesearches.
-     * @param mode
-     * @return list of routesearches
+     * Retrieves all RouteSearches with the given mode
+     * @param mode 0 for intracity, 1 for intercity
+     * @return list of routeSearches
      */
     public static List<RouteSearch> getAll(int mode) {
         return Select.from(RouteSearch.class)

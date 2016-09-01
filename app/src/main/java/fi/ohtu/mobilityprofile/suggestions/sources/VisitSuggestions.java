@@ -54,15 +54,15 @@ public class VisitSuggestions implements SuggestionSource {
         if (suggestions.size() <= 2 && lowerAccuracyDestinations.size() > 0 && userStillAtLastVisitLocation(startLocation, VisitDao.getLast())) {
             int maxValue = Collections.max(lowerAccuracyDestinations.values());
 
-                for (Map.Entry<Place, Integer> entry : lowerAccuracyDestinations.entrySet()) {
-                    if (entry.getValue() == maxValue && !nextDestinations.containsKey(entry.getKey()) && !entry.getKey().isHidden()) {
-                        suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION));
-                    }
-                    if (suggestions.size() >= 3) {
-                        break;
-                    }
+            for (Map.Entry<Place, Integer> entry : lowerAccuracyDestinations.entrySet()) {
+                if (entry.getValue() == maxValue && !nextDestinations.containsKey(entry.getKey())) {
+                    suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION));
+                }
+                if (suggestions.size() >= 3) {
+                    break;
                 }
             }
+        }
         return suggestions;
     }
 
