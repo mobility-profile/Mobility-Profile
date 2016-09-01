@@ -177,24 +177,38 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             plane.save();
         }
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
         context = getApplicationContext();
         // showMessage("Connected to Google Drive");
+
+        if (tabLayout.getSelectedTabPosition() == 0) {
+            tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_orange), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+        } else if (tabLayout.getSelectedTabPosition() == 1) {
+            tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_orange), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+        } else {
+            tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_orange), PorterDuff.Mode.SRC_IN);
+        }
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
+                                    Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {            
+        if (requestCode == 1 && resultCode == RESULT_OK) {
             mGoogleApiClient.connect();
             // showMessage("Connected to Google Drive");
         }
     }
-    
+
     @Override
     protected void onPause() {
         if (mGoogleApiClient != null) {
@@ -253,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Getter for the GoogleApiClient.
      */
     public GoogleApiClient getGoogleApiClient() {
-      return mGoogleApiClient;
+        return mGoogleApiClient;
     }
 
     /**
