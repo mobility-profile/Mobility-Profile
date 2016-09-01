@@ -271,6 +271,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         return false;
     }
 
+
+    public static void setContext(Context context) {
+        MainActivity.context = context;
+    }
+
     public static Context getContext() {
         return context;
     }

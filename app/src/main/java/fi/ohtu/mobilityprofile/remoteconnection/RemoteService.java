@@ -29,6 +29,8 @@ public class RemoteService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        MainActivity.setContext(getApplicationContext());
+
         // If there is a security problem, we shouldn't allow any application to get information
         // from us. Check SecurityCheck.java for more information.
         if (!SecurityCheck.securityCheckOk(getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE))) {
