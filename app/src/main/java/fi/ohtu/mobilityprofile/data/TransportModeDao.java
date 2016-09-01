@@ -11,7 +11,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 
 /**
- * DAO used for reading TransportModes from the database.
+ * TransportModeDAO is used for reading TransportModes from the database.
  */
 public class TransportModeDao {
 

@@ -28,9 +28,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
@@ -42,45 +39,80 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         GoogleApiClient.OnConnectionFailedListener {
 
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
-    public final static String CONFLICT_APPS = "conflictApps";
+    public static final String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
-    private Activity activity;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private GoogleApiClient mGoogleApiClient;
 
+    private static Activity activity;
+    private static Context context;
+
+    private TabLayout tabLayout;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String gps = sharedPref.getString("gps", "Not Available");
-
-        if (PermissionManager.permissionToFineLocation(this) && gps.equals("true") && !isLocationServiceRunning()) {
-            Intent intent = new Intent(this, PlaceRecorder.class);
-            startService(intent);
-        }
-
         SugarContext.init(this);
-        activity = this;
 
+        activity = this;
+        context = this.getApplicationContext();
+
+        isGPSPermissionOn();
         setViewPagerAndTabs();
         checkSecurity();
         createTransportModes();
-        new ProfileBackup(this).handleBackup("import");
+        googleApiClientBuild();
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(Drive.API)
-                    .addScope(Drive.SCOPE_FILE)
-                    .addScope(Drive.SCOPE_APPFOLDER) // required for App Folder sample
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
-        }
+        // new ProfileBackup().handleBackup("import");
         // mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        context = getApplicationContext();
+        // showMessage("Connected to Google Drive");
+
+        if (tabLayout.getSelectedTabPosition() == 0) {
+            tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_orange), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+        } else if (tabLayout.getSelectedTabPosition() == 1) {
+            tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_orange), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+        } else {
+            tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+            tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.color_orange), PorterDuff.Mode.SRC_IN);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            mGoogleApiClient.connect();
+            // showMessage("Connected to Google Drive");
+        }
+    }
+
+    private void isGPSPermissionOn() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String gps = sharedPref.getString("gps", "Not Available");
+
+        if (PermissionManager.permissionToFineLocation() && gps.equals("true") && !isLocationServiceRunning()) {
+            Intent intent = new Intent(this, PlaceRecorder.class);
+            startService(intent);
+        }
     }
 
     private void setViewPagerAndTabs() {
@@ -90,54 +122,37 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color_orange));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(activity, R.color.color_white));
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_action_logo_orange).setContentDescription("Mobility Profile");
-        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(activity, R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                int tabIconColor = ContextCompat.getColor(activity, R.color.color_orange);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
 
-//        tabLayout.setOnTabSelectedListener(new  TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                super.onTabSelected(tab);
-//                int tabIconColor = ContextCompat.getColor(activity, R.color.color_orange);
-//                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                super.onTabUnselected(tab);
-//                int tabIconColor = ContextCompat.getColor(activity, R.color.color_primary_dark);
-//                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//                super.onTabReselected(tab);
-//            }
-//        });
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                super.onTabUnselected(tab);
+                int tabIconColor = ContextCompat.getColor(activity, R.color.color_primary_dark);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
 
-        //testData();
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+            }
+        });
     }
 
-//        private void testData() {
-//        if (Place.count(Place.class) == 0) {
-//
-//            Place place = new Place("","Liisankatu 1", new Coordinate(60.174287f, 24.960481f));
-//            Place place2 = new Place("","Kanavamäki 9", new Coordinate(60.186572f, 25.057416f));
-//            Place place3 = new Place("","Leppäsuonkatu 9", new Coordinate(60.169143f, 24.923136f));
-//
-//            PlaceDao.insertPlace(place);
-//            PlaceDao.insertPlace(place2);
-//            PlaceDao.insertPlace(place3);
-//        }
-//    }
-
     /**
-     * Checks if there are any security problems with other applications. Check SecurityCheck.java
-     * for more information.
+     * Checks if there are any security problems with other applications. Check
+     * {@link SecurityCheck} for more information.
      */
     private void checkSecurity() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
@@ -147,30 +162,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // If this is the first time the application is run or security check is not ok, we should
         // run the security check.
         if (sharedPreferences.getBoolean("firstrun", true) || !SecurityCheck.securityCheckOk(sharedPreferences)) {
-            securityOk = SecurityCheck.doSecurityCheck(this, sharedPreferences);
+            securityOk = SecurityCheck.doSecurityCheck(sharedPreferences);
             sharedPreferences.edit().putBoolean("firstrun", false).apply();
         }
 
         if (!securityOk) {
-            processSecurityConflicts(SecurityCheck.getConflictInfo(this));
+            processSecurityConflicts(SecurityCheck.getConflictInfo());
         }
-    }
-
-    /**
-     * Informs the user about security problems.
-     *
-     * @param conflictApps List of applications that are causing the problems.
-     */
-    private void processSecurityConflicts(List<PackageInfo> conflictApps) {
-        ArrayList<String> appNames = new ArrayList<>();
-
-        for (PackageInfo packageInfo : conflictApps) {
-            appNames.add(getPackageManager().getApplicationLabel(packageInfo.applicationInfo).toString());
-        }
-
-        Intent intent = new Intent(this, SecurityProblemActivity.class);
-        intent.putStringArrayListExtra(CONFLICT_APPS, appNames);
-        startActivity(intent);
     }
 
     private void createTransportModes() {
@@ -197,39 +195,44 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             plane.save();
         }
     }
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // showMessage("Connected to Google Drive");
-    }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {            
-            mGoogleApiClient.connect();
-            // showMessage("Connected to Google Drive");
+
+    private void googleApiClientBuild() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(Drive.API)
+                    .addScope(Drive.SCOPE_FILE)
+                    .addScope(Drive.SCOPE_APPFOLDER) // required for App Folder sample
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
         }
     }
-    
-    @Override
-    protected void onPause() {
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
+
+    /**
+     * Informs the user about security problems.
+     *
+     * @param conflictApps List of applications that are causing the problems.
+     */
+    private void processSecurityConflicts(List<PackageInfo> conflictApps) {
+        ArrayList<String> appNames = new ArrayList<>();
+
+        for (PackageInfo packageInfo : conflictApps) {
+            appNames.add(getPackageManager().getApplicationLabel(packageInfo.applicationInfo).toString());
         }
-        super.onPause();
+
+        Intent intent = new Intent(this, SecurityProblemActivity.class);
+        intent.putStringArrayListExtra(CONFLICT_APPS, appNames);
+        startActivity(intent);
     }
+
+
+    /*GoogleApiClient*/
 
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.i(TAG, "GoogleApiClient connected");
     }
 
-    /**
-     * Called when mGoogleApiClient is disconnected.
-     */
     @Override
     public void onConnectionSuspended(int cause) {
         Log.i(TAG, "GoogleApiClient connection suspended");
@@ -256,17 +259,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     /**
+     * Getter for the GoogleApiClient.
+     */
+    public GoogleApiClient getGoogleApiClient() {
+        return mGoogleApiClient;
+    }
+
+
+
+
+    /**
      * Shows a toast message.
      */
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    /**
-     * Getter for the GoogleApiClient.
-     */
-    public GoogleApiClient getGoogleApiClient() {
-      return mGoogleApiClient;
     }
 
     /**
@@ -282,6 +288,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
         return false;
+    }
+
+    public static void setContext(Context context) {
+        MainActivity.context = context;
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static Activity getActivity() {
+        return activity;
     }
 
 }

@@ -1,54 +1,54 @@
 package fi.ohtu.mobilityprofile.domain;
 
-import android.util.Log;
+import android.location.Address;
 
 import com.orm.SugarRecord;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
+import java.util.Locale;
 
 /**
  * Class is used to save places assumed significant to the user (ie. places where he/she spends some
  * time and not just points on the road).
  */
 public class Place extends SugarRecord {
+
     private String name;
-    private String address;
-    private boolean favourite;
+    private String addressLine1;
+    private String addressLine2;
+    private String addressLine3;
     private Coordinate coordinate;
+    private String adminArea;
+    private String countryCode;
+    private String countryName;
+    private String featureName;
+    private String locality;
+    private String postalCode;
+    private boolean favourite;
+    private boolean hidden;
 
     /**
-     *
+     * Creates Place.
      */
     public Place() {
         this.name = "name";
-        this.address = "address";
+        this.coordinate = new Coordinate(new Float(0), new Float(0));
+        this.coordinate.save();
         this.favourite = false;
-        this.coordinate = new Coordinate(0f, 0f);
     }
 
     /**
      * Creates Place.
-     * @param name Name of the Place
+     *
+     * @param name    Name of the Place
      * @param address Address of the Place
      */
-    public Place(String name, String address) {
+    public Place(String name, Address address) {
         this.name = name;
-        this.address = address;
+        this.coordinate = new Coordinate((float) address.getLatitude(), (float) address.getLongitude());
+        this.coordinate.save();
         this.favourite = false;
-        this.coordinate = null;
-    }
-
-    /**
-     * Creates Place.
-     * @param name Name of the Place
-     * @param address Address of the Place
-     * @param coordinate Coordinate object representing the coordinates of the place
-     */
-    public Place(String name, String address, Coordinate coordinate) {
-        this.name = name;
-        this.address = address;
-        this.favourite = false;
-        this.coordinate = coordinate;
+        this.favourite = hidden;
+        setAddress(address);
     }
 
     public Coordinate getCoordinate() {
@@ -57,10 +57,7 @@ public class Place extends SugarRecord {
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
-    }
-
-    public String getAddress() {
-        return address;
+        this.coordinate.save();
     }
 
     public void setName(String name) {
@@ -73,22 +70,12 @@ public class Place extends SugarRecord {
 
     /**
      * Returns the distance between this Place and given coordinate
+     *
      * @param coordinate coordinate to be compared
      * @return distance
      */
     public double distanceTo(Coordinate coordinate) {
         return this.coordinate.distanceTo(coordinate);
-    }
-
-    @Override
-    public boolean delete() {
-        try {
-            this.coordinate.delete();
-        } catch (Exception e) {
-            Log.i("Place", "Place didn't have coordinates!");
-        }
-
-        return super.delete();
     }
 
     @Override
@@ -98,7 +85,7 @@ public class Place extends SugarRecord {
 
         Place that = (Place) o;
 
-        return coordinate.equals(that.coordinate);
+        return this.coordinate.equals(that.getCoordinate());
 
     }
 
@@ -106,17 +93,82 @@ public class Place extends SugarRecord {
         return favourite;
     }
 
+    /**
+     * Sets place favourite or not.
+     * @param favourite true if favourited, false if not
+     */
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
         this.save();
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    /**
+     * Sets place hidden or not.
+     * @param hidden true if hidden, false if not
+     */
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+        this.save();
+    }
+
+    /**
+     * Get Address object of the Place
+     * @return Address
+     */
+    public Address getAddress() {
+        Address address = new Address(Locale.getDefault());
+        address.setAdminArea(adminArea);
+        address.setCountryCode(countryCode);
+        address.setCountryName(countryName);
+        address.setFeatureName(featureName);
+        if (coordinate != null) {
+            address.setLatitude(coordinate.getLatitude());
+            address.setLongitude(coordinate.getLongitude());
+        }
+        address.setLocality(locality);
+        address.setPostalCode(postalCode);
+        if (addressLine1 != null) address.setAddressLine(0, addressLine1);
+        if (addressLine2 != null) address.setAddressLine(1, addressLine2);
+        if (addressLine3 != null) address.setAddressLine(2, addressLine3);
+        return address;
+    }
+
+    /**
+     * Saves the Address data
+     * @param address address to be saved
+     */
+    public void setAddress(Address address) {
+        this.adminArea = address.getAdminArea();
+        this.countryCode = address.getCountryCode();
+        this.countryName = address.getCountryName();
+        this.featureName = address.getFeatureName();
+        this.locality = address.getLocality();
+        this.postalCode = address.getPostalCode();
+
+        int addressLines = address.getMaxAddressLineIndex();
+        if (addressLines > 0) addressLine1 = address.getAddressLine(0);
+        if (addressLines > 1) addressLine2 = address.getAddressLine(1);
+        if (addressLines > 2) addressLine3 = address.getAddressLine(2);
+    }
+
+    /**
+     * Returns a line of the address numbered by the given index
+     * @param index index of the address line
+     * @return address line or null if no such line is present
+     */
+    public String getAddressLine(int index) {
+        if (index == 0) return addressLine1;
+        if (index == 1) return addressLine2;
+        if (index == 2) return addressLine3;
+        return null;
     }
 
     @Override
     public String toString() {
-        return getAddress();
+        return getAddress().toString();
     }
 }

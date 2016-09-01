@@ -1,15 +1,15 @@
 package fi.ohtu.mobilityprofile.suggestions;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
+import fi.ohtu.mobilityprofile.domain.Place;
 
 /**
  * This class represents a destination suggestion that can be made for the user.
  */
 public class Suggestion implements Comparable {
-    private String destination;
+    private Place destination;
     private SuggestionAccuracy accuracy;
     private int source;
-    private Coordinate coordinate;
 
     /**
      * Creates the suggestion.
@@ -17,13 +17,11 @@ public class Suggestion implements Comparable {
      * @param destination Destination the user will be suggested to go
      * @param accuracy Estimated accuracy of the suggestion
      * @param source Source of the suggestion
-     * @param coordinate coordinates of the suggestion location
      */
-    public Suggestion(String destination, SuggestionAccuracy accuracy, int source, Coordinate coordinate) {
+    public Suggestion(Place destination, SuggestionAccuracy accuracy, int source) {
         this.destination = destination;
         this.accuracy = accuracy;
         this.source = source;
-        this.coordinate = coordinate;
     }
 
     /**
@@ -31,7 +29,7 @@ public class Suggestion implements Comparable {
      *
      * @return Suggested destination
      */
-    public String getDestination() {
+    public Place getDestination() {
         return destination;
     }
 
@@ -54,11 +52,7 @@ public class Suggestion implements Comparable {
     }
 
     public Coordinate getCoordinate() {
-        return coordinate;
-    }
-
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+        return this.destination.getCoordinate();
     }
 
     /**
@@ -71,6 +65,6 @@ public class Suggestion implements Comparable {
      */
     @Override
     public int compareTo(Object another) {
-        return this.accuracy.compareTo(((Suggestion) another).accuracy);
+        return this.accuracy.compareTo(((Suggestion) another).getAccuracy());
     }
 }

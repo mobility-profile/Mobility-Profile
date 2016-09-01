@@ -11,12 +11,12 @@ import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 
 /**
- * DAO used for saving and reading StartLocations to/from the database.
+ * StartLocationDAO used for saving and reading StartLocations to/from the database.
  */
 public class StartLocationDao {
 
     /**
-     * Returns the latest StartLocations from the database, or null if there is none.
+     * Returns the latest StartLocation from the database, or null if there is none.
      *
      * @return Latest StartLocation
      */

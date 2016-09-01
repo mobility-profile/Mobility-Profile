@@ -14,10 +14,9 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 
 /**
- * DAO used for saving and reading Places to/from the database.
+ * PlaceDAO is used for saving and reading Places to/from the database.
  */
 public class PlaceDao {
 
@@ -39,6 +38,10 @@ public class PlaceDao {
         return result;
     }
 
+    /**
+     * Returns all the places.
+     * @return list of Places
+     */
     public static List<Place> getAll() {
         return Place.listAll(Place.class);
     }
@@ -58,7 +61,6 @@ public class PlaceDao {
      * @param id id of the Place
      * @return Place with the given id
      */
-
     public static Place getPlaceById(Long id) {
         List<Place> places = Select.from(Place.class)
                 .where(Condition.prop("id").eq(id))
@@ -75,7 +77,6 @@ public class PlaceDao {
      * @param name name of the Place
      * @return Place with the given name
      */
-
     public static Place getPlaceByName(String name) {
         List<Place> places = Select.from(Place.class)
                 .where(Condition.prop("name").eq(name))
@@ -85,33 +86,6 @@ public class PlaceDao {
         assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
 
         return  (places.size() == 1) ? places.get(0) : null;
-    }
-
-    /**
-     * Finds a Place by address
-     * @param address address of the Place
-     * @return Place with the given address
-     */
-    public static Place getPlaceByAddress(String address) {
-        List<Place> places = Select.from(Place.class)
-                .where(Condition.prop("address").eq(address))
-                .limit("1")
-                .list();
-
-        assert places.size() <= 1 : "Invalid SQL query: only one or zero entities should have been returned!";
-
-        return  (places.size() == 1) ? places.get(0) : null;
-    }
-
-    /**
-     * Deletes a Place by address
-     * @param address address of the Place to be deleted
-     */
-    public static void deletePlaceByAddress(String address) {
-        Place place = getPlaceByAddress(address);
-        if (place != null) {
-            place.delete();
-        }
     }
 
     /**
@@ -126,7 +100,7 @@ public class PlaceDao {
     }
 
     /**
-     * Returns places with favourite = true
+     * Returns places which are users favourites.
      * @return list of all favourited Places
      */
     public static List<Place> getFavouritePlaces() {
@@ -134,7 +108,7 @@ public class PlaceDao {
         List<Place> remove = new ArrayList<>();
 
         for (Place place: allPlaces) {
-            if (!place.isFavourite()) {
+            if (!place.isFavourite() || place.isHidden()) {
                 remove.add(place);
             }
         }
@@ -144,7 +118,7 @@ public class PlaceDao {
     }
 
     /**
-     * Returns places with favourite = true
+     * Returns places which are users favourites.
      * @return JSONArray of favourited places in String
      */
     public static String getFavouritePlacesInJson() {

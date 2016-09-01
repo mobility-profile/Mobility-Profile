@@ -1,19 +1,18 @@
 package fi.ohtu.mobilityprofile.domain;
 
 import com.orm.SugarRecord;
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
-import java.util.List;
 
 /**
- * Class is used to save Transport modes.
+ * Class is used to save Transportmode preferences.
  */
 public class TransportMode extends SugarRecord {
 
     private String name;
     private boolean favourite;
 
+    /**
+     * Creates TransportMode.
+     */
     public TransportMode() {
     }
 

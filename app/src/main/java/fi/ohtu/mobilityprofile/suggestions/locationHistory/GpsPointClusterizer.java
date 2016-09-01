@@ -1,10 +1,12 @@
 package fi.ohtu.mobilityprofile.suggestions.locationHistory;
 
 import android.content.Context;
+import android.location.Address;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
@@ -19,19 +21,9 @@ import fi.ohtu.mobilityprofile.util.AddressConverter;
  */
 public class GpsPointClusterizer {
 
-    private Context context;
-
     public static final double SPEED_LIMIT = 0.8;
     public static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 10 * 60 * 1000; //10 minutes
     public static final double CLUSTER_RADIUS = 100;
-
-    /**
-     * Creates GpsPointClusterizer.
-     * @param context context
-     */
-    public GpsPointClusterizer(Context context) {
-        this.context = context;
-    }
 
     /**
      * Updates visit history by forming clusters, deleting GpsPoints and creating Visits to
@@ -96,11 +88,11 @@ public class GpsPointClusterizer {
             Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), createPlace(cluster.centerCoordinate()));
             VisitDao.insert(visit);
             return true;
-        } else if (VisitDao.getLast().getPlace() != null && !VisitDao.getLast().getPlace().equals(closestPlace)) {
+        } else if (VisitDao.getLast() != null && VisitDao.getLast().getPlace() != null && !VisitDao.getLast().getPlace().equals(closestPlace)) {
             Visit visit = new Visit(cluster.get(0).getTimestamp(), cluster.get(cluster.size() - 1).getTimestamp(), closestPlace);
             VisitDao.insert(visit);
             return true;
-        } else if (VisitDao.getLast().getPlace() != null && VisitDao.getLast().getPlace().equals(closestPlace)) {
+        } else if (VisitDao.getLast() != null && VisitDao.getLast().getPlace() != null && VisitDao.getLast().getPlace().equals(closestPlace)) {
             Visit visit = VisitDao.getLast();
             visit.setExitTime(cluster.get(cluster.size() - 1).getTimestamp());
             VisitDao.insert(visit);
@@ -115,10 +107,9 @@ public class GpsPointClusterizer {
      * @return Place
      */
     private Place createPlace(Coordinate coordinate) {
-        String address = AddressConverter.convertToAddress(context, coordinate);
-        final Place place = new Place(address, address, coordinate);
+        Address address = AddressConverter.getAddressForCoordinates(coordinate);
+        final Place place = new Place(address.getAddressLine(0), address);
         PlaceDao.insertPlace(place);
-
         return place;
     }
 

@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.domain;
 
+import android.location.Address;
+
 import com.orm.SugarRecord;
 
 /**
@@ -11,7 +13,7 @@ public class Visit extends SugarRecord {
     private Place place;
 
     /**
-     *
+     * Creates Visit.
      */
     public Visit() {
         this.enterTime = 0;
@@ -46,7 +48,7 @@ public class Visit extends SugarRecord {
         return this.place;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return this.place.getAddress();
     }
 

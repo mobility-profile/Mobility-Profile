@@ -45,8 +45,8 @@ public class VisitSuggestions implements SuggestionSource {
             int maxValue = Collections.max(nextDestinations.values());
 
             for (Map.Entry<Place, Integer> entry : nextDestinations.entrySet()) {
-                if (entry.getValue() == maxValue) {
-                    suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
+                if (entry.getValue() == maxValue && !entry.getKey().isHidden()) {
+                    suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION));
                 }
             }
         }
@@ -56,7 +56,7 @@ public class VisitSuggestions implements SuggestionSource {
 
             for (Map.Entry<Place, Integer> entry : lowerAccuracyDestinations.entrySet()) {
                 if (entry.getValue() == maxValue && !nextDestinations.containsKey(entry.getKey())) {
-                    suggestions.add(new Suggestion(entry.getKey().getAddress(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION, entry.getKey().getCoordinate()));
+                    suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.MODERATE, VISIT_SUGGESTION));
                 }
                 if (suggestions.size() >= 3) {
                     break;
@@ -87,17 +87,17 @@ public class VisitSuggestions implements SuggestionSource {
                 for (int i = 1; i < visits.size() - 2; i++) {
 
                     // checks if startLocation is the same as the location currently examined in the list
-                    if (visits.get(i).getPlace().equals(currentPlace)) {
+                    if (visits.get(i).getPlace().getCoordinate().equals(currentPlace.getCoordinate())) {
 
                         // checks if the previous location in the past is the same as previous location from the current location
                         // and before previous location in the past is the same as before previous location from the current location
-                        if ((visits.get(i + 1).getPlace().equals(previousLocation))
-                                && (visits.get(i + 2).getPlace().equals(beforePrevious))) {
+                        if ((visits.get(i + 1).getPlace().getCoordinate().equals(previousLocation.getCoordinate()))
+                                && (visits.get(i + 2).getPlace().getCoordinate().equals(beforePrevious.getCoordinate()))) {
                             addToNextDestinations(visits.get(i - 1).getPlace(), nextDestinations);
                         }
                         //if previous location is the same but location before previous location is not,
                         //it is added to list of destinations of lower accuracy.
-                        else if (visits.get(i + 1).getPlace().equals(previousLocation)
+                        else if (visits.get(i + 1).getPlace().getCoordinate().equals(previousLocation.getCoordinate())
                                 && !nextDestinations.containsKey(visits.get(i - 1).getPlace())) {
                             addToNextDestinations(visits.get(i - 1).getPlace(), lowerAccuracyDestinations);
                         }

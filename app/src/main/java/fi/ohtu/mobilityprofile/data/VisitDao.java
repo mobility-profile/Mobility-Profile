@@ -7,7 +7,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
- * DAO used for saving and reading Visits to/from the database.
+ * VisitDAO is used for saving and reading Visits to/from the database.
  */
 public class VisitDao {
 

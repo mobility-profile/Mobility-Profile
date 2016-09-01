@@ -17,7 +17,7 @@
     <!--Your places Tab-->
     <string name="your_places_title">Your places</string>
     <string name="your_places_info">
-        You can add your favorite places, and they will show up in your destination suggestions.
+        You can add your favourite places, and they will show up in your destination suggestions.
         In addition, Mobility Profile will suggest new places based on tracking.
     </string>
     <string name="your_places_new_place_name">Name</string>
@@ -61,9 +61,10 @@
 
     <!--Activity Place-->
     <string name="activity_place_back_button">Back to Your places Tab</string>
+    <string name="name">NAME</string>
     <!--Place Dialogs-->
-    <string name="dialog_edit_title">Edit this favourite place</string>
-    <string name="dialog_delete_title">Delete this favourite place?</string>
+    <string name="dialog_edit_title">Edit this place</string>
+    <string name="dialog_delete_title">Delete this place?</string>
     <string name="dialog_set_favourite_title">Save this suggestion as a favourite?</string>
 
 
@@ -101,6 +102,7 @@
     <string name="edit">Edit</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="back">Back</string>
 
 
     <!--Activity Licenses-->
@@ -186,4 +188,6 @@
         OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
         DEALINGS IN THE SOFTWARE.
     </string>
+    <string name="location_tracking_start">Location tracking started</string>
+    <string name="location_tracking_stop">Location tracking stopped</string>
 </resources>

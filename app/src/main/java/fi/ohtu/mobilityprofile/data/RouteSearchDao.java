@@ -8,7 +8,7 @@ import java.util.List;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 
 /**
- * DAO used for saving and reading RouteSearches to/from the database.
+ * RouteSearchDAO is used for saving and reading RouteSearches to/from the database.
  */
 public class RouteSearchDao {
 
@@ -48,12 +48,10 @@ public class RouteSearchDao {
      * @return List of routesearches
      */
     public static List<RouteSearch> getRouteSearchesByStartlocation(String startLocation) {
-        List<RouteSearch> searches = Select.from(RouteSearch.class)
+        return Select.from(RouteSearch.class)
                 .where(Condition.prop("startlocation").eq(startLocation))
                 .orderBy("timestamp DESC")
                 .list();
-
-        return searches;
     }
 
     /**
@@ -63,29 +61,25 @@ public class RouteSearchDao {
      * @return List of routesearches
      */
     public static List<RouteSearch> getRouteSearchesByDestination(String destination) {
-        List<RouteSearch> searches = Select.from(RouteSearch.class)
+        return Select.from(RouteSearch.class)
                 .where(Condition.prop("destination").eq(destination))
                 .orderBy("timestamp DESC")
                 .list();
-
-        return searches;
     }
 
     /**
      * Returns a list of routesearches where the startlocation and destination matches the given ones.
      *
-     * @param startLocation Start location of the routesearche
+     * @param startLocation Start location of the routesearch
      * @param destination Destination of the routesearch
      * @return List of routesearches
      */
     public static List<RouteSearch> getRouteSearchesByStartlocationAndDestination(String startLocation, String destination) {
-        List<RouteSearch> searches = Select.from(RouteSearch.class)
+        return Select.from(RouteSearch.class)
                 .where(Condition.prop("startlocation").eq(startLocation))
                 .where(Condition.prop("destination").eq(destination))
                 .orderBy("timestamp DESC")
                 .list();
-
-        return searches;
     }
 
     /**
@@ -94,11 +88,9 @@ public class RouteSearchDao {
      * @return List of routesearches
      */
     public static List<RouteSearch> getAllRouteSearches() {
-        List<RouteSearch> searches = Select.from(RouteSearch.class)
+        return Select.from(RouteSearch.class)
                 .orderBy("timestamp DESC")
                 .list();
-
-        return searches;
     }
 
     /**
@@ -110,6 +102,18 @@ public class RouteSearchDao {
         if (routeSearch.getStartCoordinates() != null) routeSearch.getStartCoordinates().save();
         if (routeSearch.getDestinationCoordinates() != null) routeSearch.getDestinationCoordinates().save();
         routeSearch.save();
+    }
+
+    /**
+     * Retrieves all RouteSearches with the given mode
+     * @param mode 0 for intracity, 1 for intercity
+     * @return list of routeSearches
+     */
+    public static List<RouteSearch> getAll(int mode) {
+        return Select.from(RouteSearch.class)
+                .where(Condition.prop("mode").eq(mode))
+                .orderBy("timestamp DESC")
+                .list();
     }
 
     /**

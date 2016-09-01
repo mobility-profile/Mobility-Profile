@@ -1,20 +1,19 @@
 package fi.ohtu.mobilityprofile.SuggestionTests;
 
+import android.location.Address;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.mockito.Mockito.*;
+import java.util.Locale;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
-import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
@@ -24,7 +23,6 @@ import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.Suggestion;
 import fi.ohtu.mobilityprofile.suggestions.sources.FavoriteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.sources.InterCitySuggestions;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
 import fi.ohtu.mobilityprofile.suggestions.sources.RouteSuggestions;
 import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
@@ -34,26 +32,23 @@ import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
 public class DestinationLogicTest {
 
     private DestinationLogic mp;
-    private static RouteSearchDao routeSearchDao;
-    private static PlaceDao placeDao;
+    private RouteSearchDao routeSearchDao;
+    private PlaceDao placeDao;
+    private final long DAY = 2073600000;
 
-    private Coordinate laut;
+    private Coordinate lautCoord;
 
     @Before
     public void setUp() throws Exception {
-
-        CalendarTagDao calendarTagDao = mock(CalendarTagDao.class);
-
+        placeDao = new PlaceDao();
+        routeSearchDao = new RouteSearchDao();
         List<SuggestionSource> suggestionSources = new ArrayList<>();
         //suggestionSources.add(new CalendarSuggestions(new CalendarConnection(Robolectric.setupActivity(MainActivityStub.class))));
         //suggestionSources.add(new VisitSuggestions());
         suggestionSources.add(new FavoriteSuggestions());
         suggestionSources.add(new RouteSuggestions());
-        //suggestionSources.add(new FavoriteSuggestions());
 
-        mp = new DestinationLogic(suggestionSources, new InterCitySuggestions(Robolectric.setupActivity(MainActivityStub.class)));
-
-        // when(CalendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
+        mp = new DestinationLogic(suggestionSources, new InterCitySuggestions());
     }
 
 //    @Test
@@ -81,27 +76,34 @@ public class DestinationLogicTest {
     public void suggestionsAreSortedBasedOnAccuracy() {
         insertDataToDatabase();
 
-        mp.getListOfIntraCitySuggestions(new StartLocation(343423, 50, laut.getLatitude(), laut.getLongitude()));
+        mp.getListOfIntraCitySuggestions(new StartLocation(System.currentTimeMillis(), 50, lautCoord.getLatitude(), lautCoord.getLongitude()));
         List<Suggestion> suggestions = mp.getLatestSuggestions();
-
-        assertEquals("Sörnäinen", suggestions.get(0).getDestination());
+        assertNotNull(suggestions);
+        assertEquals("Sörnäinen", suggestions.get(0).getDestination().getName());
     }
 
     private void insertDataToDatabase() {
-        Coordinate sorn = new Coordinate(new Float(60.186422), new Float(24.968971));
-        laut = new Coordinate(new Float(60.157330), new Float(24.877253));
-        Coordinate haka = new Coordinate(new Float(60.17885), new Float(24.95006));
-        Coordinate pita = new Coordinate(new Float(60.222980), new Float(24.862062));
-        routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Lauttasaari",  "Sörnäinen", laut, sorn));
-        routeSearchDao.insertRouteSearch(new RouteSearch(23232, "Lauttasaari",  "Sörnäinen", laut, sorn));
-        routeSearchDao.insertRouteSearch(new RouteSearch(90000, "Hakaniemi",  "Pitäjänmäki", haka, pita));
-        routeSearchDao.insertRouteSearch(new RouteSearch(10000, "Pitäjänmäki",  "Sörnäinen", pita, sorn));
+        lautCoord = new Coordinate(new Float(60.157330), new Float(24.877253));
+        Place kumpula = new Place("Kumpula", new Address(Locale.getDefault()));
+        Place sornainen = new Place("Sörnäinen", new Address(Locale.getDefault()));
+        Place lauttasaari = new Place("Lauttasaari", new Address(Locale.getDefault()));
+        Place hakaniemi = new Place("Hakaniemi", new Address(Locale.getDefault()));
+        kumpula.setCoordinate(new Coordinate(new Float(60.209108), new Float(24.964735)));
+        sornainen.setCoordinate(new Coordinate(new Float(60.186422), new Float(24.968971)));
+        lauttasaari.setCoordinate(lautCoord);
+        hakaniemi.setCoordinate(new Coordinate(new Float(60.17885), new Float(24.95006)));
 
-        Place kamppi = new Place("Kamppi", "Kamppi", new Coordinate(new Float(60.167580), new Float(24.930226)));
-        Place kumpula = new Place("Kumpula", "Kumpula", new Coordinate(new Float(60.209108), new Float(24.964735)));
-        kamppi.setFavourite(true);
+        hakaniemi.setFavourite(true);
         kumpula.setFavourite(true);
-        placeDao.insertPlace(kamppi);
+        placeDao.insertPlace(hakaniemi);
         placeDao.insertPlace(kumpula);
+        placeDao.insertPlace(sornainen);
+        placeDao.insertPlace(lauttasaari);
+
+        PlaceDao.insertPlace(kumpula);
+        routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() - DAY, 0, sornainen, lauttasaari));
+        routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() - 2 * DAY, 0, lauttasaari, sornainen));
+        routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() - 3 * DAY, 0, hakaniemi, lauttasaari));
+        routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() - 4 * DAY, 0, kumpula, sornainen));
     }
 }

@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.SuggestionTests;
 
+import android.location.Address;
+
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +11,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
+import java.util.Locale;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
@@ -53,9 +56,12 @@ public class FavoriteSuggestionsTest {
     }
 
     private void createPlaces() {
-        kumpula = new Place("Kumpula", "Kumpula", new Coordinate(new Float(60.209108), new Float(24.964735)));
-        lauttasaari = new Place("Lauttasaari", "Lauttasaari", new Coordinate(new Float(60.157330), new Float(24.877253)));
-        hakaniemi = new Place("Hakaniemi", "Hakaniemi", new Coordinate(new Float(60.17885), new Float(24.95006)));
+        kumpula = new Place("Kumpula", new Address(Locale.getDefault()));
+        hakaniemi = new Place("Hakaniemi", new Address(Locale.getDefault()));
+        lauttasaari = new Place("Lauttasaari", new Address(Locale.getDefault()));
+        kumpula.setCoordinate(new Coordinate(new Float(60.209108), new Float(24.964735)));
+        hakaniemi.setCoordinate( new Coordinate(new Float(60.17885), new Float(24.95006)));
+        lauttasaari.setCoordinate(new Coordinate(new Float(60.157330), new Float(24.877253)));
         PlaceDao.insertPlace(kumpula);
         PlaceDao.insertPlace(lauttasaari);
         PlaceDao.insertPlace(hakaniemi);

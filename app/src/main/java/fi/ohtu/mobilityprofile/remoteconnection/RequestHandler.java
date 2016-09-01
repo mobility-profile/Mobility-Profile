@@ -1,6 +1,7 @@
 package fi.ohtu.mobilityprofile.remoteconnection;
 
 import android.content.Context;
+import android.location.Address;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,22 +10,18 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.data.StartLocationDao;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.data.InterCitySearchDao;
-import fi.ohtu.mobilityprofile.domain.InterCitySearch;
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
 import fi.ohtu.mobilityprofile.domain.StartLocation;
 import fi.ohtu.mobilityprofile.suggestions.DestinationLogic;
-import fi.ohtu.mobilityprofile.domain.CalendarTag;
-import fi.ohtu.mobilityprofile.data.CalendarTagDao;
 import fi.ohtu.mobilityprofile.data.RouteSearchDao;
-import fi.ohtu.mobilityprofile.suggestions.Suggestion;
-import fi.ohtu.mobilityprofile.suggestions.SuggestionSource;
+import fi.ohtu.mobilityprofile.suggestions.locationHistory.GpsPointClusterizer;
 import fi.ohtu.mobilityprofile.util.AddressConverter;
 
 import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
@@ -33,17 +30,14 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  * Used for processing incoming requests from other apps.
  */
 public class RequestHandler extends Handler {
-    private Context context;
     private DestinationLogic destinationLogic;
 
     /**
      * Creates the RequestHandler.
      *
-     * @param context context
      * @param destinationLogic Journey planner that provides the logic for our app
      */
-    public RequestHandler(Context context, DestinationLogic destinationLogic) {
-        this.context = context;
+    public RequestHandler(DestinationLogic destinationLogic) {
         this.destinationLogic = destinationLogic;
     }
 
@@ -53,11 +47,8 @@ public class RequestHandler extends Handler {
 
         Message message;
         switch (msg.what) {
-            case REQUEST_INTRA_CITY_SUGGESTIONS:
-                message = processIntraCitySuggestionsRequest();
-                break;
-            case REQUEST_INTER_CITY_SUGGESTIONS:
-                message = processInterCitySuggestionsRequest();
+            case REQUEST_SUGGESTIONS:
+                message = processSuggestionsRequest(msg.getData());
                 break;
             case SEND_SEARCHED_ROUTE:
                 processUsedRoute(msg);
@@ -69,7 +60,7 @@ public class RequestHandler extends Handler {
                 message = getTransportPreferences();
                 break;
             default:
-                message = processErrorMessage(msg.what);
+                message = processUnknownCode(msg.what);
         }
 
         try {
@@ -82,11 +73,20 @@ public class RequestHandler extends Handler {
 
     /**
      * Returns a message with data that contains the most likely destinations within cities.
-     *
+     * @param data intracity or intercity
      * @return Response message
      */
-    private Message processIntraCitySuggestionsRequest() {
-        return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfIntraCitySuggestions(getStartLocation()));
+    private Message processSuggestionsRequest(Bundle data) {
+        int mode = data.getInt("mode");
+
+        switch (mode) {
+            case MODE_INTRACITY:
+                return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfIntraCitySuggestions(getStartLocation()));
+            case MODE_INTERCITY:
+                return createMessage(RESPOND_MOST_LIKELY_DESTINATION, destinationLogic.getListOfInterCitySuggestions(getStartLocation()));
+        }
+
+        return createMessage(ERROR_UNKNOWN_MODE, "");
     }
 
     /**
@@ -98,62 +98,31 @@ public class RequestHandler extends Handler {
     }
 
     /**
-     * Processes used route by adding it to calendar tags and used routes.
+     * Processes searched route by adding it to database.
      *
      * @param message Message with data that tells which destination the user inputted
      */
     private void processUsedRoute(Message message) {
         Bundle bundle = message.getData();
-        StringTokenizer tokenizer = new StringTokenizer(bundle.getString(SEND_SEARCHED_ROUTE + ""), "|");
-        if (tokenizer.countTokens() != 2) {
-            Log.d("Request Handler", "Invalid parameters when processing used route");
-            return;
+        Coordinate start = new Coordinate(bundle.getFloat("startLat"), bundle.getFloat("startLon"));
+        Coordinate end = new Coordinate(bundle.getFloat("endLat"), bundle.getFloat("endLon"));
+        Place startLocation = PlaceDao.getPlaceClosestTo(start);
+        Place destination = PlaceDao.getPlaceClosestTo(end);
+
+        if(startLocation == null || startLocation.distanceTo(start) > GpsPointClusterizer.CLUSTER_RADIUS) {
+            Address address = AddressConverter.getAddressForCoordinates(start);
+            startLocation = new Place(address.getAddressLine(0), address);
+            PlaceDao.insertPlace(startLocation);
+        }
+        if(destination == null || destination.distanceTo(end) > GpsPointClusterizer.CLUSTER_RADIUS) {
+            Address address = AddressConverter.getAddressForCoordinates(end);
+
+            destination = new Place(address.getAddressLine(0), address);
+            PlaceDao.insertPlace(destination);
         }
 
-        String startLocation = tokenizer.nextToken();
-        String destination = tokenizer.nextToken();
-
-        switch (destinationLogic.getLatestSuggestionType()) {
-            case DestinationLogic.INTRA_CITY_SUGGESTION:
-                processIntraCityRoute(startLocation, destination);
-                break;
-            case DestinationLogic.INTER_CITY_SUGGESTION:
-                processInterCityRoute(startLocation, destination);
-                break;
-        }
-    }
-
-    /**
-     * Processes used intraCityRoutes by inserting them to the database.
-     * @param startLocation starting location of the route
-     * @param destination destination of the route
-     */
-    private void processIntraCityRoute(String startLocation, String destination) {
-        List<Suggestion> suggestions = destinationLogic.getLatestSuggestions();
-        for (Suggestion suggestion : suggestions) {
-            if (suggestion.getSource() == SuggestionSource.CALENDAR_SUGGESTION) {
-                CalendarTag calendarTag = new CalendarTag(suggestion.getDestination(), destination);
-                CalendarTagDao.insertCalendarTag(calendarTag);
-            }
-        }
-
-        Coordinate startCoordinate = AddressConverter.convertToCoordinates(context, startLocation);
-        Coordinate endCoordinate = AddressConverter.convertToCoordinates(context, destination);
-
-        if (startCoordinate != null && endCoordinate != null) {
-            RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), startLocation, destination, startCoordinate, endCoordinate);
-            RouteSearchDao.insertRouteSearch(routeSearch);
-        }
-    }
-
-    /**
-     * Processes used interCityRoutes by inserting them to the database.
-     * @param startLocation starting location of the route
-     * @param destination destination of the route
-     */
-    private void processInterCityRoute(String startLocation, String destination) {
-        InterCitySearch interCitySearch = new InterCitySearch(startLocation, destination, System.currentTimeMillis());
-        InterCitySearchDao.insertInterCitySearch(interCitySearch);
+        RouteSearch routeSearch = new RouteSearch(System.currentTimeMillis(), bundle.getInt("mode"), startLocation, destination);
+        RouteSearchDao.insertRouteSearch(routeSearch);
     }
 
     /**
@@ -181,8 +150,8 @@ public class RequestHandler extends Handler {
      * @param code Message code
      * @return Error message
      */
-    private Message processErrorMessage(int code) {
-        return createMessage(ERROR_UNKNOWN_CODE, code + "");
+    private Message processUnknownCode(int code) {
+        return createMessage(ERROR_UNKNOWN_REQUEST, code + "");
     }
 
     /**

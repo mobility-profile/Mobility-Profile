@@ -3,6 +3,7 @@ package fi.ohtu.mobilityprofile.ui.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.location.Address;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,13 +31,9 @@ import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.util.AddressConverter;
+import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
 
-
-/**
- * Class is used to create a list of suggested favourite places in the ui.
- */
-public class SuggestionListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class YourPlaceActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Activity activity;
     private Place place;
@@ -43,83 +42,46 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     private TextView address;
     private Button editButton;
     private Button deleteButton;
-    private MapFragment mapFragment;
     private GoogleMap googleMap;
+    private Address tempAddress;
+    private AutoCompleteTextView autoCompleteTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
-
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        activity = this;
         place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("placeId")));
 
+        activity = this;
         initializeViewElements();
     }
 
     private void initializeViewElements() {
-        back = (ImageButton) findViewById(R.id.place_back_button);
         name = (TextView) findViewById(R.id.place_name);
         address = (TextView) findViewById(R.id.place_address);
+
         editButton = (Button) findViewById(R.id.place_edit_button);
         deleteButton = (Button) findViewById(R.id.place_delete_button);
 
+        back = (ImageButton) findViewById(R.id.place_back_button);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
 
         fancifyNameAndAddress();
+        editButtonListener();
         deleteButtonListener();
         backButtonListener();
-        editButtonListener();
+        mapFragment.getMapAsync(this);
     }
 
     private void fancifyNameAndAddress() {
         if (place.getName().equals("")) {
-            name.setText("NAME");
+            name.setText(getResources().getString(R.string.name));
         } else {
             name.setText(place.getName().toUpperCase());
         }
 
         name.setTextColor(ContextCompat.getColor(this, R.color.color_grey_dark));
-        address.setText(place.getAddress());
-    }
-
-    private void deleteButtonListener() {
-        deleteButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
-                builder
-                        .setTitle(R.string.dialog_delete_title)
-                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                PlaceDao.deletePlaceById(place.getId());
-                                backToFragment();
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-    }
-
-    private void backButtonListener(){
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToFragment();
-            }
-        });
-
+        address.setText(place.getAddress().getAddressLine(0));
     }
 
     private void editButtonListener() {
@@ -137,23 +99,9 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                             public void onClick(DialogInterface dialog, int id) {
 
                                 EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
-                                EditText editTextAddress = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_address);
-
-                                editPlace(editTextName.getText().toString(), editTextAddress.getText().toString());
-
-                                Coordinate coordinate = AddressConverter.convertToCoordinates(getApplicationContext(), place.getAddress());
-                                if (coordinate != null) {
-                                    coordinate.save();
-
-                                    place.setCoordinate(coordinate);
-                                    place.save();
-
-                                    setMarker();
-                                    activity.recreate();
-                                } else {
-                                    activity.recreate();
-                                    Toast.makeText(activity, "Check the address, no coordinates were found", Toast.LENGTH_LONG).show();
-                                }
+                                editPlace(editTextName.getText().toString(), tempAddress);
+                                setMarker();
+                                activity.recreate();
 
                             }
                         })
@@ -164,34 +112,110 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                         })
                         .setTitle(R.string.dialog_edit_title);
 
-                EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                EditText editTextAddress = (EditText) dialogView.findViewById(R.id.edit_address);
 
+                EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
                 editTextName.setText(place.getName());
-                editTextAddress.setText(place.getAddress());
+
+                autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
+                autoCompleteTextView.setText(place.getAddressLine(0));
+
+                AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(R.layout.list_addresses_item);
+                autoCompleteTextView.setAdapter(addressSuggestionAdapter);
+
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
+                        Address a = (Address) adapterView.getItemAtPosition(p);
+                        autoCompleteTextView.setText(a.getAddressLine(0));
+                        tempAddress = a;
+                    }
+                });
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
         });
+
+    }
+
+    private void deleteButtonListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
+                builder
+                        .setTitle(R.string.dialog_delete_title)
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                place.setHidden(true);
+                                place.save();
+                                //PlaceDao.deletePlaceById(place.getId());
+                                backToFragment();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+    }
+
+    private void backButtonListener(){
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToFragment();
+            }
+        });
     }
 
     /**
-     * Edits the given favourite place.
+     * Edits the given place.
      * @param name the new name
      * @param address the new address
      */
-    private void editPlace(String name, String address){
+    private void editPlace(String name, Address address){
         if (!name.equals("")) {
             place.setName(name);
         }
 
-        if (!address.equals("")) {
+        if (address != null) {
             place.setAddress(address);
+            place.setCoordinate(new Coordinate((float) address.getLatitude(), (float) address.getLongitude()));
+
+        } else {
+            if (!autoCompleteTextView.getText().toString().equals(place.getAddressLine(0))) {
+                Toast.makeText(this, "Address not valid, choose one from the list", Toast.LENGTH_LONG).show();
+            }
         }
+
         place.save();
     }
 
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(true);
+
+        setMarker();
+
+    }
+
+    /**
+     * Sets a marker on map.
+     */
     private void setMarker() {
         try {
             LatLng point = new LatLng(place.getCoordinate().getLatitude(), place.getCoordinate().getLongitude());
@@ -205,20 +229,6 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         } catch (Exception e) {
             Toast.makeText(this, "Coordinates for the address were not found", Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    public void onMapReady(GoogleMap map) {
-
-        googleMap = map;
-
-        map.getUiSettings().setZoomGesturesEnabled(true);
-        map.getUiSettings().setZoomControlsEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.getUiSettings().setMapToolbarEnabled(true);
-
-        setMarker();
-
     }
 
     @Override
@@ -246,5 +256,4 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
         editor.commit();
         finish();
     }
-
 }

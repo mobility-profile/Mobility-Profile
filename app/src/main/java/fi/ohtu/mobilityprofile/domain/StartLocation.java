@@ -8,7 +8,7 @@ import com.orm.SugarRecord;
 public class StartLocation extends GpsPoint {
 
     /**
-     *
+     * Creates GpsPoint.
      */
     public StartLocation() {
         super();

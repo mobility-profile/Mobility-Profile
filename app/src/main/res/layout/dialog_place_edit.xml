@@ -15,7 +15,7 @@
         android:textColorHint="@color/color_grey_dark"
         android:backgroundTint="@color/color_orange" />
 
-    <EditText
+    <AutoCompleteTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="150dp"
@@ -24,5 +24,6 @@
         android:hint="@string/your_places_new_place_address"
         android:textColor="@color/color_primary_dark"
         android:textColorHint="@color/color_grey_dark"
-        android:backgroundTint="@color/color_orange" />
+        android:backgroundTint="@color/color_orange"
+        android:dropDownWidth="250dp"/>
 </LinearLayout>

@@ -1,11 +1,10 @@
 package fi.ohtu.mobilityprofile.ui.list_adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,11 +13,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
-import fi.ohtu.mobilityprofile.ui.activities.FavouriteListItemActivity;
-import fi.ohtu.mobilityprofile.ui.activities.SuggestionListItemActivity;
+import fi.ohtu.mobilityprofile.ui.activities.YourPlaceActivity;
 
 /**
  * This class adapts a list of SignificantPlace to ListView.
@@ -27,7 +26,6 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
 
     private List<Place> items;
     private int resourceId;
-    private Context context;
     private Fragment fragment;
 
     private TextView listItemText;
@@ -35,17 +33,15 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
     private ImageButton starFilled;
 
     /**
-     * Creates favouritesListAdapter
+     * Creates FavouritesListAdapter
      *
-     * @param context    context of the app
      * @param resourceId resourceId
      * @param items      list of favourite places
      * @param fragment   fragment
      */
-    public FavouritesListAdapter(Context context, int resourceId, List<Place> items, Fragment fragment) {
-        super(context, resourceId, items);
+    public FavouritesListAdapter(int resourceId, List<Place> items, Fragment fragment) {
+        super(MainActivity.getContext(), resourceId, items);
         this.resourceId = resourceId;
-        this.context = context;
         this.items = items;
         this.fragment = fragment;
     }
@@ -55,7 +51,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
 
         View view = convertView;
         if (view == null) {
-            view = ((Activity) context).getLayoutInflater().inflate(resourceId, parent, false);
+            view = LayoutInflater.from(MainActivity.getContext()).inflate(resourceId, parent, false);
         }
 
         listItemText = (TextView) view.findViewById(R.id.your_places_item);
@@ -65,23 +61,16 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
         if (getItem(position).isFavourite()) {
             starUnfilled.setVisibility(View.GONE);
             starFilled.setVisibility(View.VISIBLE);
-            setColorsForFavourite(view);
-            if (items.get(position).getName().equals("")) {
-                listItemText.setText(items.get(position).toString());
-            } else {
-                listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
-            }
 
         } else {
             starFilled.setVisibility(View.GONE);
             starUnfilled.setVisibility(View.VISIBLE);
-            setColorsForPlace(view);
-            listItemText.setText(items.get(position).toString());
-            if (items.get(position).getName().equals("")) {
-                listItemText.setText(items.get(position).toString());
-            } else {
-                listItemText.setText(items.get(position).getName() + ": " + items.get(position).toString());
-            }
+        }
+
+        if (items.get(position).getName().equals("")) {
+            listItemText.setText(items.get(position).getAddressLine(0));
+        } else {
+            listItemText.setText(items.get(position).getName() + ": " + items.get(position).getAddressLine(0));
         }
 
         itemTextListener(position);
@@ -96,10 +85,8 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             @Override
             public void onClick(View v) {
                 final Place place = PlaceDao.getPlaceById(getItemId(position));
-
                 place.setFavourite(true);
                 place.save();
-                notifyDataSetChanged();
                 updateView();
             }
         });
@@ -110,12 +97,9 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
         starFilled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final Place place = PlaceDao.getPlaceById(getItemId(position));
-
                 place.setFavourite(false);
                 place.save();
-                notifyDataSetChanged();
                 updateView();
 
             }
@@ -127,17 +111,10 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
         listItemText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (getItem(position).isFavourite()) {
-                    Intent favouriteIntent = new Intent(context, FavouriteListItemActivity.class);
-                    favouriteIntent.putExtra("favouriteId", getItemId(position) + "");
-                    fragment.getActivity().startActivity(favouriteIntent);
-                } else {
-                    Intent placeIntent = new Intent(context, SuggestionListItemActivity.class);
-                    placeIntent.putExtra("placeId", getItemId(position) + "");
-                    fragment.getActivity().startActivity(placeIntent);
-                }
-
+                Context context = MainActivity.getContext();
+                Intent placeIntent = new Intent(context, YourPlaceActivity.class);
+                placeIntent.putExtra("placeId", getItemId(position) + "");
+                fragment.getActivity().startActivity(placeIntent);
             }
         });
 
@@ -152,17 +129,6 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
         tr.attach(fragment);
         tr.commit();
         notifyDataSetChanged();
-    }
-
-    private void setColorsForFavourite(View view) {
-        int white = ContextCompat.getColor(context, R.color.color_white);
-        view.setBackgroundColor(white);
-    }
-
-    private void setColorsForPlace(View view) {
-        int white = ContextCompat.getColor(context, R.color.color_white);
-        view.setBackgroundColor(white);
-        starUnfilled.setBackgroundColor(white);
     }
 
     @Override
