@@ -19,6 +19,7 @@ public class RouteSearch extends SugarRecord {
      * Creates Routesearch.
      *
      * @param timestamp     timestamp of the routesearch
+     * @param mode          0 for intracity, 1 for intercity
      * @param startlocation starting location of the routesearch
      * @param destination   destination of the routesearch
      */

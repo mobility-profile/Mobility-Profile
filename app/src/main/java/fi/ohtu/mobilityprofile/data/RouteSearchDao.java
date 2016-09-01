@@ -112,6 +112,11 @@ public class RouteSearchDao {
         routeSearch.save();
     }
 
+    /**
+     * Retrieves all RouteSearches with the given mode
+     * @param mode 0 for intracity, 1 for intercity
+     * @return list of routeSearches
+     */
     public static List<RouteSearch> getAll(int mode) {
         List<RouteSearch> searches = Select.from(RouteSearch.class)
                 .where(Condition.prop("mode").eq(mode))

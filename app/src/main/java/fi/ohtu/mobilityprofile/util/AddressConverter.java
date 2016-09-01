@@ -51,6 +51,11 @@ public class AddressConverter {
         return null;
     }
 
+    /**
+     * Returns the country code of the address
+     * @param address
+     * @return
+     */
     public static String getCountryCode(String address) {
         try {
             Geocoder geocoder = new Geocoder(MainActivity.getContext());

@@ -28,10 +28,10 @@ public class CalendarConnection {
 
     // Projection is used to choose locations and beginning times of calendar events, and info about whether
     // they are all day events or not.
-    private String[] EVENT_PROJECTION = new String[]{
-            CalendarContract.Events.EVENT_LOCATION,
-            CalendarContract.Instances.BEGIN,
-            CalendarContract.Events.ALL_DAY
+    private String[] EVENT_PROJECTION = new String[] {
+        CalendarContract.Events.EVENT_LOCATION,
+        CalendarContract.Instances.BEGIN,
+        CalendarContract.Events.ALL_DAY
     };
 
     private List<Suggestion> eventLocations;

@@ -73,7 +73,7 @@ public class RequestHandler extends Handler {
 
     /**
      * Returns a message with data that contains the most likely destinations within cities.
-     *
+     * @param data intracity or intercity
      * @return Response message
      */
     private Message processSuggestionsRequest(Bundle data) {
