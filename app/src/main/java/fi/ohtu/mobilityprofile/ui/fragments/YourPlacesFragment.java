@@ -37,7 +37,6 @@ public class YourPlacesFragment extends Fragment {
     private static final String title = "YOUR PLACES";
     private static final int page = 1;
 
-    private Context context;
     private FavouritesListAdapter favouritesListAdapter;
     private AddressSuggestionAdapter addressSuggestionAdapter;
     private AutoCompleteTextView autoCompleteTextView;
@@ -58,7 +57,7 @@ public class YourPlacesFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        super.onAttach(MainActivity.getContext());
+        super.onAttach(context);
     }
 
     @Override
@@ -107,7 +106,7 @@ public class YourPlacesFragment extends Fragment {
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
 
                 builder
                         .setTitle(R.string.your_places_title)
@@ -153,6 +152,7 @@ public class YourPlacesFragment extends Fragment {
     private void addButtonListener(final View view) {
         Button button = (Button) view.findViewById(R.id.your_places_new_place_add);
         final EditText nameEditText = (EditText) view.findViewById(R.id.your_places_new_place_name);
+        final Context context = MainActivity.getContext();
 
         button.setOnClickListener(new View.OnClickListener() {
 

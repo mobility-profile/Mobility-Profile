@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this.getApplicationContext();
+
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String gps = sharedPref.getString("gps", "Not Available");
 
