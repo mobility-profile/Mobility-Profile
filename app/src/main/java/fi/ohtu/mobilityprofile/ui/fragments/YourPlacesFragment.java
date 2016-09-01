@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.MainActivity;
@@ -190,8 +191,15 @@ public class YourPlacesFragment extends Fragment {
      */
     private void setFavouritesListView(View view) {
         List<Place> favouritePlaces = Place.listAll(Place.class);
+        List<Place> places = new ArrayList<>();
 
-        favouritesListAdapter = new FavouritesListAdapter(R.layout.list_your_places_item, favouritePlaces, this);
+        for (Place p : favouritePlaces) {
+            if (!p.isHidden()) {
+                places.add(p);
+            }
+        }
+
+        favouritesListAdapter = new FavouritesListAdapter(R.layout.list_your_places_item, places, this);
         ListView listView = (ListView) view.findViewById(R.id.your_places_listview);
         listView.setAdapter(favouritesListAdapter);
     }
