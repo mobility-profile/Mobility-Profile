@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
-
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -114,12 +113,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 super.onTabReselected(tab);
             }
         });
-
     }
 
     /**
-     * Checks if there are any security problems with other applications. Check SecurityCheck.java
-     * for more information.
+     * Checks if there are any security problems with other applications. Check
+     * {@link SecurityCheck} for more information.
      */
     private void checkSecurity() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
@@ -271,6 +269,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
         return false;
+    }
+
+
+    public static void setContext(Context context) {
+        MainActivity.context = context;
     }
 
     public static Context getContext() {
