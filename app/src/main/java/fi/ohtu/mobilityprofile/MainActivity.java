@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onResume() {
         super.onResume();
+        context = getApplicationContext();
         // showMessage("Connected to Google Drive");
     }
     
