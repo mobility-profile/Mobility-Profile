@@ -51,6 +51,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
     private Button deleteButton;
     private GoogleMap googleMap;
     private Address tempAddress;
+    private AutoCompleteTextView autoCompleteTextView;
 
 
     @Override
@@ -121,7 +122,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
                         .setTitle(R.string.dialog_edit_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
+                autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
                 AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(R.layout.list_addresses_item);
 
 
@@ -190,12 +191,16 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
             place.setName(name);
         }
 
-        if (!address.equals("")) {
+        if (address != null) {
             place.setAddress(address);
             place.setCoordinate(new Coordinate((float) address.getLatitude(), (float) address.getLongitude()));
+
         } else {
-            Toast.makeText(this, "Address not valid", Toast.LENGTH_LONG).show();
+            if (!autoCompleteTextView.getText().toString().equals(place.getAddressLine(0))) {
+                Toast.makeText(this, "Address not valid, choose one from the list", Toast.LENGTH_LONG).show();
+            }
         }
+
         place.save();
     }
 
