@@ -165,10 +165,11 @@ public class YourPlacesFragment extends Fragment {
                     Toast.makeText(context, "Choose an address of the list", Toast.LENGTH_LONG).show();
                 } else {
                     if (name.equals("")) {
-                        Toast.makeText(context,"Set name for the place", Toast.LENGTH_LONG).show();
+                        Place fav = new Place(address.getAddressLine(0), address);
+                        fav.setFavourite(true);
+                        fav.save();
                     } else {
                         Place fav = new Place(name, address);
-                        System.out.println(fav.getAddress());
                         fav.setFavourite(true);
                         fav.save();
                     }

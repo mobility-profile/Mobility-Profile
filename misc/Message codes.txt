@@ -1,11 +1,11 @@
-101 - Request the most likely destination
+100 - Request for route suggestions.
+110 - Send information about a searched route.
+120 - Request for transport mode preferences.
 
+200 - Response containing a list of likely suggestions.
+220 - Response containing a list of transport mode preferences.
 
-201 - Respond the most likely destination
+300 - Mode for route suggestions inside a city or a metropolis.
+301 - Mode for route suggestions between cities.
 
-
-301 - Accept route
-302 - Discard route
-
-
-401 - Unknown code
+400 - Error code for unknown codes.
