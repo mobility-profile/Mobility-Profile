@@ -98,7 +98,8 @@ public class AddressSuggestionAdapter extends BaseAdapter implements Filterable 
     private List<Address> findAddresses(String address) {
         Geocoder geocoder = new Geocoder(MainActivity.getContext());
         try {
-            return  geocoder.getFromLocationName(address, 5);
+            address += ", Finland";
+            return geocoder.getFromLocationName(address, 5);
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
