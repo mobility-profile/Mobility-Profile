@@ -47,6 +47,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
     private Button deleteButton;
     private GoogleMap googleMap;
     private Address tempAddress;
+    private AutoCompleteTextView autoCompleteTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                         .setTitle(R.string.dialog_edit_title);
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
+                autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
 
                 editTextName.setText(place.getName());
                 autoCompleteTextView.setText(place.getAddressLine(0));
@@ -149,7 +150,6 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
      * @param address the new address
      */
     private void editFavoritePlace(String name, Address address){
-        System.out.println(place.getCoordinate());
         if (!name.equals("")) {
             place.setName(name);
         }
@@ -157,11 +157,14 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         if (address != null) {
             place.setAddress(address);
             place.setCoordinate(new Coordinate((float) address.getLatitude(), (float) address.getLongitude()));
+
         } else {
-            Toast.makeText(this, "Address not valid, choose one from the list", Toast.LENGTH_LONG).show();
+            if (!autoCompleteTextView.getText().toString().equals(place.getAddressLine(0))) {
+                Toast.makeText(this, "Address not valid, choose one from the list", Toast.LENGTH_LONG).show();
+            }
         }
+
         place.save();
-        System.out.println(place.getCoordinate());
     }
 
     private void deleteButtonListener() {
