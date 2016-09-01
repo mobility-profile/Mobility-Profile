@@ -40,21 +40,22 @@ public class RouteSuggestions implements SuggestionSource {
     public List<Suggestion> getSuggestions(StartLocation startLocation) {
         List<Suggestion> suggestions = new ArrayList<>();
         Set<Place> destinations = new HashSet<>();
-        
+
         for (RouteSearch route : RouteSearchDao.getAllRouteSearches()) {
-            if (route.getStartCoordinates().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
-                if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
-                    if (destinations.contains(route.getDestination())) {
-                        continue; // Don't add the same suggestion more than once.
+            if (!route.getDestination().isHidden()) {
+                if (route.getStartCoordinates().distanceTo(startLocation.getCoordinate()) < GpsPointClusterizer.CLUSTER_RADIUS) {
+                    if (aroundTheSameTime(new Time(route.getTimestamp()), 2, 2)) {
+                        if (destinations.contains(route.getDestination())) {
+                            continue; // Don't add the same suggestion more than once.
+                        }
+                        Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
+                        suggestions.add(suggestion);
+
+                        destinations.add(route.getDestination());
+
+                        if (suggestions.size() >= 3) break; // Only suggest 3 most recent searches at most.
                     }
-                    Suggestion suggestion = new Suggestion(route.getDestination(), SuggestionAccuracy.HIGH, ROUTE_SUGGESTION);
-                    suggestions.add(suggestion);
-
-                    destinations.add(route.getDestination());
-
-                    if (suggestions.size() >= 3) break; // Only suggest 3 most recent searches at most.
-                }
-            }
+                }}
         }
         return suggestions;
     }

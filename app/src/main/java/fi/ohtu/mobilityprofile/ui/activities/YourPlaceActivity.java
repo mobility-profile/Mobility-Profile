@@ -149,7 +149,9 @@ public class YourPlaceActivity extends AppCompatActivity implements OnMapReadyCa
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                PlaceDao.deletePlaceById(place.getId());
+                                place.setHidden(true);
+                                place.save();
+                                //PlaceDao.deletePlaceById(place.getId());
                                 backToFragment();
                             }
                         })

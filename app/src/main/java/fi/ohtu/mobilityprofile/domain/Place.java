@@ -24,6 +24,7 @@ public class Place extends SugarRecord {
     private String locality;
     private String postalCode;
     private boolean favourite;
+    private boolean hidden;
 
     /**
      * Creates Place.
@@ -46,6 +47,7 @@ public class Place extends SugarRecord {
         this.coordinate = new Coordinate((float) address.getLatitude(), (float) address.getLongitude());
         this.coordinate.save();
         this.favourite = false;
+        this.favourite = hidden;
         setAddress(address);
     }
 
@@ -97,6 +99,19 @@ public class Place extends SugarRecord {
      */
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
+        this.save();
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    /**
+     * Sets place hidden or not.
+     * @param hidden true if hidden, false if not
+     */
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
         this.save();
     }
 

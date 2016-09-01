@@ -108,7 +108,7 @@ public class PlaceDao {
         List<Place> remove = new ArrayList<>();
 
         for (Place place: allPlaces) {
-            if (!place.isFavourite()) {
+            if (!place.isFavourite() || place.isHidden()) {
                 remove.add(place);
             }
         }

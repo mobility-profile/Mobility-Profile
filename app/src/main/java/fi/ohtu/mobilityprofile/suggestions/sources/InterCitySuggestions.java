@@ -31,7 +31,7 @@ public class InterCitySuggestions implements SuggestionSource {
         List<Suggestion> suggestions = new ArrayList<>();
 
         for (RouteSearch search : RouteSearchDao.getAll(DestinationLogic.MODE_INTERCITY)) {
-            if (search.getStartlocation().equals(startLocation)) {
+            if (search.getStartlocation().equals(startLocation) && !search.getDestination().isHidden()) {
                 suggestions.add(new Suggestion(search.getDestination(), SuggestionAccuracy.MODERATE, INTER_CITY_SUGGESTION));
             }
             if (suggestions.size() >= 5) {

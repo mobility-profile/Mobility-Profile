@@ -65,7 +65,7 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="74" />
+            android:value="75" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
