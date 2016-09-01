@@ -188,4 +188,6 @@
         OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
         DEALINGS IN THE SOFTWARE.
     </string>
+    <string name="location_tracking_start">Location tracking started</string>
+    <string name="location_tracking_stop">Location tracking stopped</string>
 </resources>
