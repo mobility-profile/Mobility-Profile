@@ -969,7 +969,7 @@ public class GpsPointClusterizerTest {
 
     @Test
     public void theresAlwaysOneGpsPointInDatabase() {
-        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer(this.context);
+        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer();
         for(TestObject testObject : this.testObjects) {
             for(int i = 0; i < testObject.getTestData().size(); i++) {
                 GpsPointDao.insert(testObject.getTestData().get(i));
@@ -982,7 +982,7 @@ public class GpsPointClusterizerTest {
 
     @Test
     public void clusterizerFindsCorrectPlaces() {
-        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer(this.context);
+        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer();
         double distanceSum = 0;
         long placeSum = 0;
         for(TestObject testObject : this.testObjects){

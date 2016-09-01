@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.SuggestionTests;
 
+import android.location.Address;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +12,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.Mockito.*;
 
@@ -48,7 +51,7 @@ public class DestinationLogicTest {
         suggestionSources.add(new RouteSuggestions());
         //suggestionSources.add(new FavoriteSuggestions());
 
-        mp = new DestinationLogic(suggestionSources, new InterCitySuggestions(Robolectric.setupActivity(MainActivityStub.class)));
+        mp = new DestinationLogic(suggestionSources, new InterCitySuggestions());
 
         // when(CalendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
     }
@@ -85,20 +88,24 @@ public class DestinationLogicTest {
     }
 
     private void insertDataToDatabase() {
-        Coordinate sorn = new Coordinate(new Float(60.186422), new Float(24.968971));
-        laut = new Coordinate(new Float(60.157330), new Float(24.877253));
-        Coordinate haka = new Coordinate(new Float(60.17885), new Float(24.95006));
-        Coordinate pita = new Coordinate(new Float(60.222980), new Float(24.862062));
-        routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), "Lauttasaari",  "Sörnäinen", laut, sorn));
-        routeSearchDao.insertRouteSearch(new RouteSearch(23232, "Lauttasaari",  "Sörnäinen", laut, sorn));
-        routeSearchDao.insertRouteSearch(new RouteSearch(90000, "Hakaniemi",  "Pitäjänmäki", haka, pita));
-        routeSearchDao.insertRouteSearch(new RouteSearch(10000, "Pitäjänmäki",  "Sörnäinen", pita, sorn));
 
-        Place kamppi = new Place("Kamppi", "Kamppi", new Coordinate(new Float(60.167580), new Float(24.930226)));
-        Place kumpula = new Place("Kumpula", "Kumpula", new Coordinate(new Float(60.209108), new Float(24.964735)));
-        kamppi.setFavourite(true);
+        Place kumpula = new Place("Kumpula", new Address(Locale.getDefault()));
+        Place sornainen = new Place("Sörnäinen", new Address(Locale.getDefault()));
+        Place lauttasaari = new Place("Lauttasaari", new Address(Locale.getDefault()));
+        Place hakaniemi = new Place("Hakaniemi", new Address(Locale.getDefault()));
+        kumpula.setCoordinate(new Coordinate(new Float(60.209108), new Float(24.964735)));
+        sornainen.setCoordinate(new Coordinate(new Float(60.186422), new Float(24.968971)));
+        lauttasaari.setCoordinate(new Coordinate(new Float(60.157330), new Float(24.877253)));
+        hakaniemi.setCoordinate(new Coordinate(new Float(60.17885), new Float(24.95006)));
+
+        routeSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), 0,  sornainen, lauttasaari));
+        routeSearchDao.insertRouteSearch(new RouteSearch(23232, 0, lauttasaari, sornainen));
+        routeSearchDao.insertRouteSearch(new RouteSearch(90000, 0, hakaniemi, lauttasaari));
+        routeSearchDao.insertRouteSearch(new RouteSearch(10000, 0, kumpula, sornainen));
+
+        hakaniemi.setFavourite(true);
         kumpula.setFavourite(true);
-        placeDao.insertPlace(kamppi);
+        placeDao.insertPlace(hakaniemi);
         placeDao.insertPlace(kumpula);
     }
 }

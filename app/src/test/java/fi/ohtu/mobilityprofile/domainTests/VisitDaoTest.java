@@ -1,11 +1,15 @@
 package fi.ohtu.mobilityprofile.domainTests;
 
+import android.location.Address;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.util.Locale;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
@@ -66,8 +70,15 @@ public class VisitDaoTest {
     }
 
     public void createVisits() {
-        kumpula = new Visit(123123, 232444, new Place("Kumpula", "Kumpula", new Coordinate(new Float(60.209108), new Float(24.964735))));
-        hakaniemi = new Visit(238788, 343444, new Place("Hakaniemi", "Hakaniemi", new Coordinate(new Float(60.17885), new Float(24.95006))));
-        lauttasaari = new Visit(454545,743433, new Place("Lauttasaari", "Lauttasaari", new Coordinate(new Float(60.157330), new Float(24.877253))));
+        Place kump = new Place("Kumpula", new Address(Locale.getDefault()));
+        Place haka = new Place("Hakaniemi", new Address(Locale.getDefault()));
+        Place laut = new Place("Lauttasaari", new Address(Locale.getDefault()));
+        kump.setCoordinate(new Coordinate(new Float(60.209108), new Float(24.964735)));
+        haka.setCoordinate( new Coordinate(new Float(60.17885), new Float(24.95006)));
+        laut.setCoordinate(new Coordinate(new Float(60.157330), new Float(24.877253)));
+        kumpula = new Visit(123123, 232444, kump);
+        hakaniemi = new Visit(238788, 343444, haka);
+        lauttasaari = new Visit(454545,743433, laut);
+
     }
 }
