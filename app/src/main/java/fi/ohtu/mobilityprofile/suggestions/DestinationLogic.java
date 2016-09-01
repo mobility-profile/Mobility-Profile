@@ -32,7 +32,7 @@ public class DestinationLogic {
     /**
      * Creates the DestinationLogic.
      *
-     * @param suggestionSources sources of the suggestions
+     * @param suggestionSources    sources of the suggestions
      * @param interCitySuggestions interCitySuggestions
      */
     public DestinationLogic(List<SuggestionSource> suggestionSources, InterCitySuggestions interCitySuggestions) {
@@ -79,6 +79,7 @@ public class DestinationLogic {
 
     /**
      * Returns a JsonArray of destinations.
+     *
      * @param suggestions list of suggestions
      * @return JsonArray of destinations
      */
@@ -113,6 +114,7 @@ public class DestinationLogic {
 
     /**
      * Converts the suggestion to a GeoJSON object and then to a JSONObject.
+     *
      * @param suggestion suggestion to be converted
      * @return jsonObject
      */
@@ -122,10 +124,13 @@ public class DestinationLogic {
 
         Feature feature = new Feature();
         if (suggestion.getDestination().getCoordinate() != null) {
-            feature.setGeometry(new Point(suggestion.getDestination().getCoordinate().getLatitude(),suggestion.getDestination().getCoordinate().getLongitude()));
+            feature.setGeometry(new Point(suggestion.getDestination().getCoordinate().getLatitude(), suggestion.getDestination().getCoordinate().getLongitude()));
         }
         try {
-            feature.setProperties(new JSONObject().put("label", suggestion.getDestination()).put("layer", "mobilityprofile").put("name", suggestion.getDestination().getName()));
+            feature.setProperties(new JSONObject()
+                            .put("label", suggestion.getDestination().getName())
+                            .put("layer", "mobilityprofile")
+            );
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -134,14 +139,15 @@ public class DestinationLogic {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return destination;
     }
 
-   /**
-    * Returns the type of the latest suggestion.
-    *
-    * @return Type of the latest suggestion
-    */
+    /**
+     * Returns the type of the latest suggestion.
+     *
+     * @return Type of the latest suggestion
+     */
     public int getLatestSuggestionType() {
         return latestSuggestionType;
     }
