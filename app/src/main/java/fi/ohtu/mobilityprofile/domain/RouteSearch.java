@@ -12,6 +12,9 @@ public class RouteSearch extends SugarRecord {
     Place startlocation;
     Place destination;
 
+    public RouteSearch() {
+
+    }
     /**
      * Creates Routesearch.
      *
@@ -24,6 +27,8 @@ public class RouteSearch extends SugarRecord {
         this.mode = mode;
         this.startlocation = startlocation;
         this.destination = destination;
+        this.startlocation.save();
+        this.destination.save();
     }
 
     public long getTimestamp() {

@@ -63,7 +63,7 @@ public class VisitSuggestionsTest {
         createListOfVisits();
         suggestions = visitSuggestions.getSuggestions(new StartLocation(0, 0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(1, suggestions.size());
-        assertEquals("Sörnäinen", suggestions.get(0).getDestination());
+        assertEquals("Sörnäinen", suggestions.get(0).getDestination().getName());
     }
 
     @Test
@@ -108,9 +108,10 @@ public class VisitSuggestionsTest {
     public void testGetLowerAccuracySuggestions() {
         createListForLowerAccuracyVisits();
 
-        suggestions = visitSuggestions.getSuggestions(new StartLocation(0, 0, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
+        suggestions = visitSuggestions.getSuggestions(new StartLocation(6001, 50, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
+
         assertEquals(1, suggestions.size());
-        assertEquals("Sörnäinen", suggestions.get(0).getDestination());
+        assertEquals("Sörnäinen", suggestions.get(0).getDestination().getName());
     }
 
     private void createListOfVisits() {
@@ -213,7 +214,7 @@ public class VisitSuggestionsTest {
         VisitDao.insert(new Visit(900, 901, lauttasaari));
 
         VisitDao.insert(new Visit(1000, 1001, sornainen));
-        VisitDao.insert(new Visit(2000, 2001, kumpula));
+        VisitDao.insert(new Visit(3000, 3001, kumpula));
         VisitDao.insert(new Visit(4000, 4001, hakaniemi));
 
         VisitDao.insert(new Visit(5000, 5001, kumpula));
