@@ -33,10 +33,7 @@ import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
 
-/**
- * Class is used to create a page for one favourite place.
- */
-public class FavouriteListItemActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class YourPlaceActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Activity activity;
     private Place place;
@@ -53,10 +50,9 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
+        place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("placeId")));
 
-        place = PlaceDao.getPlaceById(Long.parseLong(getIntent().getStringExtra("favouriteId")));
         activity = this;
-
         initializeViewElements();
     }
 
@@ -103,7 +99,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                             public void onClick(DialogInterface dialog, int id) {
 
                                 EditText editTextName = (EditText) ((AlertDialog) dialog).findViewById(R.id.edit_name);
-                                editFavoritePlace(editTextName.getText().toString(), tempAddress);
+                                editPlace(editTextName.getText().toString(), tempAddress);
                                 setMarker();
                                 activity.recreate();
 
@@ -116,10 +112,11 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                         })
                         .setTitle(R.string.dialog_edit_title);
 
-                EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
-                autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
 
+                EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
                 editTextName.setText(place.getName());
+
+                autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
                 autoCompleteTextView.setText(place.getAddressLine(0));
 
                 AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(R.layout.list_addresses_item);
@@ -129,13 +126,10 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int p, long id) {
                         Address a = (Address) adapterView.getItemAtPosition(p);
-                        System.out.println(a);
                         autoCompleteTextView.setText(a.getAddressLine(0));
                         tempAddress = a;
                     }
                 });
-
-
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -144,12 +138,51 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
 
     }
 
+    private void deleteButtonListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
+                builder
+                        .setTitle(R.string.dialog_delete_title)
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                place.setHidden(true);
+                                place.save();
+                                //PlaceDao.deletePlaceById(place.getId());
+                                backToFragment();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+    }
+
+    private void backButtonListener(){
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToFragment();
+            }
+        });
+    }
+
     /**
-     * Edits the given favourite place.
+     * Edits the given place.
      * @param name the new name
      * @param address the new address
      */
-    private void editFavoritePlace(String name, Address address){
+    private void editPlace(String name, Address address){
         if (!name.equals("")) {
             place.setName(name);
         }
@@ -167,34 +200,6 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         place.save();
     }
 
-    private void deleteButtonListener() {
-        deleteButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppCompatAlertDialogStyle);
-                builder
-                        .setTitle(R.string.dialog_delete_title)
-                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                PlaceDao.deletePlaceById(place.getId());
-                                backToFragment();
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-            }
-        });
-    }
-
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
@@ -205,6 +210,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         map.getUiSettings().setMapToolbarEnabled(true);
 
         setMarker();
+
     }
 
     /**
@@ -225,26 +231,6 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
         }
     }
 
-    /**
-     * Returns back to the fragment where user was before.
-     */
-    private void backToFragment() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("dataChanged", "true");
-        editor.commit();
-        finish();
-    }
-
-    private void backButtonListener(){
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToFragment();
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
         backToFragment();
@@ -261,5 +247,13 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void backToFragment() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("dataChanged", "true");
+        editor.commit();
+        finish();
     }
 }

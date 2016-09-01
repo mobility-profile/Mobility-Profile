@@ -12,7 +12,7 @@
         android:contentDescription="@string/your_places_unfavourite_hint"
         android:padding="5dp"
         android:layout_gravity="end"
-        android:background="@color/color_white"
+        android:background="@android:color/transparent"
         android:layout_marginEnd="10dp">
     </ImageButton>
 
@@ -25,7 +25,7 @@
         android:contentDescription="@string/your_places_favourite_hint"
         android:padding="5dp"
         android:layout_gravity="end"
-        android:background="@color/color_white"
+        android:background="@android:color/transparent"
         android:layout_marginEnd="10dp">
     </ImageButton>
 

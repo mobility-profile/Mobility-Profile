@@ -45,7 +45,7 @@ public class VisitSuggestions implements SuggestionSource {
             int maxValue = Collections.max(nextDestinations.values());
 
             for (Map.Entry<Place, Integer> entry : nextDestinations.entrySet()) {
-                if (entry.getValue() == maxValue) {
+                if (entry.getValue() == maxValue && !entry.getKey().isHidden()) {
                     suggestions.add(new Suggestion(entry.getKey(), SuggestionAccuracy.HIGH, VISIT_SUGGESTION));
                 }
             }

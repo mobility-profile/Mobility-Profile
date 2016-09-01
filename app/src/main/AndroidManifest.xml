@@ -47,16 +47,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".ui.activities.FavouriteListItemActivity"
-            android:parentActivityName=".MainActivity">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
-            android:name=".ui.activities.SuggestionListItemActivity"
+            android:name=".ui.activities.YourPlaceActivity"
             android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -74,7 +65,7 @@
             android:value="mobilityprofile.db" />
         <meta-data
             android:name="VERSION"
-            android:value="74" />
+            android:value="75" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
