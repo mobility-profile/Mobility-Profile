@@ -158,7 +158,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
             place.setAddress(address);
             place.setCoordinate(new Coordinate((float) address.getLatitude(), (float) address.getLongitude()));
         } else {
-            Toast.makeText(this, "Address not valid", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Address not valid, choose one from the list", Toast.LENGTH_LONG).show();
         }
         place.save();
         System.out.println(place.getCoordinate());
