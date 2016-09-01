@@ -184,6 +184,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         context = getApplicationContext();
         // showMessage("Connected to Google Drive");
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+//        tabLayout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.color_orange), PorterDuff.Mode.SRC_IN);
+//        tabLayout.getTabAt(1).getIcon().setColorFilter(getResources().getColor(R.color.color_primary_dark), PorterDuff.Mode.SRC_IN);
+//        tabLayout.getTabAt(2).getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+    }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
