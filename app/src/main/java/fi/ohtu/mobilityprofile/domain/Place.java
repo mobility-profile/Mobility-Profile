@@ -11,6 +11,7 @@ import java.util.Locale;
  * time and not just points on the road).
  */
 public class Place extends SugarRecord {
+
     private String name;
     private String addressLine1;
     private String addressLine2;
@@ -24,9 +25,8 @@ public class Place extends SugarRecord {
     private String postalCode;
     private boolean favourite;
 
-
     /**
-     *
+     * Creates Place.
      */
     public Place() {
         this.name = "name";
@@ -92,7 +92,7 @@ public class Place extends SugarRecord {
     }
 
     /**
-     *
+     * Sets place favourite or not.
      * @param favourite true if favourited, false if not
      */
     public void setFavourite(boolean favourite) {

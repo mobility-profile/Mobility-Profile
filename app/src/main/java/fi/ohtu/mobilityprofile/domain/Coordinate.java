@@ -3,7 +3,7 @@ package fi.ohtu.mobilityprofile.domain;
 import com.orm.SugarRecord;
 
 /**
- * Class for saving coordinates to be used by any class needing them
+ * Class for saving coordinates to be used by any class needing them.
  */
 public class Coordinate extends SugarRecord {
     Float latitude;

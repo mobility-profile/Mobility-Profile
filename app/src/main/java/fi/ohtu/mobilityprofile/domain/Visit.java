@@ -13,7 +13,7 @@ public class Visit extends SugarRecord {
     private Place place;
 
     /**
-     *
+     * Creates Visit.
      */
     public Visit() {
         this.enterTime = 0;

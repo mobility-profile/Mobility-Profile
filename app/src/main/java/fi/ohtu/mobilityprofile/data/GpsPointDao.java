@@ -1,16 +1,13 @@
 package fi.ohtu.mobilityprofile.data;
 
-import com.orm.SugarRecord;
-import com.orm.query.Condition;
 import com.orm.query.Select;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 
 /**
- * DAO used for saving and reading GpsPoints to/from the database.
+ * GpsPointDAO is used for saving and reading GpsPoints to/from the database.
  */
 public class GpsPointDao {
 
@@ -29,7 +26,7 @@ public class GpsPointDao {
     }
 
     /**
-     * Returns a list of all GpsPoints.
+     * Returns a list of all GpsPoints ordered by time (ASC).
      *
      * @return list of GpsPoints
      */
