@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.PorterDuff;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,9 +28,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
@@ -44,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
     public final static String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
-    private Activity activity;
+    private static Activity activity;
+    private static Context context;
     private TabLayout tabLayout;
     private GoogleApiClient mGoogleApiClient;
 
@@ -53,11 +50,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this.getApplicationContext();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String gps = sharedPref.getString("gps", "Not Available");
 
-        if (PermissionManager.permissionToFineLocation(this) && gps.equals("true") && !isLocationServiceRunning()) {
+        if (PermissionManager.permissionToFineLocation() && gps.equals("true") && !isLocationServiceRunning()) {
             Intent intent = new Intent(this, PlaceRecorder.class);
             startService(intent);
         }
@@ -95,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_globe).setContentDescription("Your places");
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_gear).setContentDescription("Settings");
 
-
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -116,12 +113,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 super.onTabReselected(tab);
             }
         });
-
     }
 
     /**
-     * Checks if there are any security problems with other applications. Check SecurityCheck.java
-     * for more information.
+     * Checks if there are any security problems with other applications. Check
+     * {@link SecurityCheck} for more information.
      */
     private void checkSecurity() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
@@ -131,12 +127,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // If this is the first time the application is run or security check is not ok, we should
         // run the security check.
         if (sharedPreferences.getBoolean("firstrun", true) || !SecurityCheck.securityCheckOk(sharedPreferences)) {
-            securityOk = SecurityCheck.doSecurityCheck(this, sharedPreferences);
+            securityOk = SecurityCheck.doSecurityCheck(sharedPreferences);
             sharedPreferences.edit().putBoolean("firstrun", false).apply();
         }
 
         if (!securityOk) {
-            processSecurityConflicts(SecurityCheck.getConflictInfo(this));
+            processSecurityConflicts(SecurityCheck.getConflictInfo());
         }
     }
 
@@ -185,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onResume() {
         super.onResume();
+        context = getApplicationContext();
         // showMessage("Connected to Google Drive");
     }
     
@@ -272,6 +269,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
         return false;
+    }
+
+
+    public static void setContext(Context context) {
+        MainActivity.context = context;
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static Activity getActivity() {
+        return activity;
     }
 
 }

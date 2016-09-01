@@ -122,7 +122,7 @@ public class SuggestionListItemActivity extends AppCompatActivity implements OnM
 
                 EditText editTextName = (EditText) dialogView.findViewById(R.id.edit_name);
                 final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_address);
-                AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(activity, R.layout.list_addresses_item);
+                AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(R.layout.list_addresses_item);
 
 
                 autoCompleteTextView.setAdapter(addressSuggestionAdapter);

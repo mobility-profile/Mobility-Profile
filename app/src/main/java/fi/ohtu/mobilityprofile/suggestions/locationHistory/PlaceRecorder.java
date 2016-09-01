@@ -101,12 +101,11 @@ public class PlaceRecorder extends Service {
          * Creates PlaceRecorder
          *
          * @param provider GPS or Network
-         * @param context context used for creating GpsPointClusterizer
          * @param locationManager LocationManager
          */
-        public LocationListener(String provider, Context context, LocationManager locationManager) {
+        public LocationListener(String provider, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
-            this.gpsPointClusterizer = new GpsPointClusterizer(context);
+            this.gpsPointClusterizer = new GpsPointClusterizer();
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
@@ -180,8 +179,8 @@ public class PlaceRecorder extends Service {
      */
     private void initializeLocationListeners() {
         mLocationListeners = new LocationListener[]{
-            new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
-            new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
+            new LocationListener(android.location.LocationManager.GPS_PROVIDER, mLocationManager),
+            new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, mLocationManager)
         };
     }
 
@@ -224,7 +223,7 @@ public class PlaceRecorder extends Service {
         if (mLocationManager != null) {
             for (LocationListener mLocationListener : mLocationListeners) {
                 try {
-                    if (!PermissionManager.permissionToFineLocation(this) && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (!PermissionManager.permissionToFineLocation() && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
                     mLocationManager.removeUpdates(mLocationListener);
