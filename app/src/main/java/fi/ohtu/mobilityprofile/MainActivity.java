@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
     public final static String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
-    private Activity activity;
+    private static Activity activity;
     private static Context context;
     private TabLayout tabLayout;
     private GoogleApiClient mGoogleApiClient;
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         SugarContext.init(this);
         activity = this;
-
 
         setViewPagerAndTabs();
         checkSecurity();
@@ -278,6 +277,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public static Context getContext() {
         return context;
+    }
+
+    public static Activity getActivity() {
+        return activity;
     }
 
 }

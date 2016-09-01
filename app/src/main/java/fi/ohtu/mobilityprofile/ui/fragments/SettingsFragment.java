@@ -242,7 +242,7 @@ public class SettingsFragment extends Fragment {
         resetAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getActivity());
                 builder
                         .setTitle(R.string.dialog_settings_reset_title).setMessage(R.string.dialog_settings_reset_info)
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
