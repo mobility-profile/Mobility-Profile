@@ -188,7 +188,7 @@ public class SettingsFragment extends Fragment {
                         intent.putExtra("Receiver", resultReceiver);
                         context.startService(intent);
 
-                        Toast.makeText(context, "Place tracking is used again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.location_tracking_start, Toast.LENGTH_SHORT).show();
 
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("gps", "true");
@@ -196,7 +196,7 @@ public class SettingsFragment extends Fragment {
                     }
                 } else {
                     context.stopService(new Intent(context, PlaceRecorder.class));
-                    Toast.makeText(context, "Place tracking will not be used", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.location_tracking_stop, Toast.LENGTH_SHORT).show();
 
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("gps", "false");
