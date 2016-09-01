@@ -121,7 +121,7 @@ public class FavouriteListItemActivity extends AppCompatActivity implements OnMa
                 editTextName.setText(place.getName());
                 autoCompleteTextView.setText(place.getAddressLine(0));
 
-                AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(activity, R.layout.list_addresses_item);
+                AddressSuggestionAdapter addressSuggestionAdapter = new AddressSuggestionAdapter(R.layout.list_addresses_item);
                 autoCompleteTextView.setAdapter(addressSuggestionAdapter);
 
                 autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

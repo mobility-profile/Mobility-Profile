@@ -109,7 +109,7 @@ public class PlaceDaoTest {
 
         assertEquals(2, placeDao.getFavouritePlaces().size());
     }
-
+/*
     @Test
     public void testGetFavouritePlacesInJson() throws JSONException {
         kumpula.setFavourite(true);
@@ -121,7 +121,7 @@ public class PlaceDaoTest {
         assertTrue(favourites != null);
         assertEquals("Kumpula", favourites.getJSONObject(0).getJSONObject("properties").getString("label"));
     }
-
+*/
     @Test
     public void testDeleteAllData() {
         placeDao.insertPlace(kumpula);

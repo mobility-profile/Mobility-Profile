@@ -1,6 +1,5 @@
 package fi.ohtu.mobilityprofile.util;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 
@@ -10,6 +9,8 @@ import com.commonsware.cwac.security.PermissionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import fi.ohtu.mobilityprofile.MainActivity;
 
 /**
  * If two Android applications define the same permission, the application that is installed first
@@ -39,12 +40,11 @@ public class SecurityCheck {
     /**
      * Performs the security check and returns true if no problems were found.
      *
-     * @param context Application context
      * @param sharedPreferences Shared preferences
      * @return True if no problems were found, false otherwise
      */
-    public static boolean doSecurityCheck(Context context, SharedPreferences sharedPreferences) {
-        if (hasNoConflicts(context)) {
+    public static boolean doSecurityCheck(SharedPreferences sharedPreferences) {
+        if (hasNoConflicts()) {
             sharedPreferences.edit().putBoolean("securitycheck", true).apply();
             return true;
         }
@@ -56,13 +56,12 @@ public class SecurityCheck {
     /**
      * Returns a list of applications that are causing security problems.
      *
-     * @param context Application context
      * @return List of conflicting applications
      */
-    public static List<PackageInfo> getConflictInfo(Context context) {
+    public static List<PackageInfo> getConflictInfo() {
         List<PackageInfo> conflictApps = new ArrayList<>();
 
-        Map<PackageInfo, ArrayList<PermissionLint>> customPermissions = PermissionUtils.checkCustomPermissions(context);
+        Map<PackageInfo, ArrayList<PermissionLint>> customPermissions = PermissionUtils.checkCustomPermissions(MainActivity.getContext());
 
         for (PackageInfo packageInfo : customPermissions.keySet()) {
             for (PermissionLint permissionLint : customPermissions.get(packageInfo)) {
@@ -78,11 +77,10 @@ public class SecurityCheck {
     /**
      * Checks if there are any security problems.
      *
-     * @param context Application context
      * @return true if there were no problems, false otherwise
      */
-    private static boolean hasNoConflicts(Context context) {
-        return getConflictInfo(context).isEmpty();
+    private static boolean hasNoConflicts() {
+        return getConflictInfo().isEmpty();
     }
 
     /**

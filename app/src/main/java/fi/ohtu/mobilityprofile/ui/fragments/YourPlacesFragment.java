@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
@@ -35,7 +36,7 @@ public class YourPlacesFragment extends Fragment {
 
     private static final String title = "YOUR PLACES";
     private static final int page = 1;
-    private Context context;
+
     private FavouritesListAdapter favouritesListAdapter;
     private AddressSuggestionAdapter addressSuggestionAdapter;
     private AutoCompleteTextView autoCompleteTextView;
@@ -57,7 +58,6 @@ public class YourPlacesFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.context = context;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class YourPlacesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContext());
         String dataChanged = sharedPref.getString("dataChanged", "Not Available");
 
         if (dataChanged.equals("true") ) {
@@ -106,7 +106,7 @@ public class YourPlacesFragment extends Fragment {
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
 
                 builder
                         .setTitle(R.string.your_places_title)
@@ -129,7 +129,7 @@ public class YourPlacesFragment extends Fragment {
      * @param view View
      */
     private void setAddressSuggestions(View view) {
-        addressSuggestionAdapter = new AddressSuggestionAdapter(context, R.layout.list_addresses_item);
+        addressSuggestionAdapter = new AddressSuggestionAdapter(R.layout.list_addresses_item);
 
         autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.your_places_new_place_address);
         autoCompleteTextView.setAdapter(addressSuggestionAdapter);
@@ -150,9 +150,9 @@ public class YourPlacesFragment extends Fragment {
      * @param view View
      */
     private void addButtonListener(final View view) {
-
         Button button = (Button) view.findViewById(R.id.your_places_new_place_add);
         final EditText nameEditText = (EditText) view.findViewById(R.id.your_places_new_place_name);
+        final Context context = MainActivity.getContext();
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -190,7 +190,7 @@ public class YourPlacesFragment extends Fragment {
     private void setFavouritesListView(View view) {
         List<Place> favouritePlaces = Place.listAll(Place.class);
 
-        favouritesListAdapter = new FavouritesListAdapter(context, R.layout.list_your_places_item, favouritePlaces, this);
+        favouritesListAdapter = new FavouritesListAdapter(R.layout.list_your_places_item, favouritePlaces, this);
         ListView listView = (ListView) view.findViewById(R.id.your_places_listview);
         listView.setAdapter(favouritesListAdapter);
     }

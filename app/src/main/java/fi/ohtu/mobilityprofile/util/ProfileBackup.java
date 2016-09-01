@@ -11,26 +11,22 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
+import fi.ohtu.mobilityprofile.MainActivity;
+
 /**
  * Class is used to export and import Mobility Profile's database.
  */
 public class ProfileBackup {
     private final String DB_NAME = "mobilityprofile.db";
-    private Context context;
 
-    /**
-     * Creates ProfileBackup.
-     * @param context context for creating Toast messages
-     */
-    public ProfileBackup(Context context) {
-        this.context = context;
-    }
 
     /**
      * Backs up the database to the device or imports it from the device.
      * @param procedure "back up" or "import" in String
      */
     public void handleBackup(String procedure) {
+        final Context context = MainActivity.getContext();
+
         if (!checkPermissionToWriteAndRead()) {
             return;
         }
@@ -86,9 +82,9 @@ public class ProfileBackup {
      * @return true if permission is granted, false if not
      */
     private Boolean checkPermissionToWriteAndRead() {
-        if (!PermissionManager.permissionToWriteExternalStorage(this.context)) {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            return PermissionManager.permissionToWriteExternalStorage(this.context);
+        if (!PermissionManager.permissionToWriteExternalStorage()) {
+            ActivityCompat.requestPermissions((Activity) MainActivity.getContext(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            return PermissionManager.permissionToWriteExternalStorage();
         }
         return true;
     }

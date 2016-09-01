@@ -1,5 +1,7 @@
 package fi.ohtu.mobilityprofile.SuggestionTests;
 
+import android.location.Address;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +11,7 @@ import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
 import fi.ohtu.mobilityprofile.MainActivityStub;
@@ -39,10 +42,14 @@ public class VisitSuggestionsTest {
         this.suggestions = new ArrayList<>();
         Robolectric.setupActivity(MainActivityStub.class);
 
-        kumpula = new Place("Kumpula", "Kumpula", new Coordinate(new Float(60.209108), new Float(24.964735)));
-        sornainen = new Place("Sörnäinen", "Sörnäinen", new Coordinate(new Float(60.186422), new Float(24.968971)));
-        lauttasaari = new Place("Lauttasaari", "Lauttasaari", new Coordinate(new Float(60.157330), new Float(24.877253)));
-        hakaniemi = new Place("Hakaniemi", "Hakaniemi", new Coordinate(new Float(60.17885), new Float(24.95006)));
+        kumpula = new Place("Kumpula", new Address(Locale.getDefault()));
+        sornainen = new Place("Sörnäinen", new Address(Locale.getDefault()));
+        lauttasaari = new Place("Lauttasaari", new Address(Locale.getDefault()));
+        hakaniemi = new Place("Hakaniemi", new Address(Locale.getDefault()));
+        kumpula.setCoordinate(new Coordinate(new Float(60.209108), new Float(24.964735)));
+        sornainen.setCoordinate(new Coordinate(new Float(60.186422), new Float(24.968971)));
+        lauttasaari.setCoordinate(new Coordinate(new Float(60.157330), new Float(24.877253)));
+        hakaniemi.setCoordinate(new Coordinate(new Float(60.17885), new Float(24.95006)));
 
         PlaceDao.insertPlace(kumpula);
         PlaceDao.insertPlace(sornainen);
@@ -81,8 +88,8 @@ public class VisitSuggestionsTest {
         suggestions = visitSuggestions.getSuggestions(new StartLocation(0, 0, kumpula.getCoordinate().getLatitude(), kumpula.getCoordinate().getLongitude()));
         assertEquals(2, suggestions.size());
         ArrayList<String> destinations = new ArrayList<>();
-        destinations.add(suggestions.get(0).getDestination());
-        destinations.add(suggestions.get(1).getDestination());
+        destinations.add(suggestions.get(0).getDestination().getName());
+        destinations.add(suggestions.get(1).getDestination().getName());
 
         assertTrue(destinations.contains("Sörnäinen"));
         assertTrue(destinations.contains("Lauttasaari"));

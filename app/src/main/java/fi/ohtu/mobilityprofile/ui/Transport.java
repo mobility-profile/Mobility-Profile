@@ -5,13 +5,12 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageButton;
 
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
 import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 
 public class Transport {
-
-    private Context context;
 
     private ImageButton walking;
     private ImageButton bike;
@@ -22,10 +21,6 @@ public class Transport {
     private ImageButton train;
     private ImageButton boat;
     private ImageButton plane;
-
-    public Transport(Context c) {
-        context = c;
-    }
 
     /**
      * Initializes transportmode buttons.
@@ -138,6 +133,6 @@ public class Transport {
     }
 
     private void setColorForTransport(ImageButton button, int color) {
-        button.setBackgroundColor(ContextCompat.getColor(context, color));
+        button.setBackgroundColor(ContextCompat.getColor(MainActivity.getContext(), color));
     }
 }
