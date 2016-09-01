@@ -49,8 +49,6 @@ public class DestinationLogicTest {
         suggestionSources.add(new RouteSuggestions());
 
         mp = new DestinationLogic(suggestionSources, new InterCitySuggestions());
-
-        // when(CalendarTagDao.findTheMostUsedTag(anyString())).thenReturn(null);
     }
 
 //    @Test

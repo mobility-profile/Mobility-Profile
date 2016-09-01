@@ -103,7 +103,6 @@ public class RequestHandler extends Handler {
      * @param message Message with data that tells which destination the user inputted
      */
     private void processUsedRoute(Message message) {
-        Context context = MainActivity.getContext();
         Bundle bundle = message.getData();
         Coordinate start = new Coordinate(bundle.getFloat("startLat"), bundle.getFloat("startLon"));
         Coordinate end = new Coordinate(bundle.getFloat("endLat"), bundle.getFloat("endLon"));
