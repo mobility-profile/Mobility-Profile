@@ -55,10 +55,9 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), 0, lauttasaari, sornainen));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() + 3 * HOUR, 0, lauttasaari,  kumpula));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), 0, hakaniemi, sornainen));
-
         List<Suggestion> suggestions = routeSuggestions.getSuggestions(new StartLocation(System.currentTimeMillis(), 0, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
         assertEquals(1, suggestions.size());
-        assertEquals("Ruoholahti", suggestions.get(0).getDestination());
+        assertEquals("Sörnäinen", suggestions.get(0).getDestination().getName());
     }
 
     @Test
@@ -78,13 +77,13 @@ public class RouteSuggestionsTest {
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis() - HOUR, 0, lauttasaari, kumpula));
         RouteSearchDao.insertRouteSearch(new RouteSearch(System.currentTimeMillis(), 0, hakaniemi, sornainen));
 
-        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new StartLocation(0, 0, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
+        List<Suggestion> suggestions = routeSuggestions.getSuggestions(new StartLocation(System.currentTimeMillis(), 0, lauttasaari.getCoordinate().getLatitude(), lauttasaari.getCoordinate().getLongitude()));
         assertEquals(2, suggestions.size());
 
         List<String> destinations = new ArrayList<>();
         destinations.add(suggestions.get(0).getDestination().getName());
         destinations.add(suggestions.get(1).getDestination().getName());
-        assertTrue(destinations.contains("Ruoholahti"));
-        assertTrue(destinations.contains("Kamppi"));
+        assertTrue(destinations.contains("Sörnäinen"));
+        assertTrue(destinations.contains("Kumpula"));
     }
 }

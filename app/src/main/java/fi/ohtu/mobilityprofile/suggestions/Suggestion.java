@@ -65,6 +65,6 @@ public class Suggestion implements Comparable {
      */
     @Override
     public int compareTo(Object another) {
-        return this.accuracy.compareTo(((Suggestion) another).accuracy);
+        return this.accuracy.compareTo(((Suggestion) another).getAccuracy());
     }
 }
