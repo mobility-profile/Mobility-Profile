@@ -106,7 +106,7 @@ public class YourPlacesFragment extends Fragment {
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getActivity());
 
                 builder
                         .setTitle(R.string.your_places_title)

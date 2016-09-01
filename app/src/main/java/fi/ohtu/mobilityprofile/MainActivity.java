@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.PorterDuff;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,9 +28,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.domain.Coordinate;
-import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.util.PermissionManager;
@@ -44,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public static final String SHARED_PREFERENCES = "fi.ohtu.mobilityprofile";
     public final static String CONFLICT_APPS = "conflictApps";
     public static final String TAG = "Mobility Profile";
-    private Activity activity;
+    private static Activity activity;
     private static Context context;
     private TabLayout tabLayout;
     private GoogleApiClient mGoogleApiClient;
@@ -66,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         SugarContext.init(this);
         activity = this;
-
 
         setViewPagerAndTabs();
         checkSecurity();
@@ -279,6 +274,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public static Context getContext() {
         return context;
+    }
+
+    public static Activity getActivity() {
+        return activity;
     }
 
 }
