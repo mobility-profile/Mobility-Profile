@@ -1,5 +1,6 @@
 package fi.ohtu.mobilityprofile.util;
 
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import java.io.IOException;
@@ -18,9 +19,9 @@ public class AddressConverter {
      * @param coordinate Coordinates to be converted
      * @return Converted address
      */
-    public static Address getAddressForCoordinates(Coordinate coordinate) {
+    public static Address getAddressForCoordinates(Coordinate coordinate, Context context) {
         try {
-            Geocoder geocoder = new Geocoder(MainActivity.getContext());
+            Geocoder geocoder = new Geocoder(context);
             List<Address> addresses = geocoder.getFromLocation(coordinate.getLatitude(), coordinate.getLongitude(), 1);
             if (addresses.size() >= 1) {
                 return addresses.get(0);
@@ -37,9 +38,9 @@ public class AddressConverter {
      * @param address Address to be converted
      * @return Converted coordinates
      */
-    public static Coordinate getCoordinatesFromAddress(String address) {
+    public static Coordinate getCoordinatesFromAddress(String address, Context context) {
         try {
-            Geocoder geocoder = new Geocoder(MainActivity.getContext());
+            Geocoder geocoder = new Geocoder(context);
             List<Address> addresses = geocoder.getFromLocationName(address, 1);
             if (addresses.size() >= 1) {
                 return new Coordinate((float) addresses.get(0).getLatitude(), (float) addresses.get(0).getLongitude());
@@ -56,9 +57,9 @@ public class AddressConverter {
      * @param address
      * @return
      */
-    public static String getCountryCode(String address) {
+    public static String getCountryCode(String address, Context context) {
         try {
-            Geocoder geocoder = new Geocoder(MainActivity.getContext());
+            Geocoder geocoder = new Geocoder(context);
             List<Address> addresses = geocoder.getFromLocationName(address, 1);
             if (addresses.size() >= 1) {
                 return addresses.get(0).getCountryCode();

@@ -39,14 +39,15 @@ public class CalendarConnection {
     private static final int HOUR = 3600 * 1000;
     private static final int LOCATION = 0;
     private static final int ALL_DAY = 1;
+    private Context context;
 
 
     /**
      * Constructor of the class CalendarConnection.
      *
      */
-    public CalendarConnection() {
-
+    public CalendarConnection(Context context) {
+        this.context = context;
         this.eventLocations = new ArrayList<>();
         this.allDayEventLocations = new ArrayList<>();
 
@@ -58,7 +59,7 @@ public class CalendarConnection {
      */
     private void queryEvents() {
         Cursor cursor;
-        ContentResolver cr = MainActivity.getContext().getContentResolver();
+        ContentResolver cr = context.getContentResolver();
         Uri eventUri = buildUri();
 
         cursor = cr.query(eventUri, EVENT_PROJECTION, null, null, null);
@@ -93,22 +94,21 @@ public class CalendarConnection {
     private void getLocations(Cursor cursor) {
         while (cursor.moveToNext()) {
             String location = cursor.getString(LOCATION);
-            Context context = MainActivity.getContext();
 
             if (location == null) continue;
 
-            Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(location);
+            Coordinate coordinate = AddressConverter.getCoordinatesFromAddress(location, context);
             if (coordinate == null) continue;
 
             // Check if the user is in the same country as the geocoded address.
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             String countryCode = tm.getSimCountryIso();
-            if (!countryCode.equalsIgnoreCase(AddressConverter.getCountryCode(location))) continue;
+            if (!countryCode.equalsIgnoreCase(AddressConverter.getCountryCode(location, context))) continue;
 
             Place place = PlaceDao.getPlaceClosestTo(coordinate);
             System.out.println();
             if(place == null || place.distanceTo(coordinate) > GpsPointClusterizer.CLUSTER_RADIUS) {
-                Address address = AddressConverter.getAddressForCoordinates(coordinate);
+                Address address = AddressConverter.getAddressForCoordinates(coordinate, context);
                 place = new Place(address.getAddressLine(0), address);
                 PlaceDao.insertPlace(place);
             }

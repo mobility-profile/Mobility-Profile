@@ -265,9 +265,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         return mGoogleApiClient;
     }
 
-
-
-
     /**
      * Shows a toast message.
      */
