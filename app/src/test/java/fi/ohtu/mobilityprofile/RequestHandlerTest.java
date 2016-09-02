@@ -43,7 +43,7 @@ public class RequestHandlerTest {
         this.gpsPointDao = new GpsPointDao();
         this.transportDao = mock(TransportModeDao.class);
 
-        this.requestHandler = new RequestHandler(mobilityProfile);
+        this.requestHandler = new RequestHandler(this.context, mobilityProfile);
     }
 
     @Test

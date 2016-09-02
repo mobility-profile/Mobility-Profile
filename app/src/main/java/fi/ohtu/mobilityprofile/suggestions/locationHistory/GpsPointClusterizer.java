@@ -24,7 +24,11 @@ public class GpsPointClusterizer {
     public static final double SPEED_LIMIT = 0.8;
     public static final long TIME_SPENT_IN_CLUSTER_THRESHOLD = 10 * 60 * 1000; //10 minutes
     public static final double CLUSTER_RADIUS = 100;
+    private Context context;
 
+    public GpsPointClusterizer(Context context) {
+        this.context = context;
+    }
     /**
      * Updates visit history by forming clusters, deleting GpsPoints and creating Visits to
      * the Clusters if they have sufficient data. If not, GpsPoints of the Clusters with insufficient
@@ -107,7 +111,7 @@ public class GpsPointClusterizer {
      * @return Place
      */
     private Place createPlace(Coordinate coordinate) {
-        Address address = AddressConverter.getAddressForCoordinates(coordinate);
+        Address address = AddressConverter.getAddressForCoordinates(coordinate, context);
         final Place place = new Place(address.getAddressLine(0), address);
         PlaceDao.insertPlace(place);
         return place;

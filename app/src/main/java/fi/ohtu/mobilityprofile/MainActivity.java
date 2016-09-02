@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String gps = sharedPref.getString("gps", "Not Available");
 
-        if (PermissionManager.permissionToFineLocation() && gps.equals("true") && !isLocationServiceRunning()) {
+        if (PermissionManager.permissionToFineLocation(getApplicationContext()) && gps.equals("true") && !isLocationServiceRunning()) {
             Intent intent = new Intent(this, PlaceRecorder.class);
             startService(intent);
         }

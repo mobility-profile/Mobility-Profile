@@ -105,7 +105,7 @@ public class PlaceRecorder extends Service {
          */
         public LocationListener(String provider, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
-            this.gpsPointClusterizer = new GpsPointClusterizer();
+            this.gpsPointClusterizer = new GpsPointClusterizer(getApplicationContext());
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
@@ -223,7 +223,7 @@ public class PlaceRecorder extends Service {
         if (mLocationManager != null) {
             for (LocationListener mLocationListener : mLocationListeners) {
                 try {
-                    if (!PermissionManager.permissionToFineLocation() && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (!PermissionManager.permissionToFineLocation(getApplicationContext()) && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
                     mLocationManager.removeUpdates(mLocationListener);

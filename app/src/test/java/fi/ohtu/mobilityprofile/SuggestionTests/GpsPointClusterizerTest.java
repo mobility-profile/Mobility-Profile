@@ -22,6 +22,7 @@ import org.robolectric.annotation.Config;
 import static org.junit.Assert.*;
 
 import fi.ohtu.mobilityprofile.BuildConfig;
+import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.MainActivityStub;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
@@ -969,7 +970,7 @@ public class GpsPointClusterizerTest {
 
     @Test
     public void theresAlwaysOneGpsPointInDatabase() {
-        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer();
+        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer(this.context);
         for(TestObject testObject : this.testObjects) {
             for(int i = 0; i < testObject.getTestData().size(); i++) {
                 GpsPointDao.insert(testObject.getTestData().get(i));
@@ -982,7 +983,7 @@ public class GpsPointClusterizerTest {
 
     @Test
     public void clusterizerFindsCorrectPlaces() {
-        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer();
+        GpsPointClusterizer GpsPointClusterizer = new GpsPointClusterizer(this.context);
         double distanceSum = 0;
         long placeSum = 0;
         for(TestObject testObject : this.testObjects){

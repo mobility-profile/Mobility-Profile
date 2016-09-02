@@ -42,8 +42,8 @@ public class RemoteService extends Service {
 
                 List<SuggestionSource> suggestionSources = new ArrayList<>();
 
-                if (PermissionManager.permissionToReadCalendar()) {
-                    suggestionSources.add(new CalendarSuggestions(new CalendarConnection()));
+                if (PermissionManager.permissionToReadCalendar(getApplicationContext())) {
+                    suggestionSources.add(new CalendarSuggestions(new CalendarConnection(getApplicationContext())));
                 }
                 suggestionSources.add(new VisitSuggestions());
                 suggestionSources.add(new RouteSuggestions());
@@ -51,7 +51,7 @@ public class RemoteService extends Service {
 
                 DestinationLogic destinationLogic = new DestinationLogic(suggestionSources, new InterCitySuggestions());
 
-                messenger = new Messenger(new RequestHandler(destinationLogic));
+                messenger = new Messenger(new RequestHandler(getApplicationContext(), destinationLogic));
             }
         }
 

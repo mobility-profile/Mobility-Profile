@@ -31,13 +31,15 @@ import static fi.ohtu.mobilityprofile.remoteconnection.RequestCode.*;
  */
 public class RequestHandler extends Handler {
     private DestinationLogic destinationLogic;
+    private Context context;
 
     /**
      * Creates the RequestHandler.
      *
      * @param destinationLogic Journey planner that provides the logic for our app
      */
-    public RequestHandler(DestinationLogic destinationLogic) {
+    public RequestHandler(Context context, DestinationLogic destinationLogic) {
+        this.context = context;
         this.destinationLogic = destinationLogic;
     }
 
@@ -110,12 +112,12 @@ public class RequestHandler extends Handler {
         Place destination = PlaceDao.getPlaceClosestTo(end);
 
         if(startLocation == null || startLocation.distanceTo(start) > GpsPointClusterizer.CLUSTER_RADIUS) {
-            Address address = AddressConverter.getAddressForCoordinates(start);
+            Address address = AddressConverter.getAddressForCoordinates(start, context);
             startLocation = new Place(address.getAddressLine(0), address);
             PlaceDao.insertPlace(startLocation);
         }
         if(destination == null || destination.distanceTo(end) > GpsPointClusterizer.CLUSTER_RADIUS) {
-            Address address = AddressConverter.getAddressForCoordinates(end);
+            Address address = AddressConverter.getAddressForCoordinates(end, context);
 
             destination = new Place(address.getAddressLine(0), address);
             PlaceDao.insertPlace(destination);

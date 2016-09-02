@@ -61,6 +61,7 @@ public class SettingsFragment extends Fragment {
     private Button resetAllButton;
     private Button backUpButton;
     private Button licenses;
+    private Context context;
 
     private ResultReceiver resultReceiver;
 
@@ -103,7 +104,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Context context = MainActivity.getContext();
+        this.context = MainActivity.getContext();
         setupServiceReceiver();
 
         if (isLocationServiceRunning()) {
@@ -142,17 +143,17 @@ public class SettingsFragment extends Fragment {
         String gps = sharedPref.getString("gps", "Not Available");
         String cal = sharedPref.getString("cal", "Not Available");
 
-        if (!PermissionManager.permissionToFineLocation() || gps.equals("false")) {
+        if (!PermissionManager.permissionToFineLocation(context) || gps.equals("false")) {
             gpsCheckBox.setChecked(false);
-        } else if (PermissionManager.permissionToFineLocation() || gps.equals("true")) {
+        } else if (PermissionManager.permissionToFineLocation(context) || gps.equals("true")) {
             gpsCheckBox.setChecked(true);
         } else {
             gpsCheckBox.setChecked(false);
         }
 
-        if (!PermissionManager.permissionToReadCalendar() || cal.equals("false")) {
+        if (!PermissionManager.permissionToReadCalendar(context) || cal.equals("false")) {
             calendarCheckBox.setChecked(false);
-        } else if (PermissionManager.permissionToReadCalendar() || cal.equals("true")) {
+        } else if (PermissionManager.permissionToReadCalendar(context) || cal.equals("true")) {
             calendarCheckBox.setChecked(true);
         } else {
             calendarCheckBox.setChecked(false);
@@ -180,7 +181,7 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
                 if (isChecked) {
-                    if (!PermissionManager.permissionToFineLocation()) {
+                    if (!PermissionManager.permissionToFineLocation(context)) {
                         getPermissionToAccessFineLocation();
                     } else {
 
@@ -216,7 +217,7 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked && !PermissionManager.permissionToReadCalendar()) {
+                if (isChecked && !PermissionManager.permissionToReadCalendar(context)) {
                     getPermissionToReadCalendar();
                 } else if (isChecked) {
                     Toast.makeText(context, "Calendar is used again", Toast.LENGTH_SHORT).show();
@@ -292,7 +293,7 @@ public class SettingsFragment extends Fragment {
      * Checks if we have permission to access location, and then if not, requests it.
      */
     private void getPermissionToAccessFineLocation() {
-        if (!PermissionManager.permissionToFineLocation()) {
+        if (!PermissionManager.permissionToFineLocation(context)) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST);
         }
@@ -308,7 +309,7 @@ public class SettingsFragment extends Fragment {
      * Checks if we have permission to read calendar, and then if not, requests it.
      */
     private void getPermissionToReadCalendar() {
-        if (!PermissionManager.permissionToReadCalendar()) {
+        if (!PermissionManager.permissionToReadCalendar(context)) {
             requestPermissions(new String[]{Manifest.permission.READ_CALENDAR},
                     READ_CALENDAR_PERMISSIONS_REQUEST);
         }
