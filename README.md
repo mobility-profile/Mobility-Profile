@@ -16,3 +16,5 @@
 [iOS-Mobility Profile](https://github.com/RonjaO/Mobility-Profile-iOS)
 
 [MyData Hack -esitys](https://docs.google.com/presentation/d/1yU8nRRnbF-7CS-RJaZtDk38zMn6t0Bz_QFKQ9bzbSGY/edit#slide=id.g16e67baa90_0_87)
+
+[Demo video](https://youtu.be/Guj0Xoi58eI)
