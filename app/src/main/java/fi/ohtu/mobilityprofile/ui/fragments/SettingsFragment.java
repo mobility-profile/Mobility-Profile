@@ -81,6 +81,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context = context;
     }
 
     @Override
@@ -99,12 +100,9 @@ public class SettingsFragment extends Fragment {
         setListeners();
     }
 
-
-
     @Override
     public void onStart() {
         super.onStart();
-        this.context = MainActivity.getContext();
         setupServiceReceiver();
 
         if (isLocationServiceRunning()) {
