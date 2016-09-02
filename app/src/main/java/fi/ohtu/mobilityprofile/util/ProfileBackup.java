@@ -20,6 +20,9 @@ public class ProfileBackup {
     private final String DB_NAME = "mobilityprofile.db";
     private Context context;
 
+    public ProfileBackup(Context context) {
+        this.context = context;
+    }
     /**
      * Backs up the database to the device or imports it from the device.
      * @param procedure "back up" or "import" in String

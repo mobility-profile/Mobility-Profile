@@ -267,7 +267,7 @@ public class SettingsFragment extends Fragment {
         backUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileBackup profileBackup = new ProfileBackup();
+                ProfileBackup profileBackup = new ProfileBackup(context);
                 profileBackup.handleBackup("back up");
             }
         });
