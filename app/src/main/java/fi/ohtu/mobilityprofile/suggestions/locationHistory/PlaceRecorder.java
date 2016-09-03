@@ -103,9 +103,9 @@ public class PlaceRecorder extends Service {
          * @param provider GPS or Network
          * @param locationManager LocationManager
          */
-        public LocationListener(String provider, LocationManager locationManager) {
+        public LocationListener(String provider, Context context, LocationManager locationManager) {
             Log.i(TAG, "LocationListener " + provider);
-            this.gpsPointClusterizer = new GpsPointClusterizer(getApplicationContext());
+            this.gpsPointClusterizer = new GpsPointClusterizer(context);
 
             try {
                 Location location = locationManager.getLastKnownLocation(provider);
@@ -179,8 +179,8 @@ public class PlaceRecorder extends Service {
      */
     private void initializeLocationListeners() {
         mLocationListeners = new LocationListener[]{
-            new LocationListener(android.location.LocationManager.GPS_PROVIDER, mLocationManager),
-            new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, mLocationManager)
+            new LocationListener(android.location.LocationManager.GPS_PROVIDER, this, mLocationManager),
+            new LocationListener(android.location.LocationManager.NETWORK_PROVIDER, this, mLocationManager)
         };
     }
 
