@@ -175,7 +175,6 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final Context context = MainActivity.getContext();
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
                 if (isChecked) {
@@ -209,7 +208,6 @@ public class SettingsFragment extends Fragment {
      * Sets a listener for calendarCheckBox.
      */
     private void setListenerForCheckBoxCalendar() {
-        final Context context = MainActivity.getContext();
         calendarCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -316,7 +314,6 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        Context context = MainActivity.getContext();
         switch (requestCode) {
             case ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST:
                 if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -361,7 +358,6 @@ public class SettingsFragment extends Fragment {
      * Deletes all data from the database.
      */
     private void deleteAllDataFromDatabase() {
-        Context context = MainActivity.getContext();
         GpsPointDao.deleteAllData();
         PlaceDao.deleteAllData();
         RouteSearchDao.deleteAllData();

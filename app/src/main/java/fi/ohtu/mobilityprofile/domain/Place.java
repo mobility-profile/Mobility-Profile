@@ -32,7 +32,6 @@ public class Place extends SugarRecord {
     public Place() {
         this.name = "name";
         this.coordinate = new Coordinate(new Float(0), new Float(0));
-        this.coordinate.save();
         this.favourite = false;
     }
 
@@ -45,7 +44,6 @@ public class Place extends SugarRecord {
     public Place(String name, Address address) {
         this.name = name;
         this.coordinate = new Coordinate((float) address.getLatitude(), (float) address.getLongitude());
-        this.coordinate.save();
         this.favourite = false;
         this.favourite = hidden;
         setAddress(address);
@@ -57,7 +55,6 @@ public class Place extends SugarRecord {
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
-        this.coordinate.save();
     }
 
     public void setName(String name) {
@@ -99,7 +96,6 @@ public class Place extends SugarRecord {
      */
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
-        this.save();
     }
 
     public boolean isHidden() {
@@ -112,7 +108,6 @@ public class Place extends SugarRecord {
      */
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
-        this.save();
     }
 
     /**

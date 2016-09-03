@@ -35,6 +35,5 @@ public class TransportMode extends SugarRecord {
 
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
-        this.save();
     }
 }
