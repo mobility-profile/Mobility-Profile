@@ -150,7 +150,7 @@ public class YourPlaceActivity extends AppCompatActivity implements OnMapReadyCa
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 place.setHidden(true);
-                                place.save();
+                                PlaceDao.insertPlace(place);
                                 //PlaceDao.deletePlaceById(place.getId());
                                 backToFragment();
                             }
@@ -197,7 +197,7 @@ public class YourPlaceActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
-        place.save();
+        PlaceDao.insertPlace(place);
     }
 
     @Override

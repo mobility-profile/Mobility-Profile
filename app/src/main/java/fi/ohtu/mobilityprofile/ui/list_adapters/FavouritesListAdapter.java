@@ -86,7 +86,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             public void onClick(View v) {
                 final Place place = PlaceDao.getPlaceById(getItemId(position));
                 place.setFavourite(true);
-                place.save();
+                PlaceDao.insertPlace(place);
                 updateView();
             }
         });
@@ -99,7 +99,7 @@ public class FavouritesListAdapter extends ArrayAdapter<Place> {
             public void onClick(View v) {
                 final Place place = PlaceDao.getPlaceById(getItemId(position));
                 place.setFavourite(false);
-                place.save();
+                PlaceDao.insertPlace(place);
                 updateView();
 
             }

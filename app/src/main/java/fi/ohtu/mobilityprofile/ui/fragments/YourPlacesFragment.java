@@ -26,6 +26,7 @@ import java.util.List;
 
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.R;
+import fi.ohtu.mobilityprofile.data.PlaceDao;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.ui.list_adapters.AddressSuggestionAdapter;
 import fi.ohtu.mobilityprofile.ui.list_adapters.FavouritesListAdapter;
@@ -168,11 +169,11 @@ public class YourPlacesFragment extends Fragment {
                     if (name.equals("")) {
                         Place fav = new Place(address.getAddressLine(0), address);
                         fav.setFavourite(true);
-                        fav.save();
+                        PlaceDao.insertPlace(fav);
                     } else {
                         Place fav = new Place(name, address);
                         fav.setFavourite(true);
-                        fav.save();
+                       PlaceDao.insertPlace(fav);
                     }
                 }
 

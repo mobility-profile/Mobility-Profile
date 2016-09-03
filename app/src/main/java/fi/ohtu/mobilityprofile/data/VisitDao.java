@@ -4,6 +4,7 @@ import com.orm.query.Select;
 
 import java.util.List;
 
+import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.Visit;
 
 /**
@@ -36,8 +37,7 @@ public class VisitDao {
      * @param visit Visit to be saved
      */
     public static void insert(Visit visit) {
-        visit.getPlace().getCoordinate().save();
-        visit.getPlace().save();
+        PlaceDao.insertPlace(visit.getPlace());
         visit.save();
     }
 
