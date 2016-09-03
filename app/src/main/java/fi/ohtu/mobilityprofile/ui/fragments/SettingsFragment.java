@@ -143,7 +143,7 @@ public class SettingsFragment extends Fragment {
 
         if (!PermissionManager.permissionToFineLocation(context) || gps.equals("false")) {
             gpsCheckBox.setChecked(false);
-        } else if (PermissionManager.permissionToFineLocation(context) || gps.equals("true")) {
+        } else if (PermissionManager.permissionToFineLocation(context) && gps.equals("true")) {
             gpsCheckBox.setChecked(true);
         } else {
             gpsCheckBox.setChecked(false);
@@ -151,7 +151,7 @@ public class SettingsFragment extends Fragment {
 
         if (!PermissionManager.permissionToReadCalendar(context) || cal.equals("false")) {
             calendarCheckBox.setChecked(false);
-        } else if (PermissionManager.permissionToReadCalendar(context) || cal.equals("true")) {
+        } else if (PermissionManager.permissionToReadCalendar(context) && cal.equals("true")) {
             calendarCheckBox.setChecked(true);
         } else {
             calendarCheckBox.setChecked(false);
