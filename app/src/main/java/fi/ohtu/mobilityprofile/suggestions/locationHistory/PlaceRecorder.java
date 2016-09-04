@@ -128,7 +128,7 @@ public class PlaceRecorder extends Service {
         @Override
         public void onLocationChanged(Location location) {
             //uncomment this to save TestLocation objects to database, useful for getting test data etc
-            TestLocationDao.insert(new TestLocation(location));
+            //TestLocationDao.insert(new TestLocation(location));
             StartLocationDao.insert(new StartLocation(location.getTime(), location.getAccuracy(), new Float(location.getLatitude()), new Float(location.getLongitude())));
             Log.i(TAG, "onLocationChanged: " + location);
             mLastLocation = location;
