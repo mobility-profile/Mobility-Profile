@@ -22,20 +22,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import fi.ohtu.mobilityprofile.LicensesActivity;
 import fi.ohtu.mobilityprofile.MainActivity;
 import fi.ohtu.mobilityprofile.data.GpsPointDao;
 import fi.ohtu.mobilityprofile.data.PlaceDao;
-import fi.ohtu.mobilityprofile.data.TransportModeDao;
 import fi.ohtu.mobilityprofile.data.VisitDao;
 import fi.ohtu.mobilityprofile.domain.Coordinate;
 import fi.ohtu.mobilityprofile.domain.GpsPoint;
 import fi.ohtu.mobilityprofile.domain.Place;
 import fi.ohtu.mobilityprofile.domain.RouteSearch;
-import fi.ohtu.mobilityprofile.domain.TransportMode;
 import fi.ohtu.mobilityprofile.domain.Visit;
 import fi.ohtu.mobilityprofile.suggestions.locationHistory.PlaceRecorder;
 import fi.ohtu.mobilityprofile.R;
@@ -216,13 +213,13 @@ public class SettingsFragment extends Fragment {
                 if (isChecked && !PermissionManager.permissionToReadCalendar(context)) {
                     getPermissionToReadCalendar();
                 } else if (isChecked) {
-                    Toast.makeText(context, "Calendar is used again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.settings_toast_calendar_used_again, Toast.LENGTH_SHORT).show();
 
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("cal", "true");
                     editor.commit();
                 } else {
-                    Toast.makeText(context, "Calendar will not be used", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.settings_toast_calendar_not_used, Toast.LENGTH_SHORT).show();
 
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("cal", "false");
@@ -317,21 +314,21 @@ public class SettingsFragment extends Fragment {
         switch (requestCode) {
             case ACCESS_FINE_LOCATION_PERMISSIONS_REQUEST:
                 if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "GPS permission granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.settings_toast_gps_granted, Toast.LENGTH_SHORT).show();
 
                     gpsCheckBox.setChecked(true);
                     Intent intent = new Intent(context, PlaceRecorder.class);
                     intent.putExtra("Receiver", resultReceiver);
                     context.startService(intent);
-                    Toast.makeText(context, "Place tracking ON", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.settings_toast_gps_tracking_on, Toast.LENGTH_SHORT).show();
                 } else {
                     gpsCheckBox.setChecked(false);
-                    Toast.makeText(context, "GPS permission denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.settings_toast_gps_denied, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case READ_CALENDAR_PERMISSIONS_REQUEST:
                 if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "Read Calendar permission granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.settings_toast_calendar_granted, Toast.LENGTH_SHORT).show();
                 } else {
                     calendarCheckBox.setChecked(false);
                 }
@@ -369,9 +366,9 @@ public class SettingsFragment extends Fragment {
                 && RouteSearch.count(RouteSearch.class) == 0
                 && Coordinate.count(Coordinate.class) == 0
                 && Visit.count(Visit.class) == 0) {
-            Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.settings_toast_delete_success, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.settings_toast_delete_fail, Toast.LENGTH_SHORT).show();
         }
     }
 

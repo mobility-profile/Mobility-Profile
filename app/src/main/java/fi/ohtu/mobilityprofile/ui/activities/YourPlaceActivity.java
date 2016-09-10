@@ -193,7 +193,7 @@ public class YourPlaceActivity extends AppCompatActivity implements OnMapReadyCa
 
         } else {
             if (!autoCompleteTextView.getText().toString().equals(place.getAddressLine(0))) {
-                Toast.makeText(this, "Address not valid, choose one from the list", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.your_place_address_not_valid, Toast.LENGTH_LONG).show();
             }
         }
 
@@ -220,14 +220,20 @@ public class YourPlaceActivity extends AppCompatActivity implements OnMapReadyCa
         try {
             LatLng point = new LatLng(place.getCoordinate().getLatitude(), place.getCoordinate().getLongitude());
 
-            googleMap.setMyLocationEnabled(true);
+            try {
+                googleMap.setMyLocationEnabled(true);
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            }
+
+
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 17));
 
             googleMap.addMarker(new MarkerOptions()
                     .title(place.getName())
                     .position(point));
         } catch (Exception e) {
-            Toast.makeText(this, "Coordinates for the address were not found", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.your_place_coordinates_not_found, Toast.LENGTH_LONG).show();
         }
     }
 

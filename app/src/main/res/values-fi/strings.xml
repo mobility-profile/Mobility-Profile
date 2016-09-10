@@ -1,45 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mobility Profile</string>
 
     <!--Info Tab-->
     <string name="info_idea">
-        is an application which offers your next probable destination
-        to your favourite journey planner without you needing to type anything.
+        on sovellus, joka kertoo sinun seuraavan määränpäänsi
+        suosikki reittioppaallesi ilman että sinun tarvitsee kirjoittaa mitään.
     </string>
     <string name="info_how_works">
-        To do this Mobility Profile needs permissions to read your calendar and access your location.
-        You can always switch them off.\n\n
-        If you have calendar events, Mobility profile will suggest them.\n\n
-        And with your location data Mobility Profile will learn step by step to predict your next destination.
+        Jos sinulla on kalenterissa tapahtumia lähitunteina, Mobility Profile ehdottaa niitä.
+        Lisäksi sijaintihistoriasi perusteella sovellus oppii ennustamaan seuraavan määränpääsi.\n\n
+        Toimiakseen Mobility Profile tarvitsee luvan lukea kalenteriasi ja käyttää sijaintiasi.
+        Voit milloin tahansa lopettaa jomman kumman tiedon käyttämisen asetuksista.
     </string>
 
 
     <!--Your places Tab-->
-    <string name="your_places_title">Your places</string>
+    <string name="your_places_title">Sinun paikkasi</string>
     <string name="your_places_info">
-        You can add your favourite places, and they will show up in your destination suggestions.
-        In addition, Mobility Profile will suggest new places based on tracking.
+        Voit lisätä suosikkipaikkojasi, jotka tulevat näkymään määränpääehdotuksissa.
+        Lisäksi Mobility Profile ehdottaa sinulle uusia mahdollisia suosikkipaikkoja sijaintihistoriaan perustuen.
     </string>
-    <string name="your_places_new_place_name">Name</string>
-    <string name="your_places_new_place_address">Address</string>
+    <string name="your_places_new_place_name">Nimi</string>
+    <string name="your_places_new_place_address">Osoite</string>
     <!--Your Places List Item-->
-    <string name="your_places_favourite_hint">Set favourite this place?</string>
-    <string name="your_places_unfavourite_hint">Unfavourite this place?</string>
+    <string name="your_places_favourite_hint">Asetetaan suosikiksi?</string>
+    <string name="your_places_unfavourite_hint">Ei olekaan suosikki?</string>
 
 
     <!--Settings Tab-->
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">Asetukset</string>
     <string name="settings_gps">GPS</string>
-    <string name="settings_calendar">Read calendar events</string>
-    <string name="settings_your_data_title">Your data</string>
-    <string name="settings_your_data_delete_searches">Delete all last searches</string>
-    <string name="settings_your_data_reset">Reset app and delete all data</string>
+    <string name="settings_calendar">Kalenteritapahtuminen lukeminen</string>
+    <string name="settings_your_data_title">Sinun datasi</string>
+    <string name="settings_your_data_delete_searches">Poista reittihaut</string>
+    <string name="settings_your_data_reset">Poista kaikki data</string>
     <string name="settings_your_data_backup_info">
-        Back up your data. The database file,
-        called mobilityprofile.db, will be saved to your main folder of internal storage.
+        Varmuuskopioi datasi. Tietokantatiedosto,
+        nimeltään mobilityprofile.db, tallentuu sisäisen muistisi pääkansioon.
     </string>
-    <string name="settings_your_data_backup">Back Up</string>
-    <string name="settings_transport_mode_preferences_title">Transport mode preferences</string>
+    <string name="settings_your_data_backup">Varmuuskopioi</string>
+    <string name="settings_transport_mode_preferences_title">Suosikki liikennevälineet</string>
     <string name="walking">Walking</string>
     <string name="bike">Bike</string>
     <string name="car">Car</string>
@@ -49,60 +50,65 @@
     <string name="train">Train</string>
     <string name="boat">Boat</string>
     <string name="plane">Plane</string>
-    <string name="settings_other_info_title">Other info</string>
-    <string name="settings_other_info_licences">Licenses</string>
+    <string name="settings_other_info_title">Muuta infoa</string>
+    <string name="settings_other_info_licences">Lisenssit</string>
     <!--Settings Dialogs-->
-    <string name="dialog_settings_delete_searches_title">Delete all searches?</string>
-    <string name="dialog_settings_delete_searches_info">Deletes all route searches you\&apos;ve made.</string>
-    <string name="dialog_settings_reset_title">Delete all collected data?</string>
-    <string name="dialog_settings_reset_info">Deletes all collected data, including location history, searched routes and favourite places.</string>
+    <string name="dialog_settings_delete_searches_title">Poistetaan kaikki reittihaut?</string>
+    <string name="dialog_settings_delete_searches_info">Poistaa kaikki tekemäsi reittihaut.</string>
+    <string name="dialog_settings_reset_title">Poistetaan kaikki kerätty data?</string>
+    <string name="dialog_settings_reset_info">
+        Poistaa kaiken kerätyn datan: sijaintihistorian, tehdyt reittihaut ja suosikkipaikat.</string>
 
 
 
     <!--Activity Place-->
-    <string name="activity_place_back_button">Back to Your places Tab</string>
-    <string name="name">NAME</string>
+    <string name="activity_place_back_button">Takaisin Sinun paikkasi välilehdelle.</string>
+    <string name="name">NIMI</string>
     <!--Place Dialogs-->
-    <string name="dialog_edit_title">Edit this place</string>
-    <string name="dialog_delete_title">Delete this place?</string>
-    <string name="dialog_set_favourite_title">Save this suggestion as a favourite?</string>
+    <string name="dialog_edit_title">Muokkaa tätä paikkaa</string>
+    <string name="dialog_delete_title">Poistetaan tämä paikka?</string>
+    <string name="dialog_set_favourite_title">Tallennetaan tämä paikka suosikiksi?</string>
 
 
     <!--Activity Security Problem-->
     <string name="activity_security_problem_conflict_header">
-        The following applications have defined conflicting permissions with Mobility Profile:\n
+        Seuraavilla sovelluksilla on luvat konfliktissa Mobility Profilen kanssa:\n
     </string>
     <string name="activity_security_problem_conflict_info">
-        If two or more applications define the same permission,
-        the application that is installed first is the one whose definition is used.
-        Applications listed above were installed before Mobility Profile
-        and have defined the same permission as Mobility Profile.
-        To solve the problem, uninstall those applications,
-        then run Mobility Profile and make sure this message is no longer shown.
-        After that you can reinstall those applications.
-        \n\nMore information about the problem can be found at
+        Jos kahdella tai usemmalla sovelluksessa on sama lupa,
+        ensin asennetun sovelluksen lupaa käytetään.
+        Yllä listatus sovellukset on asennettu ennen Mobility Profilea ja
+        niillä on samat luvat kuin Mobility Profilella.
+        Tämä aiheuttaa ongelman, jonka voi ratkaista
+        poistamalla nämä sovellukset. Sen jälkeen käynnistä Mobility Profile
+        ja varmista ettei tämä viesti näy.
+        Sitten voit asentaa sovellukset uudelleen.
+        \n\nLisää tietoa tästä ongelmasta voit lukea englanniksi tästä linkistä
         https://datatheorem.github.io/2014/04/16/custom-permissions/
     </string>
 
 
     <!--AndroidManifest-->
-    <string name="custom_permission_info">Allows the software to use information provided by Mobility Profile. Exact data collected by Mobility Profile won\'t be shared, only suggestions Mobility Profile is giving based on that data.</string>
+    <string name="custom_permission_info">
+        Antaa luvan sovellukselle käyttää Mobility Profilen dataa.
+        Tätä dataa ei jaeta. Vain ehdotukset, jotka Mobility Profile on muodostanut
+        annetaan sovellukselle.</string>
 
 
     <!--Notification string-->
-    <string name="location_tracking_title">Gathering data</string>
-    <string name="location_tracking_description">Mobility Profile is tracking your location</string>
-    <string name="stop_location_tracking">Stop tracking</string>
+    <string name="location_tracking_title">Kerää sijaintitietoa</string>
+    <string name="location_tracking_description">Mobility Profile seuraa sijaintiasi</string>
+    <string name="stop_location_tracking">Lopeta seuraaminen</string>
 
 
     <!--Everywhere strings-->
     <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="add">Add</string>
-    <string name="edit">Edit</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="back">Back</string>
+    <string name="cancel">Peruuta</string>
+    <string name="add">Lisää</string>
+    <string name="edit">Muokkaa</string>
+    <string name="save">Tallenna</string>
+    <string name="delete">Poista</string>
+    <string name="back">Takaisin</string>
 
 
     <!--Activity Licenses-->
@@ -188,29 +194,28 @@
         OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
         DEALINGS IN THE SOFTWARE.
     </string>
-    <string name="location_tracking_start">Location tracking started</string>
-    <string name="location_tracking_stop">Location tracking stopped</string>
+    <string name="location_tracking_start">Sijainnin seuraaminen aloitettu</string>
+    <string name="location_tracking_stop">Sijainnin seuraaminen lopetettu</string>
 
     <!--Toasts-->
-    <string name="settings_toast_calendar_used_again">Calendar is used again</string>
-    <string name="settings_toast_calendar_not_used">Calendar will not be used</string>
-    <string name="settings_toast_calendar_granted">Read Calendar permission granted</string>
+    <string name="settings_toast_calendar_used_again">Kalenteria käytetään taas</string>
+    <string name="settings_toast_calendar_not_used">Kalenteria ei käytetä</string>
+    <string name="settings_toast_calendar_granted">Lupa kalenteriin annettu</string>
 
-    <string name="settings_toast_gps_granted">GPS permission granted</string>
-    <string name="settings_toast_gps_denied">GPS permission denied</string>
-    <string name="settings_toast_gps_tracking_on">Place tracking ON</string>
+    <string name="settings_toast_gps_granted">Lupa sijaintitietoihin annettu</string>
+    <string name="settings_toast_gps_denied">Lupa sijaintitietoihin evätty</string>
+    <string name="settings_toast_gps_tracking_on">Sijainnin seuraaminen on päällä</string>
 
-    <string name="settings_toast_delete_success">Successfully deleted</string>
-    <string name="settings_toast_delete_fail">Failed to delete</string>
+    <string name="settings_toast_delete_success">Onnistuneesti poistettu</string>
+    <string name="settings_toast_delete_fail">Poistaminen epäonnistui</string>
 
-    <string name="your_places_choose_address">Choose an address of the list</string>
+    <string name="your_places_choose_address">Valitse osoite listalta</string>
 
-    <string name="backup_failed">Failed. There is no SD card available.</string>
-    <string name="backup_no_file">No database backup file was found.</string>
-    <string name="backup_success">Success!</string>
-    <string name="backup_fail">Failed</string>
+    <string name="backup_failed">Epäonnnistui. SD-korttia ei ole saatavilla.</string>
+    <string name="backup_no_file">Tietokantavarmuuskopiota ei löytynyt.</string>
+    <string name="backup_success">Onnistui!</string>
+    <string name="backup_fail">Epäonnistui</string>
 
-    <string name="your_place_address_not_valid">Address not valid, choose one from the list</string>
-    <string name="your_place_coordinates_not_found">Coordinates for the address were not found</string>
-
+    <string name="your_place_address_not_valid">Osoite ei ole validi, valitse osoite listalta</string>
+    <string name="your_place_coordinates_not_found">Osoitteen koordinaatteja ei löytynyt</string>
 </resources>

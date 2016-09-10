@@ -164,7 +164,7 @@ public class YourPlacesFragment extends Fragment {
                 String name = nameEditText.getText().toString();
 
                 if (address == null) {
-                    Toast.makeText(context, "Choose an address of the list", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.your_places_choose_address, Toast.LENGTH_LONG).show();
                 } else {
                     if (name.equals("")) {
                         Place fav = new Place(address.getAddressLine(0), address);

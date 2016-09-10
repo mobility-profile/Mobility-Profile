@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
 import fi.ohtu.mobilityprofile.MainActivity;
+import fi.ohtu.mobilityprofile.R;
 
 /**
  * Class is used to export and import Mobility Profile's database.
@@ -35,7 +36,7 @@ public class ProfileBackup {
 
         Boolean sdAvailable = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         if (!sdAvailable) {
-            Toast.makeText(context, "Failed to " + procedure + " data. There is no SD card available.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.backup_failed, Toast.LENGTH_LONG).show();
             return;
         }
         File sd = Environment.getExternalStorageDirectory();
@@ -58,7 +59,7 @@ public class ProfileBackup {
                 currentDB = new File(sd, currentDBPath);
                 backupDB = new File(data, backupDBPath);
                 if (!currentDB.exists()) {
-                    Toast.makeText(context, "No database backup file was found.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.backup_no_file, Toast.LENGTH_LONG).show();
                     return;
                 }
                 break;
@@ -70,11 +71,11 @@ public class ProfileBackup {
             destination.transferFrom(source, 0, source.size());
             source.close();
             destination.close();
-            Toast.makeText(context, "Succeeded to " + procedure + " data!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.backup_success, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
-            Toast.makeText(context, "Failed to " + procedure + " data.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.backup_fail, Toast.LENGTH_SHORT).show();
         }
 
     }
